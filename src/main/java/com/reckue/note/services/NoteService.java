@@ -8,8 +8,8 @@ import java.util.UUID;
 public interface NoteService {
 
     List<Note> getAllNotes();
-    Note getNoteById(UUID id);
+    Note getNoteById(String id);
     Note createNote(Note note);
-    Note editNote(UUID id, Note note);
-    void deleteNote(UUID id);
+    Note editNote(String id, Note note);
+    void deleteNote(String id);
 }
