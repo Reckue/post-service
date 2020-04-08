@@ -1,13 +1,13 @@
-package com.reckue.athena.models;
+package com.reckue.note.models.forms;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Note {
+@Data
+public class NoteForm {
 
     private String payload;
 }
