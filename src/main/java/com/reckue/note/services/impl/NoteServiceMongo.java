@@ -3,6 +3,7 @@ package com.reckue.note.services.impl;
 import com.reckue.note.models.entities.Note;
 import com.reckue.note.repositories.NoteRepository;
 import com.reckue.note.services.NoteService;
+import com.reckue.note.utils.CustomUUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,24 +28,25 @@ public class NoteServiceMongo implements NoteService {
     }
 
     @Override
-    public Note getNoteById(UUID id) {
+    public Note getNoteById(String id) {
         return noteRepository.findById(id).orElseThrow();
     }
 
     @Override
     public Note createNote(Note note) {
+        note.setId(CustomUUID.randomUUID());
         return noteRepository.save(note);
     }
 
     @Override
-    public Note editNote(UUID id, Note note) {
+    public Note editNote(String id, Note note) {
         Note noteToUpdate = noteRepository.findById(id).orElseThrow();
         noteToUpdate.setPayload(note.getPayload());
         return noteRepository.save(noteToUpdate);
     }
 
     @Override
-    public void deleteNote(UUID id) {
+    public void deleteNote(String id) {
         noteRepository.deleteById(id);
     }
 }
