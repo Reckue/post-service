@@ -1,4 +1,4 @@
-package com.reckue.note.models;
+package com.reckue.note.models.transfers;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,9 +7,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Note {
+public class NoteTransfer {
 
     private String id;
-    private String content;
     private String payload;
 }
