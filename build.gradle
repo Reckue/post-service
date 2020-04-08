@@ -1,11 +1,11 @@
 plugins {
+    id 'java'
     id 'org.springframework.boot' version '2.2.2.RELEASE'
     id 'io.spring.dependency-management' version '1.0.8.RELEASE'
-    id 'java'
 }
 
-group 'com.reckue'
-version '1.0.0'
+group = 'com.reckure'
+version = '0.1'
 
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
@@ -15,26 +15,40 @@ repositories {
 }
 
 dependencies {
-
-    /*
-    development
-     */
-    compileOnly 'org.projectlombok:lombok:1.18.12'
-    annotationProcessor 'org.projectlombok:lombok:1.18.12'
-
-    /*
-    public api
-     */
-    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.0.2'
-    compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
-
-    /*
-    spring framework
-     */
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
 
-    /*
-    tests
-     */
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    /* database */
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+    implementation 'org.mongodb:mongo-java-driver:3.12.0'
+
+    /* data mapping */
+    implementation 'net.sf.dozer:dozer:5.5.1'
+
+    /* swagger */
+    implementation 'io.springfox:springfox-swagger2:2.9.2'
+    implementation 'io.springfox:springfox-swagger-ui:2.9.2'
+
+    /* lombok */
+    compileOnly 'org.projectlombok:lombok:1.18.4'
+    annotationProcessor 'org.projectlombok:lombok:1.18.10'
+
+    /* test */
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'com.h2database:h2:1.4.200'
+    testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo:2.2.0'
+    testImplementation 'org.testng:testng:7.1.0'
+
+    /* devtools */
+    testImplementation 'org.springframework.boot:spring-boot-devtools'
+
+    /* other */
+    compile group: 'org.apache.commons', name: 'commons-text', version: '1.8'
+    implementation 'javax.xml.bind:jaxb-api:2.3.0' // for binding xml
+}
+
+def profile = "dev"
+
+bootRun {
+    args = ["--spring.profiles.active=" + profile]
 }

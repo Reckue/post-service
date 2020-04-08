@@ -1,11 +1,11 @@
-package com.reckue.athena;
+package com.reckue.note;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class AthenaApplication {
+public class NoteApplication {
     public static void main(String[] args) {
-        SpringApplication.run(AthenaApplication.class, args);
+        SpringApplication.run(NoteApplication.class, args);
     }
 }
