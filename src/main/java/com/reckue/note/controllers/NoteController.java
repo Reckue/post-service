@@ -29,7 +29,7 @@ public class NoteController {
     }
 
     @GetMapping("/{id}")
-    public NoteTransfer getNoteById(@PathVariable UUID id) {
+    public NoteTransfer getNoteById(@PathVariable String id) {
         Note note = noteService.getNoteById(id);
         return mapper.map(note, NoteTransfer.class);
     }
@@ -50,7 +50,7 @@ public class NoteController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteNote(@PathVariable UUID id) {
+    public void deleteNote(@PathVariable String id) {
         noteService.deleteNote(id);
     }
 }
