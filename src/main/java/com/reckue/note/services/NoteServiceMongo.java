@@ -1,15 +1,13 @@
-package com.reckue.note.services.impl;
+package com.reckue.note.services;
 
 import com.reckue.note.models.entities.Note;
 import com.reckue.note.repositories.NoteRepository;
-import com.reckue.note.services.NoteService;
 import com.reckue.note.utils.CustomUUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @Transactional
