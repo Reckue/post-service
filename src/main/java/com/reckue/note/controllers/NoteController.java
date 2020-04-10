@@ -30,23 +30,30 @@ public class NoteController {
 
     @GetMapping("/{id}")
     public NoteTransfer getNoteById(@PathVariable String id) {
-        Note note = noteService.getNoteById(id);
+        final Note note = noteService.getNoteById(id);
         return mapper.map(note, NoteTransfer.class);
     }
 
-    @GetMapping("/")
+    @GetMapping
     public List<NoteTransfer> getAllNotes() {
-        List<Note> noteList = noteService.getAllNotes();
+        final List<Note> noteList = noteService.getAllNotes();
         return noteList.stream()
                 .map(note -> mapper.map(note, NoteTransfer.class))
                 .collect(Collectors.toList());
     }
 
-    @PostMapping("/")
+    @PostMapping
     public NoteTransfer createNote(@RequestBody NoteForm noteForm) {
-        Note noteToCreate = mapper.map(noteForm, Note.class);
-        Note savedNote = noteService.createNote(noteToCreate);
+        final Note noteToCreate = mapper.map(noteForm, Note.class);
+        final Note savedNote = noteService.createNote(noteToCreate);
         return mapper.map(savedNote, NoteTransfer.class);
+    }
+
+    @PutMapping("/{id}")
+    public NoteTransfer editNote(@RequestBody NoteForm noteForm, @PathVariable String id) {
+        final Note noteToUpdate = mapper.map(noteForm, Note.class);
+        final Note updatedNote = noteService.editNote(id, noteToUpdate);
+        return mapper.map(updatedNote, NoteTransfer.class);
     }
 
     @DeleteMapping("/{id}")
