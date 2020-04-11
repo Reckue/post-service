@@ -1,9 +1,11 @@
 package com.reckue.note.services;
 
+import com.reckue.note.exceptions.NoteNotFoundException;
 import com.reckue.note.models.entities.Note;
 import com.reckue.note.repositories.NoteRepository;
 import com.reckue.note.utils.NoteValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +29,8 @@ public class NoteServiceMongo implements NoteService {
 
     @Override
     public Note getNoteById(String id) {
-        return noteRepository.findById(id).orElseThrow();
+        return noteRepository.findById(id).orElseThrow(
+                () -> new NoteNotFoundException("Note Not Found by id", HttpStatus.NOT_FOUND));
     }
 
     @Override
@@ -38,7 +41,8 @@ public class NoteServiceMongo implements NoteService {
 
     @Override
     public Note editNote(String id, Note note) {
-        Note noteToUpdate = noteRepository.findById(id).orElseThrow();
+        Note noteToUpdate = noteRepository.findById(id).orElseThrow(
+                () -> new NoteNotFoundException("Note Not Found by id", HttpStatus.NOT_FOUND));
         noteToUpdate.setPayload(note.getPayload());
         Note validNote = NoteValidator.validateNote(noteToUpdate);
         return noteRepository.save(validNote);
@@ -46,6 +50,9 @@ public class NoteServiceMongo implements NoteService {
 
     @Override
     public void deleteNote(String id) {
+        if (!noteRepository.existsById(id)) {
+            throw new NoteNotFoundException("Note Not Found by id", HttpStatus.NOT_FOUND);
+        }
         noteRepository.deleteById(id);
     }
 }
