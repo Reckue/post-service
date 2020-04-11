@@ -1,0 +1,18 @@
+language: java
+jdk: openjdk11
+install: true
+
+cache:
+  directories:
+    - $HOME/.gradle
+
+script:
+  - gradle build --refresh-dependencies && cd ..
+
+notifications:
+  email:
+    recipients:
+      - egnaf@yahoo.com
+      - hardelele@yahoo.com
+    on_success: never
+    on_failure: always
