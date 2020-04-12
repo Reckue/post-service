@@ -21,7 +21,9 @@ public class NoteValidator {
     }
 
     public static String validatePayload(String payload) {
-        if (payload.length() > 1024) {
+        if (payload == null) {
+            return "";
+        } else if (payload.length() > 1024) {
             return shortcutPayload(payload);
         }
         return payload;
