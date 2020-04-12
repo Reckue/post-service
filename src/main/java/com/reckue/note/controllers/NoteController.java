@@ -1,7 +1,7 @@
 package com.reckue.note.controllers;
 
 import com.reckue.note.models.entities.Note;
-import com.reckue.note.models.forms.NoteForm;
+import com.reckue.note.models.requests.NoteRequest;
 import com.reckue.note.models.transfers.NoteTransfer;
 import com.reckue.note.services.NoteService;
 import org.dozer.Mapper;
@@ -42,15 +42,15 @@ public class NoteController {
     }
 
     @PostMapping
-    public NoteTransfer createNote(@RequestBody NoteForm noteForm) {
-        final Note noteToCreate = mapper.map(noteForm, Note.class);
+    public NoteTransfer createNote(@RequestBody NoteRequest noteRequest) {
+        final Note noteToCreate = mapper.map(noteRequest, Note.class);
         final Note savedNote = noteService.createNote(noteToCreate);
         return mapper.map(savedNote, NoteTransfer.class);
     }
 
     @PutMapping("/{id}")
-    public NoteTransfer editNote(@RequestBody NoteForm noteForm, @PathVariable String id) {
-        final Note noteToUpdate = mapper.map(noteForm, Note.class);
+    public NoteTransfer editNote(@RequestBody NoteRequest noteRequest, @PathVariable String id) {
+        final Note noteToUpdate = mapper.map(noteRequest, Note.class);
         final Note updatedNote = noteService.editNote(id, noteToUpdate);
         return mapper.map(updatedNote, NoteTransfer.class);
     }

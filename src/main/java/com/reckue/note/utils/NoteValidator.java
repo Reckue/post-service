@@ -17,7 +17,7 @@ public class NoteValidator {
         if (id != null) {
             return id;
         }
-        return CustomUUID.randomUUID();
+        return CustomGenerator.randomUUID();
     }
 
     public static String validatePayload(String payload) {
