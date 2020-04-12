@@ -1,7 +1,5 @@
 package com.reckue.note.models.entities;
 
-import com.reckue.note.models.transfers.NoteDescription;
-import com.reckue.note.utils.Described;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,18 +10,9 @@ import org.springframework.data.annotation.Id;
 @NoArgsConstructor
 @Data
 @Builder
-public class Note implements Described<NoteDescription> {
+public class Note {
 
     @Id
     private String id;
     private String payload;
-
-    @Override
-    public NoteDescription toDescription() {
-        String description = this.getPayload().substring(0, 20).concat("...");
-        return NoteDescription.builder()
-                .id(this.getId())
-                .description(description)
-                .build();
-    }
 }
