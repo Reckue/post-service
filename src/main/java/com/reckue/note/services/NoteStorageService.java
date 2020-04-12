@@ -17,6 +17,17 @@ public class NoteStorageService {
 
     public NoteDescription getNoteDescriptionById(String id) {
         final Note note = noteService.getNoteById(id);
-        return note.toDescription();
+        return toDescription(note);
+    }
+
+    public NoteDescription toDescription(Note note) {
+        String description = note.getPayload();
+        if (description.length() > 20) {
+            description = description.substring(0, 20).concat("...");
+        }
+        return NoteDescription.builder()
+                .id(note.getId())
+                .description(description)
+                .build();
     }
 }
