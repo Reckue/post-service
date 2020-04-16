@@ -5,10 +5,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class DozerConfig {
+public class MapperConfig {
 
     @Bean
-    public DozerBeanMapper getDozerBeanMapper() {
+    public DozerBeanMapper mapper() {
         return new DozerBeanMapper();
     }
 }

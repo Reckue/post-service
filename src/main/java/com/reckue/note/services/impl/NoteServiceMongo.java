@@ -1,14 +1,16 @@
 package com.reckue.note.services.impl;
 
+import com.reckue.note.exceptions.NoteNotFoundException;
 import com.reckue.note.models.entities.Note;
 import com.reckue.note.repositories.NoteRepository;
 import com.reckue.note.services.NoteService;
+import com.reckue.note.utils.NoteValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @Transactional
@@ -27,24 +29,31 @@ public class NoteServiceMongo implements NoteService {
     }
 
     @Override
-    public Note getNoteById(UUID id) {
-        return noteRepository.findById(id).orElseThrow();
+    public Note getNoteById(String id) {
+        return noteRepository.findById(id).orElseThrow(
+                () -> new NoteNotFoundException("Note Not Found by id", HttpStatus.NOT_FOUND));
     }
 
     @Override
     public Note createNote(Note note) {
-        return noteRepository.save(note);
+        Note validNote = NoteValidator.validateNote(note);
+        return noteRepository.save(validNote);
     }
 
     @Override
-    public Note editNote(UUID id, Note note) {
-        Note noteToUpdate = noteRepository.findById(id).orElseThrow();
+    public Note editNote(String id, Note note) {
+        Note noteToUpdate = noteRepository.findById(id).orElseThrow(
+                () -> new NoteNotFoundException("Note Not Found by id", HttpStatus.NOT_FOUND));
         noteToUpdate.setPayload(note.getPayload());
-        return noteRepository.save(noteToUpdate);
+        Note validNote = NoteValidator.validateNote(noteToUpdate);
+        return noteRepository.save(validNote);
     }
 
     @Override
-    public void deleteNote(UUID id) {
+    public void deleteNote(String id) {
+        if (!noteRepository.existsById(id)) {
+            throw new NoteNotFoundException("Note Not Found by id", HttpStatus.NOT_FOUND);
+        }
         noteRepository.deleteById(id);
     }
 }

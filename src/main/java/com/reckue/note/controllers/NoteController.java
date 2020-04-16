@@ -1,7 +1,7 @@
 package com.reckue.note.controllers;
 
 import com.reckue.note.models.entities.Note;
-import com.reckue.note.models.forms.NoteForm;
+import com.reckue.note.models.requests.NoteRequest;
 import com.reckue.note.models.transfers.NoteTransfer;
 import com.reckue.note.services.NoteService;
 import org.dozer.Mapper;
@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -29,28 +28,35 @@ public class NoteController {
     }
 
     @GetMapping("/{id}")
-    public NoteTransfer getNoteById(@PathVariable UUID id) {
-        Note note = noteService.getNoteById(id);
+    public NoteTransfer getNoteById(@PathVariable String id) {
+        final Note note = noteService.getNoteById(id);
         return mapper.map(note, NoteTransfer.class);
     }
 
-    @GetMapping("/")
+    @GetMapping
     public List<NoteTransfer> getAllNotes() {
-        List<Note> noteList = noteService.getAllNotes();
+        final List<Note> noteList = noteService.getAllNotes();
         return noteList.stream()
                 .map(note -> mapper.map(note, NoteTransfer.class))
                 .collect(Collectors.toList());
     }
 
-    @PostMapping("/")
-    public NoteTransfer createNote(@RequestBody NoteForm noteForm) {
-        Note noteToCreate = mapper.map(noteForm, Note.class);
-        Note savedNote = noteService.createNote(noteToCreate);
+    @PostMapping
+    public NoteTransfer createNote(@RequestBody NoteRequest noteRequest) {
+        final Note noteToCreate = mapper.map(noteRequest, Note.class);
+        final Note savedNote = noteService.createNote(noteToCreate);
         return mapper.map(savedNote, NoteTransfer.class);
     }
 
+    @PutMapping("/{id}")
+    public NoteTransfer editNote(@RequestBody NoteRequest noteRequest, @PathVariable String id) {
+        final Note noteToUpdate = mapper.map(noteRequest, Note.class);
+        final Note updatedNote = noteService.editNote(id, noteToUpdate);
+        return mapper.map(updatedNote, NoteTransfer.class);
+    }
+
     @DeleteMapping("/{id}")
-    public void deleteNote(@PathVariable UUID id) {
+    public void deleteNote(@PathVariable String id) {
         noteService.deleteNote(id);
     }
 }

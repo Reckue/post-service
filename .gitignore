@@ -1,5 +1,11 @@
-/gradlew.bat
-/gradlew
-/gradle/
-/.idea/
-/.gradle/
+.idea/
+gradle/
+.gradle/
+out/
+target/
+
+gradlew.bat
+gradlew
+
+*.class
+*.iml
