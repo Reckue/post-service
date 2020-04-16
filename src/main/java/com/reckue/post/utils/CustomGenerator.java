@@ -1,4 +1,4 @@
-package com.reckue.note.utils;
+package com.reckue.post.utils;
 
 import java.util.UUID;
 

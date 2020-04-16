@@ -1,4 +1,4 @@
-package com.reckue.note.models.transfers;
+package com.reckue.post.models.transfers;
 
 import lombok.Data;
 

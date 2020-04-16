@@ -1,4 +1,4 @@
-package com.reckue.note.exceptions;
+package com.reckue.post.exceptions;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

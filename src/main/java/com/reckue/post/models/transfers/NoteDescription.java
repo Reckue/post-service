@@ -1,18 +1,16 @@
-package com.reckue.note.models.entities;
+package com.reckue.post.models.transfers;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-public class Note {
+public class NoteDescription {
 
-    @Id
     private String id;
-    private String payload;
+    private String description;
 }

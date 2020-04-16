@@ -1,9 +1,9 @@
-package com.reckue.note.controllers;
+package com.reckue.post.controllers;
 
-import com.reckue.note.models.entities.Note;
-import com.reckue.note.models.requests.NoteRequest;
-import com.reckue.note.models.transfers.NoteTransfer;
-import com.reckue.note.services.NoteService;
+import com.reckue.post.models.entities.Note;
+import com.reckue.post.models.requests.NoteRequest;
+import com.reckue.post.models.transfers.NoteTransfer;
+import com.reckue.post.services.NoteService;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

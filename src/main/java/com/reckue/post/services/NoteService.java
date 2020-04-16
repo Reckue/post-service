@@ -1,6 +1,6 @@
-package com.reckue.note.services;
+package com.reckue.post.services;
 
-import com.reckue.note.models.entities.Note;
+import com.reckue.post.models.entities.Note;
 
 import java.util.List;
 

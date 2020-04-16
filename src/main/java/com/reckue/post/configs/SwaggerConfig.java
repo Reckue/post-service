@@ -1,4 +1,4 @@
-package com.reckue.note.configs;
+package com.reckue.post.configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,7 +1,7 @@
-package com.reckue.note.handlers;
+package com.reckue.post.handlers;
 
-import com.reckue.note.exceptions.NoteNotFoundException;
-import com.reckue.note.models.transfers.ErrorTransfer;
+import com.reckue.post.exceptions.NoteNotFoundException;
+import com.reckue.post.models.transfers.ErrorTransfer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

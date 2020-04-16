@@ -1,10 +1,10 @@
-package com.reckue.note.services.impl;
+package com.reckue.post.services.impl;
 
-import com.reckue.note.exceptions.NoteNotFoundException;
-import com.reckue.note.models.entities.Note;
-import com.reckue.note.repositories.NoteRepository;
-import com.reckue.note.services.NoteService;
-import com.reckue.note.utils.NoteValidator;
+import com.reckue.post.exceptions.NoteNotFoundException;
+import com.reckue.post.models.entities.Note;
+import com.reckue.post.repositories.NoteRepository;
+import com.reckue.post.services.NoteService;
+import com.reckue.post.utils.NoteValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

@@ -1,8 +1,8 @@
-package com.reckue.note.services.impl;
+package com.reckue.post.services.impl;
 
-import com.reckue.note.models.entities.Note;
-import com.reckue.note.models.transfers.NoteDescription;
-import com.reckue.note.services.NoteService;
+import com.reckue.post.models.entities.Note;
+import com.reckue.post.models.transfers.NoteDescription;
+import com.reckue.post.services.NoteService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 

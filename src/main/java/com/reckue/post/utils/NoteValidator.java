@@ -1,6 +1,6 @@
-package com.reckue.note.utils;
+package com.reckue.post.utils;
 
-import com.reckue.note.models.entities.Note;
+import com.reckue.post.models.entities.Note;
 
 public class NoteValidator {
 

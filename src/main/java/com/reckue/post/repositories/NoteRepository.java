@@ -1,6 +1,6 @@
-package com.reckue.note.repositories;
+package com.reckue.post.repositories;
 
-import com.reckue.note.models.entities.Note;
+import com.reckue.post.models.entities.Note;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,7 +1,7 @@
-package com.reckue.note.controllers;
+package com.reckue.post.controllers;
 
-import com.reckue.note.models.transfers.NoteDescription;
-import com.reckue.note.services.impl.NoteStorageService;
+import com.reckue.post.models.transfers.NoteDescription;
+import com.reckue.post.services.impl.NoteStorageService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
