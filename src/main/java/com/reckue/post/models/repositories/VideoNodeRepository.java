@@ -5,5 +5,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface VideoNodeRepository extends MongoRepository<VideoNode,String> {
+public interface VideoNodeRepository extends MongoRepository<VideoNode, String> {
 }
