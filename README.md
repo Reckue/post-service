@@ -1,5 +1,4 @@
 # post-api
-[![Build Status](https://travis-ci.com/reckue/post-service-api.svg?branch=develop)](https://travis-ci.com/reckue/post-service-api)
 
 It's a service for posting articles about different programming languages:
 
