@@ -9,10 +9,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Node {
 
     @Id
-    String id;
+    private String id;
 
-    NodeType type;
-    String contentId;
-    String source;
-    StatusType status;
+    private NodeType type;
+    private String contentId;
+    private String source;
+    private StatusType status;
 }
