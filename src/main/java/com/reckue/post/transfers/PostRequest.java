@@ -14,7 +14,5 @@ public class PostRequest {
     private List<Node> nodes;
     private String source;
     private List<Tag> tags;
-    private long published;
-    private long changed;
     private StatusType status;
 }
