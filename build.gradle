@@ -29,6 +29,9 @@ dependencies {
     implementation 'io.springfox:springfox-swagger2:2.9.2'
     implementation 'io.springfox:springfox-swagger-ui:2.9.2'
 
+    /* model mapper */
+    implementation 'org.modelmapper:modelmapper:2.3.7'
+
     /* lombok */
     compileOnly 'org.projectlombok:lombok:1.18.4'
     annotationProcessor 'org.projectlombok:lombok:1.18.10'
