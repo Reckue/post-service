@@ -1,6 +1,5 @@
 package com.reckue.post.utils.converters;
 
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -15,4 +14,3 @@ public class Converter {
         return mapper.map(src, dist);
     }
 }
-
