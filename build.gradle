@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'checkstyle'
     id 'org.springframework.boot' version '2.2.2.RELEASE'
     id 'io.spring.dependency-management' version '1.0.8.RELEASE'
 }
@@ -23,14 +24,11 @@ dependencies {
     implementation 'org.mongodb:mongo-java-driver:3.12.0'
 
     /* data mapping */
-    implementation 'net.sf.dozer:dozer:5.5.1'
+    implementation 'org.modelmapper:modelmapper:2.3.7'
 
     /* swagger */
     implementation 'io.springfox:springfox-swagger2:2.9.2'
     implementation 'io.springfox:springfox-swagger-ui:2.9.2'
-
-    /* model mapper */
-    implementation 'org.modelmapper:modelmapper:2.3.7'
 
     /* lombok */
     compileOnly 'org.projectlombok:lombok:1.18.4'
@@ -48,6 +46,12 @@ dependencies {
     /* other */
     compile group: 'org.apache.commons', name: 'commons-text', version: '1.8'
     implementation 'javax.xml.bind:jaxb-api:2.3.0' // for binding xml
+}
+
+/* checkstyle */
+task checkstyle(type: Checkstyle) {
+    classpath = files()
+    source 'src/main/java'
 }
 
 def profile = "dev"
