@@ -25,11 +25,11 @@ public class VideoNodeServiceRealization implements VideoNodeService {
     }
 
     @Override
-    public VideoNode update(VideoNode textNode) {
+    public VideoNode update(VideoNode videoNode) {
         VideoNode savedVideoNode;
-        if (textNode.getId() != null && videoNodeRepository.existsById(textNode.getId())) {
-            savedVideoNode = videoNodeRepository.findById(textNode.getId()).get();
-            savedVideoNode.setVideoUrl(textNode.getVideoUrl());
+        if (videoNode.getId() != null && videoNodeRepository.existsById(videoNode.getId())) {
+            savedVideoNode = videoNodeRepository.findById(videoNode.getId()).get();
+            savedVideoNode.setVideoUrl(videoNode.getVideoUrl());
         } else {
             throw new ModelNotFoundException("VideoNodeNotFound by id");
         }
@@ -60,4 +60,3 @@ public class VideoNodeServiceRealization implements VideoNodeService {
         }
     }
 }
-
