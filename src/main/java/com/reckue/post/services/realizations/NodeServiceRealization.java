@@ -55,7 +55,7 @@ public class NodeServiceRealization implements NodeService {
             savedNode.setStatus(node.getStatus());
             return nodeRepository.save(savedNode);
         } else {
-            throw new ModelNotFoundException("Node not found by id.");
+            throw new ModelNotFoundException("Node not found by id " + node.getId() + ".");
         }
     }
 
@@ -84,7 +84,7 @@ public class NodeServiceRealization implements NodeService {
     @Override
     public Node findById(String id) {
         return nodeRepository.findById(id).orElseThrow(
-                () -> new ModelNotFoundException("Node not found by id."));
+                () -> new ModelNotFoundException("Node not found by id " + id + "."));
     }
 
     /**
@@ -96,7 +96,7 @@ public class NodeServiceRealization implements NodeService {
         if (nodeRepository.existsById(id)) {
             nodeRepository.deleteById(id);
         } else {
-            throw new ModelNotFoundException("Node not found by id.");
+            throw new ModelNotFoundException("Node not found by id " + id + ".");
         }
     }
 }
