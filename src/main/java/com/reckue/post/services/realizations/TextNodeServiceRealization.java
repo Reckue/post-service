@@ -6,7 +6,6 @@ import com.reckue.post.repositories.TextNodeRepository;
 import com.reckue.post.services.TextNodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -17,7 +16,7 @@ public class TextNodeServiceRealization implements TextNodeService {
     private TextNodeRepository textNodeRepository;
 
     @Override
-    public TextNode create (TextNode textNode) {
+    public TextNode create(TextNode textNode) {
         TextNode savedTextNode;
         savedTextNode = textNode;
         savedTextNode.setId(UUID.randomUUID().toString());
@@ -39,27 +38,23 @@ public class TextNodeServiceRealization implements TextNodeService {
         return textNodeRepository.save(savedTextNode);
     }
 
-
     @Override
     public List<TextNode> findAll(int limit, int offset, String sort, boolean desc) {
-//        List<TextNode> textNodes =
-
         return textNodeRepository.findAll().stream()
                 .limit(limit)
                 .skip(offset)
-                .sorted(Comparator.comparing(TextNode::getId, Comparator.reverseOrder()))
                 .collect(Collectors.toList());
     }
 
     @Override
     public TextNode findById(String id) {
         return textNodeRepository.findById(id).orElseThrow(
-                ()-> new ModelNotFoundException("TextNodeNotFound by id"));
+                () -> new ModelNotFoundException("TextNodeNotFound by id"));
     }
 
     @Override
     public void deleteById(String id) {
-        if(textNodeRepository.existsById(id)) {
+        if (textNodeRepository.existsById(id)) {
             textNodeRepository.deleteById(id);
         } else {
             throw new RuntimeException("TextNodeNotFound by id");

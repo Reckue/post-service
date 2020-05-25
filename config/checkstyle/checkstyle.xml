@@ -7,7 +7,7 @@
 
     <module name="TreeWalker">
         <module name="MethodLength"><property name="max" value="32"/></module>
-        <module name="LineLength"><property name="max" value="120"/></module>
+        <module name="LineLength"><property name="max" value="300"/></module>
         <module name="SingleSpaceSeparator"/>
         <module name="NoWhitespaceBefore"/>
     </module>
