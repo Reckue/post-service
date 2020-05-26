@@ -28,6 +28,13 @@ public interface TextNodeService {
     TextNode update(TextNode textNode);
 
     /**
+     * This method is used to get all objects of class TextNode.
+     *
+     * @return list of objects of class TextNode
+     */
+    List<TextNode> findAll();
+
+    /**
      * This method is used to get all objects of class TextNode by parameters.
      *
      * @param limit  quantity of objects
@@ -36,6 +43,7 @@ public interface TextNodeService {
      * @param desc   sorting descending
      * @return list of objects of class Node
      */
+
     List<TextNode> findAll(int limit, int offset, String sort, boolean desc);
 
     /**

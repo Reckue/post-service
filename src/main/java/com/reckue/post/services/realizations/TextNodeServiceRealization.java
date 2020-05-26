@@ -1,5 +1,6 @@
 package com.reckue.post.services.realizations;
 
+import com.google.common.collect.Lists;
 import com.reckue.post.exceptions.ModelAlreadyExistsException;
 import com.reckue.post.exceptions.ModelNotFoundException;
 import com.reckue.post.models.TextNode;
@@ -7,6 +8,7 @@ import com.reckue.post.repositories.TextNodeRepository;
 import com.reckue.post.services.TextNodeService;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -56,8 +58,18 @@ public class TextNodeServiceRealization implements TextNodeService {
             savedTextNode.setContent(textNode.getContent());
             return textNodeRepository.save(savedTextNode);
         } else {
-            throw new IllegalArgumentException("The parameter textNode is null");
+            throw new IllegalArgumentException("The parameter is null.");
         }
+    }
+
+    /**
+     * This method is used to get all objects of class TextNode.
+     *
+     * @return list of objects of class TextNode
+     */
+    @Override
+    public List<TextNode> findAll() {
+        return textNodeRepository.findAll();
     }
 
     /**
@@ -71,9 +83,59 @@ public class TextNodeServiceRealization implements TextNodeService {
      */
     @Override
     public List<TextNode> findAll(int limit, int offset, String sort, boolean desc) {
-        return textNodeRepository.findAll().stream()
+        return findAllByTypeAndDesc(sort, desc).stream()
                 .limit(limit)
                 .skip(offset)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * This method is used to sort objects in descending order by type.
+     *
+     * @param sort parameter for sorting
+     * @param desc sorting descending
+     * @return list of objects of class TextNode sorted by the selected parameter for sorting
+     * in descending order
+     */
+    public List<TextNode> findAllByTypeAndDesc(String sort, boolean desc) {
+        if (desc) {
+            return Lists.reverse(findAllBySortType(sort));
+        }
+        return findAllBySortType(sort);
+    }
+
+    /**
+     * This method is used to sort objects by type.
+     *
+     * @param sort type of sorting: type, status, source, published, default - id
+     * @return list of objects of class TextNode sorted by the selected parameter for sorting
+     */
+    public List<TextNode> findAllBySortType(String sort) {
+        if (sort.equals("content")) {
+            return findAllAndSortByContent();
+        }
+        return findAllAndSortById();
+    }
+
+    /**
+     * This method is used to sort objects by id.
+     *
+     * @return list of objects of class TextNode sorted by id
+     */
+    public List<TextNode> findAllAndSortById() {
+        return findAll().stream()
+                .sorted(Comparator.comparing(TextNode::getId))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * This method is used to sort objects by content.
+     *
+     * @return list of objects of class TextNode sorted by content
+     */
+    public List<TextNode> findAllAndSortByContent() {
+        return findAll().stream()
+                .sorted(Comparator.comparing(TextNode::getContent))
                 .collect(Collectors.toList());
     }
 
