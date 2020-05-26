@@ -56,7 +56,7 @@ public class TextNodeServiceRealization implements TextNodeService {
             savedTextNode.setContent(textNode.getContent());
             return textNodeRepository.save(savedTextNode);
         } else {
-            throw new IllegalArgumentException("TextNode is null");
+            throw new IllegalArgumentException("The parameter textNode is null");
         }
     }
 
