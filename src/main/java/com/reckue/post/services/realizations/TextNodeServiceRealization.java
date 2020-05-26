@@ -44,22 +44,22 @@ public class TextNodeServiceRealization implements TextNodeService {
      * This method is used to update data in an object of class TextNode.
      * Throws {@link ModelNotFoundException} in case
      * if such object isn't contained in database.
+     * Throws {@link IllegalArgumentException} in case
+     * if such parameter is null.
      *
      * @param textNode object of class TextNode
      * @return textNode object of class TextNode
      */
     @Override
     public TextNode update(TextNode textNode) {
-        TextNode savedTextNode;
-        if (textNode.getId() != null) {
-            savedTextNode = textNodeRepository.findById(textNode.getId()).orElseThrow(
-                    () -> new ModelNotFoundException("TextNode not found by id " + textNode.getId() + ".")
-            );
-            savedTextNode.setContent(textNode.getContent());
-            return textNodeRepository.save(savedTextNode);
-        } else {
+        if (textNode.getId() == null) {
             throw new IllegalArgumentException("The parameter is null.");
         }
+        TextNode savedTextNode = textNodeRepository.findById(textNode.getId()).orElseThrow(
+                () -> new ModelNotFoundException("TextNode not found by id " + textNode.getId() + ".")
+        );
+        savedTextNode.setContent(textNode.getContent());
+        return textNodeRepository.save(savedTextNode);
     }
 
     /**
@@ -107,7 +107,7 @@ public class TextNodeServiceRealization implements TextNodeService {
     /**
      * This method is used to sort objects by type.
      *
-     * @param sort type of sorting: type, status, source, published, default - id
+     * @param sort type of sorting: content, default - id
      * @return list of objects of class TextNode sorted by the selected parameter for sorting
      */
     public List<TextNode> findAllBySortType(String sort) {
@@ -154,6 +154,8 @@ public class TextNodeServiceRealization implements TextNodeService {
 
     /**
      * This method is used to delete an object by id.
+     * Throws {@link ModelNotFoundException} in case
+     * if such object isn't contained in database.
      *
      * @param id object
      */
