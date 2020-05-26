@@ -21,6 +21,7 @@ public class ModelNotFoundException extends RuntimeException {
 
     /**
      * Constructor with message parameter for save information about exception.
+     *
      * @param message information about exception.
      */
     @SuppressWarnings("unused")
