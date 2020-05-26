@@ -46,25 +46,28 @@ public class NodeServiceRealization implements NodeService {
      * This method is used to update data in an object of class Node.
      * Throws {@link ModelNotFoundException} in case
      * if such object isn't contained in database.
+     * Throws {@link IllegalArgumentException} in case
+     * if parameter equals null.
      *
      * @param node object of class Node
      * @return node object of class Node
      */
     @Override
     public Node update(Node node) {
-        Node savedNode;
-        if (node.getId() != null) {
-            savedNode = nodeRepository.findById(node.getId()).orElseThrow(() ->
-                    new ModelNotFoundException("Node not found by id " + node.getId() + "."));
-            savedNode.setType(node.getType());
-            savedNode.setContentId(node.getContentId());
-            savedNode.setSource(node.getSource());
-            savedNode.setStatus(node.getStatus());
-            savedNode.setPublished(node.getPublished());
-            return nodeRepository.save(savedNode);
-        } else {
+        if (node.getId() == null) {
             throw new IllegalArgumentException("The parameter is null.");
         }
+        if (!nodeRepository.existsById(node.getId())) {
+            throw new ModelNotFoundException("Node not found by id " + node.getId() + ".");
+        }
+        Node savedNode = Node.builder()
+                .type(node.getType())
+                .contentId(node.getContentId())
+                .source(node.getSource())
+                .status(node.getStatus())
+                .published(node.getPublished())
+                .build();
+        return nodeRepository.save(savedNode);
     }
 
     /**
@@ -200,6 +203,7 @@ public class NodeServiceRealization implements NodeService {
 
     /**
      * This method is used to delete an object by id.
+     * Throws {@link ModelNotFoundException} in case if such object isn't contained in database.
      *
      * @param id object
      */

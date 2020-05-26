@@ -46,27 +46,30 @@ public class PostServiceRealization implements PostService {
      * This method is used to update data in an object of class Post.
      * Throws {@link ModelNotFoundException} in case
      * if such object isn't contained in database.
+     * Throws {@link IllegalArgumentException} in case
+     * if parameter equals null.
      *
      * @param post object of class Post
      * @return post object of class Post
      */
     @Override
     public Post update(Post post) {
-        Post savedPost;
-        if (post.getId() != null) {
-            savedPost = postRepository.findById(post.getId()).orElseThrow(() ->
-                    new ModelNotFoundException("Post not found by id " + post.getId() + "."));
-            savedPost.setTitle(post.getTitle());
-            savedPost.setNodes(post.getNodes());
-            savedPost.setSource(post.getSource());
-            savedPost.setTags(post.getTags());
-            savedPost.setPublished(post.getPublished());
-            savedPost.setChanged(post.getChanged());
-            savedPost.setStatus(post.getStatus());
-            return postRepository.save(savedPost);
-        } else {
+        if (post.getId() == null) {
             throw new IllegalArgumentException("The parameter is null.");
         }
+        if (!postRepository.existsById(post.getId())) {
+            throw new ModelNotFoundException("Post not found by id " + post.getId() + ".");
+        }
+        Post savedPost = Post.builder()
+                .title(post.getTitle())
+                .nodes(post.getNodes())
+                .source(post.getSource())
+                .tags(post.getTags())
+                .published(post.getPublished())
+                .changed(post.getChanged())
+                .status(post.getStatus())
+                .build();
+        return postRepository.save(savedPost);
     }
 
     /**
@@ -215,6 +218,7 @@ public class PostServiceRealization implements PostService {
 
     /**
      * This method is used to delete an object by id.
+     * Throws {@link ModelNotFoundException} in case if such object isn't contained in database.
      *
      * @param id object
      */
