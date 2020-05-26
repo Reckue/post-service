@@ -28,6 +28,7 @@ public class PostServiceRealization implements PostService {
     /**
      * This method is used to create an object of class Post.
      * Throws {@link ModelAlreadyExistsException} in case if such object already exists.
+     *
      * @param post object of class Post
      * @return post object of class Post
      */
@@ -45,6 +46,7 @@ public class PostServiceRealization implements PostService {
      * This method is used to update data in an object of class Post.
      * Throws {@link ModelNotFoundException} in case
      * if such object isn't contained in database.
+     *
      * @param post object of class Post
      * @return post object of class Post
      */
@@ -69,6 +71,7 @@ public class PostServiceRealization implements PostService {
 
     /**
      * This method is used to get all objects of class Post.
+     *
      * @return list of objects of class Post
      */
     @Override
@@ -78,10 +81,11 @@ public class PostServiceRealization implements PostService {
 
     /**
      * This method is used to get all objects of class Post by parameters.
-     * @param limit quantity of objects
+     *
+     * @param limit  quantity of objects
      * @param offset quantity to skip
-     * @param sort parameter for sorting
-     * @param desc sorting descending
+     * @param sort   parameter for sorting
+     * @param desc   sorting descending
      * @return list of given quantity of objects of class Post with a given offset
      * sorted by the selected parameter for sorting in descending order
      */
@@ -95,6 +99,7 @@ public class PostServiceRealization implements PostService {
 
     /**
      * This method is used to sort objects in descending order by type.
+     *
      * @param sort parameter for sorting
      * @param desc sorting descending
      * @return list of objects of class Post sorted by the selected parameter for sorting
@@ -109,6 +114,7 @@ public class PostServiceRealization implements PostService {
 
     /**
      * This method is used to sort objects by type.
+     *
      * @param sort type of sorting: title, source, published, changed, status, default - id
      * @return list of objects of class Post sorted by the selected parameter for sorting
      */
@@ -130,6 +136,7 @@ public class PostServiceRealization implements PostService {
 
     /**
      * This method is used to sort objects by id.
+     *
      * @return list of objects of class Post sorted by id
      */
     public List<Post> findAllAndSortById() {
@@ -140,6 +147,7 @@ public class PostServiceRealization implements PostService {
 
     /**
      * This method is used to sort objects by type.
+     *
      * @return list of objects of class Post sorted by type
      */
     public List<Post> findAllAndSortByTitle() {
@@ -150,6 +158,7 @@ public class PostServiceRealization implements PostService {
 
     /**
      * This method is used to sort objects by source.
+     *
      * @return list of objects of class Post sorted by source
      */
     public List<Post> findAllAndSortBySource() {
@@ -160,6 +169,7 @@ public class PostServiceRealization implements PostService {
 
     /**
      * This method is used to sort objects by publication date.
+     *
      * @return list of objects of class Post sorted by publication date
      */
     public List<Post> findAllAndSortByPublished() {
@@ -170,6 +180,7 @@ public class PostServiceRealization implements PostService {
 
     /**
      * This method is used to sort objects by date modified.
+     *
      * @return list of objects of class Post sorted by date modified
      */
     public List<Post> findAllAndSortByChanged() {
@@ -180,6 +191,7 @@ public class PostServiceRealization implements PostService {
 
     /**
      * This method is used to sort objects by status.
+     *
      * @return list of objects of class Post sorted by status
      */
     public List<Post> findAllAndSortByStatus() {
@@ -191,6 +203,7 @@ public class PostServiceRealization implements PostService {
     /**
      * This method is used to get an object by id.
      * Throws {@link ModelNotFoundException} in case if such object isn't contained in database.
+     *
      * @param id object
      * @return object of class Post
      */
@@ -202,6 +215,7 @@ public class PostServiceRealization implements PostService {
 
     /**
      * This method is used to delete an object by id.
+     *
      * @param id object
      */
     @Override

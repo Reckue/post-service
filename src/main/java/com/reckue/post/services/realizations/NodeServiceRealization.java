@@ -28,6 +28,7 @@ public class NodeServiceRealization implements NodeService {
     /**
      * This method is used to create an object of class Node.
      * Throws {@link ModelAlreadyExistsException} in case if such object already exists.
+     *
      * @param node object of class Node
      * @return node object of class Node
      */
@@ -45,6 +46,7 @@ public class NodeServiceRealization implements NodeService {
      * This method is used to update data in an object of class Node.
      * Throws {@link ModelNotFoundException} in case
      * if such object isn't contained in database.
+     *
      * @param node object of class Node
      * @return node object of class Node
      */
@@ -67,6 +69,7 @@ public class NodeServiceRealization implements NodeService {
 
     /**
      * This method is used to get all objects of class Node.
+     *
      * @return list of objects of class Node
      */
     @Override
@@ -76,10 +79,11 @@ public class NodeServiceRealization implements NodeService {
 
     /**
      * This method is used to get all objects of class Node by parameters.
-     * @param limit quantity of objects
+     *
+     * @param limit  quantity of objects
      * @param offset quantity to skip
-     * @param sort parameter for sorting
-     * @param desc sorting descending
+     * @param sort   parameter for sorting
+     * @param desc   sorting descending
      * @return list of given quantity of objects of class Node with a given offset
      * sorted by the selected parameter for sorting in descending order
      */
@@ -93,6 +97,7 @@ public class NodeServiceRealization implements NodeService {
 
     /**
      * This method is used to sort objects in descending order by type.
+     *
      * @param sort parameter for sorting
      * @param desc sorting descending
      * @return list of objects of class Node sorted by the selected parameter for sorting
@@ -107,6 +112,7 @@ public class NodeServiceRealization implements NodeService {
 
     /**
      * This method is used to sort objects by type.
+     *
      * @param sort type of sorting: type, status, source, published, default - id
      * @return list of objects of class Node sorted by the selected parameter for sorting
      */
@@ -126,6 +132,7 @@ public class NodeServiceRealization implements NodeService {
 
     /**
      * This method is used to sort objects by id.
+     *
      * @return list of objects of class Node sorted by id
      */
     public List<Node> findAllAndSortById() {
@@ -136,6 +143,7 @@ public class NodeServiceRealization implements NodeService {
 
     /**
      * This method is used to sort objects by status.
+     *
      * @return list of objects of class Node sorted by status
      */
     public List<Node> findAllAndSortByStatus() {
@@ -146,6 +154,7 @@ public class NodeServiceRealization implements NodeService {
 
     /**
      * This method is used to sort objects by type.
+     *
      * @return list of objects of class Node sorted by type
      */
     public List<Node> findAllAndSortByType() {
@@ -156,6 +165,7 @@ public class NodeServiceRealization implements NodeService {
 
     /**
      * This method is used to sort objects by source.
+     *
      * @return list of objects of class Node sorted by source
      */
     public List<Node> findAllAndSortBySource() {
@@ -166,6 +176,7 @@ public class NodeServiceRealization implements NodeService {
 
     /**
      * This method is used to sort objects by publication date.
+     *
      * @return list of objects of class Node sorted by publication date
      */
     public List<Node> findAllAndSortByPublished() {
@@ -177,6 +188,7 @@ public class NodeServiceRealization implements NodeService {
     /**
      * This method is used to get an object by id.
      * Throws {@link ModelNotFoundException} in case if such object isn't contained in database.
+     *
      * @param id object
      * @return object of class Node
      */
@@ -188,6 +200,7 @@ public class NodeServiceRealization implements NodeService {
 
     /**
      * This method is used to delete an object by id.
+     *
      * @param id object
      */
     @Override
