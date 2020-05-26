@@ -58,6 +58,7 @@ public class NodeServiceRealization implements NodeService {
             savedNode.setContentId(node.getContentId());
             savedNode.setSource(node.getSource());
             savedNode.setStatus(node.getStatus());
+            savedNode.setPublished(node.getPublished());
             return nodeRepository.save(savedNode);
         } else {
             throw new IllegalArgumentException("The parameter is null.");
