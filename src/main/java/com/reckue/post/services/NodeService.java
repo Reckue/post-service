@@ -26,6 +26,12 @@ public interface NodeService {
     Node update(Node node);
 
     /**
+     * This method is used to get all objects of class Node.
+     * @return list of objects of class Node
+     */
+    List<Node> findAll();
+
+    /**
      * This method is used to get all objects of class Node by parameters.
      * @param limit quantity of objects
      * @param offset quantity to skip
