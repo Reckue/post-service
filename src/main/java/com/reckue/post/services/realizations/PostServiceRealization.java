@@ -208,7 +208,7 @@ public class PostServiceRealization implements PostService {
      * Throws {@link ModelNotFoundException} in case if such object isn't contained in database.
      *
      * @param id object
-     * @return object of class Post
+     * @return post object of class Post
      */
     @Override
     public Post findById(String id) {
