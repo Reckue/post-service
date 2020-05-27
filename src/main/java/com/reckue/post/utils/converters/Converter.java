@@ -19,7 +19,7 @@ public class Converter {
      * @param src  object to be converted
      * @param dist class type of destination object
      * @param <T>  convertible type
-     * @return converted object.
+     * @return converted object
      */
     public static <T> T convert(Object src, Class<T> dist) {
         return mapper.map(src, dist);
