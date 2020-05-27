@@ -1,12 +1,14 @@
 package com.reckue.post.services.realizations;
 
 import com.google.common.collect.Lists;
+import com.reckue.post.exceptions.ModelAlreadyExistsException;
 import com.reckue.post.exceptions.ModelNotFoundException;
 import com.reckue.post.models.VideoNode;
 import com.reckue.post.repositories.VideoNodeRepository;
 import com.reckue.post.services.VideoNodeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
  *
  * @author Viktor Grigoriev
  */
+@Service
 @RequiredArgsConstructor
 public class VideoNodeServiceRealization implements VideoNodeService {
 
@@ -33,10 +36,12 @@ public class VideoNodeServiceRealization implements VideoNodeService {
      */
     @Override
     public VideoNode create(VideoNode videoNode) {
-        VideoNode savedTextNode;
-        savedTextNode = videoNode;
-        savedTextNode.setId(UUID.randomUUID().toString());
-        return videoNodeRepository.save(videoNode);
+        if (!videoNodeRepository.existsById(videoNode.getId())) {
+            videoNode.setId(UUID.randomUUID().toString());
+            return videoNodeRepository.save(videoNode);
+        } else {
+            throw new ModelAlreadyExistsException("VideoNode already exists.");
+        }
     }
 
     /**
@@ -51,13 +56,13 @@ public class VideoNodeServiceRealization implements VideoNodeService {
      */
     @Override
     public VideoNode update(VideoNode videoNode) {
-        VideoNode savedVideoNode;
-        if (videoNode.getId() != null && videoNodeRepository.existsById(videoNode.getId())) {
-            savedVideoNode = videoNodeRepository.findById(videoNode.getId()).get();
-            savedVideoNode.setVideoUrl(videoNode.getVideoUrl());
-        } else {
-            throw new ModelNotFoundException("VideoNodeNotFound by id");
+        if (videoNode.getId() == null) {
+            throw new IllegalArgumentException("The parameter is null.");
         }
+        VideoNode savedVideoNode = videoNodeRepository.findById(videoNode.getId()).orElseThrow(
+                () -> new ModelNotFoundException("VideoNode not found by id " + videoNode.getId() + ".")
+        );
+        savedVideoNode.setVideoUrl(videoNode.getVideoUrl());
         return videoNodeRepository.save(savedVideoNode);
     }
 
@@ -105,7 +110,7 @@ public class VideoNodeServiceRealization implements VideoNodeService {
     /**
      * This method is used to sort objects by type.
      *
-     * @param sort type of sorting: content, default - id
+     * @param sort type of sorting: videoUrl, default - id
      * @return list of objects of class VideoNode sorted by the selected parameter for sorting
      */
     public List<VideoNode> findAllBySortType(String sort) {
@@ -129,14 +134,13 @@ public class VideoNodeServiceRealization implements VideoNodeService {
     /**
      * This method is used to sort objects by videoUrl.
      *
-     * @return list of objects of class VideoNode sorted by content
+     * @return list of objects of class VideoNode sorted by videoUrl
      */
     public List<VideoNode> findAllAndSortByVideoUrl() {
         return findAll().stream()
                 .sorted(Comparator.comparing(VideoNode::getVideoUrl))
                 .collect(Collectors.toList());
     }
-
 
     /**
      * This method is used to get an object by id.
