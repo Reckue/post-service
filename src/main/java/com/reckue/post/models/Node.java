@@ -1,10 +1,12 @@
 package com.reckue.post.models;
 
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
+@Builder
 @Document
 public class Node {
 
@@ -15,4 +17,5 @@ public class Node {
     private String contentId;
     private String source;
     private StatusType status;
+    private long published;
 }
