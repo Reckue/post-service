@@ -7,6 +7,7 @@ import com.reckue.post.models.TextNode;
 import com.reckue.post.repositories.TextNodeRepository;
 import com.reckue.post.services.TextNodeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
  *
  * @author Daria Smirnova
  */
+@Service
 @RequiredArgsConstructor
 public class TextNodeServiceRealization implements TextNodeService {
 
@@ -28,7 +30,7 @@ public class TextNodeServiceRealization implements TextNodeService {
      * Throws {@link ModelAlreadyExistsException} in case if such object already exists.
      *
      * @param textNode object of class TextNode
-     * @return node object of class TextNode
+     * @return textNode object of class TextNode
      */
     @Override
     public TextNode create(TextNode textNode) {

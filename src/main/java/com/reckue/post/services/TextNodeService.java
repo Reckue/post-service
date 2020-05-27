@@ -41,7 +41,7 @@ public interface TextNodeService {
      * @param offset quantity to skip
      * @param sort   parameter for sorting
      * @param desc   sorting descending
-     * @return list of objects of class Node
+     * @return list of objects of class TextNode
      */
 
     List<TextNode> findAll(int limit, int offset, String sort, boolean desc);
