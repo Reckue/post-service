@@ -27,11 +27,12 @@ public class VideoNodeServiceRealization implements VideoNodeService {
     /**
      * This method is used to create an object of class VideoNode.
      * Throws {@link ModelNotFoundException} in case if such object not found exists.
+     *
      * @param videoNode object of class VideoNode
      * @return videoNode object of class VideoNode
      */
     @Override
-    public VideoNode create (VideoNode videoNode) {
+    public VideoNode create(VideoNode videoNode) {
         VideoNode savedTextNode;
         savedTextNode = videoNode;
         savedTextNode.setId(UUID.randomUUID().toString());
@@ -140,12 +141,12 @@ public class VideoNodeServiceRealization implements VideoNodeService {
     @Override
     public VideoNode findById(String id) {
         return videoNodeRepository.findById(id).orElseThrow(
-                ()-> new ModelNotFoundException("VideoNodeNotFound by id"));
+                () -> new ModelNotFoundException("VideoNodeNotFound by id"));
     }
 
     @Override
     public void deleteById(String id) {
-        if(videoNodeRepository.existsById(id)) {
+        if (videoNodeRepository.existsById(id)) {
             videoNodeRepository.deleteById(id);
         } else {
             throw new RuntimeException("VideoNodeNotFound by id");
