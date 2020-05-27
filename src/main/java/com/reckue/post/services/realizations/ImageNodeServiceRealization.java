@@ -109,7 +109,7 @@ public class ImageNodeServiceRealization implements ImageNodeService {
     /**
      * This method is used to sort objects by type.
      *
-     * @param sort type of sorting: content, default - id
+     * @param sort type of sorting: imageUrl, default - id
      * @return list of objects of class ImageNode sorted by the selected parameter for sorting
      */
     public List<ImageNode> findAllBySortType(String sort) {
@@ -146,7 +146,7 @@ public class ImageNodeServiceRealization implements ImageNodeService {
      * Throws {@link ModelNotFoundException} in case if such object isn't contained in database.
      *
      * @param id object
-     * @return object of class ImageNode
+     * @return imageNode object of class ImageNode
      */
     @Override
     public ImageNode findById(String id) {
