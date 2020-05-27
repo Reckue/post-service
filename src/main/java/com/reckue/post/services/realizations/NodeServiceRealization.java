@@ -193,7 +193,7 @@ public class NodeServiceRealization implements NodeService {
      * Throws {@link ModelNotFoundException} in case if such object isn't contained in database.
      *
      * @param id object
-     * @return object of class Node
+     * @return post object of class Node
      */
     @Override
     public Node findById(String id) {

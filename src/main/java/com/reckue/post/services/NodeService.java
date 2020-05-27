@@ -49,7 +49,7 @@ public interface NodeService {
      * This method is used to get an object by id.
      *
      * @param id object
-     * @return object of class Node
+     * @return post object of class Node
      */
     Node findById(String id);
 

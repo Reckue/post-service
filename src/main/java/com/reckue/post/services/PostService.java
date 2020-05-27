@@ -49,7 +49,7 @@ public interface PostService {
      * This method is used to get an object by id.
      *
      * @param id object
-     * @return object of class Post
+     * @return post object of class Post
      */
     Post findById(String id);
 
