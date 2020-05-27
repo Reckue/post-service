@@ -7,6 +7,7 @@ import com.reckue.post.models.Tag;
 import com.reckue.post.repositories.TagRepository;
 import com.reckue.post.services.TagService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
  *
  * @author Kamila Meshcheryakova
  */
+@Service
 @RequiredArgsConstructor
 public class TagServiceRealization implements TagService {
 
