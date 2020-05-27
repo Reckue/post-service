@@ -138,12 +138,26 @@ public class VideoNodeServiceRealization implements VideoNodeService {
     }
 
 
+    /**
+     * This method is used to get an object by id.
+     * Throws {@link ModelNotFoundException} in case if such object isn't contained in database.
+     *
+     * @param id object
+     * @return object of class VideoNode
+     */
     @Override
     public VideoNode findById(String id) {
         return videoNodeRepository.findById(id).orElseThrow(
                 () -> new ModelNotFoundException("VideoNodeNotFound by id"));
     }
 
+    /**
+     * This method is used to delete an object by id.
+     * Throws {@link ModelNotFoundException} in case
+     * if such object isn't contained in database.
+     *
+     * @param id object
+     */
     @Override
     public void deleteById(String id) {
         if (videoNodeRepository.existsById(id)) {
