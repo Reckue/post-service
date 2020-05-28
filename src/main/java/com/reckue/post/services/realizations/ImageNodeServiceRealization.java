@@ -1,6 +1,5 @@
 package com.reckue.post.services.realizations;
 
-import com.google.common.collect.Lists;
 import com.reckue.post.exceptions.ModelAlreadyExistsException;
 import com.reckue.post.exceptions.ModelNotFoundException;
 import com.reckue.post.models.ImageNode;
@@ -9,6 +8,7 @@ import com.reckue.post.services.ImageNodeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
@@ -101,7 +101,8 @@ public class ImageNodeServiceRealization implements ImageNodeService {
      */
     public List<ImageNode> findAllByTypeAndDesc(String sort, boolean desc) {
         if (desc) {
-            return Lists.reverse(findAllBySortType(sort));
+            List<ImageNode> nodes = findAllBySortType(sort);
+            Collections.reverse(nodes);
         }
         return findAllBySortType(sort);
     }
