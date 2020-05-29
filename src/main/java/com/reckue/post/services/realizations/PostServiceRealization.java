@@ -134,8 +134,10 @@ public class PostServiceRealization implements PostService {
                 return findAllAndSortByChanged();
             case "status":
                 return findAllAndSortByStatus();
+            case "id":
+                return findAllAndSortById();
         }
-        return findAllAndSortById();
+        throw new IllegalArgumentException("Such field as" + sort + " doesn't exist.");
     }
 
     /**

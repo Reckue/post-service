@@ -42,14 +42,9 @@ public class PostController {
     }
 
     @GetMapping
-    public List<PostResponse> getAll() {
-        return postService.findAll().stream()
-                .map(post -> Converter.convert(post, PostResponse.class))
-                .collect(Collectors.toList());
-    }
+    public List<PostResponse> getAll(@RequestParam int limit, @RequestParam int offset,
+                                     @RequestParam String sort, @RequestParam boolean desc) {
 
-    @GetMapping
-    public List<PostResponse> getAll(int limit, int offset, String sort, boolean desc) {
         return postService.findAll(limit, offset, sort, desc).stream()
                 .map(post -> Converter.convert(post, PostResponse.class))
                 .collect(Collectors.toList());
