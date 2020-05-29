@@ -1,15 +1,14 @@
 package com.reckue.post.services.realizations;
 
-import com.google.common.collect.Lists;
 import com.reckue.post.exceptions.ModelAlreadyExistsException;
 import com.reckue.post.exceptions.ModelNotFoundException;
 import com.reckue.post.models.VideoNode;
 import com.reckue.post.repositories.VideoNodeRepository;
 import com.reckue.post.services.VideoNodeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
@@ -24,8 +23,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class VideoNodeServiceRealization implements VideoNodeService {
 
-    @Autowired
-    private VideoNodeRepository videoNodeRepository;
+    private final VideoNodeRepository videoNodeRepository;
 
     /**
      * This method is used to create an object of class VideoNode.
@@ -102,7 +100,8 @@ public class VideoNodeServiceRealization implements VideoNodeService {
      */
     public List<VideoNode> findAllByTypeAndDesc(String sort, boolean desc) {
         if (desc) {
-            return Lists.reverse(findAllBySortType(sort));
+            List<VideoNode> nodes = findAllBySortType(sort);
+            Collections.reverse(nodes);
         }
         return findAllBySortType(sort);
     }

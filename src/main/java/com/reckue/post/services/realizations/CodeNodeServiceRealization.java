@@ -1,15 +1,14 @@
 package com.reckue.post.services.realizations;
 
-import com.google.common.collect.Lists;
 import com.reckue.post.exceptions.ModelAlreadyExistsException;
 import com.reckue.post.exceptions.ModelNotFoundException;
 import com.reckue.post.models.CodeNode;
-import com.reckue.post.models.Post;
 import com.reckue.post.repositories.CodeNodeRepository;
 import com.reckue.post.services.CodeNodeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
@@ -105,7 +104,8 @@ public class CodeNodeServiceRealization implements CodeNodeService {
      */
     public List<CodeNode> findAllByTypeAndDesc(String sort, boolean desc) {
         if (desc) {
-            return Lists.reverse(findAllBySortType(sort));
+            List<CodeNode> nodes = findAllBySortType(sort);
+            Collections.reverse(nodes);
         }
         return findAllBySortType(sort);
     }

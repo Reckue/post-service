@@ -1,6 +1,5 @@
 package com.reckue.post.services.realizations;
 
-import com.google.common.collect.Lists;
 import com.reckue.post.exceptions.ModelAlreadyExistsException;
 import com.reckue.post.exceptions.ModelNotFoundException;
 import com.reckue.post.models.Post;
@@ -9,6 +8,7 @@ import com.reckue.post.services.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
@@ -110,7 +110,8 @@ public class PostServiceRealization implements PostService {
      */
     public List<Post> findAllByTypeAndDesc(String sort, boolean desc) {
         if (desc) {
-            return Lists.reverse(findAllBySortType(sort));
+            List<Post> posts = findAllBySortType(sort);
+            Collections.reverse(posts);
         }
         return findAllBySortType(sort);
     }
