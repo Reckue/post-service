@@ -23,7 +23,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class SwaggerConfig implements WebMvcConfigurer {
 
     /**
-     * Redirect user to page /swagger-ui.html.
+     * Redirects users from home page to the Swagger UI page.
      *
      * @param registry assists with the registration of simple automated controllers pre-configured
      *
