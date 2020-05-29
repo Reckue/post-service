@@ -34,7 +34,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
     }
 
     /**
-     * Create bean interface Docket.
+     * Creates a customised Docket bean.
      *
      * @return instance of the implementation of the interface Docket
      */
