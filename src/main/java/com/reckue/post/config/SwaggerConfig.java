@@ -26,7 +26,6 @@ public class SwaggerConfig implements WebMvcConfigurer {
      * Redirects users from home page to the Swagger UI page.
      *
      * @param registry assists with the registration of simple automated controllers pre-configured
-     *
      */
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
