@@ -1,7 +1,12 @@
+# directories
 .idea/
 out/
 target/
 gradle/
 .gradle/
+
+# files
 *.class
 *.iml
+gradlew
+gradlew.bat
