@@ -50,7 +50,8 @@ public class NodeController {
     }
 
     /**
-     * This type of request allows to find all the objects that meet the requirements, process their using the converter.
+     * This type of request allows to find all the objects
+     * that meet the requirements, process their using the converter.
      *
      * @param limit  quantity of objects
      * @param offset quantity to skip
