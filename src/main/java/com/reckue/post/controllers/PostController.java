@@ -1,15 +1,17 @@
 package com.reckue.post.controllers;
 
+import com.reckue.post.converters.PostConverter;
 import com.reckue.post.models.Post;
 import com.reckue.post.services.PostService;
 import com.reckue.post.transfers.PostRequest;
 import com.reckue.post.transfers.PostResponse;
-import com.reckue.post.utils.converters.Converter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.reckue.post.converters.PostConverter.convert;
 
 /**
  * Class PostController represents simple REST-Controller.
@@ -31,8 +33,7 @@ public class PostController {
      */
     @PostMapping
     public PostResponse save(@RequestBody PostRequest postRequest) {
-        return Converter.convert(postService.create(Converter.
-                convert(postRequest, Post.class)), PostResponse.class);
+        return convert(postService.create(convert(postRequest)));
     }
 
     /**
@@ -44,9 +45,9 @@ public class PostController {
      */
     @PutMapping("/{id}")
     public PostResponse update(@PathVariable String id, @RequestBody PostRequest postRequest) {
-        Post post = Converter.convert(postRequest, Post.class);
+        Post post = convert(postRequest);
         post.setId(id);
-        return Converter.convert(postService.update(post), PostResponse.class);
+        return convert(postService.update(post));
     }
 
     /**
@@ -57,7 +58,7 @@ public class PostController {
      */
     @GetMapping("/{id}")
     public PostResponse getById(@PathVariable String id) {
-        return Converter.convert(postService.findById(id), PostResponse.class);
+        return convert(postService.findById(id));
     }
 
     /**
@@ -75,7 +76,7 @@ public class PostController {
                                      @RequestParam String sort, @RequestParam boolean desc) {
 
         return postService.findAll(limit, offset, sort, desc).stream()
-                .map(post -> Converter.convert(post, PostResponse.class))
+                .map(PostConverter::convert)
                 .collect(Collectors.toList());
     }
 
