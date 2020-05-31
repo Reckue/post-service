@@ -34,8 +34,8 @@ public class NodeServiceRealization implements NodeService {
      */
     @Override
     public Node create(Node node) {
+        node.setId(UUID.randomUUID().toString());
         if (!nodeRepository.existsById(node.getId())) {
-            node.setId(UUID.randomUUID().toString());
             return nodeRepository.save(node);
         } else {
             throw new ModelAlreadyExistsException("Node already exists.");
@@ -61,6 +61,7 @@ public class NodeServiceRealization implements NodeService {
             throw new ModelNotFoundException("Node not found by id " + node.getId() + ".");
         }
         Node savedNode = Node.builder()
+                .id(node.getId())
                 .type(node.getType())
                 .contentId(node.getContentId())
                 .source(node.getSource())
@@ -110,6 +111,7 @@ public class NodeServiceRealization implements NodeService {
         if (desc) {
             List<Node> nodes = findAllBySortType(sort);
             Collections.reverse(nodes);
+            return nodes;
         }
         return findAllBySortType(sort);
     }

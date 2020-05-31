@@ -11,4 +11,5 @@ public class NodeRequest {
     private String contentId;
     private String source;
     private StatusType status;
+    private long published;
 }
