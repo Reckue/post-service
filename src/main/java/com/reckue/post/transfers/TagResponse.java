@@ -1,9 +1,12 @@
 package com.reckue.post.transfers;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
-public class TagNodeRequest {
+@Builder
+public class TagResponse {
 
+    private String id;
     private String name;
 }
