@@ -34,8 +34,8 @@ public class PostServiceRealization implements PostService {
      */
     @Override
     public Post create(Post post) {
+        post.setId(UUID.randomUUID().toString());
         if (!postRepository.existsById(post.getId())) {
-            post.setId(UUID.randomUUID().toString());
             return postRepository.save(post);
         } else {
             throw new ModelAlreadyExistsException("Post already exists.");
@@ -61,6 +61,7 @@ public class PostServiceRealization implements PostService {
             throw new ModelNotFoundException("Post not found by id " + post.getId() + ".");
         }
         Post savedPost = Post.builder()
+                .id(post.getId())
                 .title(post.getTitle())
                 .nodes(post.getNodes())
                 .source(post.getSource())
@@ -112,6 +113,7 @@ public class PostServiceRealization implements PostService {
         if (desc) {
             List<Post> posts = findAllBySortType(sort);
             Collections.reverse(posts);
+            return posts;
         }
         return findAllBySortType(sort);
     }
@@ -134,8 +136,10 @@ public class PostServiceRealization implements PostService {
                 return findAllAndSortByChanged();
             case "status":
                 return findAllAndSortByStatus();
+            case "id":
+                return findAllAndSortById();
         }
-        return findAllAndSortById();
+        throw new IllegalArgumentException("Such field as" + sort + " doesn't exist.");
     }
 
     /**

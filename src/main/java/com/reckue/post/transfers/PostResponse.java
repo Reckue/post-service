@@ -3,11 +3,13 @@ package com.reckue.post.transfers;
 import com.reckue.post.models.Node;
 import com.reckue.post.models.StatusType;
 import com.reckue.post.models.Tag;
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
+@Builder
 public class PostResponse {
 
     private String id;
