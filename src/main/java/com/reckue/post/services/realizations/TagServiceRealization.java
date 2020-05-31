@@ -3,6 +3,7 @@ package com.reckue.post.services.realizations;
 import com.reckue.post.exceptions.ModelAlreadyExistsException;
 import com.reckue.post.exceptions.ModelNotFoundException;
 import com.reckue.post.models.Tag;
+import com.reckue.post.models.Tag;
 import com.reckue.post.repositories.TagRepository;
 import com.reckue.post.services.TagService;
 import lombok.RequiredArgsConstructor;
@@ -30,12 +31,12 @@ public class TagServiceRealization implements TagService {
      * Throws {@link ModelAlreadyExistsException} in case if such object already exists.
      *
      * @param tag object of class Tag
-     * @return node object of class Tag
+     * @return tag object of class Tag
      */
     @Override
     public Tag create(Tag tag) {
+        tag.setId(UUID.randomUUID().toString());
         if (!tagRepository.existsById(tag.getId())) {
-            tag.setId(UUID.randomUUID().toString());
             return tagRepository.save(tag);
         } else {
             throw new ModelAlreadyExistsException("Tag already exists.");
@@ -57,10 +58,13 @@ public class TagServiceRealization implements TagService {
         if (tag.getId() == null) {
             throw new IllegalArgumentException("The parameter is null.");
         }
-        Tag savedTag = tagRepository.findById(tag.getId()).orElseThrow(
-                () -> new ModelNotFoundException("Tag not found by id " + tag.getId() + ".")
-        );
-        savedTag.setName(tag.getName());
+        if (!tagRepository.existsById(tag.getId())) {
+            throw new ModelNotFoundException("Tag not found by id " + tag.getId() + ".");
+        }
+        Tag savedTag = Tag.builder()
+                .id(tag.getId())
+                .name(tag.getName())
+                .build();
         return tagRepository.save(savedTag);
     }
 
@@ -103,6 +107,7 @@ public class TagServiceRealization implements TagService {
         if (desc) {
             List<Tag> tags = findAllBySortType(sort);
             Collections.reverse(tags);
+            return tags;
         }
         return findAllBySortType(sort);
     }
