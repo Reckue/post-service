@@ -8,7 +8,7 @@ import java.util.UUID;
 public class Generator {
 
     /**
-     * Generate a random string to identify the object.
+     * Generates a random string to identify the object.
      *
      * @return generated string
      */
