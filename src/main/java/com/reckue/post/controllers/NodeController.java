@@ -9,6 +9,8 @@ import com.reckue.post.utils.converters.Converter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 import static com.reckue.post.converters.NodeConverter.*;
 
 import java.util.List;
@@ -33,7 +35,7 @@ public class NodeController {
      * @return the object of class NodeResponse
      */
     @PostMapping
-    public NodeResponse create(@RequestBody NodeRequest nodeRequest) {
+    public NodeResponse create(@RequestBody @Valid NodeRequest nodeRequest) {
         return convert(nodeService.create(convert(nodeRequest)));
     }
 
@@ -45,7 +47,7 @@ public class NodeController {
      * @return the object of class NodeResponse
      */
     @PutMapping("/{id}")
-    public NodeResponse update(@PathVariable String id, @RequestBody NodeRequest nodeRequest) {
+    public NodeResponse update(@PathVariable String id, @RequestBody @Valid NodeRequest nodeRequest) {
         Node node = convert(nodeRequest);
         node.setId(id);
         return convert(nodeService.update(node));
