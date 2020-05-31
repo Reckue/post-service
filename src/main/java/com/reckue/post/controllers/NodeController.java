@@ -1,5 +1,6 @@
 package com.reckue.post.controllers;
 
+import com.reckue.post.converters.NodeConverter;
 import com.reckue.post.models.Node;
 import com.reckue.post.services.NodeService;
 import com.reckue.post.transfers.NodeRequest;
@@ -7,6 +8,8 @@ import com.reckue.post.transfers.NodeResponse;
 import com.reckue.post.utils.converters.Converter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import static com.reckue.post.converters.NodeConverter.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,7 +21,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "nodes")
+@RequestMapping(value = "/nodes")
 public class NodeController {
 
     private final NodeService nodeService;
@@ -31,8 +34,7 @@ public class NodeController {
      */
     @PostMapping
     public NodeResponse create(@RequestBody NodeRequest nodeRequest) {
-        return Converter.convert(nodeService.create(Converter.
-                convert(nodeRequest, Node.class)), NodeResponse.class);
+        return convert(nodeService.create(convert(nodeRequest)));
     }
 
     /**
@@ -40,13 +42,13 @@ public class NodeController {
      *
      * @param id          the object identifier
      * @param nodeRequest the object of class NodeRequest
-     * @return the object of class PostResponse
+     * @return the object of class NodeResponse
      */
     @PutMapping("/{id}")
     public NodeResponse update(@PathVariable String id, @RequestBody NodeRequest nodeRequest) {
-        Node node = Converter.convert(nodeRequest, Node.class);
+        Node node = convert(nodeRequest);
         node.setId(id);
-        return Converter.convert(nodeService.update(node), NodeResponse.class);
+        return convert(nodeService.update(node));
     }
 
     /**
@@ -65,7 +67,7 @@ public class NodeController {
                                       @RequestParam String sort, @RequestParam boolean desc) {
 
         return nodeService.findAll(limit, offset, sort, desc).stream()
-                .map(node -> Converter.convert(node, NodeResponse.class))
+                .map(NodeConverter::convert)
                 .collect(Collectors.toList());
     }
 
@@ -77,7 +79,7 @@ public class NodeController {
      */
     @GetMapping("/{id}")
     public NodeResponse findById(@PathVariable String id) {
-        return Converter.convert(nodeService.findById(id), NodeResponse.class);
+        return convert(nodeService.findById(id));
     }
 
     /**
