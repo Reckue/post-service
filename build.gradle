@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'com.reckure'
-version = '0.1'
+version = '1.0.SNAPSHOT'
 
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
@@ -16,8 +16,11 @@ repositories {
 }
 
 dependencies {
+    /* web */
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+    /* security */
+    // implementation 'org.springframework.boot:spring-boot-starter-security'
 
     /* database */
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
@@ -36,12 +39,9 @@ dependencies {
 
     /* test */
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'com.h2database:h2:1.4.200'
-    testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo:2.2.0'
-    testImplementation 'org.testng:testng:7.1.0'
 
     /* devtools */
-    testImplementation 'org.springframework.boot:spring-boot-devtools'
+    runtimeOnly 'org.springframework.boot:spring-boot-devtools'
 
     /* other */
     compile group: 'org.apache.commons', name: 'commons-text', version: '1.8'
@@ -49,9 +49,25 @@ dependencies {
 }
 
 /* checkstyle */
-task checkstyle(type: Checkstyle) {
-    classpath = files()
-    source 'src/main/java'
+checkstyle {
+    toolVersion '7.8.1'
+    configFile file("config/checkstyle/checkstyle.xml")
+}
+
+checkstyleMain {
+    source ='src/main/java'
+}
+
+checkstyleTest {
+    source ='src/test/java'
+}
+
+tasks.withType(Checkstyle) {
+    reports {
+        xml.enabled false
+        html.enabled true
+        html.stylesheet resources.text.fromFile('config/checkstyle/report.xsl')
+    }
 }
 
 def profile = "dev"
