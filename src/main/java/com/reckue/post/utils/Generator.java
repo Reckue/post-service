@@ -19,7 +19,7 @@ public class Generator {
     /**
      * Generates a string to be passed to it.
      *
-     * @param word
+     * @param word write a description
      * @return generated string based on passed string
      */
     public static String id(String word) {
