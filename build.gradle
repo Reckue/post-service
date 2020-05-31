@@ -19,8 +19,8 @@ dependencies {
     /* web */
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
-//    /* security */
-//    implementation 'org.springframework.boot:spring-boot-starter-security'
+    /* security */
+    implementation 'org.springframework.boot:spring-boot-starter-security'
 
     /* database */
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
