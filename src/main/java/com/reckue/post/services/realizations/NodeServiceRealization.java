@@ -135,8 +135,10 @@ public class NodeServiceRealization implements NodeService {
                 return findAllAndSortByPublished();
             case "username":
                 return findAllAndSortByUsername();
+            case "id":
+                return findAllAndSortById();
         }
-        return findAllAndSortById();
+        throw new IllegalArgumentException("Such field as" + sort + " doesn't exist.");
     }
 
     /**
