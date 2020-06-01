@@ -37,6 +37,7 @@ public class NodeConverter {
     public static NodeResponse convert(Node node) {
         return NodeResponse.builder()
                 .id(node.getId())
+                .username(node.getUsername())
                 .contentId(node.getContentId())
                 .source(node.getSource())
                 .type(node.getType())

@@ -41,6 +41,7 @@ public class PostConverter {
         public static PostResponse convert(Post post) {
             return PostResponse.builder()
                     .id(post.getId())
+                    .username(post.getUsername())
                     .title(post.getTitle())
                     .nodes(post.getNodes())
                     .source(post.getSource())
