@@ -38,7 +38,7 @@ public class CodeNodeServiceRealization implements CodeNodeService {
             codeNode.setId(UUID.randomUUID().toString());
             return codeNodeRepository.save(codeNode);
         } else {
-            throw new ModelAlreadyExistsException("CodeNode already exists.");
+            throw new ModelAlreadyExistsException("CodeNode already exists");
         }
     }
 
@@ -55,7 +55,7 @@ public class CodeNodeServiceRealization implements CodeNodeService {
     @Override
     public CodeNode update(CodeNode codeNode) {
         if (codeNode.getId() == null) {
-            throw new IllegalArgumentException("The parameter is null.");
+            throw new IllegalArgumentException("The parameter is null");
         }
         if (!codeNodeRepository.existsById(codeNode.getId())) {
             throw new ModelNotFoundException("Code node by id " + codeNode.getId() + " is not found");

@@ -38,7 +38,7 @@ public class NodeServiceRealization implements NodeService {
         if (!nodeRepository.existsById(node.getId())) {
             return nodeRepository.save(node);
         } else {
-            throw new ModelAlreadyExistsException("Node already exists.");
+            throw new ModelAlreadyExistsException("Node already exists");
         }
     }
 
@@ -55,7 +55,7 @@ public class NodeServiceRealization implements NodeService {
     @Override
     public Node update(Node node) {
         if (node.getId() == null) {
-            throw new IllegalArgumentException("The parameter is null.");
+            throw new IllegalArgumentException("The parameter is null");
         }
         if (!nodeRepository.existsById(node.getId())) {
             throw new ModelNotFoundException("Node by id " + node.getId() + " is not found");

@@ -38,7 +38,7 @@ public class VideoNodeServiceRealization implements VideoNodeService {
             videoNode.setId(UUID.randomUUID().toString());
             return videoNodeRepository.save(videoNode);
         } else {
-            throw new ModelAlreadyExistsException("VideoNode already exists.");
+            throw new ModelAlreadyExistsException("VideoNode already exists");
         }
     }
 
@@ -55,7 +55,7 @@ public class VideoNodeServiceRealization implements VideoNodeService {
     @Override
     public VideoNode update(VideoNode videoNode) {
         if (videoNode.getId() == null) {
-            throw new IllegalArgumentException("The parameter is null.");
+            throw new IllegalArgumentException("The parameter is null");
         }
         VideoNode savedVideoNode = videoNodeRepository.findById(videoNode.getId()).orElseThrow(
                 () -> new ModelNotFoundException("Video node by id " + videoNode.getId() + " is not found")
@@ -166,7 +166,7 @@ public class VideoNodeServiceRealization implements VideoNodeService {
         if (videoNodeRepository.existsById(id)) {
             videoNodeRepository.deleteById(id);
         } else {
-            throw new RuntimeException("Video node by id " + id + " is not found");
+            throw new ModelNotFoundException("Video node by id " + id + " is not found");
         }
     }
 }

@@ -38,7 +38,7 @@ public class TextNodeServiceRealization implements TextNodeService {
             textNode.setId(UUID.randomUUID().toString());
             return textNodeRepository.save(textNode);
         } else {
-            throw new ModelAlreadyExistsException("TextNode already exists.");
+            throw new ModelAlreadyExistsException("TextNode already exists");
         }
     }
 
@@ -55,7 +55,7 @@ public class TextNodeServiceRealization implements TextNodeService {
     @Override
     public TextNode update(TextNode textNode) {
         if (textNode.getId() == null) {
-            throw new IllegalArgumentException("The parameter is null.");
+            throw new IllegalArgumentException("The parameter is null");
         }
         TextNode savedTextNode = textNodeRepository.findById(textNode.getId()).orElseThrow(
                 () -> new ModelNotFoundException("Text node by id " + textNode.getId() + " is not found")

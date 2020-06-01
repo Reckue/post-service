@@ -38,7 +38,7 @@ public class ImageNodeServiceRealization implements ImageNodeService {
             imageNode.setId(UUID.randomUUID().toString());
             return imageNodeRepository.save(imageNode);
         } else {
-            throw new ModelAlreadyExistsException("ImageNode already exists.");
+            throw new ModelAlreadyExistsException("ImageNode already exists");
         }
     }
 
@@ -55,7 +55,7 @@ public class ImageNodeServiceRealization implements ImageNodeService {
     @Override
     public ImageNode update(ImageNode imageNode) {
         if (imageNode.getId() == null) {
-            throw new IllegalArgumentException("The parameter is null.");
+            throw new IllegalArgumentException("The parameter is null");
         }
         ImageNode savedImageNode = imageNodeRepository.findById(imageNode.getId()).orElseThrow(
                 () -> new ModelNotFoundException("Image node by id " + imageNode.getId() + " is not found")
