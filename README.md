@@ -10,6 +10,23 @@ It's a service for posting articles about different programming languages:
 - BASH;
 - BAT. 
 
+Stacks that were used:
+- Spring Boot;
+- Gradle;
+- Travis CI;
+- Swagger;
+- MongoDB;
+- Mongo V;
+- Spring Security;
+- Spring Data;
+- Lombok;
+- JUnit:
+- DevTools;
+- ModelMapper;
+- Check style;
+
+
+
 Post consists from nodes having different types:
 - text;
 - image;
@@ -23,4 +40,10 @@ Post has type describing status of activity:
 - deleted;
 - banned;
 - moderated.
+
+Fos use:
+- mvn clean install
+  java -jar 1.0.SNAPSHOT.jar;
+- mvn spring-boot:run  ;
+
 
