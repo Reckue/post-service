@@ -62,6 +62,7 @@ public class PostServiceRealization implements PostService {
         }
         Post savedPost = Post.builder()
                 .id(post.getId())
+                .username(post.getUsername())
                 .title(post.getTitle())
                 .nodes(post.getNodes())
                 .source(post.getSource())
@@ -138,6 +139,8 @@ public class PostServiceRealization implements PostService {
                 return findAllAndSortByStatus();
             case "id":
                 return findAllAndSortById();
+            case "username":
+                return findAllAndSortByUsername();
         }
         throw new IllegalArgumentException("Such field as" + sort + " doesn't exist");
     }
@@ -161,6 +164,17 @@ public class PostServiceRealization implements PostService {
     public List<Post> findAllAndSortByTitle() {
         return findAll().stream()
                 .sorted(Comparator.comparing(Post::getTitle))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * This method is used to sort objects by username.
+     *
+     * @return list of objects of class Post sorted by username
+     */
+    public List<Post> findAllAndSortByUsername() {
+        return findAll().stream()
+                .sorted(Comparator.comparing(Post::getUsername))
                 .collect(Collectors.toList());
     }
 

@@ -15,6 +15,8 @@ public class NodeRequest {
 
     private String contentId;
 
+    private String username;
+
     @Size(max=128)
     private String source;
 

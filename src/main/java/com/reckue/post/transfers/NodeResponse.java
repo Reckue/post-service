@@ -12,6 +12,7 @@ public class NodeResponse {
     private String id;
     private NodeType type;
     private String contentId;
+    private String username;
     private String source;
     private StatusType status;
     private long published;

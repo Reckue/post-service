@@ -5,7 +5,6 @@ import com.reckue.post.models.Node;
 import com.reckue.post.services.NodeService;
 import com.reckue.post.transfers.NodeRequest;
 import com.reckue.post.transfers.NodeResponse;
-import com.reckue.post.utils.converters.Converter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

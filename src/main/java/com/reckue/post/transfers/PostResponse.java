@@ -17,6 +17,7 @@ public class PostResponse {
     private List<Node> nodes;
     private String source;
     private List<Tag> tags;
+    private String username;
     private long published;
     private long changed;
     private StatusType status;

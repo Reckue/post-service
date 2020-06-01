@@ -16,6 +16,7 @@ public class Node {
     private NodeType type;
     private String contentId;
     private String source;
+    private String username;
     private StatusType status;
     private long published;
 }
