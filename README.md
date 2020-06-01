@@ -28,8 +28,8 @@ Stacks that were used:
 
 
 For use:
-- mvn clean install
-  java -jar 1.0.SNAPSHOT.jar
-- mvn spring-boot:run 
+- gradle bootRun
+- gradle build
+java -jar 1.0.SNAPSHOT.jar
 
 
