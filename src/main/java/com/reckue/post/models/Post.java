@@ -18,6 +18,7 @@ public class Post {
     private String title;
     private List<Node> nodes;
     private String source;
+    private String username;
     private List<Tag> tags;
     private long published;
     private long changed;
