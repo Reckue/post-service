@@ -1,4 +1,4 @@
-package com.reckue.post.converters;
+package com.reckue.post.utils.converters;
 
 import com.reckue.post.models.Node;
 import com.reckue.post.transfers.NodeRequest;

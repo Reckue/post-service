@@ -1,6 +1,6 @@
 package com.reckue.post.controllers;
 
-import com.reckue.post.converters.PostConverter;
+import com.reckue.post.utils.converters.PostConverter;
 import com.reckue.post.models.Post;
 import com.reckue.post.services.PostService;
 import com.reckue.post.transfers.PostRequest;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.reckue.post.converters.PostConverter.convert;
+import static com.reckue.post.utils.converters.PostConverter.convert;
 
 /**
  * Class PostController represents simple REST-Controller.

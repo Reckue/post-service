@@ -1,6 +1,6 @@
 package com.reckue.post.controllers;
 
-import com.reckue.post.converters.TagConverter;
+import com.reckue.post.utils.converters.TagConverter;
 import com.reckue.post.models.Tag;
 import com.reckue.post.services.TagService;
 import com.reckue.post.transfers.TagRequest;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.reckue.post.converters.TagConverter.*;
+import static com.reckue.post.utils.converters.TagConverter.*;
 
 /**
  * Class TagController is responsible for processing incoming requests.
