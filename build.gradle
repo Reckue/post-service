@@ -33,10 +33,6 @@ dependencies {
     implementation 'io.springfox:springfox-swagger2:2.9.2'
     implementation 'io.springfox:springfox-swagger-ui:2.9.2'
 
-    /* mongobee */
-    implementation 'org.javassist:javassist:3.18.2-GA'
-    implementation 'com.github.mongobee:mongobee:0.13'
-
     /* lombok */
     compileOnly 'org.projectlombok:lombok:1.18.4'
     annotationProcessor 'org.projectlombok:lombok:1.18.10'
