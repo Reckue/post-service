@@ -45,7 +45,7 @@ public class PostController {
      * @return the object of class PostResponse
      */
     @PutMapping("/{id}")
-    public PostResponse update(@PathVariable String id, @RequestBody PostRequest postRequest) {
+    public PostResponse update(@PathVariable String id, @RequestBody @Valid PostRequest postRequest) {
         Post post = convert(postRequest);
         post.setId(id);
         return convert(postService.update(post));
