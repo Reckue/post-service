@@ -38,7 +38,7 @@ public class CodeNodeServiceRealization implements CodeNodeService {
             codeNode.setId(UUID.randomUUID().toString());
             return codeNodeRepository.save(codeNode);
         } else {
-            throw new ModelAlreadyExistsException("CodeNode already exists");
+            throw new ModelAlreadyExistsException("Code node already exists");
         }
     }
 

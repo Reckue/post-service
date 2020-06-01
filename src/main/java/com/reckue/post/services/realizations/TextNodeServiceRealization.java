@@ -38,7 +38,7 @@ public class TextNodeServiceRealization implements TextNodeService {
             textNode.setId(UUID.randomUUID().toString());
             return textNodeRepository.save(textNode);
         } else {
-            throw new ModelAlreadyExistsException("TextNode already exists");
+            throw new ModelAlreadyExistsException("Text node already exists");
         }
     }
 

@@ -38,7 +38,7 @@ public class ImageNodeServiceRealization implements ImageNodeService {
             imageNode.setId(UUID.randomUUID().toString());
             return imageNodeRepository.save(imageNode);
         } else {
-            throw new ModelAlreadyExistsException("ImageNode already exists");
+            throw new ModelAlreadyExistsException("Image node already exists");
         }
     }
 
