@@ -38,7 +38,7 @@ public class NodeServiceRealization implements NodeService {
         if (!nodeRepository.existsById(node.getId())) {
             return nodeRepository.save(node);
         } else {
-            throw new ModelAlreadyExistsException("Node already exists.");
+            throw new ModelAlreadyExistsException("Node already exists");
         }
     }
 
@@ -55,10 +55,10 @@ public class NodeServiceRealization implements NodeService {
     @Override
     public Node update(Node node) {
         if (node.getId() == null) {
-            throw new IllegalArgumentException("The parameter is null.");
+            throw new IllegalArgumentException("The parameter is null");
         }
         if (!nodeRepository.existsById(node.getId())) {
-            throw new ModelNotFoundException("Node not found by id " + node.getId() + ".");
+            throw new ModelNotFoundException("Node by id " + node.getId() + " is not found");
         }
         Node savedNode = Node.builder()
                 .id(node.getId())
@@ -201,7 +201,7 @@ public class NodeServiceRealization implements NodeService {
     @Override
     public Node findById(String id) {
         return nodeRepository.findById(id).orElseThrow(
-                () -> new ModelNotFoundException("Node not found by id " + id + "."));
+                () -> new ModelNotFoundException("Node by id " + id + " is not found"));
     }
 
     /**
@@ -215,7 +215,7 @@ public class NodeServiceRealization implements NodeService {
         if (nodeRepository.existsById(id)) {
             nodeRepository.deleteById(id);
         } else {
-            throw new ModelNotFoundException("Node not found by id " + id + ".");
+            throw new ModelNotFoundException("Node by id " + id + " is not found");
         }
     }
 }

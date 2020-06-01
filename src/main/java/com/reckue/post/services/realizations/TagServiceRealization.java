@@ -39,7 +39,7 @@ public class TagServiceRealization implements TagService {
         if (!tagRepository.existsById(tag.getId())) {
             return tagRepository.save(tag);
         } else {
-            throw new ModelAlreadyExistsException("Tag already exists.");
+            throw new ModelAlreadyExistsException("Tag already exists");
         }
     }
 
@@ -56,10 +56,10 @@ public class TagServiceRealization implements TagService {
     @Override
     public Tag update(Tag tag) {
         if (tag.getId() == null) {
-            throw new IllegalArgumentException("The parameter is null.");
+            throw new IllegalArgumentException("The parameter is null");
         }
         if (!tagRepository.existsById(tag.getId())) {
-            throw new ModelNotFoundException("Tag not found by id " + tag.getId() + ".");
+            throw new ModelNotFoundException("Tag by id " + tag.getId() + " is not found");
         }
         Tag savedTag = Tag.builder()
                 .id(tag.getId())
@@ -157,7 +157,7 @@ public class TagServiceRealization implements TagService {
     @Override
     public Tag findById(String id) {
         return tagRepository.findById(id).orElseThrow(
-                () -> new ModelNotFoundException("Tag not found by id " + id + "."));
+                () -> new ModelNotFoundException("Tag by id " + id + " is not found"));
     }
 
     /**
@@ -172,7 +172,7 @@ public class TagServiceRealization implements TagService {
         if (tagRepository.existsById(id)) {
             tagRepository.deleteById(id);
         } else {
-            throw new ModelNotFoundException("Tag not found by id " + id + ".");
+            throw new ModelNotFoundException("Tag by id " + id + " is not found");
         }
     }
 }
