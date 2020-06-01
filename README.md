@@ -16,7 +16,7 @@ Stacks that were used:
 - Travis CI;
 - Swagger;
 - MongoDB;
-- Mongo V;
+- Mongobee;
 - Spring Security;
 - Spring Data;
 - Lombok;
