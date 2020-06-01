@@ -27,23 +27,9 @@ Stacks that were used:
 
 
 
-Post consists from nodes having different types:
-- text;
-- image;
-- video;
-- code.
-
-As well as post has tag. It would be filtered and sorted by tag.
-
-Post has type describing status of activity:
-- active;
-- deleted;
-- banned;
-- moderated.
-
-Fos use:
+For use:
 - mvn clean install
-  java -jar 1.0.SNAPSHOT.jar;
-- mvn spring-boot:run  ;
+  java -jar 1.0.SNAPSHOT.jar
+- mvn spring-boot:run 
 
 
