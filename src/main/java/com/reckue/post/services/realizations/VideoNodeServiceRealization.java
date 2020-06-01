@@ -38,7 +38,7 @@ public class VideoNodeServiceRealization implements VideoNodeService {
             videoNode.setId(UUID.randomUUID().toString());
             return videoNodeRepository.save(videoNode);
         } else {
-            throw new ModelAlreadyExistsException("VideoNode already exists");
+            throw new ModelAlreadyExistsException("Video node already exists");
         }
     }
 
