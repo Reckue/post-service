@@ -10,17 +10,26 @@ It's a service for posting articles about different programming languages:
 - BASH;
 - BAT. 
 
-Post consists from nodes having different types:
-- text;
-- image;
-- video;
-- code.
+Stacks that were used:
+- Spring Boot;
+- Gradle;
+- Travis CI;
+- Swagger;
+- MongoDB;
+- Mongobee;
+- Spring Security;
+- Spring Data;
+- Lombok;
+- JUnit;
+- DevTools;
+- ModelMapper;
+- Checkstyle;
 
-As well as post has tag. It would be filtered and sorted by tag.
 
-Post has type describing status of activity:
-- active;
-- deleted;
-- banned;
-- moderated.
+
+For use:
+- gradle bootRun
+- gradle build
+- java -jar 1.0.SNAPSHOT.jar
+
 
