@@ -38,7 +38,7 @@ public class PostServiceRealization implements PostService {
         if (!postRepository.existsById(post.getId())) {
             return postRepository.save(post);
         } else {
-            throw new ModelAlreadyExistsException("Post already exists.");
+            throw new ModelAlreadyExistsException("Post already exists");
         }
     }
 
@@ -55,10 +55,10 @@ public class PostServiceRealization implements PostService {
     @Override
     public Post update(Post post) {
         if (post.getId() == null) {
-            throw new IllegalArgumentException("The parameter is null.");
+            throw new IllegalArgumentException("The parameter is null");
         }
         if (!postRepository.existsById(post.getId())) {
-            throw new ModelNotFoundException("Post not found by id " + post.getId() + ".");
+            throw new ModelNotFoundException("Post by id " + post.getId() + " is not found");
         }
         Post savedPost = Post.builder()
                 .id(post.getId())
@@ -142,7 +142,7 @@ public class PostServiceRealization implements PostService {
             case "username":
                 return findAllAndSortByUsername();
         }
-        throw new IllegalArgumentException("Such field as" + sort + " doesn't exist.");
+        throw new IllegalArgumentException("Such field as" + sort + " doesn't exist");
     }
 
     /**
@@ -232,7 +232,7 @@ public class PostServiceRealization implements PostService {
     @Override
     public Post findById(String id) {
         return postRepository.findById(id).orElseThrow(
-                () -> new ModelNotFoundException("Post not found by id " + id + "."));
+                () -> new ModelNotFoundException("Post by id " + id + " is not found"));
     }
 
     /**
@@ -246,7 +246,7 @@ public class PostServiceRealization implements PostService {
         if (postRepository.existsById(id)) {
             postRepository.deleteById(id);
         } else {
-            throw new ModelNotFoundException("Post not found by id " + id + ".");
+            throw new ModelNotFoundException("Post by id " + id + " is not found");
         }
     }
 }
