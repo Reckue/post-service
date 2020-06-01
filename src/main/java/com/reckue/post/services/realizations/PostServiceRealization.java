@@ -58,7 +58,7 @@ public class PostServiceRealization implements PostService {
             throw new IllegalArgumentException("The parameter is null.");
         }
         if (!postRepository.existsById(post.getId())) {
-            throw new ModelNotFoundException("Post not found by id " + post.getId() + ".");
+            throw new ModelNotFoundException("Post by id " + post.getId() + " is not found");
         }
         Post savedPost = Post.builder()
                 .id(post.getId())
@@ -218,7 +218,7 @@ public class PostServiceRealization implements PostService {
     @Override
     public Post findById(String id) {
         return postRepository.findById(id).orElseThrow(
-                () -> new ModelNotFoundException("Post not found by id " + id + "."));
+                () -> new ModelNotFoundException("Post by id " + id + " is not found"));
     }
 
     /**
@@ -232,7 +232,7 @@ public class PostServiceRealization implements PostService {
         if (postRepository.existsById(id)) {
             postRepository.deleteById(id);
         } else {
-            throw new ModelNotFoundException("Post not found by id " + id + ".");
+            throw new ModelNotFoundException("Post by id " + id + " is not found");
         }
     }
 }

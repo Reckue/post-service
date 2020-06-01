@@ -58,7 +58,7 @@ public class ImageNodeServiceRealization implements ImageNodeService {
             throw new IllegalArgumentException("The parameter is null.");
         }
         ImageNode savedImageNode = imageNodeRepository.findById(imageNode.getId()).orElseThrow(
-                () -> new ModelNotFoundException("ImageNode not found by id " + imageNode.getId() + ".")
+                () -> new ModelNotFoundException("Image node by id " + imageNode.getId() + " is not found")
         );
         savedImageNode.setImageUrl(imageNode.getImageUrl());
         return imageNodeRepository.save(savedImageNode);
@@ -152,7 +152,7 @@ public class ImageNodeServiceRealization implements ImageNodeService {
     @Override
     public ImageNode findById(String id) {
         return imageNodeRepository.findById(id).orElseThrow(
-                () -> new ModelNotFoundException("ImageNode not found by id " + id + "."));
+                () -> new ModelNotFoundException("Image node by id " + id + " is not found"));
     }
 
     /**
@@ -167,7 +167,7 @@ public class ImageNodeServiceRealization implements ImageNodeService {
         if (imageNodeRepository.existsById(id)) {
             imageNodeRepository.deleteById(id);
         } else {
-            throw new ModelNotFoundException("ImageNode not found by id " + id + ".");
+            throw new ModelNotFoundException("Image node by id " + id + " is not found");
         }
     }
 }

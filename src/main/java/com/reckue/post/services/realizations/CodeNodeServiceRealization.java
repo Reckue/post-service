@@ -58,7 +58,7 @@ public class CodeNodeServiceRealization implements CodeNodeService {
             throw new IllegalArgumentException("The parameter is null.");
         }
         if (!codeNodeRepository.existsById(codeNode.getId())) {
-            throw new ModelNotFoundException("Post not found by id " + codeNode.getId() + ".");
+            throw new ModelNotFoundException("Code node by id " + codeNode.getId() + " is not found");
         }
         CodeNode savedCodeNode = CodeNode.builder()
                 .language(codeNode.getLanguage())
@@ -169,7 +169,7 @@ public class CodeNodeServiceRealization implements CodeNodeService {
     @Override
     public CodeNode findById(String id) {
         return codeNodeRepository.findById(id).orElseThrow(
-                () -> new ModelNotFoundException("CodeNode not found by id " + id + "."));
+                () -> new ModelNotFoundException("Code node by id " + id + " is not found"));
     }
 
     /**
@@ -184,7 +184,7 @@ public class CodeNodeServiceRealization implements CodeNodeService {
         if (codeNodeRepository.existsById(id)) {
             codeNodeRepository.deleteById(id);
         } else {
-            throw new ModelNotFoundException("CodeNode not found by id " + id + ".");
+            throw new ModelNotFoundException("Code node by id " + id + " is not found");
         }
     }
 }
