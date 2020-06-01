@@ -8,6 +8,7 @@ import com.reckue.post.transfers.PostResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,7 +33,7 @@ public class PostController {
      * @return the object of class PostResponse
      */
     @PostMapping
-    public PostResponse save(@RequestBody PostRequest postRequest) {
+    public PostResponse save(@RequestBody @Valid PostRequest postRequest) {
         return convert(postService.create(convert(postRequest)));
     }
 
