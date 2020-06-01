@@ -8,6 +8,7 @@ import com.reckue.post.transfers.TagResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,7 +33,7 @@ public class TagController {
      * @return the object of class TagResponse
      */
     @PostMapping
-    public TagResponse create(@RequestBody TagRequest tagRequest) {
+    public TagResponse create(@RequestBody @Valid TagRequest tagRequest) {
         return convert(tagService.create(convert(tagRequest)));
     }
 
@@ -44,7 +45,7 @@ public class TagController {
      * @return the object of class TagResponse
      */
     @PutMapping("/{id}")
-    public TagResponse update(@PathVariable String id, @RequestBody TagRequest tagRequest) {
+    public TagResponse update(@PathVariable String id, @RequestBody @Valid TagRequest tagRequest) {
         Tag tag = convert(tagRequest);
         tag.setId(id);
         return convert(tagService.update(tag));
