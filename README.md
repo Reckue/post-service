@@ -20,16 +20,16 @@ Stacks that were used:
 - Spring Security;
 - Spring Data;
 - Lombok;
-- JUnit:
+- JUnit;
 - DevTools;
 - ModelMapper;
-- Check style;
+- Checkstyle;
 
 
 
 For use:
 - gradle bootRun
 - gradle build
-java -jar 1.0.SNAPSHOT.jar
+- java -jar 1.0.SNAPSHOT.jar
 
 
