@@ -1,4 +1,4 @@
-package com.reckue.post.converters;
+package com.reckue.post.utils.converters;
 
 import com.reckue.post.models.Post;
 import com.reckue.post.transfers.PostRequest;
@@ -21,6 +21,7 @@ public class PostConverter {
     public static Post convert(PostRequest postRequest) {
         return Post.builder()
                 .title(postRequest.getTitle())
+                .username(postRequest.getUsername())
                 .nodes(postRequest.getNodes())
                 .source(postRequest.getSource())
                 .tags(postRequest.getTags())

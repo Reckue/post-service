@@ -1,4 +1,4 @@
-package com.reckue.post.converters;
+package com.reckue.post.utils.converters;
 
 import com.reckue.post.models.Node;
 import com.reckue.post.transfers.NodeRequest;
@@ -20,6 +20,7 @@ public class NodeConverter {
     public static Node convert(NodeRequest nodeRequest) {
         return Node.builder()
                 .contentId(nodeRequest.getContentId())
+                .username(nodeRequest.getUsername())
                 .source(nodeRequest.getSource())
                 .type(nodeRequest.getType())
                 .status(nodeRequest.getStatus())

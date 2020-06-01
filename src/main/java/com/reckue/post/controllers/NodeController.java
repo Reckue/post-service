@@ -1,17 +1,16 @@
 package com.reckue.post.controllers;
 
-import com.reckue.post.converters.NodeConverter;
+import com.reckue.post.utils.converters.NodeConverter;
 import com.reckue.post.models.Node;
 import com.reckue.post.services.NodeService;
 import com.reckue.post.transfers.NodeRequest;
 import com.reckue.post.transfers.NodeResponse;
-import com.reckue.post.utils.converters.Converter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-import static com.reckue.post.converters.NodeConverter.*;
+import static com.reckue.post.utils.converters.NodeConverter.*;
 
 import java.util.List;
 import java.util.stream.Collectors;

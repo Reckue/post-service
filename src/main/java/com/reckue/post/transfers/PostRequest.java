@@ -17,6 +17,8 @@ public class PostRequest {
 
     private List<Node> nodes;
 
+    private String username;
+
     @Size(max=128)
     private String source;
 
