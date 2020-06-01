@@ -3,6 +3,7 @@
 out/
 target/
 gradle/
+build/
 .gradle/
 
 # files

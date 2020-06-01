@@ -1,4 +1,4 @@
-package com.reckue.post.controllers;
+package com.reckue.post.utils.converters;
 
 import com.reckue.post.converters.NodeConverter;
 import com.reckue.post.models.Node;

@@ -1,4 +1,4 @@
-package com.reckue.post.controllers;
+package com.reckue.post.utils.converters;
 
 import com.reckue.post.converters.TagConverter;
 import com.reckue.post.models.Tag;
