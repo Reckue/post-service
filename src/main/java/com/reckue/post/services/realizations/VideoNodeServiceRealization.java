@@ -5,6 +5,7 @@ import com.reckue.post.exceptions.ModelNotFoundException;
 import com.reckue.post.models.VideoNode;
 import com.reckue.post.repositories.VideoNodeRepository;
 import com.reckue.post.services.VideoNodeService;
+import com.reckue.post.utils.Generator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +36,7 @@ public class VideoNodeServiceRealization implements VideoNodeService {
     @Override
     public VideoNode create(VideoNode videoNode) {
         if (!videoNodeRepository.existsById(videoNode.getId())) {
-            videoNode.setId(UUID.randomUUID().toString());
+            videoNode.setId(Generator.id());
             return videoNodeRepository.save(videoNode);
         } else {
             throw new ModelAlreadyExistsException("Video node already exists");
