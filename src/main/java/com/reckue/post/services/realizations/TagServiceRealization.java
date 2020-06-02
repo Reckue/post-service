@@ -6,6 +6,7 @@ import com.reckue.post.models.Tag;
 import com.reckue.post.models.Tag;
 import com.reckue.post.repositories.TagRepository;
 import com.reckue.post.services.TagService;
+import com.reckue.post.utils.Generator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +36,7 @@ public class TagServiceRealization implements TagService {
      */
     @Override
     public Tag create(Tag tag) {
-        tag.setId(UUID.randomUUID().toString());
+        tag.setId(Generator.id());
         if (!tagRepository.existsById(tag.getId())) {
             return tagRepository.save(tag);
         } else {
