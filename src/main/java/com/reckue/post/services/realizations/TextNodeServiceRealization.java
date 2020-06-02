@@ -5,6 +5,7 @@ import com.reckue.post.exceptions.ModelNotFoundException;
 import com.reckue.post.models.TextNode;
 import com.reckue.post.repositories.TextNodeRepository;
 import com.reckue.post.services.TextNodeService;
+import com.reckue.post.utils.Generator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +36,7 @@ public class TextNodeServiceRealization implements TextNodeService {
     @Override
     public TextNode create(TextNode textNode) {
         if (!textNodeRepository.existsById(textNode.getId())) {
-            textNode.setId(UUID.randomUUID().toString());
+            textNode.setId(Generator.id());
             return textNodeRepository.save(textNode);
         } else {
             throw new ModelAlreadyExistsException("Text node already exists");
