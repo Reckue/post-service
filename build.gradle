@@ -44,6 +44,9 @@ dependencies {
     /* test */
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
+    /* test */
+    testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
+
     /* devtools */
     runtimeOnly 'org.springframework.boot:spring-boot-devtools'
 
