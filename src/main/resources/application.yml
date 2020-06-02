@@ -3,7 +3,7 @@ server:
 
 spring:
   profiles:
-    active: dev
+    active: develop
 
   data:
     mongodb:
@@ -18,6 +18,10 @@ spring:
   profiles:
     active: staging
 
+    data:
+      mongodb:
+        uri: mongodb://localhost:27017/mongo-local
+
 ---
 
 server:
@@ -27,6 +31,6 @@ spring:
   profiles:
     active: cloud
 
-
-
-
+    data:
+      mongodb:
+        uri: mongodb://localhost:27017/mongo-local
