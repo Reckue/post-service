@@ -4,7 +4,29 @@ server:
 spring:
   profiles:
     active: dev
+
   data:
     mongodb:
       uri: mongodb://localhost:27017/mongo-local
+
+---
+
+server:
+  port: 9003
+
+spring:
+  profiles:
+    active: staging
+
+---
+
+server:
+  port: 9004
+
+spring:
+  profiles:
+    active: cloud
+
+
+
 
