@@ -5,6 +5,7 @@ import com.reckue.post.exceptions.ModelNotFoundException;
 import com.reckue.post.models.Node;
 import com.reckue.post.repositories.NodeRepository;
 import com.reckue.post.services.NodeService;
+import com.reckue.post.utils.Generator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +35,7 @@ public class NodeServiceRealization implements NodeService {
      */
     @Override
     public Node create(Node node) {
-        node.setId(UUID.randomUUID().toString());
+        node.setId(Generator.id());
         if (!nodeRepository.existsById(node.getId())) {
             return nodeRepository.save(node);
         } else {
