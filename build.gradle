@@ -74,7 +74,7 @@ tasks.withType(Checkstyle) {
     }
 }
 
-def profile = "dev"
+def profile = "develop"
 
 bootRun {
     args = ["--spring.profiles.active=" + profile]
