@@ -18,8 +18,8 @@ repositories {
         name = "ReckueOpenSource"
         url = "https://maven.pkg.github.com/reckue/commons"
         credentials {
-            username = project.findProperty("github.username")
-            password = project.findProperty("github.token")
+            username = 'egnaf'
+            password = '95db80628ed5e1e89e07269982a31ef26c0e69cd'
         }
     }
 }
