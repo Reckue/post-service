@@ -50,6 +50,9 @@ dependencies {
     /* other */
     compile group: 'org.apache.commons', name: 'commons-text', version: '1.8'
     implementation 'javax.xml.bind:jaxb-api:2.3.0' // for binding xml
+
+    /* for properties */
+    implementation 'org.springframework.boot:spring-boot-configuration-processor'
 }
 
 /* checkstyle */

@@ -1,6 +1,7 @@
 package com.reckue.post.configs;
 
 import com.github.mongobee.Mongobee;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,6 +13,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class MongobeeConfig {
 
+    @Value("${spring.data.mongodb.uri}")
+    private String mongobeePath;
+
     /**
      * This method creates an instance of the Mongobee object and tells about the package to scan for changes.
      *
@@ -19,7 +23,7 @@ public class MongobeeConfig {
      */
     @Bean
     public Mongobee mongobee() {
-        Mongobee runner = new Mongobee("mongodb://localhost:27017/mongo-local");
+        Mongobee runner = new Mongobee(mongobeePath);
         runner.setChangeLogsScanPackage(
                 "com.reckue.post.migrations");
 
