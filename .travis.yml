@@ -7,7 +7,7 @@ cache:
     - $HOME/.gradle
 
 script:
-  - gradle build --refresh-dependencies && cd ..
+  - gradle build
 
 notifications:
   email:
