@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'maven'
     id 'checkstyle'
     id 'org.springframework.boot' version '2.2.2.RELEASE'
     id 'io.spring.dependency-management' version '1.0.8.RELEASE'
@@ -8,11 +9,19 @@ plugins {
 group = 'com.reckure'
 version = '1.0.SNAPSHOT'
 
-sourceCompatibility = JavaVersion.VERSION_11
-targetCompatibility = JavaVersion.VERSION_11
+sourceCompatibility = 11
+targetCompatibility = 11
 
 repositories {
     mavenCentral()
+    maven {
+        name = "ReckueOpenSource"
+        url = "https://maven.pkg.github.com/reckue/commons"
+        credentials {
+            username = project.findProperty("github.username")
+            password = project.findProperty("github.token")
+        }
+    }
 }
 
 dependencies {
@@ -33,7 +42,7 @@ dependencies {
     implementation 'io.springfox:springfox-swagger2:2.9.2'
     implementation 'io.springfox:springfox-swagger-ui:2.9.2'
 
-    /* mongobee */
+    /* migration */
     implementation 'org.javassist:javassist:3.18.2-GA'
     implementation 'com.github.mongobee:mongobee:0.13'
 
@@ -41,7 +50,7 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.4'
     annotationProcessor 'org.projectlombok:lombok:1.18.10'
 
-    /* test */
+    /* tests */
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     /* devtools */
@@ -50,28 +59,9 @@ dependencies {
     /* other */
     compile group: 'org.apache.commons', name: 'commons-text', version: '1.8'
     implementation 'javax.xml.bind:jaxb-api:2.3.0' // for binding xml
-}
 
-/* checkstyle */
-checkstyle {
-    toolVersion '7.8.1'
-    configFile file("config/checkstyle/checkstyle.xml")
-}
-
-checkstyleMain {
-    source ='src/main/java'
-}
-
-checkstyleTest {
-    source ='src/test/java'
-}
-
-tasks.withType(Checkstyle) {
-    reports {
-        xml.enabled false
-        html.enabled true
-        html.stylesheet resources.text.fromFile('config/checkstyle/report.xsl')
-    }
+    /* reckue dependencies */
+    implementation 'com.reckue:commons:0.0.2'
 }
 
 def profile = "develop"
