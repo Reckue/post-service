@@ -5,6 +5,7 @@ import com.reckue.post.exceptions.ModelNotFoundException;
 import com.reckue.post.models.Post;
 import com.reckue.post.repositories.PostRepository;
 import com.reckue.post.services.PostService;
+import com.reckue.post.utils.Generator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +35,7 @@ public class PostServiceRealization implements PostService {
      */
     @Override
     public Post create(Post post) {
-        post.setId(UUID.randomUUID().toString());
+        post.setId(Generator.id());
         if (!postRepository.existsById(post.getId())) {
             return postRepository.save(post);
         } else {
