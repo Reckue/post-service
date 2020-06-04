@@ -42,7 +42,9 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.10'
 
     /* test */
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
 
     /* test */
     testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
@@ -77,6 +79,9 @@ tasks.withType(Checkstyle) {
     }
 }
 
+test {
+    useJUnitPlatform()
+}
 def profile = "dev"
 
 bootRun {
