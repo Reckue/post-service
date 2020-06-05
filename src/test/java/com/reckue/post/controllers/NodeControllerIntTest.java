@@ -66,8 +66,6 @@ public class NodeControllerIntTest {
 
     @BeforeEach
     public void setUp() {
-
-        // 1
         nodeRepository.save(Node.builder()
                 .id("1")
                 .username("Alex")
@@ -244,6 +242,7 @@ public class NodeControllerIntTest {
         this.mockMvc.perform(delete("/nodes/" + id))
                 .andDo(print())
                 .andExpect(status().isOk());
+
         Assertions.assertEquals(nodeRepository.findAll().size(), 2);
     }
 }
