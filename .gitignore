@@ -2,12 +2,12 @@
 .idea/
 out/
 target/
-gradle/
+#gradle/
 build/
 .gradle/
 
 # files
 *.class
 *.iml
-gradlew
+#gradlew/
 gradlew.bat
