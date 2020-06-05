@@ -42,7 +42,12 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.10'
 
     /* test */
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+
+    /* test */
+    testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
 
     /* devtools */
     runtimeOnly 'org.springframework.boot:spring-boot-devtools'
@@ -75,6 +80,10 @@ tasks.withType(Checkstyle) {
 }
 
 def profile = "develop"
+
+test {
+    useJUnitPlatform()
+}
 
 bootRun {
     args = ["--spring.profiles.active=" + profile]

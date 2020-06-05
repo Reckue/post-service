@@ -3,12 +3,14 @@ package com.reckue.post.transfers;
 import com.reckue.post.models.Node;
 import com.reckue.post.models.StatusType;
 import com.reckue.post.models.Tag;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
 
+@Builder
 @Data
 public class PostRequest {
 
