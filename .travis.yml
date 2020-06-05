@@ -5,14 +5,19 @@ os: linux
 dist: trusty
 jdk: oraclejdk8
 
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
 cache:
   directories:
-#    - $HOME/.gradle
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
 
 script:
   - rm -rf .gradle
   - gradle wrapper --gradle-version 6.5 --distribution-type all
-  - ./gradlew build
+  - ./gradlew install
 
 notifications:
   email:
