@@ -6,6 +6,8 @@ gradle/
 build/
 .gradle/
 
+build.gradle
+
 # files
 *.class
 *.iml
