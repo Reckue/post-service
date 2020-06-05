@@ -3,6 +3,7 @@ package com.reckue.post.controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.reckue.post.exceptions.ModelNotFoundException;
 import com.reckue.post.models.Node;
 import com.reckue.post.models.NodeType;
 import com.reckue.post.models.Post;
@@ -15,6 +16,7 @@ import com.reckue.post.transfers.PostResponse;
 import com.reckue.post.utils.converters.Converter;
 import com.reckue.post.utils.converters.NodeConverter;
 import com.reckue.post.utils.converters.PostConverter;
+import org.junit.Before;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -64,6 +66,7 @@ public class NodeControllerIntTest {
 
     @BeforeEach
     public void setUp() {
+
         // 1
         nodeRepository.save(Node.builder()
                 .id("1")
@@ -130,9 +133,7 @@ public class NodeControllerIntTest {
                 .limit(2)
                 .collect(Collectors.toList());
 
-        Collections.reverse(expected);
-
-        List<NodeResponse> actual = objectMapper.readValue(this.mockMvc.perform(get("/nodes?desc=true&limit=2&offset=0&sort=username"))
+        List<NodeResponse> actual = objectMapper.readValue(this.mockMvc.perform(get("/nodes?desc=false&limit=2&offset=0&sort=username"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn()
@@ -146,10 +147,15 @@ public class NodeControllerIntTest {
         List<NodeResponse> expected = nodeRepository.findAll().stream()
                 .map(NodeConverter::convert)
                 .sorted(Comparator.comparing(NodeResponse::getUsername))
+                .collect(Collectors.toList());
+
+        Collections.reverse(expected);
+
+        expected = expected.stream()
                 .limit(2)
                 .collect(Collectors.toList());
 
-        List<NodeResponse> actual = objectMapper.readValue(this.mockMvc.perform(get("/nodes?desc=false&limit=2&offset=0&sort=username"))
+        List<NodeResponse> actual = objectMapper.readValue(this.mockMvc.perform(get("/nodes?desc=true&limit=2&offset=0&sort=username"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn()
@@ -234,14 +240,10 @@ public class NodeControllerIntTest {
 
     @Test
     void deleteById() throws Exception {
-        NodeResponse expected = NodeConverter.convert(nodeRepository.findAll().get(0));
-
-        NodeResponse actual = objectMapper.readValue(this.mockMvc.perform(delete("/nodes/" + expected.getId()))
+        String id = nodeRepository.findAll().get(0).getId();
+        this.mockMvc.perform(delete("/nodes/" + id))
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse().getContentAsString(), NodeResponse.class);
-
-        Assertions.assertEquals(expected, actual);
+                .andExpect(status().isOk());
+        Assertions.assertEquals(nodeRepository.findAll().size(), 2);
     }
 }
