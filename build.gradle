@@ -6,7 +6,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.8.RELEASE'
 }
 
-group = 'com.reckure'
+group = 'com.reckue'
 version = '1.0.SNAPSHOT'
 
 sourceCompatibility = 11
@@ -19,7 +19,7 @@ repositories {
         url = "https://maven.pkg.github.com/reckue/commons"
         credentials {
             username = 'egnaf'
-            password = '95db80628ed5e1e89e07269982a31ef26c0e69cd'
+            password = 'e80fe2ee8401801caeb509ba8aeb372c2e821190'
         }
     }
 }
@@ -51,7 +51,9 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.10'
 
     /* tests */
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
 
     /* devtools */
     runtimeOnly 'org.springframework.boot:spring-boot-devtools'
@@ -62,6 +64,10 @@ dependencies {
 
     /* reckue dependencies */
     implementation 'com.reckue:commons:0.0.2'
+}
+
+test {
+    useJUnitPlatform()
 }
 
 def profile = "develop"
