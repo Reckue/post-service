@@ -7,9 +7,10 @@ jdk: oraclejdk8
 
 cache:
   directories:
-    - $HOME/.gradle
+#    - $HOME/.gradle
 
 script:
+  - rm -rf .gradle
   - gradle wrapper --gradle-version 6.5 --distribution-type all
   - ./gradlew build
 
