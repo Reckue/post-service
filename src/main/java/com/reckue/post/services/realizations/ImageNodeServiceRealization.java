@@ -5,6 +5,7 @@ import com.reckue.post.exceptions.ModelNotFoundException;
 import com.reckue.post.models.ImageNode;
 import com.reckue.post.repositories.ImageNodeRepository;
 import com.reckue.post.services.ImageNodeService;
+import com.reckue.post.utils.Generator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +36,7 @@ public class ImageNodeServiceRealization implements ImageNodeService {
     @Override
     public ImageNode create(ImageNode imageNode) {
         if (!imageNodeRepository.existsById(imageNode.getId())) {
-            imageNode.setId(UUID.randomUUID().toString());
+            imageNode.setId(Generator.id());
             return imageNodeRepository.save(imageNode);
         } else {
             throw new ModelAlreadyExistsException("Image node already exists");

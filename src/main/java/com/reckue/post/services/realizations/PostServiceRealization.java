@@ -5,6 +5,7 @@ import com.reckue.post.exceptions.ModelNotFoundException;
 import com.reckue.post.models.Post;
 import com.reckue.post.repositories.PostRepository;
 import com.reckue.post.services.PostService;
+import com.reckue.post.utils.Generator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +35,7 @@ public class PostServiceRealization implements PostService {
      */
     @Override
     public Post create(Post post) {
-        post.setId(UUID.randomUUID().toString());
+        post.setId(Generator.id());
         if (!postRepository.existsById(post.getId())) {
             return postRepository.save(post);
         } else {
@@ -62,6 +63,7 @@ public class PostServiceRealization implements PostService {
         }
         Post savedPost = Post.builder()
                 .id(post.getId())
+                .username(post.getUsername())
                 .title(post.getTitle())
                 .nodes(post.getNodes())
                 .source(post.getSource())
@@ -138,6 +140,8 @@ public class PostServiceRealization implements PostService {
                 return findAllAndSortByStatus();
             case "id":
                 return findAllAndSortById();
+            case "username":
+                return findAllAndSortByUsername();
         }
         throw new IllegalArgumentException("Such field as" + sort + " doesn't exist");
     }
@@ -161,6 +165,17 @@ public class PostServiceRealization implements PostService {
     public List<Post> findAllAndSortByTitle() {
         return findAll().stream()
                 .sorted(Comparator.comparing(Post::getTitle))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * This method is used to sort objects by username.
+     *
+     * @return list of objects of class Post sorted by username
+     */
+    public List<Post> findAllAndSortByUsername() {
+        return findAll().stream()
+                .sorted(Comparator.comparing(Post::getUsername))
                 .collect(Collectors.toList());
     }
 

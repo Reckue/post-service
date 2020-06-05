@@ -5,6 +5,8 @@ import com.reckue.post.exceptions.ModelNotFoundException;
 import com.reckue.post.models.CodeNode;
 import com.reckue.post.repositories.CodeNodeRepository;
 import com.reckue.post.services.CodeNodeService;
+import com.reckue.post.utils.Generator;
+import lombok.Generated;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +37,7 @@ public class CodeNodeServiceRealization implements CodeNodeService {
     @Override
     public CodeNode create(CodeNode codeNode) {
         if (!codeNodeRepository.existsById(codeNode.getId())) {
-            codeNode.setId(UUID.randomUUID().toString());
+            codeNode.setId(Generator.id());
             return codeNodeRepository.save(codeNode);
         } else {
             throw new ModelAlreadyExistsException("Code node already exists");

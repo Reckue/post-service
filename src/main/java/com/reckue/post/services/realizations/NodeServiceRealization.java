@@ -5,6 +5,7 @@ import com.reckue.post.exceptions.ModelNotFoundException;
 import com.reckue.post.models.Node;
 import com.reckue.post.repositories.NodeRepository;
 import com.reckue.post.services.NodeService;
+import com.reckue.post.utils.Generator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +35,7 @@ public class NodeServiceRealization implements NodeService {
      */
     @Override
     public Node create(Node node) {
-        node.setId(UUID.randomUUID().toString());
+        node.setId(Generator.id());
         if (!nodeRepository.existsById(node.getId())) {
             return nodeRepository.save(node);
         } else {
@@ -62,6 +63,7 @@ public class NodeServiceRealization implements NodeService {
         }
         Node savedNode = Node.builder()
                 .id(node.getId())
+                .username(node.getUsername())
                 .type(node.getType())
                 .contentId(node.getContentId())
                 .source(node.getSource())
@@ -132,8 +134,12 @@ public class NodeServiceRealization implements NodeService {
                 return findAllAndSortBySource();
             case "published":
                 return findAllAndSortByPublished();
+            case "username":
+                return findAllAndSortByUsername();
+            case "id":
+                return findAllAndSortById();
         }
-        return findAllAndSortById();
+        throw new IllegalArgumentException("Such field as" + sort + " doesn't exist.");
     }
 
     /**
@@ -166,6 +172,17 @@ public class NodeServiceRealization implements NodeService {
     public List<Node> findAllAndSortByType() {
         return findAll().stream()
                 .sorted(Comparator.comparing(Node::getType))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * This method is used to sort objects by username.
+     *
+     * @return list of objects of class Node sorted by username
+     */
+    public List<Node> findAllAndSortByUsername() {
+        return findAll().stream()
+                .sorted(Comparator.comparing(Node::getUsername))
                 .collect(Collectors.toList());
     }
 

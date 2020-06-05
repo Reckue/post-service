@@ -20,6 +20,7 @@ public class NodeConverter {
     public static Node convert(NodeRequest nodeRequest) {
         return Node.builder()
                 .contentId(nodeRequest.getContentId())
+                .username(nodeRequest.getUsername())
                 .source(nodeRequest.getSource())
                 .type(nodeRequest.getType())
                 .status(nodeRequest.getStatus())
@@ -36,6 +37,7 @@ public class NodeConverter {
     public static NodeResponse convert(Node node) {
         return NodeResponse.builder()
                 .id(node.getId())
+                .username(node.getUsername())
                 .contentId(node.getContentId())
                 .source(node.getSource())
                 .type(node.getType())
