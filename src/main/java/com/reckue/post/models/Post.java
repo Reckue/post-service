@@ -7,6 +7,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
+/**
+ * Class Post is responsible for model that works with posts.
+ *
+ * @author Iveri Narozashvili
+ */
 @Data
 @Builder
 @Document

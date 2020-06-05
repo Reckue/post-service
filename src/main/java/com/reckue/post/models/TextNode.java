@@ -4,6 +4,11 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+/**
+ * Class TextNode represents model of text fields.
+ *
+ * @author Iveri Narozashvili
+ */
 @Data
 @Document
 public class TextNode {
