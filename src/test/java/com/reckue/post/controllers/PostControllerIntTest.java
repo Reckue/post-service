@@ -93,12 +93,12 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
     }
 
     @Test
-    public void load() {
+    public void loadTest() {
         assertThat(postController).isNotNull();
     }
 
     @Test
-    public void findById() throws Exception {
+    public void findByIdTest() throws Exception {
         PostResponse expected = PostConverter.convert(postRepository.findAll().get(0));
 
         PostResponse actual = objectMapper.readValue(this.mockMvc
@@ -112,7 +112,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
     }
 
     @Test
-    public void findAllSortedByIdDesc() throws Exception {
+    public void findAllSortedByIdDescTest() throws Exception {
         List<PostResponse> expected = postRepository.findAll().stream()
                 .map(PostConverter::convert)
                 .sorted(Comparator.comparing(PostResponse::getId))
@@ -136,7 +136,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
     }
 
     @Test
-    public void findAllSortedByTitleAsc() throws Exception {
+    public void findAllSortedByTitleAscTest() throws Exception {
         List<PostResponse> expected = postRepository.findAll().stream()
                 .map(PostConverter::convert)
                 .sorted(Comparator.comparing(PostResponse::getTitle))
@@ -155,7 +155,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
     }
 
     @Test
-    public void findAllSortedBySourceDesc() throws Exception {
+    public void findAllSortedBySourceDescTest() throws Exception {
         List<PostResponse> expected = postRepository.findAll().stream()
                 .map(PostConverter::convert)
                 .sorted(Comparator.comparing(PostResponse::getSource))
@@ -179,7 +179,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
     }
 
     @Test
-    public void findAllSortedByPublishedAsc() throws Exception {
+    public void findAllSortedByPublishedAscTest() throws Exception {
         List<PostResponse> expected = postRepository.findAll().stream()
                 .map(PostConverter::convert)
                 .sorted(Comparator.comparing(PostResponse::getPublished))
@@ -198,7 +198,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
     }
 
     @Test
-    public void findAllSortedByChangedDesc() throws Exception {
+    public void findAllSortedByChangedDescTest() throws Exception {
         List<PostResponse> expected = postRepository.findAll().stream()
                 .map(PostConverter::convert)
                 .sorted(Comparator.comparing(PostResponse::getChanged))
@@ -223,7 +223,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
     }
 
     @Test
-    public void findAllSortedByStatusAsc() throws Exception {
+    public void findAllSortedByStatusAscTest() throws Exception {
         List<PostResponse> expected = postRepository.findAll().stream()
                 .map(PostConverter::convert)
                 .sorted(Comparator.comparing(PostResponse::getStatus))
@@ -243,7 +243,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
     }
 
     @Test
-    public void save() throws Exception {
+    public void saveTest() throws Exception {
         PostRequest postRequest = PostRequest.builder()
                 .title("news")
                 .nodes(null)
@@ -272,7 +272,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
     }
 
     @Test
-    public void update() throws Exception {
+    public void updateTest() throws Exception {
         PostRequest postRequest = PostRequest.builder()
                 .title("title")
                 .nodes(null)
@@ -301,7 +301,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
     }
 
     @Test
-    void deleteById() throws Exception {
+    void deleteByIdTest() throws Exception {
         int size = postRepository.findAll().size();
         this.mockMvc.perform(delete("/posts/" + postRepository.findAll().get(0).getId()))
                 .andDo(print())
