@@ -1,12 +1,16 @@
 language: java
-jdk: openjdk11
 install: true
+
+os: linux
+dist: trusty
+jdk: oraclejdk8
 
 cache:
   directories:
     - $HOME/.gradle
 
 script:
+  - gradle wrapper
   - ./gradlew build
 
 notifications:
