@@ -1,12 +1,12 @@
 package com.reckue.post.transfers;
 
+import com.reckue.post.utils.NodeContent;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-public class ListNodeResponse {
+public class ListNodeResponse implements NodeContent {
 
-    private String id;
     private List<String> content;
 }

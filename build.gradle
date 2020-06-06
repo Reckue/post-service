@@ -79,11 +79,11 @@ tasks.withType(Checkstyle) {
     }
 }
 
-def profile = "develop"
-
 test {
     useJUnitPlatform()
 }
+
+def profile = "develop"
 
 bootRun {
     args = ["--spring.profiles.active=" + profile]
