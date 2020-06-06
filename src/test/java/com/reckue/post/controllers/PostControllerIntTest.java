@@ -37,7 +37,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @ActiveProfiles("staging")
 @AutoConfigureMockMvc
-@SuppressWarnings("unused")
 public class PostControllerIntTest extends PostServiceApplicationTests {
 
     @Autowired
@@ -54,6 +53,8 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
 
     @BeforeEach
     public void setUp() {
+        postRepository.deleteAll();
+
         postRepository.save(Post.builder()
                 .id("4")
                 .title("oracle")
@@ -301,7 +302,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
     }
 
     @Test
-    void deleteByIdTest() throws Exception {
+    public void deleteByIdTest() throws Exception {
         int size = postRepository.findAll().size();
         this.mockMvc.perform(delete("/posts/" + postRepository.findAll().get(0).getId()))
                 .andDo(print())
