@@ -1,22 +1,15 @@
 package com.reckue.post.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.reckue.post.exceptions.ModelNotFoundException;
+import com.reckue.post.PostServiceApplicationTests;
 import com.reckue.post.models.Node;
 import com.reckue.post.models.NodeType;
-import com.reckue.post.models.Post;
 import com.reckue.post.models.StatusType;
 import com.reckue.post.repositories.NodeRepository;
-import com.reckue.post.repositories.PostRepository;
 import com.reckue.post.transfers.NodeRequest;
 import com.reckue.post.transfers.NodeResponse;
-import com.reckue.post.transfers.PostResponse;
-import com.reckue.post.utils.converters.Converter;
 import com.reckue.post.utils.converters.NodeConverter;
-import com.reckue.post.utils.converters.PostConverter;
-import org.junit.Before;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,23 +27,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * Class PostControllerIntTest is the integration type of test
- * todo all tests for all methods
- * todo test for findAll method with all parameters and cases
+ * Class NodeControllerIntTest is the integration type of test
  *
- * @author Kamila Meshcheryakova
+ * @author Viktor Grigoriev
  */
-@SpringBootTest
 @ActiveProfiles("staging")
 @AutoConfigureMockMvc
-public class NodeControllerIntTest {
+public class NodeControllerIntTest extends PostServiceApplicationTests {
 
     @Autowired
     private MockMvc mockMvc;
@@ -66,6 +54,8 @@ public class NodeControllerIntTest {
 
     @BeforeEach
     public void setUp() {
+        nodeRepository.deleteAll();
+
         nodeRepository.save(Node.builder()
                 .id("1")
                 .username("Alex")
@@ -83,6 +73,7 @@ public class NodeControllerIntTest {
     @Test
     public void load() {
         assertThat(nodeController).isNotNull();
+        System.out.println(nodeRepository.findAll().size());
     }
 
     @Test
@@ -98,11 +89,13 @@ public class NodeControllerIntTest {
                 .limit(2)
                 .collect(Collectors.toList());
 
-        List<NodeResponse> actual = objectMapper.readValue(this.mockMvc.perform(get("/nodes?desc=true&limit=2&offset=0&sort=id"))
+        List<NodeResponse> actual = objectMapper
+                .readValue(this.mockMvc.perform(get("/nodes?desc=true&limit=2&offset=0&sort=id"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn()
-                .getResponse().getContentAsString(), new TypeReference<>() {});
+                .getResponse().getContentAsString(), new TypeReference<>() {
+        });
 
         Assertions.assertEquals(expected, actual);
     }
@@ -114,11 +107,13 @@ public class NodeControllerIntTest {
                 .limit(3)
                 .collect(Collectors.toList());
 
-        List<NodeResponse> actual = objectMapper.readValue(this.mockMvc.perform(get("/nodes?desc=false&limit=3&offset=0&sort=id"))
+        List<NodeResponse> actual = objectMapper
+                .readValue(this.mockMvc.perform(get("/nodes?desc=false&limit=3&offset=0&sort=id"))
                 .andDo(print()).andExpect(status()
                         .isOk())
                 .andReturn()
-                .getResponse().getContentAsString(), new TypeReference<>() {});
+                .getResponse().getContentAsString(), new TypeReference<>() {
+        });
 
         Assertions.assertEquals(expected, actual);
     }
@@ -131,11 +126,13 @@ public class NodeControllerIntTest {
                 .limit(2)
                 .collect(Collectors.toList());
 
-        List<NodeResponse> actual = objectMapper.readValue(this.mockMvc.perform(get("/nodes?desc=false&limit=2&offset=0&sort=username"))
+        List<NodeResponse> actual = objectMapper
+                .readValue(this.mockMvc.perform(get("/nodes?desc=false&limit=2&offset=0&sort=username"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn()
-                .getResponse().getContentAsString(), new TypeReference<>() {});
+                .getResponse().getContentAsString(), new TypeReference<>() {
+        });
 
         Assertions.assertEquals(expected, actual);
     }
@@ -153,11 +150,13 @@ public class NodeControllerIntTest {
                 .limit(2)
                 .collect(Collectors.toList());
 
-        List<NodeResponse> actual = objectMapper.readValue(this.mockMvc.perform(get("/nodes?desc=true&limit=2&offset=0&sort=username"))
+        List<NodeResponse> actual = objectMapper
+                .readValue(this.mockMvc.perform(get("/nodes?desc=true&limit=2&offset=0&sort=username"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn()
-                .getResponse().getContentAsString(), new TypeReference<>() {});
+                .getResponse().getContentAsString(), new TypeReference<>() {
+        });
 
         Assertions.assertEquals(expected, actual);
     }
@@ -184,7 +183,7 @@ public class NodeControllerIntTest {
                 .status(StatusType.ACTIVE)
                 .build());
 
-        String json =  objectMapper.writeValueAsString(NodeRequest.builder()
+        String json = objectMapper.writeValueAsString(NodeRequest.builder()
                 .source("source")
                 .type(NodeType.TEXT)
                 .status(StatusType.ACTIVE)
@@ -207,7 +206,7 @@ public class NodeControllerIntTest {
 
     @Test
     void save() throws Exception {
-        String json =  objectMapper.writeValueAsString(NodeRequest.builder()
+        String json = objectMapper.writeValueAsString(NodeRequest.builder()
                 .source("source")
                 .type(NodeType.TEXT)
                 .status(StatusType.ACTIVE)
