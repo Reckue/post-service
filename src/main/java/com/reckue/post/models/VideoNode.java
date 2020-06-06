@@ -1,7 +1,8 @@
 package com.reckue.post.models;
 
+import com.reckue.post.utils.NodeContent;
+
 import lombok.Data;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -11,10 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Data
 @Document
-public class VideoNode {
+public class VideoNode implements NodeContent {
 
-	@Id
-	private String id;
-	
-	private String videoUrl;
+    private String videoUrl;
 }
