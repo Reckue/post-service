@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -65,7 +64,6 @@ public class NodeServiceRealization implements NodeService {
                 .id(node.getId())
                 .username(node.getUsername())
                 .type(node.getType())
-                .contentId(node.getContentId())
                 .source(node.getSource())
                 .status(node.getStatus())
                 .published(node.getPublished())

@@ -1,7 +1,8 @@
 package com.reckue.post.models;
 
+import com.reckue.post.utils.NodeContent;
+
 import lombok.Data;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -13,10 +14,7 @@ import java.util.List;
  */
 @Data
 @Document
-public class ListNode {
+public class ListNode implements NodeContent {
 
-	@Id
-	private String id;
-	
 	private List<String> content;
 }
