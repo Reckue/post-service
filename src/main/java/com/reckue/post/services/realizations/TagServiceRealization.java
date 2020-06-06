@@ -8,7 +8,9 @@ import com.reckue.post.repositories.TagRepository;
 import com.reckue.post.services.TagService;
 import com.reckue.post.utils.Generator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -90,6 +92,9 @@ public class TagServiceRealization implements TagService {
      */
     @Override
     public List<Tag> findAll(int limit, int offset, String sort, boolean desc) {
+        if (limit < 0 || offset < 0) {
+            throw new IllegalArgumentException("Limit or offset is incorrect");
+        }
         return findAllByTypeAndDesc(sort, desc).stream()
                 .limit(limit)
                 .skip(offset)
