@@ -2,6 +2,8 @@ language: java
 jdk: openjdk11
 install: true
 
+services: mongodb
+
 cache:
   directories:
     - $HOME/.gradle

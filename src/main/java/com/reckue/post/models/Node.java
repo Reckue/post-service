@@ -5,6 +5,11 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+/**
+ * Class Node is responsible for displaying all types of nodes.
+ *
+ * @author Iveri Narozashvili
+ */
 @Data
 @Builder
 @Document
