@@ -16,6 +16,9 @@ repositories {
 }
 
 dependencies {
+    /* for properties */
+    implementation 'org.springframework.boot:spring-boot-configuration-processor'
+
     /* web */
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
