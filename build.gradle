@@ -16,11 +16,11 @@ repositories {
     mavenLocal()
     mavenCentral()
     maven {
-        name = "ReckueOpenSource"
+        name = "github"
         url = "https://maven.pkg.github.com/reckue/commons"
         credentials {
-            username = System.getenv("USERNAME")
-            password = System.getenv("TOKEN")
+            username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+            password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
         }
         authentication {
             basic(BasicAuthentication)
