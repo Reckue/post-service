@@ -5,6 +5,9 @@ os: linux
 dist: trusty
 jdk: oraclejdk11
 
+services: mongodb
+
+
 cache:
   directories:
     - $HOME/.gradle

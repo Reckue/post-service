@@ -5,6 +5,11 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+/**
+ * Class Tag is responsible for model that works with tags.
+ *
+ * @author Iveri Narozashvili
+ */
 @Data
 @Document
 @Builder
