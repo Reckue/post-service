@@ -19,8 +19,8 @@ repositories {
         name = "ReckueOpenSource"
         url = "https://maven.pkg.github.com/reckue/commons"
         credentials {
-            username = project.findProperty("github.username")
-            password = project.findProperty("github.token")
+            username = System.getenv("USERNAME")
+            password = System.getenv("TOKEN")
         }
         authentication {
             basic(BasicAuthentication)
