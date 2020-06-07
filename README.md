@@ -24,7 +24,7 @@ Post has type describing status of activity:
 - banned;
 - moderated.
 
-# Сustomization of Docker
+# customization of docker
 ## Step 1
 Install docker.
 
