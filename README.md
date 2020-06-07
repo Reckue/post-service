@@ -54,7 +54,7 @@ docker build -t reckue/post .
 ```
 
 ## Step 4
-Run this image in a container:
+Run this image in the container:
 ```
 docker run -p 8080:9002 -t reckue/post
 ```
