@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ActiveProfiles("staging")
 @AutoConfigureMockMvc
-public class TagControllerTest extends PostServiceApplicationTests {
+public class TagControllerIntegrationTest extends PostServiceApplicationTests {
 
     @Autowired
     private TagController controller;
