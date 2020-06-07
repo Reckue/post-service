@@ -62,4 +62,8 @@ Run this image in the container:
 docker run -p 8080:9002 -t reckue/post
 ```
 
-
+## Step 5
+Run with a spring profile image in the container:
+```
+docker run -e "--spring.profiles.active=develop" -p 8080:9002 -t reckue/post
+```
