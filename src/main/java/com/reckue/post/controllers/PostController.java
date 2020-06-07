@@ -90,5 +90,4 @@ public class PostController {
     public void deleteById(@PathVariable String id) {
         postService.deleteById(id);
     }
-
 }
