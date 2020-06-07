@@ -33,10 +33,8 @@ For use:
 - java -jar 1.0.SNAPSHOT.jar
 
 
+# Customization of docker
 
-
-
-# customization of docker
 ## Step 1
 Install docker.
 
