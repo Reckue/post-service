@@ -43,7 +43,6 @@ Install docker.
 ## Step 2
 Add Dockerfile to root directory:
 ```java
-# Dockerfile
 FROM adoptopenjdk/openjdk11:alpine-jre
 ARG JAR_FILE=build/libs/*.jar
 COPY ${JAR_FILE} app.jar
