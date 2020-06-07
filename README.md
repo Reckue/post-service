@@ -33,3 +33,30 @@ For use:
 - java -jar 1.0.SNAPSHOT.jar
 
 
+# customization of docker
+## Step 1
+Install docker.
+
+## Step 2
+Add Dockerfile to root directory:
+```java
+# Dockerfile
+FROM adoptopenjdk/openjdk11:alpine-jre
+ARG JAR_FILE=build/libs/*.jar
+COPY ${JAR_FILE} app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]
+```
+
+## Step 3
+Build and create an image:
+```
+docker build -t reckue/post .
+```
+
+## Step 4
+Run this image in a container:
+```
+docker run -p 8080:9002 -t reckue/post
+```
+
+
