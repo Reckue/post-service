@@ -1,4 +1,4 @@
---- # develop
+--- # develop # ---
 server:
   port: 9002
 
@@ -11,26 +11,24 @@ MONGO_PORT: 27017
 MONGO_DBNAME: mongo-develop
 
 
---- # staging
+--- # staging # ---
 server:
   port: 9003
 
 spring:
-  profiles:
-    active: staging
+  profiles: staging
 
 MONGO_URI: mongodb://127.0.0.1
 MONGO_PORT: 27017
 MONGO_DBNAME: mongo-staging
 
 
---- # cloud
+--- # cloud # ---
 server:
   port: 9004
 
 spring:
-  profiles:
-    active: cloud
+  profiles: cloud
 
 MONGO_URI: mongodb://127.0.0.1
 MONGO_PORT: 27017
