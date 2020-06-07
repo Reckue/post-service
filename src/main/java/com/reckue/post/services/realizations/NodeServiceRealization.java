@@ -7,12 +7,13 @@ import com.reckue.post.repositories.NodeRepository;
 import com.reckue.post.services.NodeService;
 import com.reckue.post.utils.Generator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -65,7 +66,6 @@ public class NodeServiceRealization implements NodeService {
                 .id(node.getId())
                 .username(node.getUsername())
                 .type(node.getType())
-                .contentId(node.getContentId())
                 .source(node.getSource())
                 .status(node.getStatus())
                 .published(node.getPublished())
@@ -95,6 +95,9 @@ public class NodeServiceRealization implements NodeService {
      */
     @Override
     public List<Node> findAll(int limit, int offset, String sort, boolean desc) {
+        if (limit < 0 || offset < 0) {
+            throw new IllegalArgumentException("Limit or offset is incorrect");
+        }
         return findAllByTypeAndDesc(sort, desc).stream()
                 .limit(limit)
                 .skip(offset)

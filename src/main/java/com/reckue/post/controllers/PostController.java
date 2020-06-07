@@ -58,7 +58,7 @@ public class PostController {
      * @return the object of class PostResponse
      */
     @GetMapping("/{id}")
-    public PostResponse getById(@PathVariable String id) {
+    public PostResponse findById(@PathVariable String id) {
         return convert(postService.findById(id));
     }
 
@@ -73,7 +73,7 @@ public class PostController {
      * sorted by the selected parameter for sorting in descending order
      */
     @GetMapping
-    public List<PostResponse> getAll(@RequestParam int limit, @RequestParam int offset,
+    public List<PostResponse> findAll(@RequestParam int limit, @RequestParam int offset,
                                      @RequestParam String sort, @RequestParam boolean desc) {
 
         return postService.findAll(limit, offset, sort, desc).stream()
@@ -86,7 +86,7 @@ public class PostController {
      *
      * @param id the object identifier
      */
-    @DeleteMapping("{/id}")
+    @DeleteMapping("/{id}")
     public void deleteById(@PathVariable String id) {
         postService.deleteById(id);
     }

@@ -18,9 +18,10 @@ public class NodeConverter {
      * @return the object of class Node
      */
     public static Node convert(NodeRequest nodeRequest) {
+
         return Node.builder()
-                .contentId(nodeRequest.getContentId())
                 .username(nodeRequest.getUsername())
+                .content(nodeRequest.getContent())
                 .source(nodeRequest.getSource())
                 .type(nodeRequest.getType())
                 .status(nodeRequest.getStatus())
@@ -37,12 +38,14 @@ public class NodeConverter {
     public static NodeResponse convert(Node node) {
         return NodeResponse.builder()
                 .id(node.getId())
+                .content(node.getContent())
                 .username(node.getUsername())
-                .contentId(node.getContentId())
                 .source(node.getSource())
                 .type(node.getType())
                 .status(node.getStatus())
                 .published(node.getPublished())
                 .build();
     }
+
+
 }

@@ -97,6 +97,9 @@ public class PostServiceRealization implements PostService {
      */
     @Override
     public List<Post> findAll(int limit, int offset, String sort, boolean desc) {
+        if (limit < 0 || offset < 0) {
+            throw new IllegalArgumentException("Limit or offset is incorrect");
+        }
         return findAllByTypeAndDesc(sort, desc).stream()
                 .limit(limit)
                 .skip(offset)

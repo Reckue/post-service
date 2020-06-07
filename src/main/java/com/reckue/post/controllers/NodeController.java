@@ -34,7 +34,7 @@ public class NodeController {
      * @return the object of class NodeResponse
      */
     @PostMapping
-    public NodeResponse create(@RequestBody @Valid NodeRequest nodeRequest) {
+    public NodeResponse create(@RequestBody @Valid NodeRequest nodeRequest ) {
         return convert(nodeService.create(convert(nodeRequest)));
     }
 

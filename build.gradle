@@ -16,6 +16,9 @@ repositories {
 }
 
 dependencies {
+    /* for properties */
+    implementation 'org.springframework.boot:spring-boot-configuration-processor'
+
     /* web */
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
@@ -42,7 +45,12 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.10'
 
     /* test */
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+
+    /* test */
+    testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
 
     /* devtools */
     runtimeOnly 'org.springframework.boot:spring-boot-devtools'
@@ -72,6 +80,10 @@ tasks.withType(Checkstyle) {
         html.enabled true
         html.stylesheet resources.text.fromFile('config/checkstyle/report.xsl')
     }
+}
+
+test {
+    useJUnitPlatform()
 }
 
 def profile = "develop"

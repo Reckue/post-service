@@ -2,18 +2,21 @@ package com.reckue.post.transfers;
 
 import com.reckue.post.models.NodeType;
 import com.reckue.post.models.StatusType;
+import com.reckue.post.utils.NodeContent;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Data
+@Builder
 public class NodeRequest {
 
     @NotNull
     private NodeType type;
 
-    private String contentId;
+    private NodeContent content;
 
     private String username;
 

@@ -1,3 +1,4 @@
+--- # develop # ---
 server:
   port: 9002
 
@@ -5,32 +6,30 @@ spring:
   profiles:
     active: develop
 
-  data:
-    mongodb:
-      uri: mongodb://localhost:27017/mongo-local
+MONGO_URI: mongodb://127.0.0.1
+MONGO_PORT: 27017
+MONGO_DBNAME: mongo-develop
 
----
 
+--- # staging # ---
 server:
   port: 9003
 
 spring:
-  profiles:
-    active: staging
+  profiles: staging
 
-    data:
-      mongodb:
-        uri: mongodb://localhost:27017/mongo-local
+MONGO_URI: mongodb://127.0.0.1
+MONGO_PORT: 27017
+MONGO_DBNAME: mongo-staging
 
----
 
+--- # cloud # ---
 server:
   port: 9004
 
 spring:
-  profiles:
-    active: cloud
+  profiles: cloud
 
-    data:
-      mongodb:
-        uri: mongodb://localhost:27017/mongo-local
+MONGO_URI: mongodb://127.0.0.1
+MONGO_PORT: 27017
+MONGO_DBNAME: mongo-cloud
