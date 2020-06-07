@@ -23,10 +23,25 @@ public class CustomExceptionHandler {
                 e.getMessage(), HttpStatus.CONFLICT, HttpStatus.CONFLICT.value()),
                 HttpStatus.CONFLICT);
     }
+
     @ExceptionHandler(ModelNotFoundException.class)
     public ResponseEntity<?> handleModelNotFoundException(ModelNotFoundException e) {
         return new ResponseEntity<>(new ErrorResponse(
                 e.getMessage(), HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND.value()),
                 HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<?> handleIllegalArgumentException(IllegalArgumentException e) {
+        return new ResponseEntity<>(new ErrorResponse(
+                e.getMessage(), HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value()),
+                HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<?> handleIllegalArgumentException(Exception e) {
+        return new ResponseEntity<>(new ErrorResponse(
+                e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR.value()),
+                HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
