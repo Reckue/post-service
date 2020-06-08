@@ -21,5 +21,6 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
+          mongodb-version: 4.2
       - name: Build
         run: gradle build
