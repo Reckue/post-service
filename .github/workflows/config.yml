@@ -1,0 +1,16 @@
+build:
+  runs_on: ubuntu-latest
+  steps:
+    - name: Build project
+      run: |
+        echo "Start building..."
+        gradle build
+
+deploy:
+  runs_on: ubuntu-latest
+  needs: [build]
+  steps:
+    - name: Deploy project
+      run: |
+        echo "Start building..."
+        gradle build
