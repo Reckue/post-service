@@ -1,19 +1,19 @@
 package com.reckue.post.controllers;
 
-import com.reckue.post.utils.converters.NodeConverter;
+import com.reckue.post.controllers.apis.NodeApi;
 import com.reckue.post.models.Node;
 import com.reckue.post.services.NodeService;
 import com.reckue.post.transfers.NodeRequest;
 import com.reckue.post.transfers.NodeResponse;
+import com.reckue.post.utils.converters.NodeConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-
-import static com.reckue.post.utils.converters.NodeConverter.*;
-
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.reckue.post.utils.converters.NodeConverter.convert;
 
 /**
  * Class NodeController is responsible for processing incoming requests.
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/nodes")
-public class NodeController {
+public class NodeController implements NodeApi {
 
     private final NodeService nodeService;
 
@@ -34,7 +34,7 @@ public class NodeController {
      * @return the object of class NodeResponse
      */
     @PostMapping
-    public NodeResponse create(@RequestBody @Valid NodeRequest nodeRequest ) {
+    public NodeResponse create(@RequestBody @Valid NodeRequest nodeRequest) {
         return convert(nodeService.create(convert(nodeRequest)));
     }
 

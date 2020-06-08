@@ -1,17 +1,24 @@
 package com.reckue.post.configs;
 
+import com.fasterxml.classmate.TypeResolver;
+import com.reckue.post.transfers.ErrorResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.builders.ResponseMessageBuilder;
+import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 /**
  * Class SwaggerConfig set up settings for swagger.
@@ -38,13 +45,61 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
      * @return instance of the implementation of the interface Docket
      */
     @Bean
-    public Docket api() {
+    public Docket api(TypeResolver typeResolver) {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.reckue.post.controllers"))
                 .paths(PathSelectors.any())
-                .build();
+                .build()
+                .useDefaultResponseMessages(false)
+                .additionalModels(typeResolver.resolve(ErrorResponse.class))
+                .globalResponseMessage(RequestMethod.POST, newArrayList(new ResponseMessageBuilder().code(409)
+                                .message("CONFLICT")
+                                .responseModel(new ModelRef("ErrorResponse"))
+                                .build(),
+                        new ResponseMessageBuilder().code(500)
+                                .message("INTERNAL_SERVER_ERROR")
+                                .responseModel(new ModelRef("ErrorResponse"))
+                                .build()))
+                .useDefaultResponseMessages(false)
+                .additionalModels(typeResolver.resolve(ErrorResponse.class))
+                .globalResponseMessage(RequestMethod.PUT, newArrayList(new ResponseMessageBuilder().code(400)
+                                        .message("BAD_REQUEST")
+                                        .responseModel(new ModelRef("ErrorResponse"))
+                                        .build(),
+                        new ResponseMessageBuilder().code(404)
+                                .message("NOT_FOUND")
+                                .responseModel(new ModelRef("ErrorResponse"))
+                                .build(),
+                                new ResponseMessageBuilder().code(500)
+                                        .message("INTERNAL_SERVER_ERROR")
+                                        .responseModel(new ModelRef("ErrorResponse"))
+                                        .build()))
+                .useDefaultResponseMessages(false)
+                .additionalModels(typeResolver.resolve(ErrorResponse.class))
+                .globalResponseMessage(RequestMethod.GET, newArrayList(new ResponseMessageBuilder().code(400)
+                                .message("BAD_REQUEST")
+                                .responseModel(new ModelRef("ErrorResponse"))
+                                .build(),
+                        new ResponseMessageBuilder().code(404)
+                                .message("NOT_FOUND")
+                                .responseModel(new ModelRef("ErrorResponse"))
+                                .build(),
+                        new ResponseMessageBuilder().code(500)
+                                .message("INTERNAL_SERVER_ERROR")
+                                .responseModel(new ModelRef("ErrorResponse"))
+                                .build()))
+                .useDefaultResponseMessages(false)
+                .additionalModels(typeResolver.resolve(ErrorResponse.class))
+                .globalResponseMessage(RequestMethod.DELETE, newArrayList(new ResponseMessageBuilder().code(404)
+                                .message("NOT_FOUND")
+                                .responseModel(new ModelRef("ErrorResponse"))
+                                .build(),
+                        new ResponseMessageBuilder().code(500)
+                                .message("INTERNAL_SERVER_ERROR")
+                                .responseModel(new ModelRef("ErrorResponse"))
+                                .build()));
     }
 
     /**

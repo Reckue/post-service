@@ -24,6 +24,6 @@ public class Node {
     private NodeContent content;
     private String source;
     private String username;
-    private StatusType status;
     private long published;
+    private StatusType status;
 }

@@ -1,10 +1,11 @@
 package com.reckue.post.controllers;
 
-import com.reckue.post.utils.converters.PostConverter;
+import com.reckue.post.controllers.apis.PostApi;
 import com.reckue.post.models.Post;
 import com.reckue.post.services.PostService;
 import com.reckue.post.transfers.PostRequest;
 import com.reckue.post.transfers.PostResponse;
+import com.reckue.post.utils.converters.PostConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +23,7 @@ import static com.reckue.post.utils.converters.PostConverter.convert;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/posts")
-public class PostController {
+public class PostController implements PostApi {
 
     private final PostService postService;
 
@@ -74,7 +75,7 @@ public class PostController {
      */
     @GetMapping
     public List<PostResponse> findAll(@RequestParam int limit, @RequestParam int offset,
-                                     @RequestParam String sort, @RequestParam boolean desc) {
+                                      @RequestParam String sort, @RequestParam boolean desc) {
 
         return postService.findAll(limit, offset, sort, desc).stream()
                 .map(PostConverter::convert)
