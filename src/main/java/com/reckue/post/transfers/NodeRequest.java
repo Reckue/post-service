@@ -3,6 +3,7 @@ package com.reckue.post.transfers;
 import com.reckue.post.models.NodeType;
 import com.reckue.post.models.StatusType;
 import com.reckue.post.utils.NodeContent;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
 
@@ -14,18 +15,24 @@ import javax.validation.constraints.Size;
 public class NodeRequest {
 
     @NotNull
+    @ApiModelProperty(notes = "Node type")
     private NodeType type;
 
+    @ApiModelProperty(notes = "Type of node content")
     private NodeContent content;
 
-    private String username;
-
     @Size(max=128)
+    @ApiModelProperty(notes = "The source used to write the node")
     private String source;
 
-    @NotNull
-    private StatusType status;
+    @ApiModelProperty(notes = "Node author")
+    private String username;
 
     @NotNull
+    @ApiModelProperty(notes = "Publication date")
     private long published;
+
+    @NotNull
+    @ApiModelProperty(notes = "Node activity status")
+    private StatusType status;
 }
