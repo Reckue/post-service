@@ -13,10 +13,10 @@ import java.util.List;
 @Builder
 public class PostResponse {
 
-    @ApiModelProperty(notes = "The database generated post ID")
+    @ApiModelProperty(notes = "Database generated post ID")
     private String id;
 
-    @ApiModelProperty(notes = "The post title")
+    @ApiModelProperty(notes = "Post title")
     private String title;
 
     @ApiModelProperty(notes = "List of nodes the post consists of")
@@ -25,7 +25,7 @@ public class PostResponse {
     @ApiModelProperty(notes = "The source used to write the post")
     private String source;
 
-    @ApiModelProperty(notes = "The post's author")
+    @ApiModelProperty(notes = "Post author")
     private String username;
 
     @ApiModelProperty(notes = "List of keywords used in the post")

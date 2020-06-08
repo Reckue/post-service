@@ -16,7 +16,7 @@ import java.util.List;
 public class PostRequest {
 
     @NotNull
-    @ApiModelProperty(notes = "The post title")
+    @ApiModelProperty(notes = "Post title")
     private String title;
 
     @ApiModelProperty(notes = "List of nodes the post consists of")
@@ -26,7 +26,7 @@ public class PostRequest {
     @ApiModelProperty(notes = "The source used to write the post")
     private String source;
 
-    @ApiModelProperty(notes = "The post's author")
+    @ApiModelProperty(notes = "Post author")
     private String username;
 
     @ApiModelProperty(notes = "List of keywords used in the post")
