@@ -1,5 +1,6 @@
 package com.reckue.post.controllers;
 
+import com.reckue.post.controllers.apis.TagApiController;
 import com.reckue.post.utils.converters.TagConverter;
 import com.reckue.post.models.Tag;
 import com.reckue.post.services.TagService;
@@ -22,7 +23,7 @@ import static com.reckue.post.utils.converters.TagConverter.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/tags")
-public class TagController {
+public class TagController implements TagApiController {
 
     private final TagService tagService;
 
