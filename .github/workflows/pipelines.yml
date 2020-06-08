@@ -1,4 +1,4 @@
-name: Piplelines
+name: pipelines
 
 on:
   push:
