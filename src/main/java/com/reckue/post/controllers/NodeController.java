@@ -1,23 +1,19 @@
 package com.reckue.post.controllers;
 
-import com.reckue.post.controllers.apis.NodeApiController;
-import com.reckue.post.utils.converters.NodeConverter;
+import com.reckue.post.controllers.apis.NodeApi;
 import com.reckue.post.models.Node;
 import com.reckue.post.services.NodeService;
 import com.reckue.post.transfers.NodeRequest;
 import com.reckue.post.transfers.NodeResponse;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import com.reckue.post.utils.converters.NodeConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-
-import static com.reckue.post.utils.converters.NodeConverter.*;
-
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.reckue.post.utils.converters.NodeConverter.convert;
 
 /**
  * Class NodeController is responsible for processing incoming requests.
@@ -27,7 +23,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/nodes")
-public class NodeController implements NodeApiController {
+public class NodeController implements NodeApi {
 
     private final NodeService nodeService;
 
@@ -92,13 +88,6 @@ public class NodeController implements NodeApiController {
      *
      * @param id the object identifier
      */
-    @ApiOperation(value = "Delete a node")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "The node successfully deleted"),
-            @ApiResponse(code = 404, message = "The resource you were trying to delete is not found"),
-            @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")
-    }
-    )
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable String id) {
         nodeService.deleteById(id);

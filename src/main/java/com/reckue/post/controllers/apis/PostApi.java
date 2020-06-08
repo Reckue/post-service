@@ -6,18 +6,17 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 /**
- * Interface PostApiController allows to post annotations for swagger.
+ * Interface PostApi allows to post annotations for swagger.
  *
  * @author Kamila Meshcheryakova
  */
 @Api(tags = {"/posts"})
-public interface PostApiController {
+@SuppressWarnings("unused")
+public interface PostApi {
 
     @ApiOperation(value = "Add a post")
     @ApiResponses(value = {
@@ -26,8 +25,7 @@ public interface PostApiController {
             @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")
     }
     )
-    @PostMapping
-    PostResponse save(@RequestBody @Valid PostRequest postRequest);
+    PostResponse save(PostRequest postRequest);
 
     @ApiOperation(value = "Update a post")
     @ApiResponses(value = {
@@ -37,8 +35,7 @@ public interface PostApiController {
             @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")
     }
     )
-    @PutMapping("/{id}")
-    PostResponse update(@PathVariable String id, @RequestBody @Valid PostRequest postRequest);
+    PostResponse update(String id, PostRequest postRequest);
 
     @ApiOperation(value = "Search a post with an ID", response = PostResponse.class)
     @ApiResponses(value = {
@@ -47,8 +44,7 @@ public interface PostApiController {
             @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")
     }
     )
-    @GetMapping("/{id}")
-    PostResponse findById(@PathVariable String id);
+    PostResponse findById(String id);
 
     @ApiOperation(value = "View a list of available posts", response = PostResponse.class)
     @ApiResponses(value = {
@@ -58,9 +54,7 @@ public interface PostApiController {
             @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")
     }
     )
-    @GetMapping
-    List<PostResponse> findAll(@RequestParam int limit, @RequestParam int offset,
-                               @RequestParam String sort, @RequestParam boolean desc);
+    List<PostResponse> findAll(int limit, int offset, String sort, boolean desc);
 
     @ApiOperation(value = "Delete a post")
     @ApiResponses(value = {
@@ -69,6 +63,5 @@ public interface PostApiController {
             @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")
     }
     )
-    @DeleteMapping("/{id}")
-    void deleteById(@PathVariable String id);
+    void deleteById(String id);
 }

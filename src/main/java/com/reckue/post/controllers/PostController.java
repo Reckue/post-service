@@ -1,6 +1,6 @@
 package com.reckue.post.controllers;
 
-import com.reckue.post.controllers.apis.PostApiController;
+import com.reckue.post.controllers.apis.PostApi;
 import com.reckue.post.models.Post;
 import com.reckue.post.services.PostService;
 import com.reckue.post.transfers.PostRequest;
@@ -23,7 +23,7 @@ import static com.reckue.post.utils.converters.PostConverter.convert;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/posts")
-public class PostController implements PostApiController {
+public class PostController implements PostApi {
 
     private final PostService postService;
 

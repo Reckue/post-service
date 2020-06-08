@@ -1,22 +1,21 @@
 package com.reckue.post.controllers.apis;
 
-import com.reckue.post.transfers.*;
+import com.reckue.post.transfers.TagRequest;
+import com.reckue.post.transfers.TagResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 /**
- * Interface TagApiController allows to post annotations for swagger.
+ * Interface TagApi allows to post annotations for swagger.
  *
  * @author Kamila Meshcheryakova
  */
 @Api(tags = {"/tags"})
-public interface TagApiController {
+public interface TagApi {
 
     @ApiOperation(value = "Add a tag")
     @ApiResponses(value = {
@@ -25,8 +24,7 @@ public interface TagApiController {
             @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")
     }
     )
-    @PostMapping
-    TagResponse create(@RequestBody @Valid TagRequest tagRequest);
+    TagResponse create(TagRequest tagRequest);
 
     @ApiOperation(value = "Update a tag")
     @ApiResponses(value = {
@@ -36,8 +34,7 @@ public interface TagApiController {
             @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")
     }
     )
-    @PutMapping("/{id}")
-    TagResponse update(@PathVariable String id, @RequestBody @Valid TagRequest tagRequest);
+    TagResponse update(String id, TagRequest tagRequest);
 
     @ApiOperation(value = "View a list of available tags", response = TagResponse.class)
     @ApiResponses(value = {
@@ -47,9 +44,7 @@ public interface TagApiController {
             @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")
     }
     )
-    @GetMapping
-    List<TagResponse> findAll(@RequestParam int limit, @RequestParam int offset,
-                              @RequestParam String sort, @RequestParam boolean desc);
+    List<TagResponse> findAll(int limit, int offset, String sort, boolean desc);
 
     @ApiOperation(value = "Search a tag with an ID", response = TagResponse.class)
     @ApiResponses(value = {
@@ -58,8 +53,7 @@ public interface TagApiController {
             @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")
     }
     )
-    @GetMapping("/{id}")
-    TagResponse findById(@PathVariable String id);
+    TagResponse findById(String id);
 
     @ApiOperation(value = "Delete a tag")
     @ApiResponses(value = {
@@ -68,6 +62,5 @@ public interface TagApiController {
             @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")
     }
     )
-    @DeleteMapping("/{id}")
-    void deleteById(@PathVariable String id);
+    void deleteById(String id);
 }

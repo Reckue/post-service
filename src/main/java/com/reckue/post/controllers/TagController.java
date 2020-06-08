@@ -1,11 +1,11 @@
 package com.reckue.post.controllers;
 
-import com.reckue.post.controllers.apis.TagApiController;
-import com.reckue.post.utils.converters.TagConverter;
+import com.reckue.post.controllers.apis.TagApi;
 import com.reckue.post.models.Tag;
 import com.reckue.post.services.TagService;
 import com.reckue.post.transfers.TagRequest;
 import com.reckue.post.transfers.TagResponse;
+import com.reckue.post.utils.converters.TagConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +13,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.reckue.post.utils.converters.TagConverter.*;
+import static com.reckue.post.utils.converters.TagConverter.convert;
 
 /**
  * Class TagController is responsible for processing incoming requests.
@@ -23,7 +23,7 @@ import static com.reckue.post.utils.converters.TagConverter.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/tags")
-public class TagController implements TagApiController {
+public class TagController implements TagApi {
 
     private final TagService tagService;
 

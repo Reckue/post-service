@@ -13,12 +13,12 @@ import javax.validation.Valid;
 import java.util.List;
 
 /**
- * Interface NodeApiController allows to post annotations for swagger.
+ * Interface NodeApi allows to post annotations for swagger.
  *
  * @author Kamila Meshcheryakova
  */
 @Api(tags = {"/nodes"})
-public interface NodeApiController {
+public interface NodeApi {
 
     @ApiOperation(value = "Add a node")
     @ApiResponses(value = {
@@ -27,8 +27,7 @@ public interface NodeApiController {
             @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")
     }
     )
-    @PostMapping
-    NodeResponse create(@RequestBody @Valid NodeRequest nodeRequest);
+    NodeResponse create(NodeRequest nodeRequest);
 
     @ApiOperation(value = "Update a node")
     @ApiResponses(value = {
@@ -38,8 +37,7 @@ public interface NodeApiController {
             @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")
     }
     )
-    @PutMapping("/{id}")
-    NodeResponse update(@PathVariable String id, @RequestBody @Valid NodeRequest nodeRequest);
+    NodeResponse update(String id, NodeRequest nodeRequest);
 
     @ApiOperation(value = "View a list of available nodes", response = NodeResponse.class)
     @ApiResponses(value = {
@@ -49,9 +47,7 @@ public interface NodeApiController {
             @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")
     }
     )
-    @GetMapping
-    List<NodeResponse> findAll(@RequestParam int limit, @RequestParam int offset,
-                               @RequestParam String sort, @RequestParam boolean desc);
+    List<NodeResponse> findAll(int limit, int offset, String sort, boolean desc);
 
     @ApiOperation(value = "Search a node with an ID", response = NodeResponse.class)
     @ApiResponses(value = {
@@ -60,8 +56,7 @@ public interface NodeApiController {
             @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")
     }
     )
-    @GetMapping("/{id}")
-    NodeResponse findById(@PathVariable String id);
+    NodeResponse findById(String id);
 
     @ApiOperation(value = "Delete a node")
     @ApiResponses(value = {
@@ -70,6 +65,5 @@ public interface NodeApiController {
             @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")
     }
     )
-    @DeleteMapping("/{id}")
-    void deleteById(@PathVariable String id);
+    void deleteById(String id);
 }
