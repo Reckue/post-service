@@ -25,11 +25,11 @@ public class PostResponse {
     @ApiModelProperty(notes = "The source used to write the post")
     private String source;
 
-    @ApiModelProperty(notes = "List of keywords used in the post")
-    private List<Tag> tags;
-
     @ApiModelProperty(notes = "The post's author")
     private String username;
+
+    @ApiModelProperty(notes = "List of keywords used in the post")
+    private List<Tag> tags;
 
     @ApiModelProperty(notes = "Publication date")
     private long published;

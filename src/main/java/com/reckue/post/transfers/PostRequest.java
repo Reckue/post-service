@@ -22,12 +22,12 @@ public class PostRequest {
     @ApiModelProperty(notes = "List of nodes the post consists of")
     private List<Node> nodes;
 
-    @ApiModelProperty(notes = "The post's author")
-    private String username;
-
-    @Size(max=128)
+    @Size(max = 128)
     @ApiModelProperty(notes = "The source used to write the post")
     private String source;
+
+    @ApiModelProperty(notes = "The post's author")
+    private String username;
 
     @ApiModelProperty(notes = "List of keywords used in the post")
     private List<Tag> tags;

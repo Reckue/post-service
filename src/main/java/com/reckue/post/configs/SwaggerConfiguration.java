@@ -2,8 +2,6 @@ package com.reckue.post.configs;
 
 import com.fasterxml.classmate.TypeResolver;
 import com.reckue.post.transfers.ErrorResponse;
-import io.swagger.annotations.SwaggerDefinition;
-import io.swagger.annotations.Tag;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.RequestMethod;
