@@ -1,5 +1,7 @@
 # post-api
 
+<img src="https://github.com/reckue/post-api/workflows/Pipelines/badge.svg?branch=develop"><br>
+
 It's a service for posting articles about different programming languages:
 
 - JAVA;
