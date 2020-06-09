@@ -60,6 +60,10 @@ dependencies {
     implementation 'javax.xml.bind:jaxb-api:2.3.0' // for binding xml
 }
 
+checkstyle {
+    toolVersion = "7.2"
+}
+
 test {
     useJUnitPlatform()
 }
