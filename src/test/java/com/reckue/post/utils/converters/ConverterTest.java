@@ -5,8 +5,9 @@ import com.reckue.post.models.Tag;
 import com.reckue.post.transfers.TagResponse;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -51,9 +52,7 @@ class ConverterTest extends PostServiceApplicationTests {
                 .id("2")
                 .name("camelya")
                 .build();
-        List<Tag> tags = new ArrayList<>();
-        tags.add(tag1);
-        tags.add(tag2);
+        List<Tag> tags = Stream.of(tag1,tag2).collect(Collectors.toList());
 
         TagResponse tagResponse1 = TagResponse.builder()
                 .id(tag1.getId())
@@ -64,9 +63,7 @@ class ConverterTest extends PostServiceApplicationTests {
                 .name(tag2.getName())
                 .build();
 
-        List<TagResponse> expected = new ArrayList<>();
-        expected.add(tagResponse1);
-        expected.add(tagResponse2);
+        List<TagResponse> expected = Stream.of(tagResponse1, tagResponse2).collect(Collectors.toList());
 
         List<TagResponse> actual = Converter.convert(tags, TagResponse.class);
         assertEquals(expected, actual);
