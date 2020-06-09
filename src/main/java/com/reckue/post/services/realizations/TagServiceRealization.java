@@ -125,10 +125,14 @@ public class TagServiceRealization implements TagService {
      * @return list of objects of class Tag sorted by the selected parameter for sorting
      */
     public List<Tag> findAllBySortType(String sort) {
-        if (sort.equals("name")) {
-            return findAllAndSortByName();
+
+        switch (sort) {
+            case "name":
+                return findAllAndSortByName();
+            case "id":
+                return findAllAndSortById();
         }
-        return findAllAndSortById();
+        throw new IllegalArgumentException("Such field as " + sort + " doesn't exist");
     }
 
     /**
