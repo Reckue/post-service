@@ -60,28 +60,6 @@ dependencies {
     implementation 'javax.xml.bind:jaxb-api:2.3.0' // for binding xml
 }
 
-/* checkstyle */
-checkstyle {
-    toolVersion '7.8.1'
-    configFile file("config/checkstyle/checkstyle.xml")
-}
-
-checkstyleMain {
-    source ='src/main/java'
-}
-
-checkstyleTest {
-    source ='src/test/java'
-}
-
-tasks.withType(Checkstyle) {
-    reports {
-        xml.enabled false
-        html.enabled true
-        html.stylesheet resources.text.fromFile('config/checkstyle/report.xsl')
-    }
-}
-
 test {
     useJUnitPlatform()
 }
