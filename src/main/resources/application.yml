@@ -25,11 +25,14 @@ MONGO_DBNAME: mongo-staging
 
 --- # cloud # ---
 server:
-  port: 9004
+  port: 8080
 
 spring:
   profiles: cloud
-
-MONGO_URI: mongodb://127.0.0.1
-MONGO_PORT: 27017
-MONGO_DBNAME: mongo-cloud
+  data:
+    mongodb:
+      host:  ${MONGODB_HOST}
+      port: ${MONGODB_PORT}
+      database: ${MONGODB_DATABASE}
+      username: ${MONGODB_USER}
+      password: ${MONGODB_PASSWORD}

@@ -40,3 +40,4 @@ jobs:
           cmd: |
             'version'
             'get all'
+            'ls'
