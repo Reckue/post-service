@@ -29,6 +29,10 @@ jobs:
         run: gradle build
       - name: Docker
         run: bash ./config/docker/create_image.sh
+      - name: Sign in Dockerhub
+        run: docker login --username=${{ secrets.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD }}
+      - name: Docker push
+        run: bash ./config/docker/push_image.sh
       - name: Deploy
         uses: redhat-developer/openshift-actions@v1.1
         with:
@@ -37,5 +41,5 @@ jobs:
           parameters: '{"apitoken": "${{ secrets.API_TOKEN }}", "acceptUntrustedCerts": "true"}'
           cmd: |
             'version'
-            'get all'
-            'apply -f ./config/k8s/deploy.yaml'
+            'delete -f ./config/k8s/deploy.yaml'
+            'create -f ./config/k8s/deploy.yaml'

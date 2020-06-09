@@ -3,8 +3,10 @@ package com.reckue.post.controllers;
 import com.reckue.post.transfers.TagResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("/test")
+@RestController
+@RequestMapping("/test4")
 public class TestController {
 
     @GetMapping("/")
