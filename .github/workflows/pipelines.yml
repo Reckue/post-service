@@ -30,3 +30,13 @@ jobs:
 
       - name: Build
         run: gradle build
+
+      - name: Deploy
+        uses: redhat-developer/openshift-actions@v1.1
+        with:
+          version: 'latest'
+          openshift_server_url: ${{ secrets.OPENSHIFT_SERVER_URL }}
+          parameters: '{"apitoken": "${{ secrets.API_TOKEN }}", "acceptUntrustedCerts": "true"}'
+          cmd: |
+            'version'
+            'new-project ${PROJECT}'
