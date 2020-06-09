@@ -2,6 +2,7 @@ package com.reckue.post.services.realizations;
 
 import com.reckue.post.PostServiceApplicationTests;
 import com.reckue.post.exceptions.ModelAlreadyExistsException;
+import com.reckue.post.exceptions.ModelNotFoundException;
 import com.reckue.post.models.Node;
 import com.reckue.post.models.Post;
 import com.reckue.post.repositories.NodeRepository;
@@ -13,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -48,18 +50,66 @@ class NodeServiceRealizationTest extends PostServiceApplicationTests {
     }
 
     @Test
-    public void update(){
-    Node nodeOne = Node.builder()
-    .id("1")
-    .username("Hey")
-    .build();
-    when(nodeRepository.existsById(nodeOne.getId())).thenReturn(false);
-    when(nodeRepository.save(nodeOne)).thenReturn(nodeOne);
+    public void createIfExists() {
+        Node node = Node.builder()
+                .id("1")
+                .username("node")
+                .build();
+        when(nodeRepository.save(node)).thenReturn(node);
 
-    Assertions.assertThrows(ModelAlreadyExistsException.class, () -> )
+        Assertions.assertEquals(node, nodeService.create(node));
     }
 
+    @Test
+    public void update() {
+        Node nodeOne = Node.builder()
+                .id("1")
+                .username("nodeOne")
+                .build();
+        when(nodeRepository.existsById(nodeOne.getId())).thenReturn(true);
+        when(nodeRepository.save(nodeOne)).thenReturn(nodeOne);
+        Assertions.assertEquals(nodeOne, nodeService.update(nodeOne));
+    }
 
+    @Test
+    public void updateWithExistId() {
+        Node nodeOne = Node.builder()
+                .id("1")
+                .username("nodeOne")
+                .build();
+        when(nodeRepository.existsById(nodeOne.getId())).thenReturn(false);
+        when(nodeRepository.save(nodeOne)).thenReturn(nodeOne);
+        Assertions.assertThrows(ModelNotFoundException.class, () -> nodeService.update(nodeOne));
+    }
 
+    @Test
+    public void findByIdWithException() {
+        Node nodeOne = Node.builder()
+                .id("1")
+                .username("nodeOne")
+                .build();
+        when(nodeRepository.findById(nodeOne.getId())).thenReturn(Optional.empty());
+        Assertions.assertThrows(ModelNotFoundException.class, () -> nodeService.findById(nodeOne.getId()));
+    }
+
+    @Test
+    public void deleteById() {
+        Node nodeOne = Node.builder()
+                .id("1")
+                .username("nodeOne")
+                .build();
+        when(nodeRepository.existsById(nodeOne.getId())).thenReturn(false);
+        Assertions.assertThrows(ModelNotFoundException.class, () -> nodeService.deleteById(nodeOne.getId()));
+    }
+
+    @Test
+    public void deleteByIdWithException() {
+        Node nodeOne = Node.builder()
+                .id("1")
+                .username("nodeOne")
+                .build();
+        when(nodeRepository.existsById(nodeOne.getId())).thenReturn(false);
+        Assertions.assertThrows(ModelNotFoundException.class, () -> nodeService.deleteById(nodeOne.getId()));
+    }
 }
 
