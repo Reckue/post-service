@@ -14,7 +14,9 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -240,6 +242,14 @@ public class TagServiceRealizationUnitTest extends PostServiceApplicationTests {
         assertEquals(test3, tagService.findAll(1, 2, "id", false));
         assertEquals(test4, tagService.findAll(2, 1, "idd", false));
         assertEquals(test5, tagService.findAll(2, 1, "?iddddd?", true));
+    }
+
+    @Test
+    public void deleteById() {
+        Tag tag = Tag.builder().id("0").name("name").build();
+
+        Exception exception = assertThrows(ModelNotFoundException.class, () -> tagService.deleteById(tag.getId()));
+        assertEquals("Tag by id " + tag.getId() + " is not found", exception.getMessage());
     }
 }
 
