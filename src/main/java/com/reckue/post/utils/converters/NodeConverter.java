@@ -18,7 +18,7 @@ public class NodeConverter {
      * @return the object of class Node
      */
     public static Node convert(NodeRequest nodeRequest) {
-
+        if (nodeRequest == null) throw new IllegalArgumentException("Null parameters are not allowed");
         return Node.builder()
                 .username(nodeRequest.getUsername())
                 .content(nodeRequest.getContent())
@@ -36,6 +36,7 @@ public class NodeConverter {
      * @return the object of class NodeResponse
      */
     public static NodeResponse convert(Node node) {
+        if (node == null) throw new IllegalArgumentException("Null parameters are not allowed");
         return NodeResponse.builder()
                 .id(node.getId())
                 .content(node.getContent())
