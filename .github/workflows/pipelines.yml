@@ -26,7 +26,6 @@ jobs:
         run: gradle build
       - name: Docker
         run: bash ./config/docker/create_image.sh
-      - name: Docker push
       - name: Sign in Dockerhub
         run: docker login --username=${{ secrets.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD }}
       - name: Docker push
