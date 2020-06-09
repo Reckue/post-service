@@ -5,30 +5,34 @@
 ## Stacks
 - OpenJDK 11
 - Spring Boot
-- Gradle
-- Travis CI
-- Swagger
-- MongoDB
-- Mongobee
-- Spring Security
 - Spring Data
+- Spring Security
+- MongoDB
+- Gradle
 - Lombok
+- ModelMapper
+- Mongobee
+- Swagger
 - Junit 5
 - DevTools
-- ModelMapper
+- Travis CI
 - Checkstyle
 
 ## Run with terminal
+
+ To run your application without first building an archive use the bootRun task:
 ```
 gradle bootRun
 ```
 
+ To build use the command:
 ```
 gradle build
 ```
 
+ Create jar file:
 ```
-- java -jar 1.0.SNAPSHOT.jar
+    java -jar 1.0.SNAPSHOT.jar
 ```
 
 ## Run with docker
