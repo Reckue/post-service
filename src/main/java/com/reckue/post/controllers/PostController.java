@@ -74,9 +74,10 @@ public class PostController implements PostApi {
      * sorted by the selected parameter for sorting in descending order
      */
     @GetMapping
-    public List<PostResponse> findAll(@RequestParam(required = false) int limit, @RequestParam(required = false) int offset,
-                                      @RequestParam(required = false) String sort, @RequestParam(required = false) boolean desc) {
-
+    public List<PostResponse> findAll(@RequestParam(required = false) int limit,
+                                      @RequestParam(required = false) int offset,
+                                      @RequestParam(required = false) String sort,
+                                      @RequestParam(required = false) boolean desc) {
         return postService.findAll(limit, offset, sort, desc).stream()
                 .map(PostConverter::convert)
                 .collect(Collectors.toList());

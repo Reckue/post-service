@@ -64,9 +64,10 @@ public class NodeController implements NodeApi {
      * sorted by the selected parameter for sorting in descending order
      */
     @GetMapping
-    public List<NodeResponse> findAll(@RequestParam(required = false) int limit, @RequestParam(required = false) int offset,
-                                      @RequestParam(required = false) String sort, @RequestParam(required = false) boolean desc) {
-
+    public List<NodeResponse> findAll(@RequestParam(required = false) int limit,
+                                      @RequestParam(required = false) int offset,
+                                      @RequestParam(required = false) String sort,
+                                      @RequestParam(required = false) boolean desc) {
         return nodeService.findAll(limit, offset, sort, desc).stream()
                 .map(NodeConverter::convert)
                 .collect(Collectors.toList());
