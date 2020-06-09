@@ -3,14 +3,11 @@ name: pipelines
 on:
   push:
     branches:
-      - master
       - develop
-      - ISSUE-*
+
   pull_request:
     branches:
-      - master
       - develop
-      - ISSUE-*
 
 jobs:
   build:
