@@ -63,17 +63,8 @@ public class NodeController implements NodeApi {
      * @return list of given quantity of objects of class NodeResponse with a given offset
      * sorted by the selected parameter for sorting in descending order
      */
-    @GetMapping("/")
+    @GetMapping
     public List<NodeResponse> findAll(@RequestParam int limit, @RequestParam int offset,
-                                      @RequestParam String sort, @RequestParam boolean desc) {
-
-        return nodeService.findAll(limit, offset, sort, desc).stream()
-                .map(NodeConverter::convert)
-                .collect(Collectors.toList());
-    }
-
-    @GetMapping("/all")
-    public List<NodeResponse> findAllNodes(@RequestParam int limit, @RequestParam int offset,
                                       @RequestParam String sort, @RequestParam boolean desc) {
 
         return nodeService.findAll(limit, offset, sort, desc).stream()
