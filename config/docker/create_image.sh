@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker build -t registry.hub.docker.com/reckue/post:latest .
+docker build -t docker.io/reckue/post:latest .
