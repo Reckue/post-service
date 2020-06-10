@@ -37,7 +37,7 @@ jobs:
         with:
           login-server: 'index.docker.io'
           username: 'reckue'
-          password: '${{ secrets.DOCKER_PASSWORD }}'
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Docker push
         run: bash ./config/docker/push_image.sh
