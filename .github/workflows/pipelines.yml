@@ -31,12 +31,8 @@ jobs:
       - name: Create a docker image
         run: bash ./config/docker/create_image.sh
 
-      - name: Sign in Dockerhub
-        uses: azure/docker-login@v1
-        with:
-          login-server: 'registry.hub.docker.com'
-          username: 'reckue'
-          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Log into registry
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ github.DOCKER_USERNAME }} --password-stdin
 
       - name: Docker push
         run: bash ./config/docker/push_image.sh
