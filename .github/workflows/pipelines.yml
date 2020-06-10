@@ -32,7 +32,7 @@ jobs:
         run: bash ./config/docker/create_image.sh
 
       - name: Log into registry
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ github.DOCKER_USERNAME }} --password-stdin
+        run: docker login -username=${{ github.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD }}
 
       - name: Docker push
         run: bash ./config/docker/push_image.sh
