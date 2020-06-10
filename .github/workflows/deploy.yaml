@@ -1,4 +1,4 @@
-name: pipelines
+name: deploy
 
 on:
   push:
