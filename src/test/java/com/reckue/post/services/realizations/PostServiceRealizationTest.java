@@ -76,7 +76,7 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
                 .title("postOne")
                 .build();
 
-        assertThrows(IllegalArgumentException.class, () ->  postService.update(postOne));
+        assertThrows(IllegalArgumentException.class, () -> postService.update(postOne));
     }
 
     @Test
@@ -88,7 +88,7 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
         when(postRepository.existsById(postOne.getId())).thenReturn(false);
         when(postRepository.save(postOne)).thenReturn(postOne);
 
-        assertThrows(ModelNotFoundException.class, () ->  postService.update(postOne));
+        assertThrows(ModelNotFoundException.class, () -> postService.update(postOne));
     }
 
     @Test
@@ -108,7 +108,7 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
                 .title("postOne")
                 .build();
         when(postRepository.findById(postOne.getId())).thenReturn(Optional.empty());
-        assertThrows(ModelNotFoundException.class, () ->  postService.findById(postOne.getId()));
+        assertThrows(ModelNotFoundException.class, () -> postService.findById(postOne.getId()));
     }
 
     @Test
@@ -133,7 +133,7 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
         Post postOne = Post.builder().id("1").build();
         Post postTwo = Post.builder().id("2").build();
         Post postThree = Post.builder().id("3").build();
-        List<Post> posts = List.of(postOne, postTwo,  postThree);
+        List<Post> posts = List.of(postOne, postTwo, postThree);
 
         when(postRepository.findAll()).thenReturn(posts);
 
@@ -149,7 +149,7 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
         Post postOne = Post.builder().title("postOne").build();
         Post postTwo = Post.builder().title("postTwo").build();
         Post postThree = Post.builder().title("postThree").build();
-        List<Post> posts = List.of(postOne, postTwo,  postThree);
+        List<Post> posts = List.of(postOne, postTwo, postThree);
 
         when(postRepository.findAll()).thenReturn(posts);
 
@@ -165,7 +165,7 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
         Post postOne = Post.builder().source("sourceOne").build();
         Post postTwo = Post.builder().source("sourceTwo").build();
         Post postThree = Post.builder().source("sourceThree").build();
-        List<Post> posts = List.of(postOne, postTwo,  postThree);
+        List<Post> posts = List.of(postOne, postTwo, postThree);
 
         when(postRepository.findAll()).thenReturn(posts);
 
@@ -181,7 +181,7 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
         Post postOne = Post.builder().username("Max").build();
         Post postTwo = Post.builder().username("Will").build();
         Post postThree = Post.builder().username("Arny").build();
-        List<Post> posts = List.of(postOne, postTwo,  postThree);
+        List<Post> posts = List.of(postOne, postTwo, postThree);
 
         when(postRepository.findAll()).thenReturn(posts);
 
@@ -197,7 +197,7 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
         Post postOne = Post.builder().published(1).build();
         Post postTwo = Post.builder().published(2).build();
         Post postThree = Post.builder().published(3).build();
-        List<Post> posts = List.of(postOne, postTwo,  postThree);
+        List<Post> posts = List.of(postOne, postTwo, postThree);
 
         when(postRepository.findAll()).thenReturn(posts);
 
@@ -213,7 +213,7 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
         Post postOne = Post.builder().changed(1).build();
         Post postTwo = Post.builder().changed(2).build();
         Post postThree = Post.builder().changed(3).build();
-        List<Post> posts = List.of(postOne, postTwo,  postThree);
+        List<Post> posts = List.of(postOne, postTwo, postThree);
 
         when(postRepository.findAll()).thenReturn(posts);
 
@@ -229,7 +229,7 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
         Post postOne = Post.builder().status(StatusType.ACTIVE).build();
         Post postTwo = Post.builder().status(StatusType.BANNED).build();
         Post postThree = Post.builder().status(StatusType.DELETED).build();
-        List<Post> posts = List.of(postOne, postTwo,  postThree);
+        List<Post> posts = List.of(postOne, postTwo, postThree);
 
         when(postRepository.findAll()).thenReturn(posts);
 
@@ -245,7 +245,7 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
         Post postOne = Post.builder().username("Max").build();
         Post postTwo = Post.builder().username("Will").build();
         Post postThree = Post.builder().username("Arny").build();
-        List<Post> posts = List.of(postOne, postTwo,  postThree);
+        List<Post> posts = List.of(postOne, postTwo, postThree);
 
         when(postRepository.findAll()).thenReturn(posts);
 
@@ -261,7 +261,7 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
         Post postOne = Post.builder().username("Max").build();
         Post postTwo = Post.builder().username("Will").build();
         Post postThree = Post.builder().username("Arny").build();
-        List<Post> posts = List.of(postOne, postTwo,  postThree);
+        List<Post> posts = List.of(postOne, postTwo, postThree);
 
         when(postRepository.findAll()).thenReturn(posts);
 
