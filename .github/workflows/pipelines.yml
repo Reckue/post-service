@@ -1,15 +1,17 @@
 name: pipelines
 
-on:
-  push:
-    branches:
-      - develop
-      - fix-workflow
+on: [push]
 
-  pull_request:
-    branches:
-      - develop
-      - fix-workflow
+#on:
+#  push:
+#    branches:
+#      - develop
+#      - fix-workflow
+#
+#  pull_request:
+#    branches:
+#      - develop
+#      - fix-workflow
 
 jobs:
   build:
