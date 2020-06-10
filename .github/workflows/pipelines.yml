@@ -13,7 +13,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout to branch
       - uses: actions/checkout@v2
 
       - name: Install JDK 11
@@ -32,12 +31,8 @@ jobs:
       - name: Create a docker image
         run: bash ./config/docker/create_image.sh
 
-      - name: Sign in Dockerhub
-        uses: azure/docker-login@v1
-        with:
-          login-server: 'index.docker.io'
-          username: 'reckue'
-          password: '${{ secrets.DOCKER_PASSWORD }}'
+      - name: Log into registry
+        run: docker login --username=reckue --password=${{ secrets.DOCKER_PASSWORD }}
 
       - name: Docker push
         run: bash ./config/docker/push_image.sh
