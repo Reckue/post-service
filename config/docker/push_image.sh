@@ -1,4 +1,4 @@
 #!/bin/bash
 
-docker tag latest reckue/post
+docker tag post reckue/post
 docker push reckue/post:latest
