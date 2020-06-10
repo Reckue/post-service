@@ -1,17 +1,13 @@
 name: pipelines
 
-on: [push]
+on:
+  push:
+    branches:
+      - develop
 
-#on:
-#  push:
-#    branches:
-#      - develop
-#      - fix-workflow
-#
-#  pull_request:
-#    branches:
-#      - develop
-#      - fix-workflow
+  pull_request:
+    branches:
+      - develop
 
 jobs:
   build:
@@ -35,12 +31,12 @@ jobs:
       - name: Create a docker image
         run: bash ./config/docker/create_image.sh
 
-#      - name: Sign in Dockerhub
-#        uses: azure/docker-login@v1
-#        with:
-#          login-server: 'index.docker.io'
-#          username: 'reckue'
-#          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Sign in Dockerhub
+        uses: azure/docker-login@v1
+        with:
+          login-server: 'index.docker.io'
+          username: 'reckue'
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Docker push
         run: bash ./config/docker/push_image.sh
