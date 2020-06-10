@@ -29,13 +29,13 @@ jobs:
         run: gradle build
 
       - name: Create a docker image
-        run: bash ./config/docker/create_image.sh
+        run: docker build -t reckue/post:latest .
 
       - name: Log into registry
         run: docker login registry.hub.docker.com --username=reckue --password=${{ secrets.DOCKER_PASSWORD }}
 
       - name: Docker push
-        run: bash ./config/docker/push_image.sh
+        run: docker push reckue/post:latest
 
       - name: Deploy
         uses: redhat-developer/openshift-actions@v1.1
