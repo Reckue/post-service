@@ -164,7 +164,7 @@ public class TagServiceRealizationUnitTest extends PostServiceApplicationTests {
                 .collect(Collectors.toList());
 
         assertEquals(sortedByNameExpected, tagService.findAllBySortType("name"));
-        assertEquals(sortedByIdExpected, tagService.findAllBySortType("whatever"));
+        assertEquals(sortedByIdExpected, tagService.findAllBySortType("id"));
     }
 
     @Test
@@ -193,9 +193,9 @@ public class TagServiceRealizationUnitTest extends PostServiceApplicationTests {
                 .collect(Collectors.toList());
 
         assertEquals(sortedByNameExpected, tagService.findAllByTypeAndDesc("name", false));
-        assertEquals(sortedByIdExpected, tagService.findAllByTypeAndDesc("any string", false));
+        assertEquals(sortedByIdExpected, tagService.findAllByTypeAndDesc("id", false));
         assertEquals(sortedByNameDescExpected, tagService.findAllByTypeAndDesc("name", true));
-        assertEquals(sortedByIdDescExpected, tagService.findAllByTypeAndDesc("anything, except null", true));
+        assertEquals(sortedByIdDescExpected, tagService.findAllByTypeAndDesc("id", true));
     }
 
     @Test
@@ -240,8 +240,8 @@ public class TagServiceRealizationUnitTest extends PostServiceApplicationTests {
         assertEquals(test1, tagService.findAll(2, 1, "name", false));
         assertEquals(test2, tagService.findAll(3, 0, "name", true));
         assertEquals(test3, tagService.findAll(1, 2, "id", false));
-        assertEquals(test4, tagService.findAll(2, 1, "idd", false));
-        assertEquals(test5, tagService.findAll(2, 1, "?iddddd?", true));
+        assertEquals(test4, tagService.findAll(2, 1, "id", false));
+        assertEquals(test5, tagService.findAll(2, 1, "id", true));
     }
 
     @Test

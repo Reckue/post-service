@@ -142,7 +142,7 @@ public class NodeServiceRealization implements NodeService {
             case "id":
                 return findAllAndSortById();
         }
-        throw new IllegalArgumentException("Such field as" + sort + " doesn't exist.");
+        throw new IllegalArgumentException("Such field as " + sort + " doesn't exist");
     }
 
     /**

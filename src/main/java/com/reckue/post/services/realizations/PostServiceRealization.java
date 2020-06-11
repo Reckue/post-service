@@ -146,7 +146,7 @@ public class PostServiceRealization implements PostService {
             case "username":
                 return findAllAndSortByUsername();
         }
-        throw new IllegalArgumentException("Such field as" + sort + " doesn't exist");
+        throw new IllegalArgumentException("Such field as " + sort + " doesn't exist");
     }
 
     /**
