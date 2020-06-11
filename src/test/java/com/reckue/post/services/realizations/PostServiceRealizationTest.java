@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 /**
- * Unit tests for PostService class
+ * Unit tests for PostService class.
  *
  * @author Viktor Grigoriev
  */
@@ -51,7 +51,6 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
                 .id("1")
                 .title("postOne")
                 .build();
-
         doReturn(true).when(postRepository).existsById(Mockito.anyString());
 
         assertThrows(ModelAlreadyExistsException.class, () -> postService.create(postOne));
@@ -63,7 +62,6 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
                 .id("1")
                 .title("postOne")
                 .build();
-
         when(postRepository.existsById(postOne.getId())).thenReturn(true);
         when(postRepository.save(postOne)).thenReturn(postOne);
 
@@ -98,6 +96,7 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
                 .title("postOne")
                 .build();
         when(postRepository.findById(postOne.getId())).thenReturn(Optional.of(postOne));
+
         assertEquals(postOne, postService.findById(postOne.getId()));
     }
 
@@ -108,6 +107,7 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
                 .title("postOne")
                 .build();
         when(postRepository.findById(postOne.getId())).thenReturn(Optional.empty());
+
         assertThrows(ModelNotFoundException.class, () -> postService.findById(postOne.getId()));
     }
 
@@ -122,7 +122,6 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
                 .title("postTwo")
                 .build();
         List<Post> posts = List.of(postOne, postTwo);
-
         when(postRepository.findAll()).thenReturn(posts);
 
         assertEquals(posts, postService.findAll());
@@ -246,7 +245,6 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
         Post postTwo = Post.builder().username("Will").build();
         Post postThree = Post.builder().username("Arny").build();
         List<Post> posts = List.of(postOne, postTwo, postThree);
-
         when(postRepository.findAll()).thenReturn(posts);
 
         List<Post> expected = posts.stream()
@@ -271,6 +269,7 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
                 .skip(1)
                 .collect(Collectors.toList());
         System.out.println(expected);
+
         assertEquals(expected, postService.findAll(3, 1, "username", true));
     }
 
@@ -300,7 +299,8 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
             return null;
         }).when(postRepository).deleteById(postOne.getId());
         postService.deleteById(postOne.getId());
-        assertEquals(posts.size(), 0 );
+
+        assertEquals(0, posts.size());
     }
 
     @Test
@@ -310,6 +310,7 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
                 .title("postOne")
                 .build();
         when(postRepository.existsById(postOne.getId())).thenReturn(false);
+
         assertThrows(ModelNotFoundException.class, () -> postService.deleteById(postOne.getId()));
     }
 }
