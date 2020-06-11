@@ -64,13 +64,19 @@ After build, please create an image woth and link tag with `-t` parameter:
 docker build -t reckue/post .
 ```
 
-#### 4. Run the image
-Run this image in a container on the 9002 port and connect with 8080 port there:
+#### 4. Run MongoDB image
+Run the MongoDB latest version image with 27017 port:
 ```
-docker run -p 8080:9002 -t reckue/post
+docker run -p 27017:27017 -t mongo:latest
 ```
 
-#### 5. Demonstration
+#### 5. Run application image
+Run this image in a container on the 9002 port and connect with the `develop` spring profile on the 8080 port:
+```
+docker run -e "--spring.profiles.active=develop" -p 8080:9002 -t reckue/post
+```
+
+#### 6. Demonstration
 Open the http://localhost:8080 on your browser.
 
 
