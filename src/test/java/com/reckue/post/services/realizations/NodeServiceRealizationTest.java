@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -19,9 +20,13 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
+/**
+ * Unit test for NodeService class.
+ *
+ * @author Iveri Narozashvili
+ */
 class NodeServiceRealizationTest extends PostServiceApplicationTests {
 
     @Mock
@@ -42,6 +47,7 @@ class NodeServiceRealizationTest extends PostServiceApplicationTests {
                 .build();
         List<Node> nodes = Stream.of(node1, node2).collect(Collectors.toList());
         when(nodeRepository.findAll()).thenReturn(nodes);
+
         assertEquals(nodes, nodeService.findAll());
     }
 
@@ -52,6 +58,7 @@ class NodeServiceRealizationTest extends PostServiceApplicationTests {
                 .username("moon")
                 .build();
         when(nodeRepository.save(node)).thenReturn(node);
+
         assertEquals(node, nodeService.create(node));
     }
 
@@ -74,6 +81,7 @@ class NodeServiceRealizationTest extends PostServiceApplicationTests {
                 .build();
         when(nodeRepository.existsById(nodeOne.getId())).thenReturn(true);
         when(nodeRepository.save(nodeOne)).thenReturn(nodeOne);
+
         assertEquals(nodeOne, nodeService.update(nodeOne));
     }
 
@@ -94,6 +102,7 @@ class NodeServiceRealizationTest extends PostServiceApplicationTests {
                 .build();
         when(nodeRepository.existsById(nodeOne.getId())).thenReturn(false);
         when(nodeRepository.save(nodeOne)).thenReturn(nodeOne);
+
         assertThrows(ModelNotFoundException.class, () -> nodeService.update(nodeOne));
     }
 
@@ -104,6 +113,7 @@ class NodeServiceRealizationTest extends PostServiceApplicationTests {
                 .username("nodeOne")
                 .build();
         when(nodeRepository.findById(nodeOne.getId())).thenReturn(Optional.empty());
+
         assertThrows(ModelNotFoundException.class, () -> nodeService.findById(nodeOne.getId()));
     }
 
@@ -114,6 +124,7 @@ class NodeServiceRealizationTest extends PostServiceApplicationTests {
                 .username("nodeOne")
                 .build();
         when(nodeRepository.findById(nodeOne.getId())).thenReturn(Optional.of(nodeOne));
+
         assertEquals(nodeOne, nodeService.findById(nodeOne.getId()));
     }
 
@@ -154,11 +165,11 @@ class NodeServiceRealizationTest extends PostServiceApplicationTests {
         Node nodeOne = Node.builder().username("Max").build();
         Node nodeTwo = Node.builder().username("Will").build();
         Node nodeThree = Node.builder().username("Arny").build();
-        List<Node> posts = List.of(nodeOne, nodeTwo, nodeThree);
+        List<Node> nodes = List.of(nodeOne, nodeTwo, nodeThree);
 
-        when(nodeRepository.findAll()).thenReturn(posts);
+        when(nodeRepository.findAll()).thenReturn(nodes);
 
-        List<Node> expected = posts.stream()
+        List<Node> expected = nodes.stream()
                 .sorted(Comparator.comparing(Node::getUsername))
                 .collect(Collectors.toList());
 
@@ -187,11 +198,11 @@ class NodeServiceRealizationTest extends PostServiceApplicationTests {
         Node nodeOne = Node.builder().status(StatusType.ACTIVE).build();
         Node nodeTwo = Node.builder().status(StatusType.BANNED).build();
         Node nodeThree = Node.builder().status(StatusType.DELETED).build();
-        List<Node> posts = List.of(nodeOne, nodeTwo, nodeThree);
+        List<Node> nodes = List.of(nodeOne, nodeTwo, nodeThree);
 
-        when(nodeRepository.findAll()).thenReturn(posts);
+        when(nodeRepository.findAll()).thenReturn(nodes);
 
-        List<Node> expected = posts.stream()
+        List<Node> expected = nodes.stream()
                 .sorted(Comparator.comparing(Node::getStatus))
                 .collect(Collectors.toList());
 
@@ -203,11 +214,10 @@ class NodeServiceRealizationTest extends PostServiceApplicationTests {
         Node nodeOne = Node.builder().username("Max").build();
         Node nodeTwo = Node.builder().username("Will").build();
         Node nodeThree = Node.builder().username("Arny").build();
-        List<Node> posts = List.of(nodeOne, nodeTwo, nodeThree);
+        List<Node> nodes = List.of(nodeOne, nodeTwo, nodeThree);
 
-        when(nodeRepository.findAll()).thenReturn(posts);
-
-        List<Node> expected = posts.stream()
+        when(nodeRepository.findAll()).thenReturn(nodes);
+        List<Node> expected = nodes.stream()
                 .sorted(Comparator.comparing(Node::getUsername).reversed())
                 .collect(Collectors.toList());
 
@@ -221,8 +231,16 @@ class NodeServiceRealizationTest extends PostServiceApplicationTests {
                 .id("1")
                 .username("nodeOne")
                 .build();
-        when(nodeRepository.existsById(nodeOne.getId())).thenReturn(false);
-        assertThrows(ModelNotFoundException.class, () -> nodeService.deleteById(nodeOne.getId()));
+        List<Node> nodes = new ArrayList<>();
+        nodes.add(nodeOne);
+        when(nodeRepository.existsById(nodeOne.getId())).thenReturn(true);
+        doAnswer(invocation -> {
+            nodes.remove(nodeOne);
+            return null;
+        }).when(nodeRepository).deleteById(nodeOne.getId());
+        nodeService.deleteById(nodeOne.getId());
+
+        assertEquals(0, nodes.size());
     }
 
     @Test
@@ -232,7 +250,7 @@ class NodeServiceRealizationTest extends PostServiceApplicationTests {
                 .username("nodeOne")
                 .build();
         when(nodeRepository.existsById(nodeOne.getId())).thenReturn(false);
+
         assertThrows(ModelNotFoundException.class, () -> nodeService.deleteById(nodeOne.getId()));
     }
 }
-
