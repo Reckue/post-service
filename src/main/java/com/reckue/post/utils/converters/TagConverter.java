@@ -18,7 +18,9 @@ public class TagConverter {
      * @return the object of class Tag
      */
     public static Tag convert(TagRequest tagRequest) {
-        if (tagRequest == null) throw new IllegalArgumentException("Null parameters are not allowed");
+        if (tagRequest == null) {
+            throw new IllegalArgumentException("Null parameters are not allowed");
+        }
         return Tag.builder()
                 .name(tagRequest.getName())
                 .build();
@@ -31,7 +33,9 @@ public class TagConverter {
      * @return the object of class TagResponse
      */
     public static TagResponse convert(Tag tag) {
-        if (tag == null) throw new IllegalArgumentException("Null parameters are not allowed");
+        if (tag == null) {
+            throw new IllegalArgumentException("Null parameters are not allowed");
+        }
         return TagResponse.builder()
                 .id(tag.getId())
                 .name(tag.getName())

@@ -19,7 +19,9 @@ public class PostConverter {
      * @return the object of class Post
      */
     public static Post convert(PostRequest postRequest) {
-        if (postRequest == null) throw new IllegalArgumentException("Null parameters are not allowed");
+        if (postRequest == null) {
+            throw new IllegalArgumentException("Null parameters are not allowed");
+        }
         return Post.builder()
                 .title(postRequest.getTitle())
                 .username(postRequest.getUsername())
@@ -40,7 +42,9 @@ public class PostConverter {
      * @return the object of class PostResponse
      */
     public static PostResponse convert(Post post) {
-        if (post == null) throw new IllegalArgumentException("Null parameters are not allowed");
+        if (post == null) {
+            throw new IllegalArgumentException("Null parameters are not allowed");
+        }
         return PostResponse.builder()
                 .id(post.getId())
                 .username(post.getUsername())

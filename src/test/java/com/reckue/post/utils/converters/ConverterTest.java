@@ -52,7 +52,7 @@ class ConverterTest extends PostServiceApplicationTests {
                 .id("2")
                 .name("camelya")
                 .build();
-        List<Check> checks = Stream.of(check1,check2).collect(Collectors.toList());
+        List<Check> checks = Stream.of(check1, check2).collect(Collectors.toList());
 
         CheckResponse checkResponse1 = CheckResponse.builder()
                 .id(check1.getId())
