@@ -1,4 +1,4 @@
-package com.reckue.post.utils;
+package com.reckue.post.utils.converters;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
