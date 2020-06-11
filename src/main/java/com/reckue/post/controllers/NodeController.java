@@ -23,6 +23,7 @@ import static com.reckue.post.utils.converters.NodeConverter.convert;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/nodes")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class NodeController implements NodeApi {
 
     private final NodeService nodeService;
