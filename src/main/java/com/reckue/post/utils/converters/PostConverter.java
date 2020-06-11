@@ -19,6 +19,9 @@ public class PostConverter {
      * @return the object of class Post
      */
     public static Post convert(PostRequest postRequest) {
+        if (postRequest == null) {
+            throw new IllegalArgumentException("Null parameters are not allowed");
+        }
         return Post.builder()
                 .title(postRequest.getTitle())
                 .username(postRequest.getUsername())
@@ -31,24 +34,27 @@ public class PostConverter {
                 .build();
     }
 
-        /**
-         * This method is used to convert from the object of class Post
-         * to the object of class PostResponse
-         *
-         * @param post the object of class Post
-         * @return the object of class PostResponse
-         */
-        public static PostResponse convert(Post post) {
-            return PostResponse.builder()
-                    .id(post.getId())
-                    .username(post.getUsername())
-                    .title(post.getTitle())
-                    .nodes(post.getNodes())
-                    .source(post.getSource())
-                    .tags(post.getTags())
-                    .published(post.getPublished())
-                    .changed(post.getChanged())
-                    .status(post.getStatus())
-                    .build();
+    /**
+     * This method is used to convert from the object of class Post
+     * to the object of class PostResponse
+     *
+     * @param post the object of class Post
+     * @return the object of class PostResponse
+     */
+    public static PostResponse convert(Post post) {
+        if (post == null) {
+            throw new IllegalArgumentException("Null parameters are not allowed");
+        }
+        return PostResponse.builder()
+                .id(post.getId())
+                .username(post.getUsername())
+                .title(post.getTitle())
+                .nodes(post.getNodes())
+                .source(post.getSource())
+                .tags(post.getTags())
+                .published(post.getPublished())
+                .changed(post.getChanged())
+                .status(post.getStatus())
+                .build();
     }
 }

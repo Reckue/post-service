@@ -6,7 +6,7 @@
     <module name="FileLength"><property name="max" value="1340"/></module>
 
     <module name="TreeWalker">
-        <module name="MethodLength"><property name="max" value="50"/></module>
+        <module name="MethodLength"><property name="max" value="60"/></module>
         <module name="LineLength"><property name="max" value="120"/></module>
         <module name="SingleSpaceSeparator"/>
         <module name="NoWhitespaceBefore"/>
