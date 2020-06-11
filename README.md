@@ -22,12 +22,12 @@
 
  To run your application without first building an archive use the bootRun task:
 ```
-gradle bootRun
+    gradle bootRun
 ```
 
  To build use the command:
 ```
-gradle build
+    gradle build
 ```
 
  Create jar file:
@@ -41,11 +41,11 @@ Install docker.
 ### Create image
 Build and create an image:
 ```
-docker build -t reckue/post .
+    docker build -t reckue/post .
 ```
 
 ### Run image
 Run this image in the container:
 ```
-docker run -p 8080:9002 -t reckue/post
+    docker run -p 8080:9002 -t reckue/post
 ```
