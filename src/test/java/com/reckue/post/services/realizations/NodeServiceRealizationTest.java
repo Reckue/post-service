@@ -23,11 +23,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 /**
- * Unit test for NodeService class.
+ * Class NodeServiceRealizationTest represents test for NodeService class.
  *
  * @author Iveri Narozashvili
  */
-class NodeServiceRealizationTest extends PostServiceApplicationTests {
+public class NodeServiceRealizationTest extends PostServiceApplicationTests {
 
     @Mock
     private NodeRepository nodeRepository;
