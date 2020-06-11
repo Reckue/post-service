@@ -1,51 +1,72 @@
 # post-api
 
-<img src="https://github.com/reckue/post-api/workflows/pipelines/badge.svg?branch=develop"><br>
+![build](https://github.com/Reckue/post-api/workflows/build/badge.svg)
+![deploy](https://github.com/Reckue/post-api/workflows/deploy/badge.svg)
+
 
 ## Stacks
-- OpenJDK 11
+- JDK 11
+- Gradle
 - Spring Boot
 - Spring Data
 - Spring Security
+- Spring Cloud
 - MongoDB
-- Gradle
 - Lombok
 - ModelMapper
 - Mongobee
 - Swagger
 - Junit 5
+- Mockito
 - DevTools
-- Travis CI
+- GitHub Workflow
 - Checkstyle
 
 ## Run with terminal
 
  To run your application without first building an archive use the bootRun task:
 ```
-    gradle bootRun
+gradle bootRun
 ```
 
  To build use the command:
 ```
-    gradle build
+gradle build
 ```
 
  Create jar file:
 ```
-    java -jar 1.0.SNAPSHOT.jar
+java -jar 1.0.SNAPSHOT.jar
 ```
 
 ## Run with docker
-Install docker.
-
-### Create image
-Build and create an image:
+You need an installed docker program on your computer, or download it, such as:
 ```
-    docker build -t reckue/post .
+apt-get install docker
 ```
 
-### Run image
-Run this image in the container:
+#### 1. Install Gradle
+Build project with Gradle:
 ```
-    docker run -p 8080:9002 -t reckue/post
+apt-get install gradle
 ```
+
+#### 2. Build project
+Build project with Gradle:
+```
+gradle build
+```
+
+#### 3. Create an image
+After build, please create an image woth and link tag with `-t` parameter:
+```
+docker build -t reckue/post .
+```
+
+#### 4. Run the image
+Run this image in a container on the 9002 port and connect with 8080 port there:
+```
+docker run -p 8080:9002 -t reckue/post
+```
+
+#### 3. Run the image
