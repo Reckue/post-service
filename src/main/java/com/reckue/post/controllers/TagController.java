@@ -23,6 +23,7 @@ import static com.reckue.post.utils.converters.TagConverter.convert;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/tags")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class TagController implements TagApi {
 
     private final TagService tagService;
