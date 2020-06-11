@@ -1,6 +1,5 @@
 # post-api
 
-![build](https://github.com/Reckue/post-api/workflows/build/badge.svg)
 ![deploy](https://github.com/Reckue/post-api/workflows/deploy/badge.svg)
 
 
@@ -24,19 +23,19 @@
 
 ## Run with terminal
 
- To run your application without first building an archive use the bootRun task:
+To run your application without first building an archive use the bootRun task:
 ```
 gradle bootRun
 ```
 
- To build use the command:
+To build use the command:
 ```
 gradle build
 ```
 
- Create jar file:
+Create a jar file:
 ```
-java -jar 1.0.SNAPSHOT.jar
+java -jar RELEASE-1.0.0.jar
 ```
 
 ## Run with docker
@@ -69,4 +68,5 @@ Run this image in a container on the 9002 port and connect with 8080 port there:
 docker run -p 8080:9002 -t reckue/post
 ```
 
-#### 3. Run the image
+#### 5. Demonstration
+Open the http://localhost:8080 on your browser.
