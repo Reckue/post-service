@@ -41,8 +41,11 @@ dependencies {
     implementation 'com.github.mongobee:mongobee:0.13'
 
     /* lombok */
-    compileOnly 'org.projectlombok:lombok:1.18.4'
-    annotationProcessor 'org.projectlombok:lombok:1.18.10'
+    compileOnly 'org.projectlombok:lombok:1.18.12'
+    annotationProcessor 'org.projectlombok:lombok:1.18.12'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.12'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
 
     /* test */
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
