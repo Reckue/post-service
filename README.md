@@ -20,11 +20,11 @@
 
 ## Run with terminal
 ```
-gradle bootRun
+    gradle bootRun
 ```
 
 ```
-gradle build
+    gradle build
 ```
 
 ```
@@ -37,11 +37,11 @@ Install docker.
 ### Create image
 Build and create an image:
 ```
-docker build -t reckue/post .
+    docker build -t reckue/post .
 ```
 
 ### Run image
 Run this image in the container:
 ```
-docker run -p 8080:9002 -t reckue/post
+    docker run -p 8080:9002 -t reckue/post
 ```
