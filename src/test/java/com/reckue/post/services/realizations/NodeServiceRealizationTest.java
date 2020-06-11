@@ -70,6 +70,7 @@ class NodeServiceRealizationTest extends PostServiceApplicationTests {
                 .build();
         doReturn(true).when(nodeRepository).existsById(Mockito.anyString());
         Exception exception = assertThrows(ModelAlreadyExistsException.class, () -> nodeService.create(node));
+
         assertEquals("Node already exists", exception.getMessage());
     }
 
