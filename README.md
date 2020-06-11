@@ -28,14 +28,15 @@ To run your application without first building an archive use the bootRun task:
 gradle bootRun
 ```
 
+#### 1. Build project
 To build use the command:
 ```
 gradle build
 ```
-
-Create a jar file:
+#### 2. Run the application
+To create a jar file write following command and put enter:
 ```
-java -jar RELEASE-1.0.0.jar
+java -jar ./build/libs/RELEASE-1.0.0.jar
 ```
 
 ## Run with docker
@@ -70,3 +71,10 @@ docker run -p 8080:9002 -t reckue/post
 
 #### 5. Demonstration
 Open the http://localhost:8080 on your browser.
+
+## Contribute
+For any problems, comments, or feedback please create an issue [here on GitHub](https://github.com/Reckue/post-api/issues).
+<br>
+
+## Licence
+Game of Life is released under the [MIT license](https://en.wikipedia.org/wiki/MIT_License).
