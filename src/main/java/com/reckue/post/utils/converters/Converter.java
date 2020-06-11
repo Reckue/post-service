@@ -25,6 +25,9 @@ public class Converter {
      * @return converted object
      */
     public static <T> T convert(Object src, Class<T> dest) {
+        if (src == null) {
+            throw new IllegalArgumentException("Null parameters are not allowed");
+        }
         return mapper.map(src, dest);
     }
 
@@ -37,6 +40,9 @@ public class Converter {
      * @return converted list
      */
     public static <S, T> List<T> convert(List<S> list, Class<T> dest) {
+        if (list == null) {
+            throw new IllegalArgumentException("Null parameters are not allowed");
+        }
         return list
                 .stream()
                 .map(element -> mapper.map(element, dest))
