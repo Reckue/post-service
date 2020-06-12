@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * Class TagControllerIntTest is the integration type of test
+ * Class TagControllerIntTest is the integration type of test.
  *
  * @author Daria Smirnova
  */
