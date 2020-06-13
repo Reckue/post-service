@@ -86,4 +86,4 @@ For any problems, comments, or feedback please create an issue [here on GitHub](
 
 
 ## Licence
-Game of Life is released under the [MIT license](https://en.wikipedia.org/wiki/MIT_License).
+Reckue is released under the [MIT license](https://en.wikipedia.org/wiki/MIT_License).
