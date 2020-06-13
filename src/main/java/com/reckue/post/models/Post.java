@@ -28,6 +28,4 @@ public class Post {
     private long published;
     private long changed;
     private StatusType status;
-
-
 }
