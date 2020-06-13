@@ -51,6 +51,4 @@ public class NodeConverter {
                 .published(node.getPublished())
                 .build();
     }
-
-
 }
