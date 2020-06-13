@@ -32,11 +32,9 @@ public class PostRequest {
     @ApiModelProperty(notes = "List of keywords used in the post")
     private List<Tag> tags;
 
-    @NotNull
     @ApiModelProperty(notes = "Publication date")
     private long published;
 
-    @NotNull
     @ApiModelProperty(notes = "Date of changes")
     private long changed;
 
