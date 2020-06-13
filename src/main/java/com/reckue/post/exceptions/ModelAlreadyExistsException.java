@@ -3,9 +3,8 @@ package com.reckue.post.exceptions;
 import lombok.Getter;
 
 /**
- * Model Already Exists Exception.
- * This exception is thrown when the model
- * to be created already exists in the database.
+ * Class ModelAlreadyExistsException is responsible for throwing
+ * exception when the created model already exists in database.
  */
 @Getter
 public class ModelAlreadyExistsException extends RuntimeException {
@@ -23,7 +22,7 @@ public class ModelAlreadyExistsException extends RuntimeException {
     /**
      * Constructor with message parameter for save information about exception.
      *
-     * @param message information about exception.
+     * @param message information about exception
      */
     @SuppressWarnings("unused")
     public ModelAlreadyExistsException(String message) {
