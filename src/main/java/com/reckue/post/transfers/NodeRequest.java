@@ -28,7 +28,6 @@ public class NodeRequest {
     @ApiModelProperty(notes = "Node author")
     private String username;
 
-    @NotNull
     @ApiModelProperty(notes = "Publication date")
     private long published;
 
