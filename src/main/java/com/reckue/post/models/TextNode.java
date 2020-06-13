@@ -13,6 +13,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @Document
 public class TextNode implements NodeContent {
-	
-	private String content;
+
+    private String content;
 }
