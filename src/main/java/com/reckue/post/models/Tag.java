@@ -14,9 +14,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Data
 @Builder
-@Document
 @NoArgsConstructor
 @AllArgsConstructor
+@Document
 public class Tag {
 
     @Id
