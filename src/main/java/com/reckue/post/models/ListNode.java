@@ -16,5 +16,5 @@ import java.util.List;
 @Document
 public class ListNode implements NodeContent {
 
-	private List<String> content;
+    private List<String> content;
 }
