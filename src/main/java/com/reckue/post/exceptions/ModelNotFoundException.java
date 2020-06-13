@@ -3,8 +3,8 @@ package com.reckue.post.exceptions;
 import lombok.Getter;
 
 /**
- * Model Not Found Exception.
- * This exception is thrown when the model to be obtained is not found in the database.
+ * Class ModelNotFoundException is responsible for throwing
+ * exception when the received model is not found in the database.
  */
 @Getter
 public class ModelNotFoundException extends RuntimeException {
@@ -22,7 +22,7 @@ public class ModelNotFoundException extends RuntimeException {
     /**
      * Constructor with message parameter for save information about exception.
      *
-     * @param message information about exception.
+     * @param message information about exception
      */
     @SuppressWarnings("unused")
     public ModelNotFoundException(String message) {
