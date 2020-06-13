@@ -84,6 +84,3 @@ Open the http://localhost:8080 on your browser.
 For any problems, comments, or feedback please create an issue [here on GitHub](https://github.com/Reckue/post-api/issues).
 <br>
 
-
-## Licence
-Game of Life is released under the [MIT license](https://en.wikipedia.org/wiki/MIT_License).
