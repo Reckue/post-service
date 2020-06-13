@@ -2,6 +2,7 @@ package com.reckue.post.models;
 
 import com.reckue.post.utils.NodeContent;
 
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -13,6 +14,7 @@ import java.util.List;
  * @author Iveri Narozashvili
  */
 @Data
+@Builder
 @Document
 public class ListNode implements NodeContent {
 
