@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * Class NodeControllerIntTest is the integration type of test
+ * Class NodeControllerIntTest is the integration type of test.
  *
  * @author Viktor Grigoriev
  */
@@ -231,7 +231,6 @@ public class NodeControllerIntTest extends PostServiceApplicationTests {
                 .build());
 
         Assertions.assertEquals(expected, actual);
-
     }
 
     @Test

@@ -221,7 +221,6 @@ public class TagControllerIntTest extends PostServiceApplicationTests {
                 .build());
 
         Assertions.assertEquals(expected, actual);
-
     }
 
     @Test

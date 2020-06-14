@@ -225,7 +225,6 @@ public class NodeServiceRealizationTest extends PostServiceApplicationTests {
         assertEquals(expected, nodeService.findAllByTypeAndDesc("username", true));
     }
 
-
     @Test
     public void deleteById() {
         Node nodeOne = Node.builder()
