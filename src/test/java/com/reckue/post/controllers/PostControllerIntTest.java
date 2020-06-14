@@ -244,7 +244,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
     }
 
     @Test
-    public void saveTest() throws Exception {
+    public void createTest() throws Exception {
         PostRequest postRequest = PostRequest.builder()
                 .title("news")
                 .nodes(null)
