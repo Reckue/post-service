@@ -1,6 +1,8 @@
 package com.reckue.post.utils.converters;
 
 import com.reckue.post.PostServiceApplicationTests;
+import com.reckue.post.objects.Check;
+import com.reckue.post.objects.CheckResponse;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
