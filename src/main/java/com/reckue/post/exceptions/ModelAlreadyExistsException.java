@@ -5,6 +5,8 @@ import lombok.Getter;
 /**
  * Class ModelAlreadyExistsException is responsible for throwing
  * exception when the created model already exists in database.
+ *
+ * @author Daria Smirnova
  */
 @Getter
 public class ModelAlreadyExistsException extends RuntimeException {

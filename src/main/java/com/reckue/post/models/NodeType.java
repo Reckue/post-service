@@ -1,10 +1,11 @@
 package com.reckue.post.models;
 
 /**
- * This enum NodeType represents enumeration of types of content that are associated with node.
+ * Enum NodeType represents enumeration of types of content that are associated with node.
  *
  * @author Iveri Narozashvili
  */
+@SuppressWarnings("unused")
 public enum NodeType {
 
     TEXT,

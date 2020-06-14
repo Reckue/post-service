@@ -35,7 +35,7 @@ public class PostController implements PostApi {
      * @return the object of class PostResponse
      */
     @PostMapping
-    public PostResponse save(@RequestBody @Valid PostRequest postRequest) {
+    public PostResponse create(@RequestBody @Valid PostRequest postRequest) {
         return convert(postService.create(convert(postRequest)));
     }
 

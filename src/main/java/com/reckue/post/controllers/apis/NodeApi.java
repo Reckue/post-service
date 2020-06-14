@@ -40,7 +40,7 @@ public interface NodeApi {
             @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")})
     List<NodeResponse> findAll(Integer limit, Integer offset, String sort, Boolean desc);
 
-    @ApiOperation(value = "Search a node with an ID", response = NodeResponse.class)
+    @ApiOperation(value = "Get a node by id", response = NodeResponse.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "The node successfully found"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found"),

@@ -23,7 +23,7 @@ public interface PostApi {
             @ApiResponse(code = 200, message = "The post successfully added"),
             @ApiResponse(code = 409, message = "The post you want to add already exists"),
             @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")})
-    PostResponse save(PostRequest postRequest);
+    PostResponse create(PostRequest postRequest);
 
     @ApiOperation(value = "Update a post")
     @ApiResponses(value = {
@@ -33,7 +33,7 @@ public interface PostApi {
             @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")})
     PostResponse update(String id, PostRequest postRequest);
 
-    @ApiOperation(value = "Search a post with an ID", response = PostResponse.class)
+    @ApiOperation(value = "Get a post by id", response = PostResponse.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "The post successfully found"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found"),

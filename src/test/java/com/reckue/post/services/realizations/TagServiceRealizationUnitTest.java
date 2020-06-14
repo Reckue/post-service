@@ -14,6 +14,7 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -21,8 +22,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * Unit tests for TagServiceRealization class
@@ -246,6 +246,25 @@ public class TagServiceRealizationUnitTest extends PostServiceApplicationTests {
 
     @Test
     public void deleteById() {
+        Tag tag = Tag.builder()
+                .id("1")
+                .name("tag")
+                .build();
+        List<Tag> tags = new ArrayList<>();
+        tags.add(tag);
+
+        when(tagRepository.existsById(tag.getId())).thenReturn(true);
+        doAnswer(invocation -> {
+            tags.remove(tag);
+            return null;
+        }).when(tagRepository).deleteById(tag.getId());
+        tagRepository.deleteById(tag.getId());
+
+        assertEquals(0, tags.size());
+    }
+    
+    @Test
+    public void deleteByIdWithException() {
         Tag tag = Tag.builder().id("0").name("name").build();
 
         Exception exception = assertThrows(ModelNotFoundException.class, () -> tagService.deleteById(tag.getId()));
