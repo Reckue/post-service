@@ -1,12 +1,9 @@
 package com.reckue.post;
 
-import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
+@ActiveProfiles("staging")
 @SpringBootTest
 public class PostServiceApplicationTests {
-
-    @Test
-    void contextLoads() {
-    }
 }

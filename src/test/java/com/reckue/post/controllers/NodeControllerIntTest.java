@@ -35,7 +35,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author Viktor Grigoriev
  */
-@ActiveProfiles("staging")
 @AutoConfigureMockMvc
 public class NodeControllerIntTest extends PostServiceApplicationTests {
 

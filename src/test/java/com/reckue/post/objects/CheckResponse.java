@@ -1,4 +1,4 @@
-package com.reckue.post.utils.converters;
+package com.reckue.post.objects;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Class Check allows to check ConverterTest.
+ * Class CheckResponse allows to check ConverterTest.
  *
  * @author Kamila Meshcheryakova
  */
@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Check {
+public class CheckResponse {
 
     private String id;
     private String name;

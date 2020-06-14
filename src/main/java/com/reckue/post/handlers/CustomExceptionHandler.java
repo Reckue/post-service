@@ -39,7 +39,7 @@ public class CustomExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> handleIllegalArgumentException(Exception e) {
+    public ResponseEntity<?> handleException(Exception e) {
         return new ResponseEntity<>(new ErrorResponse(
                 e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR.value()),
                 HttpStatus.INTERNAL_SERVER_ERROR);

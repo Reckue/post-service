@@ -1,7 +1,9 @@
 # post-api
+**v.1.0.0**
+
+Service for publications, tutorials and articles.
 
 ![deploy](https://github.com/Reckue/post-api/workflows/deploy/badge.svg)
-
 
 ## Stacks
 - JDK 11
