@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * Class PostControllerIntTest is the integration type of test
+ * Class PostControllerIntTest is the integration type of test.
  *
  * @author Kamila Meshcheryakova
  */

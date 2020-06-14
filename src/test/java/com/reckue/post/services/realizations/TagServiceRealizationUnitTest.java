@@ -25,12 +25,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Unit tests for TagServiceRealization class
+ * Class TagServiceRealizationTest represents test for TagService class.
  *
  * @author Artur Magomedov
  */
-@AutoConfigureMockMvc
-@ActiveProfiles("develop")
 public class TagServiceRealizationUnitTest extends PostServiceApplicationTests {
 
     @Mock
@@ -262,7 +260,7 @@ public class TagServiceRealizationUnitTest extends PostServiceApplicationTests {
 
         assertEquals(0, tags.size());
     }
-    
+
     @Test
     public void deleteByIdWithException() {
         Tag tag = Tag.builder().id("0").name("name").build();
@@ -271,4 +269,3 @@ public class TagServiceRealizationUnitTest extends PostServiceApplicationTests {
         assertEquals("Tag by id " + tag.getId() + " is not found", exception.getMessage());
     }
 }
-

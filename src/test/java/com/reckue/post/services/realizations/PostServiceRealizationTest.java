@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 /**
- * Unit tests for PostService class.
+ * Class PostServiceRealizationTest represents test for PostService class.
  *
  * @author Viktor Grigoriev
  */
