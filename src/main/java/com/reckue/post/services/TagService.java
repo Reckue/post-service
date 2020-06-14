@@ -44,7 +44,7 @@ public interface TagService {
      * @return list of objects of class Node
      */
 
-    List<Tag> findAll(int limit, int offset, String sort, boolean desc);
+    List<Tag> findAll(Integer limit, Integer offset, String sort, Boolean desc);
 
     /**
      * This method is used to get an object by id.

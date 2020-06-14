@@ -7,6 +7,7 @@ import com.reckue.post.transfers.TagRequest;
 import com.reckue.post.transfers.TagResponse;
 import com.reckue.post.utils.converters.TagConverter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -65,10 +66,11 @@ public class TagController implements TagApi {
      * sorted by the selected parameter for sorting in descending order
      */
     @GetMapping
-    public List<TagResponse> findAll(@RequestParam(required = false) int limit,
-                                     @RequestParam(required = false) int offset,
+    public List<TagResponse> findAll(@RequestParam(required = false) Integer limit,
+                                     @RequestParam(required = false) Integer offset,
                                      @RequestParam(required = false) String sort,
-                                     @RequestParam(required = false) boolean desc) {
+                                     @RequestParam(required = false) Boolean desc) {
+
         return tagService.findAll(limit, offset, sort, desc).stream()
                 .map(TagConverter::convert)
                 .collect(Collectors.toList());
