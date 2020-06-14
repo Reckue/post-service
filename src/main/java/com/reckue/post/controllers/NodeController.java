@@ -7,6 +7,7 @@ import com.reckue.post.transfers.NodeRequest;
 import com.reckue.post.transfers.NodeResponse;
 import com.reckue.post.utils.converters.NodeConverter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -65,10 +66,15 @@ public class NodeController implements NodeApi {
      * sorted by the selected parameter for sorting in descending order
      */
     @GetMapping
-    public List<NodeResponse> findAll(@RequestParam(required = false) int limit,
-                                      @RequestParam(required = false) int offset,
+    public List<NodeResponse> findAll(@RequestParam(required = false) Integer limit,
+                                      @RequestParam(required = false) Integer offset,
                                       @RequestParam(required = false) String sort,
                                       @RequestParam(required = false) boolean desc) {
+
+        if (limit == null) limit = 10;
+        if (offset == null) offset = 0;
+        if (StringUtils.isEmpty(sort)) sort = "id";
+
         return nodeService.findAll(limit, offset, sort, desc).stream()
                 .map(NodeConverter::convert)
                 .collect(Collectors.toList());

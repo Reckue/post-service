@@ -80,9 +80,11 @@ public class PostController implements PostApi {
                                       @RequestParam(required = false) Integer offset,
                                       @RequestParam(required = false) String sort,
                                       @RequestParam(required = false) boolean desc) {
+
         if (limit == null) limit = 10;
         if (offset == null) offset = 0;
         if (StringUtils.isEmpty(sort)) sort = "id";
+
         return postService.findAll(limit, offset, sort, desc).stream()
                 .map(PostConverter::convert)
                 .collect(Collectors.toList());

@@ -70,6 +70,7 @@ public class TagController implements TagApi {
                                      @RequestParam(required = false) Integer offset,
                                      @RequestParam(required = false) String sort,
                                      @RequestParam(required = false) boolean desc) {
+
         if (limit == null) limit = 10;
         if (offset == null) offset = 0;
         if (StringUtils.isEmpty(sort)) sort = "id";
