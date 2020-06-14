@@ -7,7 +7,6 @@ import com.reckue.post.transfers.PostRequest;
 import com.reckue.post.transfers.PostResponse;
 import com.reckue.post.utils.converters.PostConverter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -79,11 +78,7 @@ public class PostController implements PostApi {
     public List<PostResponse> findAll(@RequestParam(required = false) Integer limit,
                                       @RequestParam(required = false) Integer offset,
                                       @RequestParam(required = false) String sort,
-                                      @RequestParam(required = false) boolean desc) {
-
-        if (limit == null) limit = 10;
-        if (offset == null) offset = 0;
-        if (StringUtils.isEmpty(sort)) sort = "id";
+                                      @RequestParam(required = false) Boolean desc) {
 
         return postService.findAll(limit, offset, sort, desc).stream()
                 .map(PostConverter::convert)

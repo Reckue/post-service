@@ -43,7 +43,7 @@ public interface NodeService {
      * @param desc   sorting descending
      * @return list of objects of class Node
      */
-    List<Node> findAll(int limit, int offset, String sort, boolean desc);
+    List<Node> findAll(Integer limit, Integer offset, String sort, Boolean desc);
 
     /**
      * This method is used to get an object by id.

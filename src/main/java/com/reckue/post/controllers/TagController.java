@@ -69,11 +69,7 @@ public class TagController implements TagApi {
     public List<TagResponse> findAll(@RequestParam(required = false) Integer limit,
                                      @RequestParam(required = false) Integer offset,
                                      @RequestParam(required = false) String sort,
-                                     @RequestParam(required = false) boolean desc) {
-
-        if (limit == null) limit = 10;
-        if (offset == null) offset = 0;
-        if (StringUtils.isEmpty(sort)) sort = "id";
+                                     @RequestParam(required = false) Boolean desc) {
 
         return tagService.findAll(limit, offset, sort, desc).stream()
                 .map(TagConverter::convert)

@@ -43,7 +43,7 @@ public interface PostService {
      * @param desc   sorting descending
      * @return list of objects of class Post
      */
-    List<Post> findAll(int limit, int offset, String sort, boolean desc);
+    List<Post> findAll(Integer limit, Integer offset, String sort, Boolean desc);
 
     /**
      * This method is used to get an object by id.
