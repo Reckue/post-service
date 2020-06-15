@@ -34,7 +34,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author Vladislav Lapshin
  * @author Sherzod Mamadaliev
  * @author Kamila Meshcheryakova
- * @author Daria Simirnova
+ * @author Daria Smirnova
  * @author Viktor Grigoriev
  * @author Iveri Narozashvili
  * @author Artur Magomedov

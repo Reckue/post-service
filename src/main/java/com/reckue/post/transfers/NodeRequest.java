@@ -10,6 +10,11 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+/**
+ * Class NodeRequest represents an incoming DTO for adding a node.
+ *
+ * @author Kamila Meshcheryakova
+ */
 @Data
 @Builder
 public class NodeRequest {
