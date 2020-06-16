@@ -11,6 +11,11 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
 
+/**
+ * Class PostRequest represents an incoming DTO for adding a post.
+ *
+ * @author Kamila Meshcheryakova
+ */
 @Builder
 @Data
 public class PostRequest {

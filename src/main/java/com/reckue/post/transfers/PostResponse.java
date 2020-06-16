@@ -9,6 +9,11 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * Class PostResponse represents an outgoing DTO for receiving a post.
+ *
+ * @author Kamila Meshcheryakova
+ */
 @Data
 @Builder
 public class PostResponse {

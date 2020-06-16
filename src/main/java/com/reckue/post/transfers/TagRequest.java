@@ -8,6 +8,11 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 
+/**
+ * Class TagRequest represents an incoming DTO for adding a tag.
+ *
+ * @author Kamila Meshcheryakova
+ */
 @Data
 @Builder
 @NoArgsConstructor

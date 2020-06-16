@@ -7,6 +7,11 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
 
+/**
+ * Class NodeResponse represents an outgoing DTO for receiving a node.
+ *
+ * @author Kamila Meshcheryakova
+ */
 @Data
 @Builder
 public class NodeResponse {
