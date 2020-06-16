@@ -87,5 +87,5 @@ For any problems, comments, or feedback please create an issue [here on GitHub](
 <br>
 
 
-## Licence
+## License
 Reckue is released under the [MIT license](https://en.wikipedia.org/wiki/MIT_License).
