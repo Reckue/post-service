@@ -12,5 +12,6 @@ public enum NodeType {
     IMAGE,
     VIDEO,
     CODE,
-    LIST
+    LIST,
+    AUDIO
 }
