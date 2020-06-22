@@ -6,7 +6,6 @@ import com.reckue.post.utils.NodeContent;
 import lombok.Builder;
 import lombok.Data;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.List;
