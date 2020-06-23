@@ -139,7 +139,8 @@ public class RatingServiceRealizationTest extends PostServiceRealizationTest {
         Rating ratingOne = Rating.builder()
                 .id("0")
                 .build();
-        Exception exception = assertThrows(ModelNotFoundException.class, () -> ratingService.deleteById(ratingOne.getId()));
+        Exception exception = assertThrows(ModelNotFoundException.class,
+                () -> ratingService.deleteById(ratingOne.getId()));
         assertEquals("Rating by id " + ratingOne.getId() + " is not found", exception.getMessage());
     }
 }
