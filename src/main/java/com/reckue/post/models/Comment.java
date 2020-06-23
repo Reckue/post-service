@@ -25,5 +25,6 @@ public class Comment {
     private String id;
 
     private String userId;
-    private List<Node> nodeList;
+    private String postId;
+    private List<Comment> comments;
 }

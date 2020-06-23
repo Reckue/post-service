@@ -1,5 +1,6 @@
 package com.reckue.post.transfers;
 
+import com.reckue.post.models.Comment;
 import com.reckue.post.models.Node;
 import com.reckue.post.models.StatusType;
 import com.reckue.post.models.Tag;
@@ -36,6 +37,9 @@ public class PostRequest {
 
     @ApiModelProperty(notes = "List of keywords used in the post")
     private List<Tag> tags;
+
+    @ApiModelProperty(notes = "List of comments in the post")
+    private List<Comment> comments;
 
     @ApiModelProperty(notes = "Publication date")
     private long published;

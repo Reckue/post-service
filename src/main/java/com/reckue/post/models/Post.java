@@ -29,6 +29,7 @@ public class Post {
     private String source;
     private String username;
     private List<Tag> tags;
+    private List<Comment> comments;
     private long published;
     private long changed;
     private StatusType status;
