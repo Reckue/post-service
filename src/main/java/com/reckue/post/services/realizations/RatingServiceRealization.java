@@ -2,6 +2,7 @@ package com.reckue.post.services.realizations;
 
 import com.reckue.post.exceptions.ModelAlreadyExistsException;
 import com.reckue.post.exceptions.ModelNotFoundException;
+import com.reckue.post.models.Post;
 import com.reckue.post.models.Rating;
 import com.reckue.post.repositories.RatingRepository;
 import com.reckue.post.services.RatingService;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 /**
  * Class RatingServiceRealization represents realization of RatingService.
  *
@@ -77,9 +79,17 @@ public class RatingServiceRealization implements RatingService {
         return null;
     }
 
+    /**
+     * This method is used to get an object by id.
+     * Throws {@link ModelNotFoundException} in case if such object isn't contained in database.
+     *
+     * @param id object
+     * @return post object of class Rating
+     */
     @Override
     public Rating findById(String id) {
-        return null;
+        return ratingRepository.findById(id).orElseThrow(
+                () -> new ModelNotFoundException("Rating by id " + id + " is not found"));
     }
 
     /**

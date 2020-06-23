@@ -80,7 +80,6 @@ public class RatingServiceRealizationTest extends PostServiceRealizationTest {
     @Test
     public void updateWithNullId() {
         Rating ratingOne = Rating.builder()
-                .id("1")
                 .build();
 
         assertThrows(IllegalArgumentException.class, () -> ratingService.update(ratingOne));
