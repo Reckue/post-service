@@ -2,6 +2,8 @@ package com.reckue.post.transfers;
 
 import com.reckue.post.models.Comment;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
+import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -11,6 +13,8 @@ import java.util.List;
  *
  * @author Artur Magomedov
  */
+@Data
+@Builder
 public class CommentResponse {
 
     @ApiModelProperty(notes = "Database generated tag ID")
