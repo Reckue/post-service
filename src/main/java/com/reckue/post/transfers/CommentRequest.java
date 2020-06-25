@@ -23,10 +23,10 @@ import java.util.List;
 public class CommentRequest {
 
     @NotNull
-    @ApiModelProperty(notes = "id")
+    @ApiModelProperty(notes = "User id")
     private String userId;
     @NotNull
-    @ApiModelProperty(notes = "id")
+    @ApiModelProperty(notes = "Post id")
     private String postId;
     @ApiModelProperty(notes = "List of comments in the current comment")
     private List<Comment> comments;
