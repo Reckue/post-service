@@ -24,7 +24,9 @@ public class Comment {
     @Id
     private String id;
 
+    private String text;
     private String userId;
     private String postId;
+    private long published;
     private List<Comment> comments;
 }

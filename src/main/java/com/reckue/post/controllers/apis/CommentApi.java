@@ -1,16 +1,12 @@
 package com.reckue.post.controllers.apis;
 
-import com.reckue.post.models.Comment;
 import com.reckue.post.transfers.CommentRequest;
 import com.reckue.post.transfers.CommentResponse;
-import com.reckue.post.transfers.NodeRequest;
-import com.reckue.post.transfers.NodeResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
-import java.util.Collections;
 import java.util.List;
 
 /**

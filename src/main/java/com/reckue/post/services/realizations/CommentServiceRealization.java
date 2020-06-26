@@ -63,8 +63,10 @@ public class CommentServiceRealization implements CommentService {
         }
         Comment savedComment = Comment.builder()
                 .id(comment.getId())
+                .text(comment.getText())
                 .postId(comment.getPostId())
                 .userId(comment.getUserId())
+                .published(comment.getPublished())
                 .comments(comment.getComments())
                 .build();
 
@@ -133,10 +135,14 @@ public class CommentServiceRealization implements CommentService {
         switch (sort) {
             case "id":
                 return findAllAndSortById();
+            case "text":
+                return findAllAndSortByText();
             case "userId":
                 return findAllAndSortByUserId();
             case "postId":
                 return findAllAndSortByPostId();
+            case "published":
+                return findAllAndSortByPublished();
         }
         throw new IllegalArgumentException("Such field as " + sort + " doesn't exist");
     }
@@ -149,6 +155,17 @@ public class CommentServiceRealization implements CommentService {
     public List<Comment> findAllAndSortById() {
         return findAll().stream()
                 .sorted(Comparator.comparing(Comment::getId))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * This method is used to sort objects by text.
+     *
+     * @return list of objects of class Comment sorted by text
+     */
+    public List<Comment> findAllAndSortByText() {
+        return findAll().stream()
+                .sorted(Comparator.comparing(Comment::getText))
                 .collect(Collectors.toList());
     }
 
@@ -171,6 +188,17 @@ public class CommentServiceRealization implements CommentService {
     public List<Comment> findAllAndSortByPostId() {
         return findAll().stream()
                 .sorted(Comparator.comparing(Comment::getPostId))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * This method is used to sort objects by published date.
+     *
+     * @return list of objects of class Comment sorted by published date
+     */
+    public List<Comment> findAllAndSortByPublished() {
+        return findAll().stream()
+                .sorted(Comparator.comparing(Comment::getPublished))
                 .collect(Collectors.toList());
     }
 
