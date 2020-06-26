@@ -1,5 +1,6 @@
 package com.reckue.post.controllers;
 
+import com.reckue.post.controllers.apis.CommentApi;
 import com.reckue.post.models.Comment;
 import com.reckue.post.services.CommentService;
 import com.reckue.post.transfers.CommentRequest;
@@ -23,7 +24,7 @@ import static com.reckue.post.utils.converters.CommentConverter.convert;
 @RequiredArgsConstructor
 @RequestMapping(value = "/comments")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-public class CommentController {
+public class CommentController implements CommentApi {
 
     private final CommentService commentService;
 

@@ -21,7 +21,7 @@ import java.util.List;
 @Api(tags = {"/comments"})
 public interface CommentApi {
 
-    @ApiOperation(value = "Add a node")
+    @ApiOperation(value = "Add a comment")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "The comment successfully added"),
             @ApiResponse(code = 409, message = "The comment you want to add already exists"),
@@ -56,5 +56,5 @@ public interface CommentApi {
             @ApiResponse(code = 200, message = "The comment successfully deleted"),
             @ApiResponse(code = 404, message = "The resource you were trying to delete is not found"),
             @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")})
-    void deleteById();
+    void deleteById(String id);
 }
