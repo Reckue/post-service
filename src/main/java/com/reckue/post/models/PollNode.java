@@ -25,5 +25,6 @@ public class PollNode implements NodeContent {
     @Id
     private String id;
 
+    private String title;
     private List<String> items;
 }

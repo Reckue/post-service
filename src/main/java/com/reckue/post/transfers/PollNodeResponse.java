@@ -14,5 +14,6 @@ import java.util.List;
 public class PollNodeResponse implements NodeContent {
 
     private String id;
+    private String title;
     private List<String> items;
 }

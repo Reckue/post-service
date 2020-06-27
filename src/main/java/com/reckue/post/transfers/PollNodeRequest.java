@@ -21,10 +21,15 @@ import java.util.List;
 public class PollNodeRequest implements NodeContent {
 
     @NotEmpty
+    @Size(min = 1, max = 128)
+    private String title;
+
+    @NotEmpty
     private List<@Size(min = 1, max = 128) String> items;
 
     @JsonCreator
-    public PollNodeRequest(List<String> items) {
+    public PollNodeRequest(String title, List<String> items) {
+        this.title = title;
         this.items = items;
     }
 }

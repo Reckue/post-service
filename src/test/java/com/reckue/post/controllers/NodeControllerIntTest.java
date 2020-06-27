@@ -237,8 +237,9 @@ public class NodeControllerIntTest extends PostServiceApplicationTests {
     @Test
     void saveWithPollNode() throws Exception {
         String json = objectMapper.writeValueAsString(NodeRequest.builder()
-                .content(PollNodeRequest.builder().
-                        items(List.of("Katya", "Olya"))
+                .content(PollNodeRequest.builder()
+                        .title("title")
+                        .items(List.of("Katya", "Olya"))
                 .build())
                 .source("source")
                 .type(NodeType.TEXT)
@@ -259,8 +260,9 @@ public class NodeControllerIntTest extends PostServiceApplicationTests {
 
         NodeResponse expected = NodeConverter.convert(Node.builder()
                 .id(actual.getId())
-                .content(PollNodeRequest.builder().
-                        items(List.of("Katya", "Olya"))
+                .content(PollNodeRequest.builder()
+                        .title("title")
+                        .items(List.of("Katya", "Olya"))
                         .build())
                 .source("source")
                 .type(NodeType.TEXT)
@@ -269,8 +271,6 @@ public class NodeControllerIntTest extends PostServiceApplicationTests {
 
         Assertions.assertEquals(expected, actual);
     }
-
-
 
     @Test
     void deleteById() throws Exception {
