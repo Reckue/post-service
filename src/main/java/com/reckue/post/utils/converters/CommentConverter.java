@@ -22,8 +22,10 @@ public class CommentConverter {
             throw new IllegalArgumentException("Null parameters are not allowed");
         }
         return Comment.builder()
+                .text(commentRequest.getText())
                 .userId(commentRequest.getUserId())
                 .postId(commentRequest.getPostId())
+                .published(commentRequest.getPublished())
                 .comments(commentRequest.getComments())
                 .build();
     }
@@ -40,8 +42,10 @@ public class CommentConverter {
         }
         return CommentResponse.builder()
                 .id(comment.getId())
+                .text(comment.getText())
                 .userId(comment.getUserId())
                 .postId(comment.getPostId())
+                .published(comment.getPublished())
                 .comments(comment.getComments())
                 .build();
     }
