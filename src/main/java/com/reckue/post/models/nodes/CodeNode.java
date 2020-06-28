@@ -21,9 +21,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 public class CodeNode {
 
-    @Id
-    private String id;
-
     private LangType language;
     private String content;
 }

@@ -1,7 +1,5 @@
 package com.reckue.post.models.nodes;
 
-import com.reckue.post.utils.NodeWrapper;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

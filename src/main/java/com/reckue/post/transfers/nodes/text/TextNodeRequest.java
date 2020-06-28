@@ -1,6 +1,8 @@
 package com.reckue.post.transfers.nodes.text;
 
+import com.reckue.post.transfers.nodes.NodeParentRequest;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotNull;
 
@@ -9,8 +11,9 @@ import javax.validation.constraints.NotNull;
  *
  * @author Kamila Meshcheryakova
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class TextNodeRequest {
+public class TextNodeRequest extends NodeParentRequest {
 
     @NotNull
     private String content;

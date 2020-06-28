@@ -1,6 +1,5 @@
 package com.reckue.post.transfers.nodes.video;
 
-import com.reckue.post.utils.NodeWrapper;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;

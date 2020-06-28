@@ -1,7 +1,8 @@
 package com.reckue.post.transfers.nodes.list;
 
-import com.reckue.post.utils.NodeWrapper;
+import com.reckue.post.transfers.nodes.NodeParentRequest;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
@@ -10,8 +11,9 @@ import java.util.List;
  *
  * @author Kamila Meshcheryakova
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class ListNodeRequest {
+public class ListNodeRequest extends NodeParentRequest {
 
     private List<String> content;
 }

@@ -84,10 +84,10 @@ public class NodeController implements NodeApi {
      * @param id the object identifier
      * @return the object of class NodeResponse
      */
-    @GetMapping("/{id}")
-    public NodeResponse<?> findById(@PathVariable String id) {
-        return convert(nodeService.findById(id));
-    }
+//    @GetMapping("/{id}")
+//    public NodeResponse<?> findById(@PathVariable String id) {
+//        return convert(nodeService.findById(id));
+//    }
 
     /**
      * This type of request allows to delete the object by id.
