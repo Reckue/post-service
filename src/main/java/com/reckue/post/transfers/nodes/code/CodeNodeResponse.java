@@ -1,7 +1,6 @@
-package com.reckue.post.transfers;
+package com.reckue.post.transfers.nodes.code;
 
-import com.reckue.post.models.LangType;
-import com.reckue.post.utils.NodeContent;
+import com.reckue.post.models.types.LangType;
 import lombok.Data;
 
 /**
@@ -10,7 +9,7 @@ import lombok.Data;
  * @author Kamila Meshcheryakova
  */
 @Data
-public class CodeNodeResponse implements NodeContent {
+public class CodeNodeResponse {
 
     private LangType language;
     private String content;

@@ -4,8 +4,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reckue.post.PostServiceApplicationTests;
 import com.reckue.post.models.Node;
-import com.reckue.post.models.NodeType;
-import com.reckue.post.models.StatusType;
+import com.reckue.post.models.types.NodeType;
+import com.reckue.post.models.types.StatusType;
 import com.reckue.post.repositories.NodeRepository;
 import com.reckue.post.transfers.NodeRequest;
 import com.reckue.post.transfers.NodeResponse;
@@ -16,7 +16,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 

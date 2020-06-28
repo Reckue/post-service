@@ -32,6 +32,10 @@ server:
 spring:
   profiles:
     active: develop
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/post-develop
+
 
 MONGO_URI: mongodb://127.0.0.1
 MONGO_PORT: 27017

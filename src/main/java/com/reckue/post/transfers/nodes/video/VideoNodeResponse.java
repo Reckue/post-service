@@ -1,6 +1,6 @@
-package com.reckue.post.transfers;
+package com.reckue.post.transfers.nodes.video;
 
-import com.reckue.post.utils.NodeContent;
+import com.reckue.post.utils.NodeWrapper;
 import lombok.Data;
 
 /**
@@ -9,7 +9,7 @@ import lombok.Data;
  * @author Kamila Meshcheryakova
  */
 @Data
-public class VideoNodeResponse implements NodeContent {
+public class VideoNodeResponse {
 
     private String videoUrl;
 }

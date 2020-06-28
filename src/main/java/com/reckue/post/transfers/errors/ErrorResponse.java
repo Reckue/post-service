@@ -1,4 +1,4 @@
-package com.reckue.post.transfers;
+package com.reckue.post.transfers.errors;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

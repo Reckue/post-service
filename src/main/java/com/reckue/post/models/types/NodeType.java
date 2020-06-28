@@ -1,4 +1,4 @@
-package com.reckue.post.models;
+package com.reckue.post.models.types;
 
 /**
  * Enum NodeType represents enumeration of types of content that are associated with node.

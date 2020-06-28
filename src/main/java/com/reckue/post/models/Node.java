@@ -1,6 +1,7 @@
 package com.reckue.post.models;
 
-import com.reckue.post.utils.NodeContent;
+import com.reckue.post.models.types.NodeType;
+import com.reckue.post.models.types.StatusType;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,13 +20,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document
-public class Node {
+public class Node<T> {
 
     @Id
     private String id;
 
     private NodeType type;
-    private NodeContent content;
+    private T node;
     private String source;
     private String username;
     private long published;

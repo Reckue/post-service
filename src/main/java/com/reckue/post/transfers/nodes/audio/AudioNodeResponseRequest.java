@@ -1,6 +1,6 @@
-package com.reckue.post.transfers;
+package com.reckue.post.transfers.nodes.audio;
 
-import com.reckue.post.utils.NodeContent;
+import com.reckue.post.transfers.nodes.NodeParentRequest;
 import lombok.Data;
 
 /**
@@ -9,7 +9,7 @@ import lombok.Data;
  * @author Daria Smirnova
  */
 @Data
-public class AudioNodeResponse implements NodeContent {
+public class AudioNodeResponseRequest extends NodeParentRequest {
 
     private String audioUrl;
 }

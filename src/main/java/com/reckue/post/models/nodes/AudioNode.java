@@ -1,6 +1,6 @@
-package com.reckue.post.models;
+package com.reckue.post.models.nodes;
 
-import com.reckue.post.utils.NodeContent;
+import com.reckue.post.utils.NodeWrapper;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,16 +9,16 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
- * Class TextNode represents model of text fields.
+ * Class AudioNode is responsible for playing audio.
  *
- * @author Iveri Narozashvili
+ * @author Daria Smirnova
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Document
-public class TextNode implements NodeContent {
+public class AudioNode {
 
-    private String content;
+    private String audioUrl;
 }

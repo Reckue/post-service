@@ -1,8 +1,8 @@
 package com.reckue.post.transfers;
 
-import com.reckue.post.models.NodeType;
-import com.reckue.post.models.StatusType;
-import com.reckue.post.utils.NodeContent;
+import com.reckue.post.models.types.NodeType;
+import com.reckue.post.models.types.StatusType;
+import com.reckue.post.utils.NodeWrapper;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +14,7 @@ import lombok.Data;
  */
 @Data
 @Builder
-public class NodeResponse {
+public class NodeResponse<T> {
 
     @ApiModelProperty(notes = "The database generated node ID")
     private String id;
@@ -23,7 +23,7 @@ public class NodeResponse {
     private NodeType type;
 
     @ApiModelProperty(notes = "Type of node content")
-    private NodeContent content;
+    private T node;
 
     @ApiModelProperty(notes = "The source used to write the node")
     private String source;

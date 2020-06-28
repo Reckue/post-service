@@ -1,4 +1,4 @@
-package com.reckue.post.models;
+package com.reckue.post.models.types;
 
 /**
  * Enum StatusType represents enumeration of statuses that are associated with post or node.

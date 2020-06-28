@@ -1,6 +1,6 @@
-package com.reckue.post.transfers;
+package com.reckue.post.transfers.nodes.image;
 
-import com.reckue.post.utils.NodeContent;
+import com.reckue.post.utils.NodeWrapper;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
  * @author Kamila Meshcheryakova
  */
 @Data
-public class ImageNodeRequest implements NodeContent {
+public class ImageNodeRequest {
 
     @NotNull
     private String imageUrl;

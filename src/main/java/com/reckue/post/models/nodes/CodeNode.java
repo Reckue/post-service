@@ -1,6 +1,6 @@
-package com.reckue.post.models;
+package com.reckue.post.models.nodes;
 
-import com.reckue.post.utils.NodeContent;
+import com.reckue.post.models.types.LangType;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,8 +8,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
 /**
- * Class ImageNode is responsible for displaying images.
+ * Class CodeNode represents model of code fields.
  *
  * @author Iveri Narozashvili
  */
@@ -18,10 +19,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document
-public class ImageNode implements NodeContent {
+public class CodeNode {
 
     @Id
     private String id;
 
-    private String imageUrl;
+    private LangType language;
+    private String content;
 }

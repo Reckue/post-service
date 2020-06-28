@@ -1,4 +1,4 @@
-package com.reckue.post.models;
+package com.reckue.post.models.types;
 
 /**
  * Enum LangType is responsible for enumeration of languages that are associated with code representation.

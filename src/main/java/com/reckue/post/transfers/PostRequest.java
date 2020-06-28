@@ -1,7 +1,7 @@
 package com.reckue.post.transfers;
 
 import com.reckue.post.models.Node;
-import com.reckue.post.models.StatusType;
+import com.reckue.post.models.types.StatusType;
 import com.reckue.post.models.Tag;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
@@ -25,7 +25,7 @@ public class PostRequest {
     private String title;
 
     @ApiModelProperty(notes = "List of nodes the post consists of")
-    private List<Node> nodes;
+    private List<Node<?>> nodes;
 
     @Size(max = 128)
     @ApiModelProperty(notes = "The source used to write the post")

@@ -1,6 +1,5 @@
-package com.reckue.post.transfers;
+package com.reckue.post.transfers.nodes.text;
 
-import com.reckue.post.utils.NodeContent;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -11,7 +10,7 @@ import javax.validation.constraints.NotNull;
  * @author Kamila Meshcheryakova
  */
 @Data
-public class TextNodeRequest implements NodeContent {
+public class TextNodeRequest {
 
     @NotNull
     private String content;

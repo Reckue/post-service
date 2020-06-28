@@ -1,6 +1,6 @@
-package com.reckue.post.transfers;
+package com.reckue.post.transfers.nodes.list;
 
-import com.reckue.post.utils.NodeContent;
+import com.reckue.post.utils.NodeWrapper;
 import lombok.Data;
 
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
  * @author Kamila Meshcheryakova
  */
 @Data
-public class ListNodeRequest implements NodeContent {
+public class ListNodeRequest {
 
     private List<String> content;
 }

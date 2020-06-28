@@ -17,13 +17,13 @@ public class NodeConverter {
      * @param nodeRequest the object of class NodeRequest
      * @return the object of class Node
      */
-    public static Node convert(NodeRequest nodeRequest) {
+    public static <T> Node<?> convert(NodeRequest<? extends T> nodeRequest) {
         if (nodeRequest == null) {
             throw new IllegalArgumentException("Null parameters are not allowed");
         }
         return Node.builder()
                 .username(nodeRequest.getUsername())
-                .content(nodeRequest.getContent())
+                .node(nodeRequest.getNode())
                 .source(nodeRequest.getSource())
                 .type(nodeRequest.getType())
                 .status(nodeRequest.getStatus())
@@ -37,13 +37,14 @@ public class NodeConverter {
      * @param node the object of class Node
      * @return the object of class NodeResponse
      */
-    public static NodeResponse convert(Node node) {
+    public static <T> NodeResponse<?> convert(Node<? extends T> node) {
         if (node == null) {
             throw new IllegalArgumentException("Null parameters are not allowed");
         }
+
         return NodeResponse.builder()
                 .id(node.getId())
-                .content(node.getContent())
+                .node(node.getNode())
                 .username(node.getUsername())
                 .source(node.getSource())
                 .type(node.getType())

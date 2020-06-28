@@ -1,6 +1,6 @@
-package com.reckue.post.transfers;
+package com.reckue.post.transfers.nodes.audio;
 
-import com.reckue.post.utils.NodeContent;
+import com.reckue.post.transfers.nodes.NodeParentRequest;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
  * @author Daria Smirnova
  */
 @Data
-public class AudioNodeRequest implements NodeContent {
+public class AudioNodeRequestRequest extends NodeParentRequest {
 
     @NotNull
     private String audioUrl;
