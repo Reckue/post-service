@@ -10,27 +10,23 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.List;
 
 /**
- * Class Post is responsible for model that works with posts.
+ * Class Comment is responsible for model that works with comments.
  *
- * @author Iveri Narozashvili
+ * @author Artur Magomedov
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Document
-public class Post {
+public class Comment {
 
     @Id
     private String id;
 
-    private String title;
-    private List<Node> nodes;
-    private String source;
-    private String username;
-    private List<Tag> tags;
-    private List<Comment> comments;
+    private String text;
+    private String userId;
+    private String postId;
     private long published;
-    private long changed;
-    private StatusType status;
+    private List<Comment> comments;
 }
