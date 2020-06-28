@@ -68,6 +68,7 @@ public class PostServiceRealization implements PostService {
                 .nodes(post.getNodes())
                 .source(post.getSource())
                 .tags(post.getTags())
+                .comments(post.getComments())
                 .published(post.getPublished())
                 .changed(post.getChanged())
                 .status(post.getStatus())

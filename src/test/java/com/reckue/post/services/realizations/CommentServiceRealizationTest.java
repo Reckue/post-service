@@ -68,7 +68,6 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
 
     @Test
     public void create() {
-        String ID = Generator.id();
         when(commentRepository.save(comment)).thenReturn(comment);
 
         assertEquals(comment, commentService.create(comment));

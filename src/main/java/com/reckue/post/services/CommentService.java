@@ -41,7 +41,7 @@ public interface CommentService {
      * @param offset quantity to skip
      * @param sort   parameter for sorting
      * @param desc   sorting descending
-     * @return list of objects of class Node
+     * @return list of objects of class Comment
      */
 
     List<Comment> findAll(Integer limit, Integer offset, String sort, Boolean desc);

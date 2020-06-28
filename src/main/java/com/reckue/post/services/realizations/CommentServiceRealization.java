@@ -128,7 +128,7 @@ public class CommentServiceRealization implements CommentService {
     /**
      * This method is used to sort objects by type.
      *
-     * @param sort type of sorting: id, user id or post id
+     * @param sort type of sorting: id, text, userId, postId or published
      * @return list of objects of class Comment sorted by the selected parameter for sorting
      */
     public List<Comment> findAllBySortType(String sort) {

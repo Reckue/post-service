@@ -17,7 +17,7 @@ import java.util.List;
 @Builder
 public class CommentResponse {
 
-    @ApiModelProperty(notes = "Database generated tag ID")
+    @ApiModelProperty(notes = "Database generated comment ID")
     private String id;
 
     @NotNull

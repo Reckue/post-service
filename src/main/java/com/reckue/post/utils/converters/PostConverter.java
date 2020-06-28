@@ -28,6 +28,7 @@ public class PostConverter {
                 .nodes(postRequest.getNodes())
                 .source(postRequest.getSource())
                 .tags(postRequest.getTags())
+                .comments(postRequest.getComments())
                 .published(postRequest.getPublished())
                 .changed(postRequest.getChanged())
                 .status(postRequest.getStatus())
