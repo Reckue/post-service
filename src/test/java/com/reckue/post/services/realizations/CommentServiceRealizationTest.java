@@ -92,9 +92,9 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
 
     @Test
     public void updateCommentWithNullId() {
-        Comment nullableComment = Comment.builder().build();
+        Comment nullableComm = Comment.builder().build();
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> commentService.update(nullableComment));
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> commentService.update(nullableComm));
         assertEquals("The parameter is null", exception.getMessage());
     }
 
@@ -115,7 +115,8 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
 
     @Test
     public void findByIdIfNotExist() {
-        Exception exception = assertThrows(ModelNotFoundException.class, () -> commentService.findById(comment.getId()));
+        Exception exception = assertThrows(ModelNotFoundException.class,
+                () -> commentService.findById(comment.getId()));
         assertEquals("Comment by id " + comment.getId() + " is not found", exception.getMessage());
     }
 
@@ -225,31 +226,31 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
         List<Comment> comments = Stream.of(comment, comment2, comment3).collect(Collectors.toList());
         when(commentRepository.findAll()).thenReturn(comments);
 
-        List<Comment> sortedByIdExpectedAndDesc = comments.stream()
+        List<Comment> sortByIdAndDescExpected = comments.stream()
                 .sorted(Comparator.comparing(Comment::getId).reversed())
                 .collect(Collectors.toList());
 
-        List<Comment> sortedByTextAndDescExpected = comments.stream()
+        List<Comment> sortByTextAndDescExpected = comments.stream()
                 .sorted(Comparator.comparing(Comment::getText).reversed())
                 .collect(Collectors.toList());
 
-        List<Comment> sortedByUserIdAndDescExpected = comments.stream()
+        List<Comment> sortByUserIdAndDescExpected = comments.stream()
                 .sorted(Comparator.comparing(Comment::getUserId).reversed())
                 .collect(Collectors.toList());
 
-        List<Comment> sortedByPostIdAndDescExpected = comments.stream()
+        List<Comment> sortByPostIdAndDescExpected = comments.stream()
                 .sorted(Comparator.comparing(Comment::getPostId).reversed())
                 .collect(Collectors.toList());
 
-        List<Comment> sortedByPublishedAndDescExpected = comments.stream()
+        List<Comment> sortByPublishedAndDescExpected = comments.stream()
                 .sorted(Comparator.comparing(Comment::getPublished).reversed())
                 .collect(Collectors.toList());
 
-        assertEquals(sortedByIdExpectedAndDesc, commentService.findAllByTypeAndDesc("id", true));
-        assertEquals(sortedByTextAndDescExpected, commentService.findAllByTypeAndDesc("text", true));
-        assertEquals(sortedByUserIdAndDescExpected, commentService.findAllByTypeAndDesc("userId", true));
-        assertEquals(sortedByPostIdAndDescExpected, commentService.findAllByTypeAndDesc("postId", true));
-        assertEquals(sortedByPublishedAndDescExpected, commentService.findAllByTypeAndDesc("published", true));
+        assertEquals(sortByIdAndDescExpected, commentService.findAllByTypeAndDesc("id", true));
+        assertEquals(sortByTextAndDescExpected, commentService.findAllByTypeAndDesc("text", true));
+        assertEquals(sortByUserIdAndDescExpected, commentService.findAllByTypeAndDesc("userId", true));
+        assertEquals(sortByPostIdAndDescExpected, commentService.findAllByTypeAndDesc("postId", true));
+        assertEquals(sortByPublishedAndDescExpected, commentService.findAllByTypeAndDesc("published", true));
     }
 
     @Test
@@ -310,7 +311,8 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
 
     @Test
     public void deleteByIdWithException() {
-        Exception exception = assertThrows(ModelNotFoundException.class, () -> commentService.deleteById(comment.getId()));
+        Exception exception = assertThrows(ModelNotFoundException.class,
+                () -> commentService.deleteById(comment.getId()));
         assertEquals("Comment by id " + comment.getId() + " is not found", exception.getMessage());
     }
 }
