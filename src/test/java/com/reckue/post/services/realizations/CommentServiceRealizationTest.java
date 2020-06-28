@@ -7,6 +7,7 @@ import com.reckue.post.models.Comment;
 import com.reckue.post.repositories.CommentRepository;
 import com.reckue.post.utils.Generator;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -28,6 +29,9 @@ import static org.mockito.Mockito.*;
  * @author Artur Magomedov
  */
 public class CommentServiceRealizationTest extends PostServiceApplicationTests {
+    private Comment comment;
+    private Comment comment2;
+    private Comment comment3;
 
     @Mock
     private CommentRepository commentRepository;
@@ -35,10 +39,36 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
     @InjectMocks
     private CommentServiceRealization commentService;
 
+    @BeforeEach
+    private void createComments(){
+        comment = Comment.builder()
+                .id("javascript")
+                .text("front")
+                .userId("vlad")
+                .postId("007")
+                .published(404L)
+                .build();
+
+        comment2 = Comment.builder()
+                .id("html")
+                .text("test")
+                .userId("ivery")
+                .postId("911")
+                .published(500L)
+                .build();
+
+        comment3 = Comment.builder().
+                id("java").
+                text("web").
+                userId("sherzod").
+                postId("666").
+                published(200L).
+                build();
+    }
+
     @Test
     public void create() {
         String ID = Generator.id();
-        Comment comment = Comment.builder().id(ID).text("t").userId("0").postId("2").published(14L).build();
         when(commentRepository.save(comment)).thenReturn(comment);
 
         assertEquals(comment, commentService.create(comment));
@@ -46,8 +76,6 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
 
     @Test
     public void createIfCommentAlreadyExist() {
-        Comment comment = Comment.builder().id("1").text("a").userId("40").postId("3").published(16L).build();
-
         doReturn(true).when(commentRepository).existsById(Mockito.anyString());
 
         Exception exception = assertThrows(ModelAlreadyExistsException.class, () -> commentService.create(comment));
@@ -56,8 +84,6 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
 
     @Test
     public void update() {
-        Comment comment = Comment.builder().id("1").text("C++").userId("100").postId("23").published(18L).build();
-
         when(commentRepository.existsById(comment.getId())).thenReturn(true);
         when(commentRepository.save(comment)).thenReturn(comment);
 
@@ -66,15 +92,14 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
 
     @Test
     public void updateCommentWithNullId() {
-        Comment comment = Comment.builder().build();
+        Comment nullableComment = Comment.builder().build();
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> commentService.update(comment));
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> commentService.update(nullableComment));
         assertEquals("The parameter is null", exception.getMessage());
     }
 
     @Test
     public void updateCommentIfNotExistId() {
-        Comment comment = Comment.builder().id("lop").text("C").userId("9").postId("11").published(20L).build();
         when(commentRepository.existsById(comment.getId())).thenReturn(false);
 
         Exception exception = assertThrows(ModelNotFoundException.class, () -> commentService.update(comment));
@@ -83,7 +108,6 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
 
     @Test
     public void findById() {
-        Comment comment = Comment.builder().id("id").text("go").userId("6").postId("007").published(22L).build();
         doReturn(Optional.of(comment)).when(commentRepository).findById(Mockito.anyString());
 
         assertEquals(comment, commentService.findById(comment.getId()));
@@ -91,18 +115,13 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
 
     @Test
     public void findByIdIfNotExist() {
-        Comment comment = Comment.builder().id("1").text("rust").userId("16").postId("05").published(24L).build();
-
         Exception exception = assertThrows(ModelNotFoundException.class, () -> commentService.findById(comment.getId()));
         assertEquals("Comment by id " + comment.getId() + " is not found", exception.getMessage());
     }
 
     @Test
     public void findAll() {
-        Comment comment1 = Comment.builder().id("k").text("turbo").userId("o").postId("f").published(26L).build();
-        Comment comment2 = Comment.builder().id("l").text("pascal").userId("p").postId("g").published(28L).build();
-
-        List<Comment> comments = Stream.of(comment1, comment2).collect(Collectors.toList());
+        List<Comment> comments = Stream.of(comment, comment2).collect(Collectors.toList());
 
         when(commentRepository.findAll()).thenReturn(comments);
         assertEquals(comments, commentService.findAll());
@@ -110,11 +129,7 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
 
     @Test
     public void findAllAndSortById() {
-        Comment comment1 = Comment.builder().id("c").text("df").userId("78").postId("g6").published(13L).build();
-        Comment comment2 = Comment.builder().id("35").text("sd").userId("15").postId("e5").published(15L).build();
-        Comment comment3 = Comment.builder().id("a").text("ce").userId("69").postId("k8").published(17L).build();
-
-        List<Comment> comments = Stream.of(comment1, comment2, comment3).collect(Collectors.toList());
+        List<Comment> comments = Stream.of(comment, comment2, comment3).collect(Collectors.toList());
         when(commentRepository.findAll()).thenReturn(comments);
 
         List<Comment> expected = comments.stream()
@@ -127,11 +142,7 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
 
     @Test
     public void findAllAndSortByText() {
-        Comment comment1 = Comment.builder().id("c").text("df").userId("78").postId("g6").published(13L).build();
-        Comment comment2 = Comment.builder().id("35").text("sd").userId("15").postId("e5").published(15L).build();
-        Comment comment3 = Comment.builder().id("a").text("ce").userId("69").postId("k8").published(17L).build();
-
-        List<Comment> comments = Stream.of(comment1, comment2, comment3).collect(Collectors.toList());
+        List<Comment> comments = Stream.of(comment, comment2, comment3).collect(Collectors.toList());
         when(commentRepository.findAll()).thenReturn(comments);
 
         List<Comment> expected = comments.stream()
@@ -143,11 +154,7 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
 
     @Test
     public void findAllAndSortByUserId() {
-        Comment comment1 = Comment.builder().id("c").text("df").userId("78").postId("g6").published(13L).build();
-        Comment comment2 = Comment.builder().id("35").text("sd").userId("15").postId("e5").published(15L).build();
-        Comment comment3 = Comment.builder().id("a").text("ce").userId("69").postId("k8").published(17L).build();
-
-        List<Comment> comments = Stream.of(comment1, comment2, comment3).collect(Collectors.toList());
+        List<Comment> comments = Stream.of(comment, comment2, comment3).collect(Collectors.toList());
         when(commentRepository.findAll()).thenReturn(comments);
 
         List<Comment> expected = comments.stream()
@@ -159,11 +166,7 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
 
     @Test
     public void findAllAndSortByPostId() {
-        Comment comment1 = Comment.builder().id("c").text("df").userId("78").postId("g6").published(13L).build();
-        Comment comment2 = Comment.builder().id("35").text("sd").userId("15").postId("e5").published(15L).build();
-        Comment comment3 = Comment.builder().id("a").text("ce").userId("69").postId("k8").published(17L).build();
-
-        List<Comment> comments = Stream.of(comment1, comment2, comment3).collect(Collectors.toList());
+        List<Comment> comments = Stream.of(comment, comment2, comment3).collect(Collectors.toList());
         when(commentRepository.findAll()).thenReturn(comments);
 
         List<Comment> expected = comments.stream()
@@ -175,11 +178,7 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
 
     @Test
     public void findAllAndSortByPublished() {
-        Comment comment1 = Comment.builder().id("c").text("df").userId("78").postId("g6").published(131L).build();
-        Comment comment2 = Comment.builder().id("35").text("sd").userId("15").postId("e5").published(12L).build();
-        Comment comment3 = Comment.builder().id("a").text("ce").userId("69").postId("k8").published(6L).build();
-
-        List<Comment> comments = Stream.of(comment1, comment2, comment3).collect(Collectors.toList());
+        List<Comment> comments = Stream.of(comment, comment2, comment3).collect(Collectors.toList());
         when(commentRepository.findAll()).thenReturn(comments);
 
         List<Comment> expected = comments.stream()
@@ -191,11 +190,7 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
 
     @Test
     public void findAllBySortType() {
-        Comment comment1 = Comment.builder().id("c").text("df").userId("78").postId("g6").published(23L).build();
-        Comment comment2 = Comment.builder().id("35").text("sd").userId("15").postId("e5").published(64L).build();
-        Comment comment3 = Comment.builder().id("a").text("ce").userId("695").postId("k8").published(17L).build();
-
-        List<Comment> comments = Stream.of(comment1, comment2, comment3).collect(Collectors.toList());
+        List<Comment> comments = Stream.of(comment, comment2, comment3).collect(Collectors.toList());
         when(commentRepository.findAll()).thenReturn(comments);
 
         List<Comment> sortedByIdExpected = comments.stream()
@@ -227,11 +222,7 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
 
     @Test
     public void findAllBySortTypeAndDesc() {
-        Comment comment1 = Comment.builder().id("c").text("df").userId("78").postId("g6").published(23L).build();
-        Comment comment2 = Comment.builder().id("35").text("sd").userId("15").postId("e5").published(64L).build();
-        Comment comment3 = Comment.builder().id("a").text("ce").userId("695").postId("k8").published(17L).build();
-
-        List<Comment> comments = Stream.of(comment1, comment2, comment3).collect(Collectors.toList());
+        List<Comment> comments = Stream.of(comment, comment2, comment3).collect(Collectors.toList());
         when(commentRepository.findAll()).thenReturn(comments);
 
         List<Comment> sortedByIdExpectedAndDesc = comments.stream()
@@ -263,11 +254,7 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
 
     @Test
     public void findAllWithLimitOffsetSortAndDesc() {
-        Comment comment1 = Comment.builder().id("python").text("7").userId("3").postId("h").published(505L).build();
-        Comment comment2 = Comment.builder().id("csharp").text("4").userId("2").postId("u").published(911L).build();
-        Comment comment3 = Comment.builder().id("bash").text("6").userId("0").postId("o").published(777L).build();
-
-        List<Comment> comments = Stream.of(comment1, comment2, comment3).collect(Collectors.toList());
+        List<Comment> comments = Stream.of(comment, comment2, comment3).collect(Collectors.toList());
         when(commentRepository.findAll()).thenReturn(comments);
 
         List<Comment> test1 = comments.stream()
@@ -308,7 +295,6 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
 
     @Test
     public void deleteById() {
-        Comment comment = Comment.builder().id("hr").text("php").userId("1").postId("2").published(111L).build();
         List<Comment> comments = new ArrayList<>();
         comments.add(comment);
 
@@ -324,8 +310,6 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
 
     @Test
     public void deleteByIdWithException() {
-        Comment comment = Comment.builder().id("not found").text("asm").userId("0").postId("9").published(99L).build();
-
         Exception exception = assertThrows(ModelNotFoundException.class, () -> commentService.deleteById(comment.getId()));
         assertEquals("Comment by id " + comment.getId() + " is not found", exception.getMessage());
     }
