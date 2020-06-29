@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @author Iveri Narozashvili
  */
-@Api(tags = {"/tags"})
+@Api(tags = {"/rating"})
 public interface RatingApi {
     @ApiOperation(value = "Add a rating")
     @ApiResponses(value = {
@@ -39,14 +39,14 @@ public interface RatingApi {
             @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")})
     List<RatingResponse> findAll(Integer limit, Integer offset, String sort, Boolean desc);
 
-    @ApiOperation(value = "Get a tag by id", response = RatingResponse.class)
+    @ApiOperation(value = "Get a rating by id", response = RatingResponse.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "The rating successfully found"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found"),
             @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")})
     RatingResponse findById(String id);
 
-    @ApiOperation(value = "Delete a tag")
+    @ApiOperation(value = "Delete a rating")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "The rating successfully deleted"),
             @ApiResponse(code = 404, message = "The resource you were trying to delete is not found"),

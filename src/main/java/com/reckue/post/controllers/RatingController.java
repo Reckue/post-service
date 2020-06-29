@@ -30,8 +30,8 @@ public class RatingController implements RatingApi {
     /**
      * This type of request allows to create and process it using the converter.
      *
-     * @param ratingRequest the object of class TagRequest
-     * @return the object of class TagResponse
+     * @param ratingRequest the object of class RatingRequest
+     * @return the object of class RatingResponse
      */
     @PostMapping
     public RatingResponse create(@RequestBody @Valid RatingRequest ratingRequest) {
@@ -41,9 +41,9 @@ public class RatingController implements RatingApi {
     /**
      * This type of request allows to update by id the object and process it using the converter.
      *
-     * @param id         the object identifier
-     * @param ratingRequest the object of class TagRequest
-     * @return the object of class TagResponse
+     * @param id            the object identifier
+     * @param ratingRequest the object of class RatingRequest
+     * @return the object of class RatingResponse
      */
     @PutMapping("/{id}")
     public RatingResponse update(@PathVariable String id, @RequestBody @Valid RatingRequest ratingRequest) {
@@ -60,17 +60,14 @@ public class RatingController implements RatingApi {
      * @param offset quantity to skip
      * @param sort   parameter for sorting
      * @param desc   sorting descending
-     * @return list of given quantity of objects of class TagResponse with a given offset
+     * @return list of given quantity of objects of class RatingResponse with a given offset
      * sorted by the selected parameter for sorting in descending order
      */
     @GetMapping
-
     public List<RatingResponse> findAll(@RequestParam(required = false) Integer limit,
                                         @RequestParam(required = false) Integer offset,
                                         @RequestParam(required = false) String sort,
                                         @RequestParam(required = false) Boolean desc) {
-
-
         return ratingService.findAll(limit, offset, sort, desc).stream()
                 .map(RatingConverter::convert)
                 .collect(Collectors.toList());
@@ -80,7 +77,7 @@ public class RatingController implements RatingApi {
      * This type of request allows to get the object by id, process it using the converter.
      *
      * @param id the object identifier
-     * @return the object of class TagResponse
+     * @return the object of class RatingResponse
      */
     @GetMapping("/{id}")
     public RatingResponse findById(@PathVariable String id) {

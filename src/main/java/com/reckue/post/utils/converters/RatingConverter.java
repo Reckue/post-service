@@ -5,7 +5,7 @@ import com.reckue.post.transfers.RatingRequest;
 import com.reckue.post.transfers.RatingResponse;
 
 /**
- * Class for converting TagRequest object to Tag and Tag object to TagResponse.
+ * Class for converting RatingRequest object to Rating and Rating object to RatingResponse.
  *
  * @author Iveri Narozashvili
  */
@@ -21,7 +21,9 @@ public class RatingConverter {
             throw new IllegalArgumentException("Null parameters are not allowed");
         }
         return Rating.builder()
-                .id(ratingRequest.getName())
+                .postId(ratingRequest.getPostId())
+                .userId(ratingRequest.getUserId())
+                .id(ratingRequest.getId())
                 .build();
     }
 
@@ -36,6 +38,8 @@ public class RatingConverter {
             throw new IllegalArgumentException("Null parameters are not allowed");
         }
         return RatingResponse.builder()
+                .postId(rating.getPostId())
+                .userId(rating.getUserId())
                 .id(rating.getId())
                 .build();
     }

@@ -7,6 +7,11 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+/**
+ * Class Rating is responsible for model that works with rating.
+ *
+ * @author Iveri Narozashvili
+ */
 @Data
 @Builder
 @NoArgsConstructor

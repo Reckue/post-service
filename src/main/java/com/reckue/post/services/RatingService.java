@@ -4,6 +4,11 @@ import com.reckue.post.models.Rating;
 
 import java.util.List;
 
+/**
+ * Interface RatingService represents service with CRUD operations.
+ *
+ * @author Iveri Narozashvili
+ */
 public interface RatingService {
         /**
          * This method is used to create an object of class Rating.
@@ -35,7 +40,7 @@ public interface RatingService {
          * @param offset quantity to skip
          * @param sort parameter for sorting
          * @param desc sorting descending
-         * @return list of objects of class Node
+         * @return list of objects of class Rating
          */
 
         List<Rating> findAll(Integer limit, Integer offset, String sort, Boolean desc);

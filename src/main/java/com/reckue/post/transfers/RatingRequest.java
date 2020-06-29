@@ -1,20 +1,27 @@
 package com.reckue.post.transfers;
 
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 
+/**
+ * Class RatingRequest represents an incoming DTO for adding a rating.
+ *
+ * @author Iveri Narozashvili
+ */
 @Data
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class RatingRequest {
 
     @NotNull
-    @ApiModelProperty(notes = "Tag name")
-    private String name;
+    @ApiModelProperty(notes = "Database generated rating ID")
+    private String id;
+
+    @ApiModelProperty(notes = "Database generates user ID")
+    private String userId;
+
+    @ApiModelProperty(notes = "Database generates post ID")
+    private String postId;
 }
