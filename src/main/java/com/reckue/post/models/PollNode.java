@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Class PollNode is responsible for the voting system.
  *
- * @author Viktor Grigorirev
+ * @author Viktor Grigoriev
  */
 @Data
 @Builder

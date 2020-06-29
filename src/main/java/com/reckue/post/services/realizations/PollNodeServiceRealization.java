@@ -64,6 +64,7 @@ public class PollNodeServiceRealization implements PollNodeService {
         PollNode savedPollNode = PollNode.builder()
                 .id(node.getId())
                 .title(node.getTitle())
+                .items(node.getItems())
                 .build();
         return pollNodeRepository.save(savedPollNode);
     }
@@ -123,7 +124,7 @@ public class PollNodeServiceRealization implements PollNodeService {
     /**
      * This method is used to sort objects by type.
      *
-     * @param sort type of sorting: name, default - id
+     * @param sort type of sorting: title, default - id
      * @return list of objects of class PollNode sorted by the selected parameter for sorting
      */
     public List<PollNode> findAllBySortType(String sort) {

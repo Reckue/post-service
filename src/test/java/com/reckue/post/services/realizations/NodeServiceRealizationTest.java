@@ -64,7 +64,7 @@ public class NodeServiceRealizationTest extends PostServiceApplicationTests {
     }
 
     @Test
-    public void createWithPoolNode() {
+    public void createWithPollNode() {
         Node node = Node.builder()
                 .id("1")
                 .content(PollNodeRequest.builder().
