@@ -1,5 +1,7 @@
 package com.reckue.post.transfers;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.reckue.post.models.NodeType;
 import com.reckue.post.models.StatusType;
 import com.reckue.post.utils.NodeContent;
