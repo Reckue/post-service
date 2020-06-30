@@ -1,8 +1,9 @@
-package com.reckue.post.transfers;
+package com.reckue.post.transfers.nodes.code;
 
-import com.reckue.post.models.LangType;
-import com.reckue.post.utils.NodeContent;
+import com.reckue.post.models.types.LangType;
+import com.reckue.post.transfers.nodes.NodeParentRequest;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotNull;
 
@@ -11,8 +12,9 @@ import javax.validation.constraints.NotNull;
  *
  * @author Kamila Meshcheryakova
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class CodeNodeRequest implements NodeContent {
+public class CodeNodeRequest extends NodeParentRequest {
 
     @NotNull
     private LangType language;

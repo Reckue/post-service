@@ -3,6 +3,8 @@ package com.reckue.post.services.realizations;
 import com.reckue.post.exceptions.ModelAlreadyExistsException;
 import com.reckue.post.exceptions.ModelNotFoundException;
 import com.reckue.post.models.Node;
+import com.reckue.post.models.nodes.*;
+import com.reckue.post.models.types.NodeType;
 import com.reckue.post.repositories.NodeRepository;
 import com.reckue.post.services.NodeService;
 import com.reckue.post.utils.Generator;
@@ -33,13 +35,28 @@ public class NodeServiceRealization implements NodeService {
      * @param node object of class Node
      * @return node object of class Node
      */
+    @SuppressWarnings("unchecked")
     @Override
-    public Node create(Node node) {
+    public Node<?> create(Node<?> node) {
         node.setId(Generator.id());
-        if (!nodeRepository.existsById(node.getId())) {
-            return nodeRepository.save(node);
-        } else {
+        if (nodeRepository.existsById(node.getId())) {
             throw new ModelAlreadyExistsException("Node already exists");
+        }
+
+        if (NodeType.TEXT.equals(node.getType())) {
+            return nodeRepository.save((Node<TextNode>) node);
+        } else if (NodeType.AUDIO.equals(node.getType())) {
+            return nodeRepository.save((Node<AudioNode>) node);
+        } else if (NodeType.CODE.equals(node.getType())) {
+            return nodeRepository.save((Node<CodeNode>) node);
+        } else if (NodeType.IMAGE.equals(node.getType())) {
+            return nodeRepository.save((Node<ImageNode>) node);
+        } else if (NodeType.LIST.equals(node.getType())) {
+            return nodeRepository.save((Node<ListNode>) node);
+        } else if (NodeType.VIDEO.equals(node.getType())) {
+            return nodeRepository.save((Node<VideoNode>) node);
+        } else {
+            throw new IllegalArgumentException("Notes type is not found");
         }
     }
 
@@ -54,14 +71,14 @@ public class NodeServiceRealization implements NodeService {
      * @return node object of class Node
      */
     @Override
-    public Node update(Node node) {
+    public Node<?> update(Node<?> node) {
         if (node.getId() == null) {
             throw new IllegalArgumentException("The parameter is null");
         }
         if (!nodeRepository.existsById(node.getId())) {
             throw new ModelNotFoundException("Node by id " + node.getId() + " is not found");
         }
-        Node savedNode = Node.builder()
+        Node<?> savedNode = Node.builder()
                 .id(node.getId())
                 .username(node.getUsername())
                 .type(node.getType())
@@ -78,8 +95,10 @@ public class NodeServiceRealization implements NodeService {
      * @return list of objects of class Node
      */
     @Override
-    public List<Node> findAll() {
-        return nodeRepository.findAll();
+    public List<Node<?>> findAll() {
+        return nodeRepository.findAll().stream()
+                .map(e -> (Node<?>) e)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -93,7 +112,7 @@ public class NodeServiceRealization implements NodeService {
      * sorted by the selected parameter for sorting in descending order
      */
     @Override
-    public List<Node> findAll(Integer limit, Integer offset, String sort, Boolean desc) {
+    public List<Node<?>> findAll(Integer limit, Integer offset, String sort, Boolean desc) {
         if (limit == null) limit = 10;
         if (offset == null) offset = 0;
         if (StringUtils.isEmpty(sort)) sort = "id";
@@ -116,9 +135,9 @@ public class NodeServiceRealization implements NodeService {
      * @return list of objects of class Node sorted by the selected parameter for sorting
      * in descending order
      */
-    public List<Node> findAllByTypeAndDesc(String sort, boolean desc) {
+    public List<Node<?>> findAllByTypeAndDesc(String sort, boolean desc) {
         if (desc) {
-            List<Node> nodes = findAllBySortType(sort);
+            List<Node<?>> nodes = findAllBySortType(sort);
             Collections.reverse(nodes);
             return nodes;
         }
@@ -131,7 +150,7 @@ public class NodeServiceRealization implements NodeService {
      * @param sort type of sorting: type, status, source, published, default - id
      * @return list of objects of class Node sorted by the selected parameter for sorting
      */
-    public List<Node> findAllBySortType(String sort) {
+    public List<Node<?>> findAllBySortType(String sort) {
         switch (sort) {
             case "type":
                 return findAllAndSortByType();
@@ -154,9 +173,10 @@ public class NodeServiceRealization implements NodeService {
      *
      * @return list of objects of class Node sorted by id
      */
-    public List<Node> findAllAndSortById() {
+    public List<Node<?>> findAllAndSortById() {
         return findAll().stream()
                 .sorted(Comparator.comparing(Node::getId))
+                .map(e -> (Node<?>) e)
                 .collect(Collectors.toList());
     }
 
@@ -165,9 +185,10 @@ public class NodeServiceRealization implements NodeService {
      *
      * @return list of objects of class Node sorted by status
      */
-    public List<Node> findAllAndSortByStatus() {
+    public List<Node<?>> findAllAndSortByStatus() {
         return findAll().stream()
                 .sorted(Comparator.comparing(Node::getStatus))
+                .map(e -> (Node<?>) e)
                 .collect(Collectors.toList());
     }
 
@@ -176,9 +197,10 @@ public class NodeServiceRealization implements NodeService {
      *
      * @return list of objects of class Node sorted by type
      */
-    public List<Node> findAllAndSortByType() {
+    public List<Node<?>> findAllAndSortByType() {
         return findAll().stream()
                 .sorted(Comparator.comparing(Node::getType))
+                .map(e -> (Node<?>) e)
                 .collect(Collectors.toList());
     }
 
@@ -187,9 +209,10 @@ public class NodeServiceRealization implements NodeService {
      *
      * @return list of objects of class Node sorted by username
      */
-    public List<Node> findAllAndSortByUsername() {
+    public List<Node<?>> findAllAndSortByUsername() {
         return findAll().stream()
                 .sorted(Comparator.comparing(Node::getUsername))
+                .map(e -> (Node<?>) e)
                 .collect(Collectors.toList());
     }
 
@@ -198,9 +221,10 @@ public class NodeServiceRealization implements NodeService {
      *
      * @return list of objects of class Node sorted by source
      */
-    public List<Node> findAllAndSortBySource() {
+    public List<Node<?>> findAllAndSortBySource() {
         return findAll().stream()
                 .sorted(Comparator.comparing(Node::getSource))
+                .map(e -> (Node<?>) e)
                 .collect(Collectors.toList());
     }
 
@@ -209,9 +233,10 @@ public class NodeServiceRealization implements NodeService {
      *
      * @return list of objects of class Node sorted by publication date
      */
-    public List<Node> findAllAndSortByPublished() {
+    public List<Node<?>> findAllAndSortByPublished() {
         return findAll().stream()
                 .sorted(Comparator.comparing(Node::getPublished))
+                .map(e -> (Node<?>) e)
                 .collect(Collectors.toList());
     }
 
@@ -223,7 +248,7 @@ public class NodeServiceRealization implements NodeService {
      * @return post object of class Node
      */
     @Override
-    public Node findById(String id) {
+    public Node<?> findById(String id) {
         return nodeRepository.findById(id).orElseThrow(
                 () -> new ModelNotFoundException("Node by id " + id + " is not found"));
     }

@@ -2,7 +2,7 @@ package com.reckue.post.services.realizations;
 
 import com.reckue.post.exceptions.ModelAlreadyExistsException;
 import com.reckue.post.exceptions.ModelNotFoundException;
-import com.reckue.post.models.PollNode;
+import com.reckue.post.models.nodes.PollNode;
 import com.reckue.post.repositories.PollNodeRepository;
 import com.reckue.post.services.PollNodeService;
 import com.reckue.post.utils.Generator;

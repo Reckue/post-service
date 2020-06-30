@@ -1,6 +1,4 @@
-package com.reckue.post.models;
-
-import com.reckue.post.utils.NodeContent;
+package com.reckue.post.models.nodes;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,10 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
-
 /**
- * Class ListNode is responsible for displaying list of content.
+ * Class ImageNode is responsible for displaying images.
  *
  * @author Iveri Narozashvili
  */
@@ -20,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document
-public class ListNode implements NodeContent {
+public class ImageNode {
 
-    private List<String> content;
+    private String imageUrl;
 }

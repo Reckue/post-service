@@ -1,10 +1,10 @@
-package com.reckue.post.transfers;
+package com.reckue.post.transfers.nodes.poll;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.reckue.post.utils.NodeContent;
+import com.reckue.post.transfers.nodes.NodeParentRequest;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -15,10 +15,10 @@ import java.util.List;
  *
  * @author Viktor Grigoriev
  */
-@Data
+@EqualsAndHashCode(callSuper = true)
 @Builder
-@JsonTypeName("poll")
-public class PollNodeRequest implements NodeContent {
+@Data
+public class PollNodeRequest extends NodeParentRequest {
 
     @NotEmpty
     @Size(min = 1, max = 128)

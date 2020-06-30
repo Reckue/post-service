@@ -1,6 +1,4 @@
-package com.reckue.post.models;
-
-import com.reckue.post.utils.NodeContent;
+package com.reckue.post.models.nodes;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
- * Class TextNode represents model of text fields.
+ * Class VideoNode is responsible for displaying video.
  *
  * @author Iveri Narozashvili
  */
@@ -18,7 +16,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document
-public class TextNode implements NodeContent {
+public class VideoNode {
 
-    private String content;
+    private String videoUrl;
 }

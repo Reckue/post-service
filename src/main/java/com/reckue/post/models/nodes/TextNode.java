@@ -1,16 +1,13 @@
-package com.reckue.post.models;
-
-import com.reckue.post.utils.NodeContent;
+package com.reckue.post.models.nodes;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
- * Class CodeNode represents model of code fields.
+ * Class TextNode represents model of text fields.
  *
  * @author Iveri Narozashvili
  */
@@ -19,11 +16,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document
-public class CodeNode implements NodeContent {
+public class TextNode {
 
-    @Id
-    private String id;
-
-    private LangType language;
     private String content;
 }

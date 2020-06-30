@@ -1,6 +1,6 @@
 package com.reckue.post.services;
 
-import com.reckue.post.models.PollNode;
+import com.reckue.post.models.nodes.PollNode;
 
 import java.util.List;
 

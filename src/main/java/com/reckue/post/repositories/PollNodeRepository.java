@@ -1,6 +1,6 @@
 package com.reckue.post.repositories;
 
-import com.reckue.post.models.PollNode;
+import com.reckue.post.models.nodes.PollNode;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

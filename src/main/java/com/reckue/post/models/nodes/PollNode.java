@@ -1,27 +1,29 @@
-package com.reckue.post.models;
+package com.reckue.post.models.nodes;
 
 import com.reckue.post.utils.NodeContent;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.List;
+
 /**
- * Class ImageNode is responsible for displaying images.
+ * Class PollNode is responsible for the voting system.
  *
- * @author Iveri Narozashvili
+ * @author Viktor Grigoriev
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Document
-public class ImageNode implements NodeContent {
+public class PollNode {
 
     @Id
     private String id;
-
-    private String imageUrl;
+    private String title;
+    private List<String> items;
 }

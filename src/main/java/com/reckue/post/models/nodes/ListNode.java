@@ -1,6 +1,4 @@
-package com.reckue.post.models;
-
-import com.reckue.post.utils.NodeContent;
+package com.reckue.post.models.nodes;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,8 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 /**
- * Class VideoNode is responsible for displaying video.
+ * Class ListNode is responsible for displaying list of content.
  *
  * @author Iveri Narozashvili
  */
@@ -18,7 +18,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document
-public class VideoNode implements NodeContent {
+public class ListNode {
 
-    private String videoUrl;
+    private List<String> content;
 }
