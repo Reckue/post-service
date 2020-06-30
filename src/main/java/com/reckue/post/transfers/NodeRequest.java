@@ -1,5 +1,7 @@
 package com.reckue.post.transfers;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.reckue.post.models.NodeType;
 import com.reckue.post.models.StatusType;
 import com.reckue.post.utils.NodeContent;
@@ -7,6 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -24,6 +27,7 @@ public class NodeRequest {
     private NodeType type;
 
     @ApiModelProperty(notes = "Type of node content")
+    @Valid
     private NodeContent content;
 
     @Size(max=128)

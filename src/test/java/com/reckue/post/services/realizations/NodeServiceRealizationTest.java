@@ -6,6 +6,7 @@ import com.reckue.post.exceptions.ModelNotFoundException;
 import com.reckue.post.models.Node;
 import com.reckue.post.models.StatusType;
 import com.reckue.post.repositories.NodeRepository;
+import com.reckue.post.transfers.PollNodeRequest;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -55,6 +56,20 @@ public class NodeServiceRealizationTest extends PostServiceApplicationTests {
     public void create() {
         Node node = Node.builder()
                 .id("1")
+                .username("moon")
+                .build();
+        when(nodeRepository.save(node)).thenReturn(node);
+
+        assertEquals(node, nodeService.create(node));
+    }
+
+    @Test
+    public void createWithPollNode() {
+        Node node = Node.builder()
+                .id("1")
+                .content(PollNodeRequest.builder().
+                        items(List.of("Katya", "Olya"))
+                        .build())
                 .username("moon")
                 .build();
         when(nodeRepository.save(node)).thenReturn(node);

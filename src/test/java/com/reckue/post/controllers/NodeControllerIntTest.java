@@ -9,6 +9,7 @@ import com.reckue.post.models.StatusType;
 import com.reckue.post.repositories.NodeRepository;
 import com.reckue.post.transfers.NodeRequest;
 import com.reckue.post.transfers.NodeResponse;
+import com.reckue.post.transfers.PollNodeRequest;
 import com.reckue.post.utils.converters.NodeConverter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,6 +21,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -224,6 +226,44 @@ public class NodeControllerIntTest extends PostServiceApplicationTests {
 
         NodeResponse expected = NodeConverter.convert(Node.builder()
                 .id(actual.getId())
+                .source("source")
+                .type(NodeType.TEXT)
+                .status(StatusType.ACTIVE)
+                .build());
+
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    void saveWithPollNode() throws Exception {
+        String json = objectMapper.writeValueAsString(NodeRequest.builder()
+                .content(PollNodeRequest.builder()
+                        .title("title")
+                        .items(List.of("Katya", "Olya"))
+                .build())
+                .source("source")
+                .type(NodeType.TEXT)
+                .status(StatusType.ACTIVE)
+                .build());
+
+        MockHttpServletRequestBuilder builder = post("/nodes")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8")
+                .content(json);
+
+        NodeResponse actual = objectMapper.readValue(this.mockMvc.perform(builder)
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse().getContentAsString(), NodeResponse.class);
+
+        NodeResponse expected = NodeConverter.convert(Node.builder()
+                .id(actual.getId())
+                .content(PollNodeRequest.builder()
+                        .title("title")
+                        .items(List.of("Katya", "Olya"))
+                        .build())
                 .source("source")
                 .type(NodeType.TEXT)
                 .status(StatusType.ACTIVE)
