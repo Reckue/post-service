@@ -1,6 +1,4 @@
-package com.reckue.post.models;
-
-import com.reckue.post.utils.NodeContent;
+package com.reckue.post.models.nodes;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,7 +16,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document
-public class AudioNode implements NodeContent {
+public class AudioNode {
 
     private String audioUrl;
 }

@@ -4,7 +4,7 @@ import com.reckue.post.PostServiceApplicationTests;
 import com.reckue.post.exceptions.ModelAlreadyExistsException;
 import com.reckue.post.exceptions.ModelNotFoundException;
 import com.reckue.post.models.Post;
-import com.reckue.post.models.StatusType;
+import com.reckue.post.models.types.StatusType;
 import com.reckue.post.repositories.PostRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

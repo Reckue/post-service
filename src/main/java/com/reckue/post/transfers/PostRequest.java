@@ -1,9 +1,8 @@
 package com.reckue.post.transfers;
 
-import com.reckue.post.models.Comment;
 import com.reckue.post.models.Node;
-import com.reckue.post.models.StatusType;
 import com.reckue.post.models.Tag;
+import com.reckue.post.models.types.StatusType;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
@@ -26,7 +25,7 @@ public class PostRequest {
     private String title;
 
     @ApiModelProperty(notes = "List of nodes the post consists of")
-    private List<Node> nodes;
+    private List<Node<?>> nodes;
 
     @Size(max = 128)
     @ApiModelProperty(notes = "The source used to write the post")
@@ -37,9 +36,6 @@ public class PostRequest {
 
     @ApiModelProperty(notes = "List of keywords used in the post")
     private List<Tag> tags;
-
-    @ApiModelProperty(notes = "List of comments in the post")
-    private List<Comment> comments;
 
     @ApiModelProperty(notes = "Publication date")
     private long published;

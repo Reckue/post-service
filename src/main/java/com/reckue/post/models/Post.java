@@ -1,5 +1,6 @@
 package com.reckue.post.models;
 
+import com.reckue.post.models.types.StatusType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,11 +26,10 @@ public class Post {
     private String id;
 
     private String title;
-    private List<Node> nodes;
+    private List<Node<?>> nodes;
     private String source;
     private String username;
     private List<Tag> tags;
-    private List<Comment> comments;
     private long published;
     private long changed;
     private StatusType status;

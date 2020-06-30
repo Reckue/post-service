@@ -7,6 +7,7 @@ import com.reckue.post.transfers.NodeRequest;
 import com.reckue.post.transfers.NodeResponse;
 import com.reckue.post.utils.converters.NodeConverter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,6 +21,7 @@ import static com.reckue.post.utils.converters.NodeConverter.convert;
  *
  * @author Viktor Grigoriev
  */
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/nodes")
@@ -35,7 +37,8 @@ public class NodeController implements NodeApi {
      * @return the object of class NodeResponse
      */
     @PostMapping
-    public NodeResponse create(@RequestBody @Valid NodeRequest nodeRequest) {
+    public NodeResponse<?> create(@RequestBody @Valid NodeRequest<?> nodeRequest) {
+        log.info("{}", nodeRequest);
         return convert(nodeService.create(convert(nodeRequest)));
     }
 
@@ -47,8 +50,8 @@ public class NodeController implements NodeApi {
      * @return the object of class NodeResponse
      */
     @PutMapping("/{id}")
-    public NodeResponse update(@PathVariable String id, @RequestBody @Valid NodeRequest nodeRequest) {
-        Node node = convert(nodeRequest);
+    public NodeResponse<?> update(@PathVariable String id, @RequestBody @Valid NodeRequest<?> nodeRequest) {
+        Node<?> node = convert(nodeRequest);
         node.setId(id);
         return convert(nodeService.update(node));
     }
@@ -65,10 +68,10 @@ public class NodeController implements NodeApi {
      * sorted by the selected parameter for sorting in descending order
      */
     @GetMapping
-    public List<NodeResponse> findAll(@RequestParam(required = false) Integer limit,
-                                      @RequestParam(required = false) Integer offset,
-                                      @RequestParam(required = false) String sort,
-                                      @RequestParam(required = false) Boolean desc) {
+    public List<NodeResponse<?>> findAll(@RequestParam(required = false) Integer limit,
+                                         @RequestParam(required = false) Integer offset,
+                                         @RequestParam(required = false) String sort,
+                                         @RequestParam(required = false) Boolean desc) {
 
         return nodeService.findAll(limit, offset, sort, desc).stream()
                 .map(NodeConverter::convert)
@@ -82,7 +85,7 @@ public class NodeController implements NodeApi {
      * @return the object of class NodeResponse
      */
     @GetMapping("/{id}")
-    public NodeResponse findById(@PathVariable String id) {
+    public NodeResponse<?> findById(@PathVariable String id) {
         return convert(nodeService.findById(id));
     }
 

@@ -2,7 +2,7 @@ package com.reckue.post.handlers;
 
 import com.reckue.post.exceptions.ModelAlreadyExistsException;
 import com.reckue.post.exceptions.ModelNotFoundException;
-import com.reckue.post.transfers.ErrorResponse;
+import com.reckue.post.transfers.errors.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
