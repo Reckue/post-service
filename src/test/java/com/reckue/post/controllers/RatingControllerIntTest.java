@@ -98,48 +98,11 @@
 //        List<RatingResponse> expected = ratingRepository.findAll().stream()
 //                .map(RatingConverter::convert)
 //                .sorted(Comparator.comparing(RatingResponse::getId).reversed())
+//                .limit(2)
 //                .collect(Collectors.toList());
 //
 //        List<RatingResponse> actual = objectMapper
 //                .readValue(this.mockMvc.perform(get("/ratings?desc=true&limit=2&offset=0&sort=id"))
-//                        .andDo(print())
-//                        .andExpect(status().isOk())
-//                        .andReturn()
-//                        .getResponse().getContentAsString(), new TypeReference<>() {
-//                });
-//
-//        Assertions.assertEquals(expected, actual);
-//    }
-//
-//    @Test
-//    public void findAllSortedByTextAsc() throws Exception {
-//        List<RatingResponse> expected = ratingRepository.findAll().stream()
-//                .map(RatingConverter::convert)
-//                .sorted(Comparator.comparing(RatingResponse::getId))
-//                .limit(2)
-//                .collect(Collectors.toList());
-//
-//        List<RatingResponse> actual = objectMapper
-//                .readValue(this.mockMvc.perform(get("/ratings?desc=false&limit=2&offset=0&sort=text"))
-//                        .andDo(print())
-//                        .andExpect(status().isOk())
-//                        .andReturn()
-//                        .getResponse().getContentAsString(), new TypeReference<>() {
-//                });
-//
-//        Assertions.assertEquals(expected, actual);
-//    }
-//
-//    @Test
-//    public void findAllSortedByTextDesc() throws Exception {
-//        List<RatingResponse> expected = ratingRepository.findAll().stream()
-//                .map(RatingConverter::convert)
-//                .sorted(Comparator.comparing(RatingResponse::getId).reversed())
-//                .limit(2)
-//                .collect(Collectors.toList());
-//
-//        List<RatingResponse> actual = objectMapper
-//                .readValue(this.mockMvc.perform(get("/ratings?desc=true&limit=2&offset=0&sort=text"))
 //                        .andDo(print())
 //                        .andExpect(status().isOk())
 //                        .andReturn()
@@ -216,44 +179,6 @@
 //
 //        List<RatingResponse> actual = objectMapper
 //                .readValue(this.mockMvc.perform(get("/ratings?desc=true&limit=2&offset=0&sort=postId"))
-//                        .andDo(print())
-//                        .andExpect(status().isOk())
-//                        .andReturn()
-//                        .getResponse().getContentAsString(), new TypeReference<>() {
-//                });
-//
-//        Assertions.assertEquals(expected, actual);
-//    }
-//
-//    @Test
-//    public void findAllSortedByPublishedAsc() throws Exception {
-//        List<RatingResponse> expected = ratingRepository.findAll().stream()
-//                .map(RatingConverter::convert)
-//                .sorted(Comparator.comparing(RatingResponse::getPostId))
-//                .limit(2)
-//                .collect(Collectors.toList());
-//
-//        List<RatingResponse> actual = objectMapper
-//                .readValue(this.mockMvc.perform(get("/ratings?desc=false&limit=2&offset=0&sort=published"))
-//                        .andDo(print())
-//                        .andExpect(status().isOk())
-//                        .andReturn()
-//                        .getResponse().getContentAsString(), new TypeReference<>() {
-//                });
-//
-//        Assertions.assertEquals(expected, actual);
-//    }
-//
-//    @Test
-//    public void findAllSortedByPublishedDesc() throws Exception {
-//        List<RatingResponse> expected = ratingRepository.findAll().stream()
-//                .map(RatingConverter::convert)
-//                .sorted(Comparator.comparing(RatingResponse::getPostId).reversed())
-//                .limit(2)
-//                .collect(Collectors.toList());
-//
-//        List<RatingResponse> actual = objectMapper
-//                .readValue(this.mockMvc.perform(get("/ratings?desc=true&limit=2&offset=0&sort=published"))
 //                        .andDo(print())
 //                        .andExpect(status().isOk())
 //                        .andReturn()
