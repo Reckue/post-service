@@ -6,8 +6,10 @@ import com.reckue.post.models.Node;
 import com.reckue.post.models.nodes.*;
 import com.reckue.post.models.types.NodeType;
 import com.reckue.post.repositories.NodeRepository;
+import com.reckue.post.repositories.PostRepository;
 import com.reckue.post.services.NodeService;
 import com.reckue.post.utils.Generator;
+import com.reckue.post.utils.converters.Converter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -27,6 +29,7 @@ import java.util.stream.Collectors;
 public class NodeServiceRealization implements NodeService {
 
     private final NodeRepository nodeRepository;
+    private final PostRepository postRepository;
 
     /**
      * This method is used to create an object of class Node.
@@ -35,28 +38,44 @@ public class NodeServiceRealization implements NodeService {
      * @param node object of class Node
      * @return node object of class Node
      */
-    @SuppressWarnings("unchecked")
     @Override
+    @SuppressWarnings("unchecked")
     public Node<?> create(Node<?> node) {
         node.setId(Generator.id());
+        validateCreatingNode(node);
+
+        if (NodeType.TEXT.equals(node.getType())) {
+            Node<TextNode> text = (Node<TextNode>) node;
+            text.setNode(Converter.convert(node.getNode(), TextNode.class));
+            return nodeRepository.save(text);
+        } else if (NodeType.AUDIO.equals(node.getType())) {
+            return nodeRepository.save(convertToConcreteNode(node, AudioNode.class));
+        } else if (NodeType.CODE.equals(node.getType())) {
+            return nodeRepository.save(convertToConcreteNode(node, CodeNode.class));
+        } else if (NodeType.IMAGE.equals(node.getType())) {
+            return nodeRepository.save(convertToConcreteNode(node, ImageNode.class));
+        } else if (NodeType.LIST.equals(node.getType())) {
+            return nodeRepository.save(convertToConcreteNode(node, ListNode.class));
+        } else if (NodeType.VIDEO.equals(node.getType())) {
+            return nodeRepository.save(convertToConcreteNode(node, VideoNode.class));
+        } else {
+            throw new IllegalArgumentException("Notes type is not found");
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T extends Parent> Node<T> convertToConcreteNode(Node<?> node, Class<T> type) {
+        Node<T> concrete = (Node<T>) node;
+        concrete.setNode((T) node.getNode());
+        return concrete;
+    }
+
+    public void validateCreatingNode(Node<?> node) {
         if (nodeRepository.existsById(node.getId())) {
             throw new ModelAlreadyExistsException("Node already exists");
         }
-
-        if (NodeType.TEXT.equals(node.getType())) {
-            return nodeRepository.save((Node<TextNode>) node);
-        } else if (NodeType.AUDIO.equals(node.getType())) {
-            return nodeRepository.save((Node<AudioNode>) node);
-        } else if (NodeType.CODE.equals(node.getType())) {
-            return nodeRepository.save((Node<CodeNode>) node);
-        } else if (NodeType.IMAGE.equals(node.getType())) {
-            return nodeRepository.save((Node<ImageNode>) node);
-        } else if (NodeType.LIST.equals(node.getType())) {
-            return nodeRepository.save((Node<ListNode>) node);
-        } else if (NodeType.VIDEO.equals(node.getType())) {
-            return nodeRepository.save((Node<VideoNode>) node);
-        } else {
-            throw new IllegalArgumentException("Notes type is not found");
+        if (!postRepository.existsById(node.getPostId())) {
+            throw new ModelNotFoundException("Post identifier '" + node.getPostId() + "' is not found");
         }
     }
 
@@ -80,7 +99,7 @@ public class NodeServiceRealization implements NodeService {
         }
         Node<?> savedNode = Node.builder()
                 .id(node.getId())
-                .username(node.getUsername())
+                .userId(node.getUserId())
                 .type(node.getType())
                 .source(node.getSource())
                 .status(node.getStatus())
@@ -211,7 +230,7 @@ public class NodeServiceRealization implements NodeService {
      */
     public List<Node<?>> findAllAndSortByUsername() {
         return findAll().stream()
-                .sorted(Comparator.comparing(Node::getUsername))
+                .sorted(Comparator.comparing(Node::getUserId))
                 .map(e -> (Node<?>) e)
                 .collect(Collectors.toList());
     }

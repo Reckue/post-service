@@ -18,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document
-public class ListNode {
+public class ListNode implements Parent {
 
     private List<String> content;
 }

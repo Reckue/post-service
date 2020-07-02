@@ -22,11 +22,10 @@ public class NodeConverter {
             throw new IllegalArgumentException("Null parameters are not allowed");
         }
         return Node.builder()
-                .username(nodeRequest.getUsername())
+                .userId(nodeRequest.getUserId())
                 .node(nodeRequest.getNode())
                 .source(nodeRequest.getSource())
                 .type(nodeRequest.getType())
-                .status(nodeRequest.getStatus())
                 .published(nodeRequest.getPublished())
                 .build();
     }
@@ -45,7 +44,7 @@ public class NodeConverter {
         return NodeResponse.builder()
                 .id(node.getId())
                 .node(node.getNode())
-                .username(node.getUsername())
+                .userId(node.getUserId())
                 .source(node.getSource())
                 .type(node.getType())
                 .status(node.getStatus())

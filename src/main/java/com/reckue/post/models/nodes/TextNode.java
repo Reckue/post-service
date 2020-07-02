@@ -16,7 +16,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document
-public class TextNode {
+public class TextNode implements Parent {
 
     private String content;
 }

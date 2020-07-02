@@ -17,7 +17,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document
-public class CodeNode {
+public class CodeNode implements Parent {
 
     private LangType language;
     private String content;
