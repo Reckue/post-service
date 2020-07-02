@@ -2,8 +2,8 @@ package com.reckue.post.services.realizations;
 
 import com.reckue.post.exceptions.ModelAlreadyExistsException;
 import com.reckue.post.exceptions.ModelNotFoundException;
-import com.reckue.post.models.Post;
 import com.reckue.post.models.Rating;
+import com.reckue.post.repositories.PostRepository;
 import com.reckue.post.repositories.RatingRepository;
 import com.reckue.post.services.RatingService;
 import com.reckue.post.utils.Generator;
@@ -25,10 +25,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class RatingServiceRealization implements RatingService {
     private final RatingRepository ratingRepository;
+    private final PostRepository postRepository;
 
     /**
-     * This method is used to create an object of class Rating.
-     * Throws {@link ModelAlreadyExistsException} in case if such object already exists.
+     * This method is used to create an object of class Rating using rating validation.
      *
      * @param rating object of class Rating
      * @return rating object of class Rating
@@ -36,10 +36,23 @@ public class RatingServiceRealization implements RatingService {
     @Override
     public Rating create(Rating rating) {
         rating.setId(Generator.id());
-        if (!ratingRepository.existsById(rating.getId())) {
-            return ratingRepository.save(rating);
-        } else {
+        validateCreatingRating(rating);
+        return ratingRepository.save(rating);
+    }
+
+    /**
+     * This method is used to check rating validation.
+     * Throws {@link ModelAlreadyExistsException} in case if such object already exists.
+     * Throws {@link ModelNotFoundException} in case if such object isn't contained in database.
+     *
+     * @param rating object of class Rating
+     */
+    public void validateCreatingRating(Rating rating) {
+        if (ratingRepository.existsById(rating.getId())) {
             throw new ModelAlreadyExistsException("Rating already exists");
+        }
+        if (!postRepository.existsById(rating.getPostId())) {
+            throw new ModelNotFoundException("Post identifier '" + rating.getPostId() + "' is not found");
         }
     }
 
@@ -58,12 +71,13 @@ public class RatingServiceRealization implements RatingService {
         if (rating.getId() == null) {
             throw new IllegalArgumentException("The parameter is null");
         }
-        if (!ratingRepository.existsById(rating.getId())) {
-            throw new ModelNotFoundException("Rating by id " + rating.getId() + " is not found");
-        }
+        Rating existRating = ratingRepository.findById(rating.getId())
+                    .orElseThrow(()-> new ModelNotFoundException("Rating by id " + rating.getId() + " is not found"));
+
         Rating savedRating = Rating.builder()
-                .id(rating.getId())
-                .userId(rating.getUserId())
+                .id(existRating.getId())
+                .userId(existRating.getUserId())
+                .postId(existRating.getPostId())
                 .build();
         return ratingRepository.save(savedRating);
     }
