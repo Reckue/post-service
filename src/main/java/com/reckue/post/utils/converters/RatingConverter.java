@@ -23,7 +23,6 @@ public class RatingConverter {
         return Rating.builder()
                 .postId(ratingRequest.getPostId())
                 .userId(ratingRequest.getUserId())
-                .id(ratingRequest.getId())
                 .build();
     }
 
