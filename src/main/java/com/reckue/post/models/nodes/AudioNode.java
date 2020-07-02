@@ -16,7 +16,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document
-public class AudioNode {
+public class AudioNode implements Parent {
 
     private String audioUrl;
 }

@@ -1,10 +1,14 @@
 package com.reckue.post.transfers;
 
+import com.reckue.post.models.nodes.Parent;
 import com.reckue.post.models.types.NodeType;
 import com.reckue.post.models.types.StatusType;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * Class NodeResponse represents an outgoing DTO for receiving a node.
@@ -24,11 +28,16 @@ public class NodeResponse<T> {
     @ApiModelProperty(notes = "Type of node content")
     private T node;
 
+    @ApiModelProperty(notes = "Identifier of the post")
+    @NotNull
+    private String postId;
+
+    @Size(max = 128)
     @ApiModelProperty(notes = "The source used to write the node")
     private String source;
 
-    @ApiModelProperty(notes = "Node author")
-    private String username;
+    @ApiModelProperty(notes = "Node author identifier")
+    private String userId;
 
     @ApiModelProperty(notes = "Publication date")
     private long published;

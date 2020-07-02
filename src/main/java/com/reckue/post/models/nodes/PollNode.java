@@ -20,7 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document
-public class PollNode {
+public class PollNode implements Parent {
 
     @Id
     private String id;

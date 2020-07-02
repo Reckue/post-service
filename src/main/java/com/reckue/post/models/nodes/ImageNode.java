@@ -16,7 +16,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document
-public class ImageNode {
+public class ImageNode implements Parent {
 
     private String imageUrl;
 }

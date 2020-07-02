@@ -1,5 +1,6 @@
 package com.reckue.post.models;
 
+import com.reckue.post.models.nodes.Parent;
 import com.reckue.post.models.types.NodeType;
 import com.reckue.post.models.types.StatusType;
 import lombok.AllArgsConstructor;
@@ -24,10 +25,14 @@ public class Node<T> {
     @Id
     private String id;
 
+    // required fields
     private NodeType type;
     private T node;
+    private String postId;
+
+    // standard types
     private String source;
-    private String username;
+    private String userId;
     private long published;
     private StatusType status;
 }
