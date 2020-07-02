@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 
 /**
  * Class Converter represents mapping of objects.
+ *
+ * @author Artur Magomedov
  */
 @NoArgsConstructor
 @Data

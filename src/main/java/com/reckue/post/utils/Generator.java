@@ -3,7 +3,7 @@ package com.reckue.post.utils;
 import java.util.UUID;
 
 /**
- * Class Generator generates string.
+ * Class Generator generates UUID as string.
  */
 public class Generator {
 
