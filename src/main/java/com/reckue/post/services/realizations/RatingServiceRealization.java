@@ -2,7 +2,6 @@ package com.reckue.post.services.realizations;
 
 import com.reckue.post.exceptions.ModelAlreadyExistsException;
 import com.reckue.post.exceptions.ModelNotFoundException;
-import com.reckue.post.models.Post;
 import com.reckue.post.models.Rating;
 import com.reckue.post.repositories.RatingRepository;
 import com.reckue.post.services.RatingService;
@@ -64,6 +63,7 @@ public class RatingServiceRealization implements RatingService {
         Rating savedRating = Rating.builder()
                 .id(rating.getId())
                 .userId(rating.getUserId())
+                .postId(rating.getPostId())
                 .build();
         return ratingRepository.save(savedRating);
     }
@@ -123,7 +123,7 @@ public class RatingServiceRealization implements RatingService {
     /**
      * This method is used to sort objects by type.
      *
-     * @param sort type of sorting: name, default - id
+     * @param sort type of sorting: userId, postId, default - id
      * @return list of objects of class Rating sorted by the selected parameter for sorting
      */
     public List<Rating> findAllBySortType(String sort) {
@@ -153,7 +153,7 @@ public class RatingServiceRealization implements RatingService {
     /**
      * This method is used to sort objects by content.
      *
-     * @return list of objects of class Rating sorted by content
+     * @return list of objects of class Rating sorted by userId
      */
     public List<Rating> findAllAndSortByUserId() {
         return findAll().stream()
@@ -164,7 +164,7 @@ public class RatingServiceRealization implements RatingService {
     /**
      * This method is used to sort objects by content.
      *
-     * @return list of objects of class Rating sorted by content
+     * @return list of objects of class Rating sorted by postId
      */
     public List<Rating> findAllAndSortByPostId() {
         return findAll().stream()
