@@ -5,7 +5,7 @@ import com.reckue.post.transfers.PostRequest;
 import com.reckue.post.transfers.PostResponse;
 
 /**
- * Class PostConverter converts from PostRequest object to PostResponse
+ * Class PostConverter converts from PostRequest object to Post and Post object to PostResponse.
  *
  * @author Kamila Meshcheryakova
  */
@@ -13,7 +13,7 @@ public class PostConverter {
 
     /**
      * This method is used to convert from the object of class PostRequest
-     * to the object of class Post
+     * to the object of class Post.
      *
      * @param postRequest the object of class PostRequest
      * @return the object of class Post
@@ -24,7 +24,7 @@ public class PostConverter {
         }
         return Post.builder()
                 .title(postRequest.getTitle())
-                .username(postRequest.getUsername())
+                .userId(postRequest.getUserId())
                 .nodes(postRequest.getNodes())
                 .source(postRequest.getSource())
                 .tags(postRequest.getTags())
@@ -36,7 +36,7 @@ public class PostConverter {
 
     /**
      * This method is used to convert from the object of class Post
-     * to the object of class PostResponse
+     * to the object of class PostResponse.
      *
      * @param post the object of class Post
      * @return the object of class PostResponse
@@ -47,7 +47,7 @@ public class PostConverter {
         }
         return PostResponse.builder()
                 .id(post.getId())
-                .username(post.getUsername())
+                .userId(post.getUserId())
                 .title(post.getTitle())
                 .nodes(post.getNodes())
                 .source(post.getSource())

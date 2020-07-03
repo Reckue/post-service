@@ -33,7 +33,7 @@ public class NodeServiceRealization implements NodeService {
 
     /**
      * This method is used to create an object of class Node.
-     * Throws {@link ModelAlreadyExistsException} in case if such object already exists.
+     * Throws {@link IllegalArgumentException} in case if nodes type is not found.
      *
      * @param node object of class Node
      * @return node object of class Node
@@ -59,10 +59,18 @@ public class NodeServiceRealization implements NodeService {
         } else if (NodeType.VIDEO.equals(node.getType())) {
             return nodeRepository.save(convertToConcreteNode(node, VideoNode.class));
         } else {
-            throw new IllegalArgumentException("Notes type is not found");
+            throw new IllegalArgumentException("Nodes type is not found");
         }
     }
 
+    /**
+     * This method is used to convert Node to concrete type.
+     *
+     * @param node object of class Node
+     * @param type class extends Parent
+     * @param <T> type of class extends Parent
+     * @return object of class extends Parent
+     */
     @SuppressWarnings("unchecked")
     public <T extends Parent> Node<T> convertToConcreteNode(Node<?> node, Class<T> type) {
         Node<T> concrete = (Node<T>) node;
@@ -70,6 +78,13 @@ public class NodeServiceRealization implements NodeService {
         return concrete;
     }
 
+    /**
+     * This method is used to check node validation.
+     * Throws {@link ModelAlreadyExistsException} in case if such object already exists.
+     * Throws {@link ModelNotFoundException} in case if such object isn't contained in database.
+     *
+     * @param node object of class Node
+     */
     public void validateCreatingNode(Node<?> node) {
         if (nodeRepository.existsById(node.getId())) {
             throw new ModelAlreadyExistsException("Node already exists");
@@ -166,7 +181,7 @@ public class NodeServiceRealization implements NodeService {
     /**
      * This method is used to sort objects by type.
      *
-     * @param sort type of sorting: type, status, source, published, default - id
+     * @param sort type of sorting: type, status, source, published, userId default - id
      * @return list of objects of class Node sorted by the selected parameter for sorting
      */
     public List<Node<?>> findAllBySortType(String sort) {
@@ -179,8 +194,8 @@ public class NodeServiceRealization implements NodeService {
                 return findAllAndSortBySource();
             case "published":
                 return findAllAndSortByPublished();
-            case "username":
-                return findAllAndSortByUsername();
+            case "userId":
+                return findAllAndSortByUserId();
             case "id":
                 return findAllAndSortById();
         }
@@ -224,11 +239,11 @@ public class NodeServiceRealization implements NodeService {
     }
 
     /**
-     * This method is used to sort objects by username.
+     * This method is used to sort objects by userId.
      *
-     * @return list of objects of class Node sorted by username
+     * @return list of objects of class Node sorted by userId
      */
-    public List<Node<?>> findAllAndSortByUsername() {
+    public List<Node<?>> findAllAndSortByUserId() {
         return findAll().stream()
                 .sorted(Comparator.comparing(Node::getUserId))
                 .map(e -> (Node<?>) e)

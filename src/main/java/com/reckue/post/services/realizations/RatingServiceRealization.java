@@ -137,7 +137,7 @@ public class RatingServiceRealization implements RatingService {
     /**
      * This method is used to sort objects by type.
      *
-     * @param sort type of sorting: name, default - id
+     * @param sort type of sorting: userId, postId, default - id
      * @return list of objects of class Rating sorted by the selected parameter for sorting
      */
     public List<Rating> findAllBySortType(String sort) {
@@ -167,7 +167,7 @@ public class RatingServiceRealization implements RatingService {
     /**
      * This method is used to sort objects by content.
      *
-     * @return list of objects of class Rating sorted by content
+     * @return list of objects of class Rating sorted by userId
      */
     public List<Rating> findAllAndSortByUserId() {
         return findAll().stream()
@@ -178,7 +178,7 @@ public class RatingServiceRealization implements RatingService {
     /**
      * This method is used to sort objects by content.
      *
-     * @return list of objects of class Rating sorted by content
+     * @return list of objects of class Rating sorted by postId
      */
     public List<Rating> findAllAndSortByPostId() {
         return findAll().stream()

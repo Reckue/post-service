@@ -13,12 +13,12 @@ import lombok.Data;
 @Builder
 public class RatingResponse {
 
-    @ApiModelProperty(notes = "Database generated rating ID")
+    @ApiModelProperty(notes = "Database generated rating Id")
     private String id;
 
-    @ApiModelProperty(notes = "Database generated used ID")
+    @ApiModelProperty(notes = "Used Id")
     private String userId;
 
-    @ApiModelProperty(notes = "Database generates post ID")
+    @ApiModelProperty(notes = "Post Id")
     private String postId;
 }

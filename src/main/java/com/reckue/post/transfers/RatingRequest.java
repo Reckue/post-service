@@ -4,8 +4,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
-
 /**
  * Class RatingRequest represents an incoming DTO for adding a rating.
  *
@@ -14,14 +12,9 @@ import javax.validation.constraints.NotNull;
 @Data
 @Builder
 public class RatingRequest {
-
-    @NotNull
-    @ApiModelProperty(notes = "Database generated rating ID")
-    private String id;
-
-    @ApiModelProperty(notes = "Database generates user ID")
+    @ApiModelProperty(notes = "User Id")
     private String userId;
 
-    @ApiModelProperty(notes = "Database generates post ID")
+    @ApiModelProperty(notes = "Post Id")
     private String postId;
 }
