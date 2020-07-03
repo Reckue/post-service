@@ -166,7 +166,7 @@ public class NodeServiceRealization implements NodeService {
     /**
      * This method is used to sort objects by type.
      *
-     * @param sort type of sorting: type, status, source, published, default - id
+     * @param sort type of sorting: type, status, source, published, userId default - id
      * @return list of objects of class Node sorted by the selected parameter for sorting
      */
     public List<Node<?>> findAllBySortType(String sort) {
@@ -179,8 +179,8 @@ public class NodeServiceRealization implements NodeService {
                 return findAllAndSortBySource();
             case "published":
                 return findAllAndSortByPublished();
-            case "username":
-                return findAllAndSortByUsername();
+            case "userId":
+                return findAllAndSortByUserId();
             case "id":
                 return findAllAndSortById();
         }
@@ -224,11 +224,11 @@ public class NodeServiceRealization implements NodeService {
     }
 
     /**
-     * This method is used to sort objects by username.
+     * This method is used to sort objects by userId.
      *
-     * @return list of objects of class Node sorted by username
+     * @return list of objects of class Node sorted by userId
      */
-    public List<Node<?>> findAllAndSortByUsername() {
+    public List<Node<?>> findAllAndSortByUserId() {
         return findAll().stream()
                 .sorted(Comparator.comparing(Node::getUserId))
                 .map(e -> (Node<?>) e)
