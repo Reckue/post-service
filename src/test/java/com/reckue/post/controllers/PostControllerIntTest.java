@@ -60,7 +60,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .published(1491379425L)
                 .changed(1491465825L)
                 .status(StatusType.DELETED)
-                .username("daria")
+                .userId("daria")
                 .build());
         postRepository.save(Post.builder()
                 .id("1")
@@ -69,7 +69,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .published(1591379425L)
                 .changed(1591465825L)
                 .status(StatusType.ACTIVE)
-                .username("egnaf")
+                .userId("egnaf")
                 .build());
         postRepository.save(Post.builder()
                 .id("3")
@@ -78,7 +78,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .published(1601920225L)
                 .changed(1602006625L)
                 .status(StatusType.BANNED)
-                .username("camelya")
+                .userId("camelya")
                 .build());
         postRepository.save(Post.builder()
                 .id("2")
@@ -87,7 +87,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .published(1701920225L)
                 .changed(1702006625L)
                 .status(StatusType.MODERATED)
-                .username("hardele")
+                .userId("hardele")
                 .build());
     }
 
@@ -248,7 +248,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .nodes(null)
                 .source("Habr.com")
                 .tags(null)
-                .username("camelya")
+                .userId("camelya")
                 .published(1591465825L)
                 .changed(1591465825L)
                 .status(StatusType.MODERATED)
@@ -277,7 +277,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .nodes(null)
                 .source("Habr.com")
                 .tags(null)
-                .username("hardele")
+                .userId("hardele")
                 .published(1701920225L)
                 .changed(1802006625L)
                 .status(StatusType.ACTIVE)

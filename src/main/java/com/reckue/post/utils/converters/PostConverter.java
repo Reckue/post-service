@@ -24,7 +24,7 @@ public class PostConverter {
         }
         return Post.builder()
                 .title(postRequest.getTitle())
-                .username(postRequest.getUsername())
+                .userId(postRequest.getUserId())
                 .nodes(postRequest.getNodes())
                 .source(postRequest.getSource())
                 .tags(postRequest.getTags())
@@ -47,7 +47,7 @@ public class PostConverter {
         }
         return PostResponse.builder()
                 .id(post.getId())
-                .username(post.getUsername())
+                .userId(post.getUserId())
                 .title(post.getTitle())
                 .nodes(post.getNodes())
                 .source(post.getSource())

@@ -176,19 +176,19 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
     }
 
     @Test
-    public void findAllSortByUsername() {
-        Post postOne = Post.builder().username("Max").build();
-        Post postTwo = Post.builder().username("Will").build();
-        Post postThree = Post.builder().username("Arny").build();
+    public void findAllSortByUserId() {
+        Post postOne = Post.builder().userId("Max").build();
+        Post postTwo = Post.builder().userId("Will").build();
+        Post postThree = Post.builder().userId("Arny").build();
         List<Post> posts = List.of(postOne, postTwo, postThree);
 
         when(postRepository.findAll()).thenReturn(posts);
 
         List<Post> expected = posts.stream()
-                .sorted(Comparator.comparing(Post::getUsername))
+                .sorted(Comparator.comparing(Post::getUserId))
                 .collect(Collectors.toList());
 
-        assertEquals(expected, postService.findAllAndSortByUsername());
+        assertEquals(expected, postService.findAllAndSortByUserId());
     }
 
     @Test
@@ -241,36 +241,36 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
 
     @Test
     public void findAllSortByTypeAndDesc() {
-        Post postOne = Post.builder().username("Max").build();
-        Post postTwo = Post.builder().username("Will").build();
-        Post postThree = Post.builder().username("Arny").build();
+        Post postOne = Post.builder().userId("Max").build();
+        Post postTwo = Post.builder().userId("Will").build();
+        Post postThree = Post.builder().userId("Arny").build();
         List<Post> posts = List.of(postOne, postTwo, postThree);
         when(postRepository.findAll()).thenReturn(posts);
 
         List<Post> expected = posts.stream()
-                .sorted(Comparator.comparing(Post::getUsername).reversed())
+                .sorted(Comparator.comparing(Post::getUserId).reversed())
                 .collect(Collectors.toList());
 
-        assertEquals(expected, postService.findAllByTypeAndDesc("username", true));
+        assertEquals(expected, postService.findAllByTypeAndDesc("userId", true));
     }
 
     @Test
     public void findAllWithArgs() {
-        Post postOne = Post.builder().username("Max").build();
-        Post postTwo = Post.builder().username("Will").build();
-        Post postThree = Post.builder().username("Arny").build();
+        Post postOne = Post.builder().userId("Max").build();
+        Post postTwo = Post.builder().userId("Will").build();
+        Post postThree = Post.builder().userId("Arny").build();
         List<Post> posts = List.of(postOne, postTwo, postThree);
 
         when(postRepository.findAll()).thenReturn(posts);
 
         List<Post> expected = posts.stream()
-                .sorted(Comparator.comparing(Post::getUsername).reversed())
+                .sorted(Comparator.comparing(Post::getUserId).reversed())
                 .limit(3)
                 .skip(1)
                 .collect(Collectors.toList());
         System.out.println(expected);
 
-        assertEquals(expected, postService.findAll(3, 1, "username", true));
+        assertEquals(expected, postService.findAll(3, 1, "userId", true));
     }
 
     @Test
