@@ -1,6 +1,6 @@
 package com.reckue.post.transfers.nodes.video;
 
-        import com.reckue.post.transfers.nodes.NodeParentResponse;
+import com.reckue.post.transfers.nodes.NodeParentResponse;
         import lombok.Data;
         import lombok.EqualsAndHashCode;
 

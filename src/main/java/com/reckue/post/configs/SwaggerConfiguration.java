@@ -21,7 +21,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import static com.google.common.collect.Lists.newArrayList;
 
 /**
- * Class SwaggerConfig set up settings for swagger.
+ * Class SwaggerConfig sets up settings for swagger.
  *
  * @author Kamila Meshcheryakova
  */

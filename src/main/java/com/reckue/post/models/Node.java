@@ -1,6 +1,5 @@
 package com.reckue.post.models;
 
-import com.reckue.post.models.nodes.Parent;
 import com.reckue.post.models.types.NodeType;
 import com.reckue.post.models.types.StatusType;
 import lombok.AllArgsConstructor;
