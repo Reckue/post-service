@@ -18,8 +18,14 @@ import java.util.stream.Collectors;
 
 /**
  * Class RatingServiceRealization represents realization of RatingService.
+ * todo add method: int getRatingCountByPostId(String postId) {};
+ *      add to method "create": if such userId already exists then delete the rating;
+ *      add method: findAllPostsWithRatingByUserId (String userId, Integer limit, Integer offset);
+ *      remove unnecessary methods;
+ *      add long created to class Rating;
+ *      add sort by date instead of existing sort types.
  *
- * @author Iveri Narozashvili
+ * @author Kamila Meshcheryakova
  */
 @Service
 @RequiredArgsConstructor
@@ -66,13 +72,14 @@ public class RatingServiceRealization implements RatingService {
      * @param rating object of class Rating
      * @return rating object of class Rating
      */
+
     @Override
     public Rating update(Rating rating) {
         if (rating.getId() == null) {
             throw new IllegalArgumentException("The parameter is null");
         }
         Rating existRating = ratingRepository.findById(rating.getId())
-                    .orElseThrow(()-> new ModelNotFoundException("Rating by id " + rating.getId() + " is not found"));
+                .orElseThrow(() -> new ModelNotFoundException("Rating by id " + rating.getId() + " is not found"));
 
         Rating savedRating = Rating.builder()
                 .id(existRating.getId())

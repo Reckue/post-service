@@ -26,14 +26,13 @@ import static org.mockito.Mockito.*;
 /**
  * Class RatingServiceRealizationTest represents test for RatingService class.
  *
- * @author Iveri Narozashvili
+ * @author Kamila Meshcheryakova
  */
 @SuppressWarnings("unused")
 public class RatingServiceRealizationTest extends PostServiceApplicationTests {
     private Rating rating1;
     private Rating rating2;
     private Rating rating3;
-    private Post post;
 
     @Mock
     private RatingRepository ratingRepository;
@@ -45,7 +44,7 @@ public class RatingServiceRealizationTest extends PostServiceApplicationTests {
     private RatingServiceRealization ratingService;
 
     @BeforeEach
-    private void createNeeded() {
+    private void createRatings() {
         rating1 = Rating.builder()
                 .id("1")
                 .userId("1a35")
@@ -71,23 +70,23 @@ public class RatingServiceRealizationTest extends PostServiceApplicationTests {
         assertEquals(nodes, ratingService.findAll());
     }
 
-    /*
     @Test
     public void create() {
-        post = Post.builder()
+        Post post = Post.builder()
                 .id("2rs5")
                 .build();
-        postRepository.save(post);
+        when(postRepository.save(post)).thenReturn(post);
+
         Rating rating = Rating.builder()
                 .id("4")
                 .userId("5tf4")
                 .postId(post.getId())
                 .build();
         when(ratingRepository.save(rating)).thenReturn(rating);
+        doReturn(true).when(postRepository).existsById(post.getId());
 
         assertEquals(rating, ratingService.create(rating));
     }
-     */
 
     @Test
     public void createIfExists() {
@@ -104,24 +103,20 @@ public class RatingServiceRealizationTest extends PostServiceApplicationTests {
 
         assertEquals("Post identifier '" + rating1.getPostId() + "' is not found", exception.getMessage());
     }
-    /*
+
     @Test
     public void update() {
-        post = Post.builder()
-                .id("2rs5")
-                .build();
-        postRepository.save(post);
         Rating ratingOne = Rating.builder()
-                .id(rating1.getId())
-                .userId(rating1.getUserId())
-                .postId(rating1.getPostId())
+                .id("1")
+                .userId("1a35")
+                .postId("1ft2")
                 .build();
-        when(ratingRepository.existsById(ratingOne.getId())).thenReturn(true);
+        when(ratingRepository.findById(ratingOne.getId())).thenReturn(Optional.of(ratingOne));
         when(ratingRepository.save(ratingOne)).thenReturn(ratingOne);
+        doReturn(true).when(postRepository).existsById(ratingOne.getPostId());
 
         assertEquals(ratingOne, ratingService.update(ratingOne));
     }
-     */
 
     @Test
     public void updateWithNullId() {
