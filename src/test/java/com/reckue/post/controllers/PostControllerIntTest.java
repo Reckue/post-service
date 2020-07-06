@@ -18,7 +18,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -114,12 +113,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
     public void findAllSortedByIdDescTest() throws Exception {
         List<PostResponse> expected = postRepository.findAll().stream()
                 .map(PostConverter::convert)
-                .sorted(Comparator.comparing(PostResponse::getId))
-                .collect(Collectors.toList());
-
-        Collections.reverse(expected);
-
-        expected = expected.stream()
+                .sorted(Comparator.comparing(PostResponse::getId).reversed())
                 .limit(2)
                 .collect(Collectors.toList());
 
@@ -157,12 +151,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
     public void findAllSortedBySourceDescTest() throws Exception {
         List<PostResponse> expected = postRepository.findAll().stream()
                 .map(PostConverter::convert)
-                .sorted(Comparator.comparing(PostResponse::getSource))
-                .collect(Collectors.toList());
-
-        Collections.reverse(expected);
-
-        expected = expected.stream()
+                .sorted(Comparator.comparing(PostResponse::getSource).reversed())
                 .limit(3)
                 .collect(Collectors.toList());
 
@@ -200,12 +189,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
     public void findAllSortedByChangedDescTest() throws Exception {
         List<PostResponse> expected = postRepository.findAll().stream()
                 .map(PostConverter::convert)
-                .sorted(Comparator.comparing(PostResponse::getChanged))
-                .collect(Collectors.toList());
-
-        Collections.reverse(expected);
-
-        expected = expected.stream()
+                .sorted(Comparator.comparing(PostResponse::getChanged).reversed())
                 .limit(2)
                 .skip(1)
                 .collect(Collectors.toList());

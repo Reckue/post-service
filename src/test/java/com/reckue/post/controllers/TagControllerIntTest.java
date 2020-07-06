@@ -17,7 +17,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -75,12 +74,7 @@ public class TagControllerIntTest extends PostServiceApplicationTests {
     public void findAllSortedByIdDesc() throws Exception {
         List<TagResponse> expected = tagRepository.findAll().stream()
                 .map(TagConverter::convert)
-                .sorted(Comparator.comparing(TagResponse::getId))
-                .collect(Collectors.toList());
-
-        Collections.reverse(expected);
-
-        expected = expected.stream()
+                .sorted(Comparator.comparing(TagResponse::getId).reversed())
                 .limit(2)
                 .collect(Collectors.toList());
 
@@ -136,12 +130,7 @@ public class TagControllerIntTest extends PostServiceApplicationTests {
     public void findAllSortedByNameDesc() throws Exception {
         List<TagResponse> expected = tagRepository.findAll().stream()
                 .map(TagConverter::convert)
-                .sorted(Comparator.comparing(TagResponse::getName))
-                .collect(Collectors.toList());
-
-        Collections.reverse(expected);
-
-        expected = expected.stream()
+                .sorted(Comparator.comparing(TagResponse::getName).reversed())
                 .limit(2)
                 .collect(Collectors.toList());
 
