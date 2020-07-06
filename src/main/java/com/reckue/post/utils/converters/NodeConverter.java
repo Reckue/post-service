@@ -22,10 +22,11 @@ public class NodeConverter {
             throw new IllegalArgumentException("Null parameters are not allowed");
         }
         return Node.builder()
-                .userId(nodeRequest.getUserId())
-                .node(nodeRequest.getNode())
-                .source(nodeRequest.getSource())
                 .type(nodeRequest.getType())
+                .node(nodeRequest.getNode())
+                .postId(nodeRequest.getPostId())
+                .source(nodeRequest.getSource())
+                .userId(nodeRequest.getUserId())
                 .published(nodeRequest.getPublished())
                 .build();
     }
@@ -43,12 +44,13 @@ public class NodeConverter {
 
         return NodeResponse.builder()
                 .id(node.getId())
-                .node(node.getNode())
-                .userId(node.getUserId())
-                .source(node.getSource())
                 .type(node.getType())
-                .status(node.getStatus())
+                .node(node.getNode())
+                .postId(node.getPostId())
+                .source(node.getSource())
+                .userId(node.getUserId())
                 .published(node.getPublished())
+                .status(node.getStatus())
                 .build();
     }
 }
