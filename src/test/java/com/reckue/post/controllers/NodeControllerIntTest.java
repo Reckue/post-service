@@ -20,7 +20,6 @@
 //import org.springframework.test.web.servlet.MockMvc;
 //import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 //
-//import java.util.Collections;
 //import java.util.Comparator;
 //import java.util.List;
 //import java.util.stream.Collectors;
@@ -78,12 +77,7 @@
 //    public void findAllSortedByIdDesc() throws Exception {
 //        List<NodeResponse<?>> expected = nodeRepository.findAll().stream()
 //                .map(NodeConverter::convert)
-//                .sorted(Comparator.comparing(NodeResponse::getId))
-//                .collect(Collectors.toList());
-//
-//        Collections.reverse(expected);
-//
-//        expected = expected.stream()
+//                .sorted(Comparator.comparing(NodeResponse::getId).reversed())
 //                .limit(2)
 //                .collect(Collectors.toList());
 //
@@ -139,12 +133,7 @@
 //    public void findAllSortedByUsernameDesc() throws Exception {
 //        List<NodeResponse<?>> expected = nodeRepository.findAll().stream()
 //                .map(NodeConverter::convert)
-//                .sorted(Comparator.comparing(NodeResponse::getUsername))
-//                .collect(Collectors.toList());
-//
-//        Collections.reverse(expected);
-//
-//        expected = expected.stream()
+//                .sorted(Comparator.comparing(NodeResponse::getUsername).reversed())
 //                .limit(2)
 //                .collect(Collectors.toList());
 //
