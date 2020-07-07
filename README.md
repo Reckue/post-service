@@ -1,5 +1,5 @@
 # post-api
-**v.1.0.1.SNAPSHOT**
+**v.1.0.1.RELEASE**
 
 Service for publications, tutorials and articles.
 
@@ -38,7 +38,7 @@ gradle build
 #### 2. Run the application
 To create a jar file write following command and put enter:
 ```
-java -jar ./build/libs/RELEASE-1.0.0.jar
+java -jar ./build/libs/RELEASE-1.0.1.jar
 ```
 
 
