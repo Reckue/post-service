@@ -4,10 +4,15 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reckue.post.PostServiceApplicationTests;
 import com.reckue.post.models.Post;
+import com.reckue.post.models.types.NodeType;
 import com.reckue.post.models.types.StatusType;
 import com.reckue.post.repositories.PostRepository;
+import com.reckue.post.transfers.NodeRequest;
 import com.reckue.post.transfers.PostRequest;
 import com.reckue.post.transfers.PostResponse;
+import com.reckue.post.transfers.nodes.NodeParentRequest;
+import com.reckue.post.transfers.nodes.image.ImageNodeRequest;
+import com.reckue.post.transfers.nodes.poll.PollNodeRequest;
 import com.reckue.post.utils.converters.PostConverter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -246,6 +251,43 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
         PostRequest postRequest = PostRequest.builder()
                 .title("news")
                 .nodes(null)
+                .source("Habr.com")
+                .tags(null)
+                .userId("camelya")
+                .published(1591465825L)
+                .changed(1591465825L)
+                .status(StatusType.MODERATED)
+                .build();
+
+        PostResponse actual = objectMapper.readValue(this.mockMvc
+                .perform(MockMvcRequestBuilders.post("/posts")
+                        .content(objectMapper.writeValueAsString(postRequest))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse().getContentAsString(), PostResponse.class);
+
+        PostResponse expected = PostConverter.convert(PostConverter.convert(postRequest));
+        expected.setId(actual.getId());
+
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void createTestWithPollNode() throws Exception {
+        NodeRequest pollNode = NodeRequest.builder()
+                .postId("1")
+                .type(NodeType.POLL)
+                .node(PollNodeRequest.builder()
+                    .title("news")
+                    .items(List.of("One", "Two"))
+                    .build())
+                .build();
+        PostRequest postRequest = PostRequest.builder()
+                .title("news")
+                .nodes(List.of(pollNode))
                 .source("Habr.com")
                 .tags(null)
                 .userId("camelya")

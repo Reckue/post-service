@@ -11,7 +11,6 @@ import java.util.List;
  *
  * @author Kamila Meshcheryakova
  */
-@EqualsAndHashCode(callSuper = true)
 @Data
 public class ListNodeRequest extends NodeParentRequest {
 

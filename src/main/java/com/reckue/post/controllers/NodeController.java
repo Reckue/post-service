@@ -37,7 +37,7 @@ public class NodeController implements NodeApi {
      * @return the object of class NodeResponse
      */
     @PostMapping
-    public NodeResponse<?> create(@RequestBody @Valid NodeRequest<?> nodeRequest) {
+    public NodeResponse create(@RequestBody @Valid NodeRequest nodeRequest) {
         log.info("{}", nodeRequest);
         return convert(nodeService.create(convert(nodeRequest)));
     }
@@ -50,8 +50,8 @@ public class NodeController implements NodeApi {
      * @return the object of class NodeResponse
      */
     @PutMapping("/{id}")
-    public NodeResponse<?> update(@PathVariable String id, @RequestBody @Valid NodeRequest<?> nodeRequest) {
-        Node<?> node = convert(nodeRequest);
+    public NodeResponse update(@PathVariable String id, @RequestBody @Valid NodeRequest nodeRequest) {
+        Node node = convert(nodeRequest);
         node.setId(id);
         return convert(nodeService.update(node));
     }
@@ -68,7 +68,7 @@ public class NodeController implements NodeApi {
      * sorted by the selected parameter for sorting in descending order
      */
     @GetMapping
-    public List<NodeResponse<?>> findAll(@RequestParam(required = false) Integer limit,
+    public List<NodeResponse> findAll(@RequestParam(required = false) Integer limit,
                                          @RequestParam(required = false) Integer offset,
                                          @RequestParam(required = false) String sort,
                                          @RequestParam(required = false) Boolean desc) {
@@ -85,7 +85,7 @@ public class NodeController implements NodeApi {
      * @return the object of class NodeResponse
      */
     @GetMapping("/{id}")
-    public NodeResponse<?> findById(@PathVariable String id) {
+    public NodeResponse findById(@PathVariable String id) {
         return convert(nodeService.findById(id));
     }
 

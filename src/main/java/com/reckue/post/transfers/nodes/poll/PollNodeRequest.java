@@ -1,7 +1,10 @@
 package com.reckue.post.transfers.nodes.poll;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.reckue.post.transfers.nodes.NodeParentRequest;
+import com.reckue.post.utils.NodeContent;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,7 +18,6 @@ import java.util.List;
  *
  * @author Viktor Grigoriev
  */
-@EqualsAndHashCode(callSuper = true)
 @Builder
 @Data
 public class PollNodeRequest extends NodeParentRequest {

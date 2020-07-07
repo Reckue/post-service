@@ -3,6 +3,8 @@ package com.reckue.post.transfers;
 import com.reckue.post.models.Node;
 import com.reckue.post.models.Tag;
 import com.reckue.post.models.types.StatusType;
+import com.reckue.post.transfers.nodes.NodeParentResponse;
+import com.reckue.post.utils.NodeContent;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
@@ -25,7 +27,7 @@ public class PostResponse {
     private String title;
 
     @ApiModelProperty(notes = "List of nodes the post consists of")
-    private List<Node<?>> nodes;
+    private List<NodeResponse> nodes;
 
     @ApiModelProperty(notes = "The source used to write the post")
     private String source;

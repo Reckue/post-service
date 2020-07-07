@@ -11,9 +11,8 @@ import javax.validation.constraints.NotNull;
  *
  * @author Daria Smirnova
  */
-@EqualsAndHashCode(callSuper = true)
 @Data
-public class AudioNodeRequestRequest extends NodeParentRequest {
+public class AudioNodeRequest extends NodeParentRequest {
 
     @NotNull
     private String audioUrl;

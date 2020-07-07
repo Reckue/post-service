@@ -1,7 +1,8 @@
 package com.reckue.post.transfers.nodes.video;
 
 import com.reckue.post.transfers.nodes.NodeParentResponse;
-        import lombok.Data;
+import lombok.Builder;
+import lombok.Data;
         import lombok.EqualsAndHashCode;
 
 /**
@@ -9,8 +10,8 @@ import com.reckue.post.transfers.nodes.NodeParentResponse;
  *
  * @author Kamila Meshcheryakova
  */
-@EqualsAndHashCode(callSuper = true)
 @Data
+@Builder
 public class VideoNodeResponse extends NodeParentResponse {
 
     private String videoUrl;

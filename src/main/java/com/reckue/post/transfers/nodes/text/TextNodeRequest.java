@@ -11,7 +11,6 @@ import javax.validation.constraints.NotNull;
  *
  * @author Kamila Meshcheryakova
  */
-@EqualsAndHashCode(callSuper = true)
 @Data
 public class TextNodeRequest extends NodeParentRequest {
 

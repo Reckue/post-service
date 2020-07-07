@@ -1,8 +1,14 @@
 package com.reckue.post.utils.converters;
 
+import com.reckue.post.models.Node;
 import com.reckue.post.models.Post;
+import com.reckue.post.transfers.NodeRequest;
+import com.reckue.post.transfers.NodeResponse;
 import com.reckue.post.transfers.PostRequest;
 import com.reckue.post.transfers.PostResponse;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class PostConverter converts from PostRequest object to Post and Post object to PostResponse.
@@ -22,10 +28,16 @@ public class PostConverter {
         if (postRequest == null) {
             throw new IllegalArgumentException("Null parameters are not allowed");
         }
+
+        List<Node> nodes = new ArrayList<>();
+        for (NodeRequest node : postRequest.getNodes()) {
+            nodes.add(NodeConverter.convert(node));
+        }
+
         return Post.builder()
                 .title(postRequest.getTitle())
                 .userId(postRequest.getUserId())
-                .nodes(postRequest.getNodes())
+                .nodes(nodes)
                 .source(postRequest.getSource())
                 .tags(postRequest.getTags())
                 .published(postRequest.getPublished())
@@ -45,11 +57,17 @@ public class PostConverter {
         if (post == null) {
             throw new IllegalArgumentException("Null parameters are not allowed");
         }
+
+        List<NodeResponse> nodes = new ArrayList<>();
+        for (Node node : post.getNodes()) {
+            nodes.add(NodeConverter.convert(node));
+        }
+
         return PostResponse.builder()
                 .id(post.getId())
                 .userId(post.getUserId())
                 .title(post.getTitle())
-                .nodes(post.getNodes())
+                .nodes(nodes)
                 .source(post.getSource())
                 .tags(post.getTags())
                 .published(post.getPublished())

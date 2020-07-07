@@ -1,6 +1,8 @@
 package com.reckue.post.transfers.nodes.image;
 
-import com.reckue.post.transfers.nodes.NodeParentRequest;
+import com.reckue.post.transfers.nodes.NodeParentResponse;
+import com.reckue.post.utils.NodeContent;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -9,9 +11,9 @@ import lombok.EqualsAndHashCode;
  *
  * @author Kamila Meshcheryakova
  */
-@EqualsAndHashCode(callSuper = true)
 @Data
-public class ImageNodeResponse extends NodeParentRequest {
+@Builder
+public class ImageNodeResponse extends NodeParentResponse {
 
     private String imageUrl;
 }

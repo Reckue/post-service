@@ -1,6 +1,8 @@
 package com.reckue.post.transfers.nodes.audio;
 
 import com.reckue.post.transfers.nodes.NodeParentRequest;
+import com.reckue.post.transfers.nodes.NodeParentResponse;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -9,9 +11,9 @@ import lombok.EqualsAndHashCode;
  *
  * @author Daria Smirnova
  */
-@EqualsAndHashCode(callSuper = true)
 @Data
-public class AudioNodeResponseRequest extends NodeParentRequest {
+@Builder
+public class AudioNodeResponse extends NodeParentResponse {
 
     private String audioUrl;
 }
