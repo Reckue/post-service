@@ -9,6 +9,7 @@ import com.reckue.post.transfers.PostResponse;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Class PostConverter converts from PostRequest object to Post and Post object to PostResponse.
@@ -29,10 +30,9 @@ public class PostConverter {
             throw new IllegalArgumentException("Null parameters are not allowed");
         }
 
-        List<Node> nodes = new ArrayList<>();
-        for (NodeRequest node : postRequest.getNodes()) {
-            nodes.add(NodeConverter.convert(node));
-        }
+        List<Node> nodes = postRequest.getNodes().stream()
+                .map(NodeConverter::convert)
+                .collect(Collectors.toList());
 
         return Post.builder()
                 .title(postRequest.getTitle())
