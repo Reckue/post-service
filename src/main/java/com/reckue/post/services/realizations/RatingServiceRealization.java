@@ -13,16 +13,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * Class RatingServiceRealization represents realization of RatingService.
  * todo add method: int getRatingCountByPostId(String postId) {};
- *      add to method "create": if such userId already exists then delete the rating;
  *      add method: findAllPostsWithRatingByUserId (String userId, Integer limit, Integer offset);
  *      remove unnecessary methods;
- *      add long created to class Rating;
  *      add sort by date instead of existing sort types.
  *
  * @author Kamila Meshcheryakova
@@ -42,7 +41,23 @@ public class RatingServiceRealization implements RatingService {
     @Override
     public Rating create(Rating rating) {
         rating.setId(Generator.id());
+        Date date = new Date();
+        rating.setPublished(date.getTime());
         validateCreatingRating(rating);
+
+        /*
+        I need to implement "add to method "create": if such userId already exists then delete the rating".
+
+        If rating with that userId and that postId already exists we delete existing rating
+        and also delete new rating and get the error that rating not found.
+        Maybe we need to save new rating?
+         */
+        if (ratingRepository.existsByUserIdAndPostId(rating.getUserId(), rating.getPostId())) {
+            Rating existRating = ratingRepository.findByUserIdAndPostId(rating.getUserId(), rating.getPostId());
+            ratingRepository.deleteById(existRating.getId());
+            deleteById(rating.getId());
+        }
+
         return ratingRepository.save(rating);
     }
 
@@ -85,6 +100,7 @@ public class RatingServiceRealization implements RatingService {
                 .id(existRating.getId())
                 .userId(existRating.getUserId())
                 .postId(existRating.getPostId())
+                .published(existRating.getPublished())
                 .build();
         return ratingRepository.save(savedRating);
     }

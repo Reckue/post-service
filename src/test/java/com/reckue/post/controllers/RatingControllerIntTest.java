@@ -260,6 +260,7 @@ public class RatingControllerIntTest extends PostServiceApplicationTests {
                 .id(actual.getId())
                 .userId("23")
                 .postId(post.getId())
+                .published(actual.getPublished())
                 .build());
 
         Assertions.assertEquals(expected, actual);

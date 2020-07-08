@@ -11,4 +11,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface RatingRepository extends MongoRepository<Rating, String> {
+    boolean existsByUserIdAndPostId(String userId, String postId);
+    Rating findByUserIdAndPostId(String userId, String postId);
 }
