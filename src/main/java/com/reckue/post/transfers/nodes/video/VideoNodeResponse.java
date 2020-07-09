@@ -1,9 +1,7 @@
 package com.reckue.post.transfers.nodes.video;
 
 import com.reckue.post.transfers.nodes.NodeParentResponse;
-import lombok.Builder;
-import lombok.Data;
-        import lombok.EqualsAndHashCode;
+import lombok.*;
 
 /**
  * Class VideoNodeResponse represents an outgoing DTO for receiving type of node such as a video.
@@ -11,6 +9,8 @@ import lombok.Data;
  * @author Kamila Meshcheryakova
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class VideoNodeResponse extends NodeParentResponse {
 

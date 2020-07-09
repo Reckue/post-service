@@ -3,7 +3,9 @@ package com.reckue.post.controllers;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reckue.post.PostServiceApplicationTests;
+import com.reckue.post.models.Post;
 import com.reckue.post.models.Rating;
+import com.reckue.post.repositories.PostRepository;
 import com.reckue.post.repositories.RatingRepository;
 import com.reckue.post.transfers.RatingRequest;
 import com.reckue.post.transfers.RatingResponse;
@@ -30,11 +32,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Class RatingControllerIntTest is the integration type of test.
  *
- * @author Iveri Narozashvili
+ * @author Kamila Meshcheryakova
  */
 @AutoConfigureMockMvc
 public class RatingControllerIntTest extends PostServiceApplicationTests {
-
 
     @Autowired
     private MockMvc mockMvc;
@@ -44,6 +45,9 @@ public class RatingControllerIntTest extends PostServiceApplicationTests {
 
     @Autowired
     private RatingRepository ratingRepository;
+
+    @Autowired
+    private PostRepository postRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -205,13 +209,13 @@ public class RatingControllerIntTest extends PostServiceApplicationTests {
     void update() throws Exception {
         RatingResponse expected = RatingConverter.convert(Rating.builder()
                 .id(ratingRepository.findAll().get(0).getId())
-                .userId("best id ever")
-                .postId("simple")
+                .userId(ratingRepository.findAll().get(0).getUserId())
+                .postId(ratingRepository.findAll().get(0).getPostId())
                 .build());
 
         String json = objectMapper.writeValueAsString(RatingRequest.builder()
-                .userId("best id ever")
-                .postId("simple")
+                .userId(ratingRepository.findAll().get(0).getUserId())
+                .postId(ratingRepository.findAll().get(0).getPostId())
                 .build());
 
         MockHttpServletRequestBuilder builder = put("/rating/" + ratingRepository.findAll().get(0).getId())
@@ -231,9 +235,13 @@ public class RatingControllerIntTest extends PostServiceApplicationTests {
 
     @Test
     void save() throws Exception {
+        Post post = Post.builder()
+                .id("2020")
+                .build();
+        postRepository.save(post);
         String json = objectMapper.writeValueAsString(RatingRequest.builder()
                 .userId("23")
-                .postId("2020")
+                .postId(post.getId())
                 .build());
 
         MockHttpServletRequestBuilder builder = post("/rating")
@@ -251,7 +259,33 @@ public class RatingControllerIntTest extends PostServiceApplicationTests {
         RatingResponse expected = RatingConverter.convert(Rating.builder()
                 .id(actual.getId())
                 .userId("23")
+                .postId(post.getId())
+                .build());
+
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    void notSaveNotFoundPost() throws Exception {
+
+        String json = objectMapper.writeValueAsString(RatingRequest.builder()
+                .userId("23")
                 .postId("2020")
+                .build());
+
+        MockHttpServletRequestBuilder builder = post("/rating")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8")
+                .content(json);
+
+        RatingResponse actual = objectMapper.readValue(this.mockMvc.perform(builder)
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andReturn()
+                .getResponse().getContentAsString(), RatingResponse.class);
+
+        RatingResponse expected = RatingConverter.convert(Rating.builder()
                 .build());
 
         Assertions.assertEquals(expected, actual);

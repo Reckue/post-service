@@ -1,9 +1,7 @@
 package com.reckue.post.transfers.nodes.text;
 
 import com.reckue.post.transfers.nodes.NodeParentResponse;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 /**
  * Class TextNodeResponse represents an outgoing DTO for receiving type of node such as a text.
@@ -11,6 +9,8 @@ import lombok.EqualsAndHashCode;
  * @author Kamila Meshcheryakova
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class TextNodeResponse extends NodeParentResponse {
 

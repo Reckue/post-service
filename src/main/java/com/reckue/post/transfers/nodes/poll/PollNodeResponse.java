@@ -2,9 +2,7 @@ package com.reckue.post.transfers.nodes.poll;
 
 import com.reckue.post.transfers.nodes.NodeParentResponse;
 import com.reckue.post.utils.NodeContent;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import java.util.List;
 
@@ -14,6 +12,8 @@ import java.util.List;
  * @author Viktor Grigoriev
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class PollNodeResponse extends NodeParentResponse {
 

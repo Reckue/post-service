@@ -2,9 +2,7 @@ package com.reckue.post.transfers.nodes.image;
 
 import com.reckue.post.transfers.nodes.NodeParentResponse;
 import com.reckue.post.utils.NodeContent;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 /**
  * Class ImageNodeResponse represents an outgoing DTO for receiving type of node such as an image.
@@ -12,6 +10,8 @@ import lombok.EqualsAndHashCode;
  * @author Kamila Meshcheryakova
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class ImageNodeResponse extends NodeParentResponse {
 

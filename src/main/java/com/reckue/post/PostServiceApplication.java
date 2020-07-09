@@ -38,7 +38,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author Viktor Grigoriev
  * @author Iveri Narozashvili
  * @author Artur Magomedov
- * @author Vladislav Kryvokoniev
  */
 @SpringBootApplication
 public class PostServiceApplication {

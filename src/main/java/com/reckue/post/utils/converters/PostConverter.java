@@ -9,6 +9,7 @@ import com.reckue.post.transfers.PostResponse;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -29,10 +30,12 @@ public class PostConverter {
         if (postRequest == null) {
             throw new IllegalArgumentException("Null parameters are not allowed");
         }
-
-        List<Node> nodes = postRequest.getNodes().stream()
-                .map(NodeConverter::convert)
-                .collect(Collectors.toList());
+        List<Node> nodes = new ArrayList<>();
+        if (postRequest.getNodes() != null) {
+            nodes = postRequest.getNodes().stream()
+                    .map(NodeConverter::convert)
+                    .collect(Collectors.toList());
+        }
 
         return Post.builder()
                 .title(postRequest.getTitle())
@@ -59,8 +62,10 @@ public class PostConverter {
         }
 
         List<NodeResponse> nodes = new ArrayList<>();
-        for (Node node : post.getNodes()) {
-            nodes.add(NodeConverter.convert(node));
+        if (post.getNodes() != null) {
+            nodes = post.getNodes().stream()
+                    .map(NodeConverter::convert)
+                    .collect(Collectors.toList());
         }
 
         return PostResponse.builder()

@@ -18,6 +18,7 @@ import java.util.List;
  *
  * @author Viktor Grigoriev
  */
+@EqualsAndHashCode(callSuper = true)
 @Builder
 @Data
 public class PollNodeRequest extends NodeParentRequest {

@@ -14,6 +14,7 @@ import javax.validation.constraints.NotNull;
  *
  * @author Kamila Meshcheryakova
  */
+@EqualsAndHashCode(callSuper = true)
 @Builder
 @Data
 public class ImageNodeRequest extends NodeParentRequest {
