@@ -1,8 +1,8 @@
 package com.reckue.post.transfers.nodes.poll;
 
 import com.reckue.post.transfers.nodes.NodeParentResponse;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import com.reckue.post.utils.NodeContent;
+import lombok.*;
 
 import java.util.List;
 
@@ -11,8 +11,10 @@ import java.util.List;
  *
  * @author Viktor Grigoriev
  */
-@EqualsAndHashCode(callSuper = true)
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class PollNodeResponse extends NodeParentResponse {
 
     private String id;

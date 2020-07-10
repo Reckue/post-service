@@ -4,6 +4,7 @@ import com.reckue.post.exceptions.ModelAlreadyExistsException;
 import com.reckue.post.exceptions.ModelNotFoundException;
 import com.reckue.post.models.Post;
 import com.reckue.post.repositories.PostRepository;
+import com.reckue.post.services.NodeService;
 import com.reckue.post.services.PostService;
 import com.reckue.post.utils.Generator;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
 public class PostServiceRealization implements PostService {
 
     private final PostRepository postRepository;
+    private final NodeService nodeService;
 
     /**
      * This method is used to create an object of class Post.
@@ -37,6 +39,10 @@ public class PostServiceRealization implements PostService {
     public Post create(Post post) {
         post.setId(Generator.id());
         if (!postRepository.existsById(post.getId())) {
+            if (post.getNodes() != null) {
+                post.getNodes().forEach(nodeService::create);
+
+            }
             return postRepository.save(post);
         } else {
             throw new ModelAlreadyExistsException("Post already exists");
@@ -257,5 +263,16 @@ public class PostServiceRealization implements PostService {
         } else {
             throw new ModelNotFoundException("Post by id " + id + " is not found");
         }
+    }
+
+    /**
+     * This method is used to get the objects by title.
+     *
+     * @param title object
+     * @return list of objects of class Post
+     */
+    @Override
+    public List<Post> findAllByTitle(String title) {
+        return postRepository.findAllByTitle(title);
     }
 }

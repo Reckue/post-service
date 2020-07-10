@@ -3,10 +3,13 @@ package com.reckue.post.transfers;
 import com.reckue.post.models.Node;
 import com.reckue.post.models.Tag;
 import com.reckue.post.models.types.StatusType;
+import com.reckue.post.transfers.nodes.NodeParentRequest;
+import com.reckue.post.utils.NodeContent;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
@@ -25,7 +28,8 @@ public class PostRequest {
     private String title;
 
     @ApiModelProperty(notes = "List of nodes the post consists of")
-    private List<Node<?>> nodes;
+    @Valid
+    private List<NodeRequest> nodes;
 
     @Size(max = 128)
     @ApiModelProperty(notes = "The source used to write the post")

@@ -111,7 +111,7 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
         return new ApiInfoBuilder()
                 .title("Post service API")
                 .description("Service for posting articles about different programming languages.")
-                .version("RELEASE-1.0.0")
+                .version("RELEASE-1.0.1")
                 .contact(new Contact("Reckue", "www.reckue.com", "support@reckue.com"))
                 .build();
     }

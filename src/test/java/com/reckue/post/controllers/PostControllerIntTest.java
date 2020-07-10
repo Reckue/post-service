@@ -4,10 +4,20 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reckue.post.PostServiceApplicationTests;
 import com.reckue.post.models.Post;
+import com.reckue.post.models.types.LangType;
+import com.reckue.post.models.types.NodeType;
 import com.reckue.post.models.types.StatusType;
 import com.reckue.post.repositories.PostRepository;
+import com.reckue.post.transfers.NodeRequest;
 import com.reckue.post.transfers.PostRequest;
 import com.reckue.post.transfers.PostResponse;
+import com.reckue.post.transfers.nodes.audio.AudioNodeRequest;
+import com.reckue.post.transfers.nodes.code.CodeNodeRequest;
+import com.reckue.post.transfers.nodes.image.ImageNodeRequest;
+import com.reckue.post.transfers.nodes.list.ListNodeRequest;
+import com.reckue.post.transfers.nodes.poll.PollNodeRequest;
+import com.reckue.post.transfers.nodes.text.TextNodeRequest;
+import com.reckue.post.transfers.nodes.video.VideoNodeRequest;
 import com.reckue.post.utils.converters.PostConverter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,6 +32,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.reckue.post.utils.converters.PostConverter.convert;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -250,6 +261,260 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
 
         PostResponse expected = PostConverter.convert(PostConverter.convert(postRequest));
         expected.setId(actual.getId());
+
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void createTestWithPollNode() throws Exception {
+        NodeRequest pollNode = NodeRequest.builder()
+                .postId("1")
+                .type(NodeType.POLL)
+                .node(PollNodeRequest.builder()
+                    .title("news")
+                    .items(List.of("One", "Two"))
+                    .build())
+                .build();
+        PostRequest postRequest = PostRequest.builder()
+                .title("news")
+                .nodes(List.of(pollNode))
+                .source("Habr.com")
+                .tags(null)
+                .userId("camelya")
+                .published(1591465825L)
+                .changed(1591465825L)
+                .status(StatusType.MODERATED)
+                .build();
+
+        PostResponse actual = objectMapper.readValue(this.mockMvc
+                .perform(MockMvcRequestBuilders.post("/posts")
+                        .content(objectMapper.writeValueAsString(postRequest))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse().getContentAsString(), PostResponse.class);
+        PostResponse expected = convert(convert(postRequest));
+        expected.setId(actual.getId());
+        expected.getNodes().get(0).setId(actual.getNodes().get(0).getId());
+
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void createTestWithAudioNode() throws Exception {
+        NodeRequest audioNode = NodeRequest.builder()
+                .postId("1")
+                .type(NodeType.AUDIO)
+                .node(AudioNodeRequest.builder()
+                        .audioUrl("url")
+                        .build())
+                .build();
+        PostRequest postRequest = PostRequest.builder()
+                .title("news")
+                .nodes(List.of(audioNode))
+                .source("Habr.com")
+                .tags(null)
+                .userId("camelya")
+                .published(1591465825L)
+                .changed(1591465825L)
+                .status(StatusType.MODERATED)
+                .build();
+
+        PostResponse actual = objectMapper.readValue(this.mockMvc
+                .perform(MockMvcRequestBuilders.post("/posts")
+                        .content(objectMapper.writeValueAsString(postRequest))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse().getContentAsString(), PostResponse.class);
+        PostResponse expected = convert(convert(postRequest));
+        expected.setId(actual.getId());
+        expected.getNodes().get(0).setId(actual.getNodes().get(0).getId());
+
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void createTestWithCodeNode() throws Exception {
+        NodeRequest codeNode = NodeRequest.builder()
+                .postId("1")
+                .type(NodeType.CODE)
+                .node(CodeNodeRequest.builder()
+                        .language(LangType.JAVA)
+                        .content("main")
+                        .build())
+                .build();
+        PostRequest postRequest = PostRequest.builder()
+                .title("news")
+                .nodes(List.of(codeNode))
+                .source("Habr.com")
+                .tags(null)
+                .userId("camelya")
+                .published(1591465825L)
+                .changed(1591465825L)
+                .status(StatusType.MODERATED)
+                .build();
+
+        PostResponse actual = objectMapper.readValue(this.mockMvc
+                .perform(MockMvcRequestBuilders.post("/posts")
+                        .content(objectMapper.writeValueAsString(postRequest))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse().getContentAsString(), PostResponse.class);
+        PostResponse expected = convert(convert(postRequest));
+        expected.setId(actual.getId());
+        expected.getNodes().get(0).setId(actual.getNodes().get(0).getId());
+
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void createTestWithTextNode() throws Exception {
+        NodeRequest textNode = NodeRequest.builder()
+                .postId("1")
+                .type(NodeType.TEXT)
+                .node(TextNodeRequest.builder()
+                        .content("Just Text")
+                        .build())
+                .build();
+        PostRequest postRequest = PostRequest.builder()
+                .title("news")
+                .nodes(List.of(textNode))
+                .source("Habr.com")
+                .tags(null)
+                .userId("camelya")
+                .published(1591465825L)
+                .changed(1591465825L)
+                .status(StatusType.MODERATED)
+                .build();
+
+        PostResponse actual = objectMapper.readValue(this.mockMvc
+                .perform(MockMvcRequestBuilders.post("/posts")
+                        .content(objectMapper.writeValueAsString(postRequest))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse().getContentAsString(), PostResponse.class);
+        PostResponse expected = convert(convert(postRequest));
+        expected.setId(actual.getId());
+        expected.getNodes().get(0).setId(actual.getNodes().get(0).getId());
+
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void createTestWithImageNode() throws Exception {
+        NodeRequest imageNode = NodeRequest.builder()
+                .postId("1")
+                .type(NodeType.IMAGE)
+                .node(ImageNodeRequest.builder()
+                        .imageUrl("url")
+                        .build())
+                .build();
+        PostRequest postRequest = PostRequest.builder()
+                .title("news")
+                .nodes(List.of(imageNode))
+                .source("Habr.com")
+                .tags(null)
+                .userId("camelya")
+                .published(1591465825L)
+                .changed(1591465825L)
+                .status(StatusType.MODERATED)
+                .build();
+
+        PostResponse actual = objectMapper.readValue(this.mockMvc
+                .perform(MockMvcRequestBuilders.post("/posts")
+                        .content(objectMapper.writeValueAsString(postRequest))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse().getContentAsString(), PostResponse.class);
+        PostResponse expected = convert(convert(postRequest));
+        expected.setId(actual.getId());
+        expected.getNodes().get(0).setId(actual.getNodes().get(0).getId());
+
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void createTestWithListNode() throws Exception {
+        NodeRequest listNode = NodeRequest.builder()
+                .postId("1")
+                .type(NodeType.LIST)
+                .node(ListNodeRequest.builder()
+                        .content(List.of("List"))
+                        .build())
+                .build();
+        PostRequest postRequest = PostRequest.builder()
+                .title("news")
+                .nodes(List.of(listNode))
+                .source("Habr.com")
+                .tags(null)
+                .userId("camelya")
+                .published(1591465825L)
+                .changed(1591465825L)
+                .status(StatusType.MODERATED)
+                .build();
+
+        PostResponse actual = objectMapper.readValue(this.mockMvc
+                .perform(MockMvcRequestBuilders.post("/posts")
+                        .content(objectMapper.writeValueAsString(postRequest))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse().getContentAsString(), PostResponse.class);
+        PostResponse expected = convert(convert(postRequest));
+        expected.setId(actual.getId());
+        expected.getNodes().get(0).setId(actual.getNodes().get(0).getId());
+
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void createTestWithVideoNode() throws Exception {
+        NodeRequest videoNode = NodeRequest.builder()
+                .postId("1")
+                .type(NodeType.VIDEO)
+                .node(VideoNodeRequest.builder()
+                        .videoUrl("url")
+                        .build())
+                .build();
+        PostRequest postRequest = PostRequest.builder()
+                .title("news")
+                .nodes(List.of(videoNode))
+                .source("Habr.com")
+                .tags(null)
+                .userId("camelya")
+                .published(1591465825L)
+                .changed(1591465825L)
+                .status(StatusType.MODERATED)
+                .build();
+
+        PostResponse actual = objectMapper.readValue(this.mockMvc
+                .perform(MockMvcRequestBuilders.post("/posts")
+                        .content(objectMapper.writeValueAsString(postRequest))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse().getContentAsString(), PostResponse.class);
+        PostResponse expected = convert(convert(postRequest));
+        expected.setId(actual.getId());
+        expected.getNodes().get(0).setId(actual.getNodes().get(0).getId());
 
         Assertions.assertEquals(expected, actual);
     }

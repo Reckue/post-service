@@ -65,6 +65,19 @@ public class PostController implements PostApi {
     }
 
     /**
+     * This type of request allows to get all the objects by title, process it using the converter.
+     *
+     * @param title the object identifier
+     * @return list of objects of class PostResponse
+     */
+    @GetMapping("/title/{title}")
+    public List<PostResponse> findByTitle(@PathVariable String title) {
+        return postService.findAllByTitle(title).stream()
+                .map(PostConverter::convert)
+                .collect(Collectors.toList());
+    }
+
+    /**
      * This type of request allows to get all the objects that meet the requirements, process it using the converter.
      *
      * @param limit  quantity of objects

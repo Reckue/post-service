@@ -59,4 +59,12 @@ public interface PostService {
      * @param id object
      */
     void deleteById(String id);
+
+    /**
+     * This method is used to get the objects by title.
+     *
+     * @param title object
+     * @return list of objects of class Post
+     */
+    List<Post> findAllByTitle(String title);
 }
