@@ -1,6 +1,8 @@
 package com.reckue.post.transfers;
 
 import com.reckue.post.models.types.NodeType;
+import com.reckue.post.transfers.nodes.NodeParentRequest;
+import com.reckue.post.utils.NodeContent;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
@@ -14,15 +16,14 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 @Builder
-public class NodeRequest<T> {
+public class NodeRequest {
 
     @NotNull
     @ApiModelProperty(notes = "Type of node content")
     private NodeType type;
 
-    @ApiModelProperty(notes = "Type of node content")
-    @NotNull
-    private T node;
+    @ApiModelProperty(notes = "Sub node")
+    private NodeParentRequest node;
 
     @ApiModelProperty(notes = "Identifier of the post")
     @NotNull

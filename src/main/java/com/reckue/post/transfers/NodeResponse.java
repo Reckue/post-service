@@ -2,6 +2,8 @@ package com.reckue.post.transfers;
 
 import com.reckue.post.models.types.NodeType;
 import com.reckue.post.models.types.StatusType;
+import com.reckue.post.transfers.nodes.NodeParentResponse;
+import com.reckue.post.utils.NodeContent;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +18,7 @@ import javax.validation.constraints.Size;
  */
 @Data
 @Builder
-public class NodeResponse<T> {
+public class NodeResponse {
 
     @ApiModelProperty(notes = "The database generated node ID")
     private String id;
@@ -24,8 +26,8 @@ public class NodeResponse<T> {
     @ApiModelProperty(notes = "Node type")
     private NodeType type;
 
-    @ApiModelProperty(notes = "Type of node content")
-    private T node;
+    @ApiModelProperty(notes = "Sub node")
+    private NodeParentResponse node;
 
     @ApiModelProperty(notes = "Identifier of the post")
     @NotNull

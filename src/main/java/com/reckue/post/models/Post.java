@@ -1,6 +1,8 @@
 package com.reckue.post.models;
 
+import com.reckue.post.models.nodes.Parent;
 import com.reckue.post.models.types.StatusType;
+import com.reckue.post.utils.NodeContent;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,7 +28,7 @@ public class Post {
     private String id;
 
     private String title;
-    private List<Node<?>> nodes;
+    private List<Node> nodes;
     private String source;
     private String userId;
     private List<Tag> tags;
