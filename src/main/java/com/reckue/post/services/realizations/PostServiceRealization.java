@@ -264,4 +264,15 @@ public class PostServiceRealization implements PostService {
             throw new ModelNotFoundException("Post by id " + id + " is not found");
         }
     }
+
+    /**
+     * This method is used to get the objects by title.
+     *
+     * @param title object
+     * @return list of objects of class Post
+     */
+    @Override
+    public List<Post> findAllByTitle(String title) {
+        return postRepository.findAllByTitle(title);
+    }
 }
