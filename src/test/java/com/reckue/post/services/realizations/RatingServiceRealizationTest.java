@@ -135,20 +135,6 @@ public class RatingServiceRealizationTest extends PostServiceApplicationTests {
     }
 
     @Test
-    public void findByIdWithException() {
-        when(ratingRepository.findById(rating1.getId())).thenReturn(Optional.empty());
-
-        assertThrows(ModelNotFoundException.class, () -> ratingService.findById(rating1.getId()));
-    }
-
-    @Test
-    public void findById() {
-        when(ratingRepository.findById(rating1.getId())).thenReturn(Optional.of(rating1));
-
-        assertEquals(rating1, ratingService.findById(rating1.getId()));
-    }
-
-    @Test
     public void deleteById() {
         List<Rating> ratings = new ArrayList<>();
         ratings.add(rating1);

@@ -2,6 +2,7 @@ package com.reckue.post.services.realizations;
 
 import com.reckue.post.exceptions.ModelAlreadyExistsException;
 import com.reckue.post.exceptions.ModelNotFoundException;
+import com.reckue.post.models.Post;
 import com.reckue.post.models.Rating;
 import com.reckue.post.repositories.PostRepository;
 import com.reckue.post.repositories.RatingRepository;
@@ -11,18 +12,11 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * Class RatingServiceRealization represents realization of RatingService.
- * todo add method: int getRatingCountByPostId(String postId) {};
- *      add method: findAllPostsWithRatingByUserId (String userId, Integer limit, Integer offset);
- *      remove unnecessary methods;
- *      add sort by date instead of existing sort types.
  *
  * @author Kamila Meshcheryakova
  */
@@ -41,17 +35,10 @@ public class RatingServiceRealization implements RatingService {
     @Override
     public Rating create(Rating rating) {
         rating.setId(Generator.id());
+        validateCreatingRating(rating);
         Date date = new Date();
         rating.setPublished(date.getTime());
-        validateCreatingRating(rating);
 
-        /*
-        I need to implement "add to method "create": if such userId already exists then delete the rating".
-
-        If rating with that userId and that postId already exists we delete existing rating
-        and also delete new rating and get the error that rating not found.
-        Maybe we need to save new rating?
-         */
         if (ratingRepository.existsByUserIdAndPostId(rating.getUserId(), rating.getPostId())) {
             Rating existRating = ratingRepository.findByUserIdAndPostId(rating.getUserId(), rating.getPostId());
             ratingRepository.deleteById(existRating.getId());
@@ -160,18 +147,16 @@ public class RatingServiceRealization implements RatingService {
     /**
      * This method is used to sort objects by type.
      *
-     * @param sort type of sorting: userId, postId, default - id
+     * @param sort type of sorting: published, default - id
      * @return list of objects of class Rating sorted by the selected parameter for sorting
      */
     public List<Rating> findAllBySortType(String sort) {
 
         switch (sort) {
-            case "userId":
-                return findAllAndSortByUserId();
+            case "published":
+                return findAllAndSortByPublished();
             case "id":
                 return findAllAndSortById();
-            case "postId":
-                return findAllAndSortByPostId();
         }
         throw new IllegalArgumentException("Such field as " + sort + " doesn't exist");
     }
@@ -188,38 +173,14 @@ public class RatingServiceRealization implements RatingService {
     }
 
     /**
-     * This method is used to sort objects by content.
+     * This method is used to sort objects by created date.
      *
-     * @return list of objects of class Rating sorted by userId
+     * @return list of objects of class Rating sorted by published
      */
-    public List<Rating> findAllAndSortByUserId() {
+    public List<Rating> findAllAndSortByPublished() {
         return findAll().stream()
-                .sorted(Comparator.comparing(Rating::getUserId))
+                .sorted(Comparator.comparing(Rating::getPublished))
                 .collect(Collectors.toList());
-    }
-
-    /**
-     * This method is used to sort objects by content.
-     *
-     * @return list of objects of class Rating sorted by postId
-     */
-    public List<Rating> findAllAndSortByPostId() {
-        return findAll().stream()
-                .sorted(Comparator.comparing(Rating::getPostId))
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * This method is used to get an object by id.
-     * Throws {@link ModelNotFoundException} in case if such object isn't contained in database.
-     *
-     * @param id object
-     * @return post object of class Rating
-     */
-    @Override
-    public Rating findById(String id) {
-        return ratingRepository.findById(id).orElseThrow(
-                () -> new ModelNotFoundException("Rating by id " + id + " is not found"));
     }
 
     /**
@@ -235,5 +196,64 @@ public class RatingServiceRealization implements RatingService {
         } else {
             throw new ModelNotFoundException("Rating by id " + id + " is not found");
         }
+    }
+
+    /**
+     * This method is used to get the number of ratings to a single post.
+     * Throws {@link ModelNotFoundException} in case if such post id isn't contained in database.
+     *
+     * @param postId the post identifier
+     * @return quantity of ratings to a post
+     */
+    @Override
+    public int getRatingsCountByPostId(String postId) {
+        if (!ratingRepository.existsByPostId(postId)) {
+            throw new ModelNotFoundException("Post identifier '" + postId + "' is not found");
+        }
+        List<Rating> ratings = ratingRepository.findByPostId(postId);
+        return ratings.size();
+    }
+
+    /**
+     * This method is used to get all posts with ratings by user id.
+     * Throws {@link ModelNotFoundException} in case if such user id isn't contained in database.
+     *
+     * @param userId the user identifier
+     * @param limit  quantity of objects
+     * @param offset quantity to skip
+     * @return list of objects of class Post
+     */
+    @Override
+    public List<Post> findAllPostsWithRatingsByUserId(String userId, Integer limit, Integer offset) {
+        if (!ratingRepository.existsByUserId(userId)) {
+            throw new ModelNotFoundException("User identifier '" + userId + "' is not found");
+        }
+        List<Rating> ratings = ratingRepository.findByUserId(userId);
+        if (limit == null) limit = 10;
+        if (offset == null) offset = 0;
+
+        if (limit < 0 || offset < 0) {
+            throw new IllegalArgumentException("Limit or offset is incorrect");
+        }
+        List<Post> posts = new ArrayList<>();
+        for (Rating rating : ratings) {
+            Post post = postRepository.findById(rating.getPostId())
+                    .orElseThrow(ModelNotFoundException::new);
+            posts.add(post);
+        }
+
+        return posts.stream()
+                .limit(limit)
+                .skip(offset)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * This method is used to delete all ratings.
+     */
+    @Deprecated
+    @Override
+    public void deleteAll() {
+        ratingRepository.deleteAll();
     }
 }

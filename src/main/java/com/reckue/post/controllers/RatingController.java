@@ -3,8 +3,11 @@ package com.reckue.post.controllers;
 import com.reckue.post.controllers.apis.RatingApi;
 import com.reckue.post.models.Rating;
 import com.reckue.post.services.RatingService;
+import com.reckue.post.transfers.PostRatingResponse;
+import com.reckue.post.transfers.PostResponse;
 import com.reckue.post.transfers.RatingRequest;
 import com.reckue.post.transfers.RatingResponse;
+import com.reckue.post.utils.converters.PostConverter;
 import com.reckue.post.utils.converters.RatingConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -74,17 +77,6 @@ public class RatingController implements RatingApi {
     }
 
     /**
-     * This type of request allows to get the object by id, process it using the converter.
-     *
-     * @param id the object identifier
-     * @return the object of class RatingResponse
-     */
-    @GetMapping("/{id}")
-    public RatingResponse findById(@PathVariable String id) {
-        return convert(ratingService.findById(id));
-    }
-
-    /**
      * This type of request allows to delete the object by id.
      *
      * @param id the object identifier
@@ -92,5 +84,34 @@ public class RatingController implements RatingApi {
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable String id) {
         ratingService.deleteById(id);
+    }
+
+    /**
+     * This type of request allows to delete the object by id.
+     *
+     * @param postId the post identifier
+     * @return quantity of ratings to one post
+     */
+    @GetMapping("/post/{postId}")
+    public PostRatingResponse getQuantityOfRatingsToPost(@PathVariable String postId) {
+        return PostRatingResponse.builder()
+                .count(ratingService.getRatingsCountByPostId(postId))
+                .build();
+    }
+
+    /**
+     * This type of request allows to find all posts with rating by the user, process their using the converter.
+     *
+     * @param limit  quantity of objects
+     * @param offset quantity to skip
+     * @return list of given quantity of objects of class RatingResponse with a given offset
+     */
+    @GetMapping("/user/{userId}")
+    public List<PostResponse> findAllPostsByUser(@PathVariable String userId,
+                                                 @RequestParam(required = false) Integer limit,
+                                                 @RequestParam(required = false) Integer offset) {
+        return ratingService.findAllPostsWithRatingsByUserId(userId, limit, offset).stream()
+                .map(PostConverter::convert)
+                .collect(Collectors.toList());
     }
 }

@@ -1,5 +1,6 @@
 package com.reckue.post.services;
 
+import com.reckue.post.models.Post;
 import com.reckue.post.models.Rating;
 
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.List;
 /**
  * Interface RatingService represents service with CRUD operations.
  *
- * @author Iveri Narozashvili
+ * @author Kamila Meshcheryakova
  */
 public interface RatingService {
     /**
@@ -45,17 +46,33 @@ public interface RatingService {
     List<Rating> findAll(Integer limit, Integer offset, String sort, Boolean desc);
 
     /**
-     * This method is used to get an object by id.
-     *
-     * @param id object
-     * @return object of class Rating
-     */
-    Rating findById(String id);
-
-    /**
      * This method is used to delete an object by id.
      *
      * @param id object
      */
     void deleteById(String id);
+
+    /**
+     * This method is used to get the number of ratings to a single post.
+     *
+     * @param postId the post identifier
+     * @return quantity of ratings to a post
+     */
+    int getRatingsCountByPostId(String postId);
+
+    /**
+     * This method is used to get all posts with ratings by user id.
+     *
+     * @param userId the user identifier
+     * @param limit  quantity of objects
+     * @param offset quantity to skip
+     * @return list of objects of class Post
+     */
+    List<Post> findAllPostsWithRatingsByUserId(String userId, Integer limit, Integer offset);
+
+    /**
+     * This method is used to delete all ratings.
+     */
+    @Deprecated
+    void deleteAll();
 }

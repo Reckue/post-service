@@ -10,8 +10,8 @@ import io.swagger.annotations.ApiResponses;
  *
  * @author Marina Buinevich
  */
-@Api(tags = {"/database/util"})
-public interface DataBaseUtilApi {
+@Api(tags = {"/debug"})
+public interface DebugApi {
 
     @Deprecated
     @ApiOperation(value = "Delete all nodes")
@@ -28,4 +28,12 @@ public interface DataBaseUtilApi {
             @ApiResponse(code = 404, message = "The resource you were trying to delete is not found"),
             @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")})
     void deleteAllPosts();
+
+    @Deprecated
+    @ApiOperation(value = "Delete all ratings")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "The ratings successfully deleted"),
+            @ApiResponse(code = 404, message = "The resource you were trying to delete is not found"),
+            @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")})
+    void deleteAllRatings();
 }
