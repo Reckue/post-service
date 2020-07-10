@@ -67,4 +67,10 @@ public interface PostService {
      * @return list of objects of class Post
      */
     List<Post> findAllByTitle(String title);
+
+    /**
+     * This method is used to delete all posts.
+     */
+    @Deprecated
+    void deleteAll();
 }

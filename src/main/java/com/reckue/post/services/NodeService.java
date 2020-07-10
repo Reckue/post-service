@@ -59,4 +59,10 @@ public interface NodeService {
      * @param id object
      */
     void deleteById(String id);
+
+    /**
+     * This method is used to delete all nodes.
+     */
+    @Deprecated
+    void deleteAll();
 }

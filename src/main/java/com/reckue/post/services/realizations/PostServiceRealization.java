@@ -275,4 +275,13 @@ public class PostServiceRealization implements PostService {
     public List<Post> findAllByTitle(String title) {
         return postRepository.findAllByTitle(title);
     }
+
+    /**
+     * This method is used to delete all posts.
+     */
+    @Deprecated
+    @Override
+    public void deleteAll() {
+        postRepository.deleteAll();
+    }
 }

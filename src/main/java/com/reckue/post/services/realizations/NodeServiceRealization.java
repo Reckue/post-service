@@ -247,4 +247,13 @@ public class NodeServiceRealization implements NodeService {
             throw new ModelNotFoundException("Node by id " + id + " is not found");
         }
     }
+
+    /**
+     * This method is used to delete all nodes.
+     */
+    @Deprecated
+    @Override
+    public void deleteAll() {
+        nodeRepository.deleteAll();
+    }
 }
