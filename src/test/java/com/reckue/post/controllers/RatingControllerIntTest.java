@@ -60,16 +60,19 @@ public class RatingControllerIntTest extends PostServiceApplicationTests {
                 .id("1")
                 .userId("Garry")
                 .postId("cars")
+                .published(1234567890)
                 .build());
         ratingRepository.save(Rating.builder()
                 .id("2")
                 .userId("Antony")
                 .postId("animals")
+                .published(1234563590)
                 .build());
         ratingRepository.save(Rating.builder()
                 .id("3")
                 .userId("Bart")
                 .postId("news")
+                .published(2134567820)
                 .build());
     }
 
@@ -117,15 +120,15 @@ public class RatingControllerIntTest extends PostServiceApplicationTests {
     }
 
     @Test
-    public void findAllSortedByUserIdAsc() throws Exception {
+    public void findAllSortedByPublishedAsc() throws Exception {
         List<RatingResponse> expected = ratingRepository.findAll().stream()
                 .map(RatingConverter::convert)
-                .sorted(Comparator.comparing(RatingResponse::getUserId))
+                .sorted(Comparator.comparing(RatingResponse::getPublished))
                 .limit(2)
                 .collect(Collectors.toList());
 
         List<RatingResponse> actual = objectMapper
-                .readValue(this.mockMvc.perform(get("/rating?desc=false&limit=2&offset=0&sort=userId"))
+                .readValue(this.mockMvc.perform(get("/rating?desc=false&limit=2&offset=0&sort=published"))
                         .andDo(print())
                         .andExpect(status().isOk())
                         .andReturn()
@@ -136,71 +139,20 @@ public class RatingControllerIntTest extends PostServiceApplicationTests {
     }
 
     @Test
-    public void findAllSortedByUserIdDesc() throws Exception {
+    public void findAllSortedByPublishedDesc() throws Exception {
         List<RatingResponse> expected = ratingRepository.findAll().stream()
                 .map(RatingConverter::convert)
-                .sorted(Comparator.comparing(RatingResponse::getUserId).reversed())
+                .sorted(Comparator.comparing(RatingResponse::getPublished).reversed())
                 .limit(2)
                 .collect(Collectors.toList());
 
         List<RatingResponse> actual = objectMapper
-                .readValue(this.mockMvc.perform(get("/rating?desc=true&limit=2&offset=0&sort=userId"))
+                .readValue(this.mockMvc.perform(get("/rating?desc=true&limit=2&offset=0&sort=published"))
                         .andDo(print())
                         .andExpect(status().isOk())
                         .andReturn()
                         .getResponse().getContentAsString(), new TypeReference<>() {
                 });
-
-        Assertions.assertEquals(expected, actual);
-    }
-
-    @Test
-    public void findAllSortedByPostIdAsc() throws Exception {
-        List<RatingResponse> expected = ratingRepository.findAll().stream()
-                .map(RatingConverter::convert)
-                .sorted(Comparator.comparing(RatingResponse::getPostId))
-                .limit(2)
-                .collect(Collectors.toList());
-
-        List<RatingResponse> actual = objectMapper
-                .readValue(this.mockMvc.perform(get("/rating?desc=false&limit=2&offset=0&sort=postId"))
-                        .andDo(print())
-                        .andExpect(status().isOk())
-                        .andReturn()
-                        .getResponse().getContentAsString(), new TypeReference<>() {
-                });
-
-        Assertions.assertEquals(expected, actual);
-    }
-
-    @Test
-    public void findAllSortedByPostIdDesc() throws Exception {
-        List<RatingResponse> expected = ratingRepository.findAll().stream()
-                .map(RatingConverter::convert)
-                .sorted(Comparator.comparing(RatingResponse::getPostId).reversed())
-                .limit(2)
-                .collect(Collectors.toList());
-
-        List<RatingResponse> actual = objectMapper
-                .readValue(this.mockMvc.perform(get("/rating?desc=true&limit=2&offset=0&sort=postId"))
-                        .andDo(print())
-                        .andExpect(status().isOk())
-                        .andReturn()
-                        .getResponse().getContentAsString(), new TypeReference<>() {
-                });
-
-        Assertions.assertEquals(expected, actual);
-    }
-
-    @Test
-    public void findById() throws Exception {
-        RatingResponse expected = RatingConverter.convert(ratingRepository.findAll().get(0));
-
-        RatingResponse actual = objectMapper.readValue(this.mockMvc.perform(get("/rating/" + expected.getId()))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse().getContentAsString(), RatingResponse.class);
 
         Assertions.assertEquals(expected, actual);
     }
@@ -211,6 +163,7 @@ public class RatingControllerIntTest extends PostServiceApplicationTests {
                 .id(ratingRepository.findAll().get(0).getId())
                 .userId(ratingRepository.findAll().get(0).getUserId())
                 .postId(ratingRepository.findAll().get(0).getPostId())
+                .published(ratingRepository.findAll().get(0).getPublished())
                 .build());
 
         String json = objectMapper.writeValueAsString(RatingRequest.builder()
@@ -260,6 +213,7 @@ public class RatingControllerIntTest extends PostServiceApplicationTests {
                 .id(actual.getId())
                 .userId("23")
                 .postId(post.getId())
+                .published(actual.getPublished())
                 .build());
 
         Assertions.assertEquals(expected, actual);

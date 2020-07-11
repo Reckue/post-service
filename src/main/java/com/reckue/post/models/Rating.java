@@ -25,4 +25,6 @@ public class Rating {
     private String userId;
 
     private String postId;
+
+    private long published;
 }
