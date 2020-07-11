@@ -65,17 +65,17 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
                 .useDefaultResponseMessages(false)
                 .additionalModels(typeResolver.resolve(ErrorResponse.class))
                 .globalResponseMessage(RequestMethod.PUT, newArrayList(new ResponseMessageBuilder().code(400)
-                                        .message("BAD_REQUEST")
-                                        .responseModel(new ModelRef("ErrorResponse"))
-                                        .build(),
+                                .message("BAD_REQUEST")
+                                .responseModel(new ModelRef("ErrorResponse"))
+                                .build(),
                         new ResponseMessageBuilder().code(404)
                                 .message("NOT_FOUND")
                                 .responseModel(new ModelRef("ErrorResponse"))
                                 .build(),
-                                new ResponseMessageBuilder().code(500)
-                                        .message("INTERNAL_SERVER_ERROR")
-                                        .responseModel(new ModelRef("ErrorResponse"))
-                                        .build()))
+                        new ResponseMessageBuilder().code(500)
+                                .message("INTERNAL_SERVER_ERROR")
+                                .responseModel(new ModelRef("ErrorResponse"))
+                                .build()))
                 .useDefaultResponseMessages(false)
                 .additionalModels(typeResolver.resolve(ErrorResponse.class))
                 .globalResponseMessage(RequestMethod.GET, newArrayList(new ResponseMessageBuilder().code(400)
@@ -111,7 +111,7 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
         return new ApiInfoBuilder()
                 .title("Post service API")
                 .description("Service for posting articles about different programming languages.")
-                .version("RELEASE-1.0.1")
+                .version("SNAPSHOT-1.0.2")
                 .contact(new Contact("Reckue", "www.reckue.com", "support@reckue.com"))
                 .build();
     }

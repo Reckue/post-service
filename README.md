@@ -1,5 +1,5 @@
 # post-api
-**v.1.0.1.RELEASE**
+**v.1.0.2.SNAPSHOT**
 
 Service for publications, tutorials and articles.
 
