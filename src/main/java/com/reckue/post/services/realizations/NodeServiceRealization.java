@@ -1,15 +1,12 @@
 package com.reckue.post.services.realizations;
 
-import com.reckue.post.exceptions.ModelAlreadyExistsException;
-import com.reckue.post.exceptions.ModelNotFoundException;
+import com.reckue.post.exceptions.models.nodes.NodeAlreadyExistException;
+import com.reckue.post.exceptions.models.nodes.NodeNotFoundException;
 import com.reckue.post.models.Node;
-import com.reckue.post.models.nodes.*;
-import com.reckue.post.models.types.NodeType;
 import com.reckue.post.repositories.NodeRepository;
 import com.reckue.post.repositories.PostRepository;
 import com.reckue.post.services.NodeService;
 import com.reckue.post.utils.Generator;
-import com.reckue.post.utils.converters.Converter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -44,13 +41,13 @@ public class NodeServiceRealization implements NodeService {
         if (!nodeRepository.existsById(node.getId())) {
             return nodeRepository.save(node);
         } else {
-            throw new ModelAlreadyExistsException("Node already exists");
+            throw new NodeAlreadyExistException(node.getId());
         }
     }
 
     /**
      * This method is used to update data in an object of class Node.
-     * Throws {@link ModelNotFoundException} in case
+     * Throws {@link NodeNotFoundException} in case
      * if such object isn't contained in database.
      * Throws {@link IllegalArgumentException} in case
      * if parameter equals null.
@@ -64,7 +61,7 @@ public class NodeServiceRealization implements NodeService {
             throw new IllegalArgumentException("The parameter is null");
         }
         if (!nodeRepository.existsById(node.getId())) {
-            throw new ModelNotFoundException("Node by id " + node.getId() + " is not found");
+            throw new NodeNotFoundException(node.getId());
         }
         Node savedNode = Node.builder()
                 .id(node.getId())
@@ -222,7 +219,7 @@ public class NodeServiceRealization implements NodeService {
 
     /**
      * This method is used to get an object by id.
-     * Throws {@link ModelNotFoundException} in case if such object isn't contained in database.
+     * Throws {@link NodeNotFoundException} in case if such object isn't contained in database.
      *
      * @param id object
      * @return post object of class Node
@@ -230,12 +227,12 @@ public class NodeServiceRealization implements NodeService {
     @Override
     public Node findById(String id) {
         return nodeRepository.findById(id).orElseThrow(
-                () -> new ModelNotFoundException("Node by id " + id + " is not found"));
+                () -> new NodeNotFoundException(id));
     }
 
     /**
      * This method is used to delete an object by id.
-     * Throws {@link ModelNotFoundException} in case if such object isn't contained in database.
+     * Throws {@link NodeNotFoundException} in case if such object isn't contained in database.
      *
      * @param id object
      */
@@ -244,7 +241,7 @@ public class NodeServiceRealization implements NodeService {
         if (nodeRepository.existsById(id)) {
             nodeRepository.deleteById(id);
         } else {
-            throw new ModelNotFoundException("Node by id " + id + " is not found");
+            throw new NodeNotFoundException(id);
         }
     }
 

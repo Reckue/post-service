@@ -1,7 +1,7 @@
 package com.reckue.post.services.realizations;
 
-import com.reckue.post.exceptions.ModelAlreadyExistsException;
-import com.reckue.post.exceptions.ModelNotFoundException;
+import com.reckue.post.exceptions.models.post.PostAlreadyExistException;
+import com.reckue.post.exceptions.models.post.PostNotFoundException;
 import com.reckue.post.models.Post;
 import com.reckue.post.repositories.PostRepository;
 import com.reckue.post.services.NodeService;
@@ -30,7 +30,7 @@ public class PostServiceRealization implements PostService {
 
     /**
      * This method is used to create an object of class Post.
-     * Throws {@link ModelAlreadyExistsException} in case if such object already exists.
+     * Throws {@link PostAlreadyExistException} in case if such object already exists.
      *
      * @param post object of class Post
      * @return post object of class Post
@@ -45,13 +45,13 @@ public class PostServiceRealization implements PostService {
             }
             return postRepository.save(post);
         } else {
-            throw new ModelAlreadyExistsException("Post already exists");
+            throw new PostAlreadyExistException(post.getId());
         }
     }
 
     /**
      * This method is used to update data in an object of class Post.
-     * Throws {@link ModelNotFoundException} in case
+     * Throws {@link PostNotFoundException} in case
      * if such object isn't contained in database.
      * Throws {@link IllegalArgumentException} in case
      * if parameter equals null.
@@ -65,7 +65,7 @@ public class PostServiceRealization implements PostService {
             throw new IllegalArgumentException("The parameter is null");
         }
         if (!postRepository.existsById(post.getId())) {
-            throw new ModelNotFoundException("Post by id " + post.getId() + " is not found");
+            throw new PostNotFoundException(post.getId());
         }
         Post savedPost = Post.builder()
                 .id(post.getId())
@@ -239,7 +239,7 @@ public class PostServiceRealization implements PostService {
 
     /**
      * This method is used to get an object by id.
-     * Throws {@link ModelNotFoundException} in case if such object isn't contained in database.
+     * Throws {@link PostNotFoundException} in case if such object isn't contained in database.
      *
      * @param id object
      * @return post object of class Post
@@ -247,12 +247,12 @@ public class PostServiceRealization implements PostService {
     @Override
     public Post findById(String id) {
         return postRepository.findById(id).orElseThrow(
-                () -> new ModelNotFoundException("Post by id " + id + " is not found"));
+                () -> new PostNotFoundException(id));
     }
 
     /**
      * This method is used to delete an object by id.
-     * Throws {@link ModelNotFoundException} in case if such object isn't contained in database.
+     * Throws {@link PostNotFoundException} in case if such object isn't contained in database.
      *
      * @param id object
      */
@@ -261,7 +261,7 @@ public class PostServiceRealization implements PostService {
         if (postRepository.existsById(id)) {
             postRepository.deleteById(id);
         } else {
-            throw new ModelNotFoundException("Post by id " + id + " is not found");
+            throw new PostNotFoundException(id);
         }
     }
 

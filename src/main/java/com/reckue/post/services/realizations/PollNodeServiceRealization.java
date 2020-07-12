@@ -1,7 +1,7 @@
 package com.reckue.post.services.realizations;
 
-import com.reckue.post.exceptions.ModelAlreadyExistsException;
-import com.reckue.post.exceptions.ModelNotFoundException;
+import com.reckue.post.exceptions.models.nodes.pollnode.PollNodeAlreadyExistException;
+import com.reckue.post.exceptions.models.nodes.pollnode.PollNodeNotFoundException;
 import com.reckue.post.models.nodes.PollNode;
 import com.reckue.post.repositories.PollNodeRepository;
 import com.reckue.post.services.PollNodeService;
@@ -28,7 +28,7 @@ public class PollNodeServiceRealization implements PollNodeService {
 
     /**
      * This method is used to create an object of class PollNode.
-     * Throws {@link ModelAlreadyExistsException} in case if such object already exists.
+     * Throws {@link PollNodeAlreadyExistException} in case if such object already exists.
      *
      * @param node object of class PollNode
      * @return node object of class PollNode
@@ -39,13 +39,13 @@ public class PollNodeServiceRealization implements PollNodeService {
         if (!pollNodeRepository.existsById(node.getId())) {
             return pollNodeRepository.save(node);
         } else {
-            throw new ModelAlreadyExistsException("PollNode already exists");
+            throw new PollNodeAlreadyExistException(node.getId());
         }
     }
 
     /**
      * This method is used to update data in an object of class PollNode.
-     * Throws {@link ModelNotFoundException} in case
+     * Throws {@link PollNodeNotFoundException} in case
      * if such object isn't contained in database.
      * Throws {@link IllegalArgumentException} in case
      * if such parameter is null.
@@ -59,7 +59,7 @@ public class PollNodeServiceRealization implements PollNodeService {
             throw new IllegalArgumentException("The parameter is null");
         }
         if (!pollNodeRepository.existsById(node.getId())) {
-            throw new ModelNotFoundException("PollNode by id " + node.getId() + " is not found");
+            throw new PollNodeNotFoundException(node.getId());
         }
         PollNode savedPollNode = PollNode.builder()
                 .id(node.getId())
@@ -162,7 +162,7 @@ public class PollNodeServiceRealization implements PollNodeService {
 
     /**
      * This method is used to get an object by id.
-     * Throws {@link ModelNotFoundException} in case if such object isn't contained in database.
+     * Throws {@link PollNodeNotFoundException} in case if such object isn't contained in database.
      *
      * @param id object
      * @return object of class PollNode
@@ -170,12 +170,12 @@ public class PollNodeServiceRealization implements PollNodeService {
     @Override
     public PollNode findById(String id) {
         return pollNodeRepository.findById(id).orElseThrow(
-                () -> new ModelNotFoundException("PollNode by id " + id + " is not found"));
+                () -> new PollNodeNotFoundException(id));
     }
 
     /**
      * This method is used to delete an object by id.
-     * Throws {@link ModelNotFoundException} in case
+     * Throws {@link PollNodeNotFoundException} in case
      * if such object isn't contained in database.
      *
      * @param id object
@@ -185,7 +185,7 @@ public class PollNodeServiceRealization implements PollNodeService {
         if (pollNodeRepository.existsById(id)) {
             pollNodeRepository.deleteById(id);
         } else {
-            throw new ModelNotFoundException("PollNode by id " + id + " is not found");
+            throw new PollNodeNotFoundException(id);
         }
     }
 }

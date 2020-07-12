@@ -2,6 +2,7 @@ package com.reckue.post.transfers.errors;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 
@@ -12,20 +13,15 @@ import org.springframework.http.HttpStatus;
  */
 @Data
 @ApiModel
+@Builder
 public class ErrorResponse {
 
     @ApiModelProperty(notes = "Error message")
     private String message;
 
-    @ApiModelProperty(notes = "Error status")
-    private HttpStatus httpStatus;
+    @ApiModelProperty(notes = "Reckue error code")
+    private String code;
 
-    @ApiModelProperty(notes = "Error status code")
-    private Integer status;
-
-    public ErrorResponse(String message, HttpStatus httpStatus, Integer status) {
-        this.message = message;
-        this.httpStatus = httpStatus;
-        this.status = status;
-    }
+    @ApiModelProperty(notes = "Cause")
+    private String cause;
 }

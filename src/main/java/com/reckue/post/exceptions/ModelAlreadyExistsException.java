@@ -9,25 +9,5 @@ import lombok.Getter;
  * @author Daria Smirnova
  */
 @Getter
-public class ModelAlreadyExistsException extends RuntimeException {
-
-    private final String message;
-
-    /**
-     * Default constructor with default message value.
-     */
-    @SuppressWarnings("unused")
-    public ModelAlreadyExistsException() {
-        this.message = "Model Already Exists";
-    }
-
-    /**
-     * Constructor with message parameter for save information about exception.
-     *
-     * @param message information about exception
-     */
-    @SuppressWarnings("unused")
-    public ModelAlreadyExistsException(String message) {
-        this.message = message;
-    }
+public abstract class ModelAlreadyExistsException extends ReckueException {
 }

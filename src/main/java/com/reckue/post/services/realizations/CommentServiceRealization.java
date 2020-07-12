@@ -1,7 +1,8 @@
 package com.reckue.post.services.realizations;
 
-import com.reckue.post.exceptions.ModelAlreadyExistsException;
-import com.reckue.post.exceptions.ModelNotFoundException;
+
+import com.reckue.post.exceptions.models.comment.CommentAlreadyExistException;
+import com.reckue.post.exceptions.models.comment.CommentNotFoundException;
 import com.reckue.post.models.Comment;
 import com.reckue.post.repositories.CommentRepository;
 import com.reckue.post.services.CommentService;
@@ -28,7 +29,7 @@ public class CommentServiceRealization implements CommentService {
 
     /**
      * This method is used to create an object of class Comment.
-     * Throws {@link ModelAlreadyExistsException} in case if such object already exists.
+     * Throws {@link CommentAlreadyExistException} in case if such object already exists.
      *
      * @param comment object of class Comment
      * @return comment object of class Comment
@@ -39,13 +40,13 @@ public class CommentServiceRealization implements CommentService {
         if (!commentRepository.existsById(comment.getId())) {
             return commentRepository.save(comment);
         } else {
-            throw new ModelAlreadyExistsException("Comment already exists");
+            throw new CommentAlreadyExistException(comment.getId());
         }
     }
 
     /**
      * This method is used to update data in an object of class Comment.
-     * Throws {@link ModelNotFoundException} in case
+     * Throws {@link CommentNotFoundException} in case
      * if such object isn't contained in database.
      * Throws {@link IllegalArgumentException} in case
      * if such parameter is null.
@@ -59,7 +60,7 @@ public class CommentServiceRealization implements CommentService {
             throw new IllegalArgumentException("The parameter is null");
         }
         if (!commentRepository.existsById(comment.getId())) {
-            throw new ModelNotFoundException("Comment by id " + comment.getId() + " is not found");
+            throw new CommentNotFoundException(comment.getId());
         }
         Comment savedComment = Comment.builder()
                 .id(comment.getId())
@@ -204,7 +205,7 @@ public class CommentServiceRealization implements CommentService {
 
     /**
      * This method is used to get an object by id.
-     * Throws {@link ModelNotFoundException} in case if such object isn't contained in database.
+     * Throws {@link CommentNotFoundException} in case if such object isn't contained in database.
      *
      * @param id object
      * @return object of class Comment
@@ -212,12 +213,13 @@ public class CommentServiceRealization implements CommentService {
     @Override
     public Comment findById(String id) {
         return commentRepository.findById(id).orElseThrow(
-                () -> new ModelNotFoundException("Comment by id " + id + " is not found"));
+//                () -> new ModelNotFoundException("Comment by id " + id + " is not found"));
+                () -> new CommentNotFoundException(id));
     }
 
     /**
      * This method is used to delete an object by id.
-     * Throws {@link ModelNotFoundException} in case
+     * Throws {@link CommentNotFoundException} in case
      * if such object isn't contained in database.
      *
      * @param id object
@@ -227,7 +229,7 @@ public class CommentServiceRealization implements CommentService {
         if (commentRepository.existsById(id)) {
             commentRepository.deleteById(id);
         } else {
-            throw new ModelNotFoundException("Comment by id " + id + " is not found");
+            throw new CommentNotFoundException(id);
         }
     }
 }

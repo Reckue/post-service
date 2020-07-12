@@ -1,7 +1,8 @@
 package com.reckue.post.services.realizations;
 
-import com.reckue.post.exceptions.ModelAlreadyExistsException;
-import com.reckue.post.exceptions.ModelNotFoundException;
+import com.reckue.post.exceptions.models.post.PostNotFoundException;
+import com.reckue.post.exceptions.models.rating.RatingAlreadyExistException;
+import com.reckue.post.exceptions.models.rating.RatingNotFoundException;
 import com.reckue.post.models.Post;
 import com.reckue.post.models.Rating;
 import com.reckue.post.repositories.PostRepository;
@@ -50,23 +51,25 @@ public class RatingServiceRealization implements RatingService {
 
     /**
      * This method is used to check rating validation.
-     * Throws {@link ModelAlreadyExistsException} in case if such object already exists.
-     * Throws {@link ModelNotFoundException} in case if such object isn't contained in database.
+     * Throws {@link RatingAlreadyExistException} in case if such object already exists.
+     * Throws {@link PostNotFoundException} in case if such object isn't contained in database.
      *
      * @param rating object of class Rating
      */
     public void validateCreatingRating(Rating rating) {
         if (ratingRepository.existsById(rating.getId())) {
-            throw new ModelAlreadyExistsException("Rating already exists");
+            throw new RatingAlreadyExistException(rating.getId());
         }
         if (!postRepository.existsById(rating.getPostId())) {
-            throw new ModelNotFoundException("Post identifier '" + rating.getPostId() + "' is not found");
+            // TODO...
+//            throw new ModelNotFoundException("Post identifier '" + rating.getPostId() + "' is not found");
+            throw new PostNotFoundException(rating.getPostId());
         }
     }
 
     /**
      * This method is used to update data in an object of class Rating.
-     * Throws {@link ModelNotFoundException} in case
+     * Throws {@link RatingNotFoundException} in case
      * if such object isn't contained in database.
      * Throws {@link IllegalArgumentException} in case
      * if parameter equals null.
@@ -81,7 +84,7 @@ public class RatingServiceRealization implements RatingService {
             throw new IllegalArgumentException("The parameter is null");
         }
         Rating existRating = ratingRepository.findById(rating.getId())
-                .orElseThrow(() -> new ModelNotFoundException("Rating by id " + rating.getId() + " is not found"));
+                .orElseThrow(() -> new RatingNotFoundException(rating.getId()));
 
         Rating savedRating = Rating.builder()
                 .id(existRating.getId())
@@ -185,7 +188,7 @@ public class RatingServiceRealization implements RatingService {
 
     /**
      * This method is used to delete an object by id.
-     * Throws {@link ModelNotFoundException} in case if such object isn't contained in database.
+     * Throws {@link RatingNotFoundException} in case if such object isn't contained in database.
      *
      * @param id object
      */
@@ -194,13 +197,13 @@ public class RatingServiceRealization implements RatingService {
         if (ratingRepository.existsById(id)) {
             ratingRepository.deleteById(id);
         } else {
-            throw new ModelNotFoundException("Rating by id " + id + " is not found");
+            throw new RatingNotFoundException(id);
         }
     }
 
     /**
      * This method is used to get the number of ratings to a single post.
-     * Throws {@link ModelNotFoundException} in case if such post id isn't contained in database.
+     * Throws {@link PostNotFoundException} in case if such post id isn't contained in database.
      *
      * @param postId the post identifier
      * @return quantity of ratings to a post
@@ -208,7 +211,9 @@ public class RatingServiceRealization implements RatingService {
     @Override
     public int getRatingsCountByPostId(String postId) {
         if (!ratingRepository.existsByPostId(postId)) {
-            throw new ModelNotFoundException("Post identifier '" + postId + "' is not found");
+            // TODO...
+//            throw new ModelNotFoundException("Post identifier '" + postId + "' is not found");
+            throw new PostNotFoundException(postId);
         }
         List<Rating> ratings = ratingRepository.findByPostId(postId);
         return ratings.size();
@@ -216,7 +221,7 @@ public class RatingServiceRealization implements RatingService {
 
     /**
      * This method is used to get all posts with ratings by user id.
-     * Throws {@link ModelNotFoundException} in case if such user id isn't contained in database.
+     * Throws {@link PostNotFoundException} in case if such user id isn't contained in database.
      *
      * @param userId the user identifier
      * @param limit  quantity of objects
@@ -226,7 +231,9 @@ public class RatingServiceRealization implements RatingService {
     @Override
     public List<Post> findAllPostsWithRatingsByUserId(String userId, Integer limit, Integer offset) {
         if (!ratingRepository.existsByUserId(userId)) {
-            throw new ModelNotFoundException("User identifier '" + userId + "' is not found");
+            throw new RuntimeException("User identifier '" + userId + "' is not found");
+            // TODO....
+//            throw new ModelNotFoundException("User identifier '" + userId + "' is not found");
         }
         List<Rating> ratings = ratingRepository.findByUserId(userId);
         if (limit == null) limit = 10;
@@ -238,7 +245,7 @@ public class RatingServiceRealization implements RatingService {
         List<Post> posts = new ArrayList<>();
         for (Rating rating : ratings) {
             Post post = postRepository.findById(rating.getPostId())
-                    .orElseThrow(ModelNotFoundException::new);
+                    .orElseThrow(PostNotFoundException::new);
             posts.add(post);
         }
 
