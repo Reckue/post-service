@@ -1,7 +1,6 @@
 package com.reckue.post.services.realizations;
 
 import com.reckue.post.PostServiceApplicationTests;
-import com.reckue.post.exceptions.ModelAlreadyExistsException;
 import com.reckue.post.exceptions.ModelNotFoundException;
 import com.reckue.post.models.Comment;
 import com.reckue.post.repositories.CommentRepository;
@@ -12,10 +11,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -45,7 +43,7 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
                 .text("front")
                 .userId("vlad")
                 .postId("007")
-                .published(404L)
+                .createdDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(404L), TimeZone.getDefault().toZoneId()))
                 .build();
 
         comment2 = Comment.builder()
@@ -53,7 +51,7 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
                 .text("test")
                 .userId("ivery")
                 .postId("911")
-                .published(500L)
+                .createdDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(500L), TimeZone.getDefault().toZoneId()))
                 .build();
 
         comment3 = Comment.builder().
@@ -61,7 +59,7 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
                 text("web").
                 userId("sherzod").
                 postId("666").
-                published(200L).
+                createdDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(200L), TimeZone.getDefault().toZoneId())).
                 build();
     }
 
@@ -70,14 +68,6 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
         when(commentRepository.save(comment)).thenReturn(comment);
 
         assertEquals(comment, commentService.create(comment));
-    }
-
-    @Test
-    public void createIfCommentAlreadyExist() {
-        doReturn(true).when(commentRepository).existsById(Mockito.anyString());
-
-        Exception exception = assertThrows(ModelAlreadyExistsException.class, () -> commentService.create(comment));
-        assertEquals("Comment already exists", exception.getMessage());
     }
 
     @Test
@@ -181,10 +171,10 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
         when(commentRepository.findAll()).thenReturn(comments);
 
         List<Comment> expected = comments.stream()
-                .sorted(Comparator.comparing(Comment::getPublished))
+                .sorted(Comparator.comparing(Comment::getCreatedDate))
                 .collect(Collectors.toList());
 
-        assertEquals(expected, commentService.findAllAndSortByPublished());
+        assertEquals(expected, commentService.findAllAndSortByCreatedDate());
     }
 
     @Test
@@ -209,7 +199,7 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
                 .collect(Collectors.toList());
 
         List<Comment> sortedByPublishedExpected = comments.stream()
-                .sorted(Comparator.comparing(Comment::getPublished))
+                .sorted(Comparator.comparing(Comment::getCreatedDate))
                 .collect(Collectors.toList());
 
         assertEquals(sortedByIdExpected, commentService.findAllBySortType("id"));
@@ -241,7 +231,7 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
                 .collect(Collectors.toList());
 
         List<Comment> sortByPublishedAndDescExpected = comments.stream()
-                .sorted(Comparator.comparing(Comment::getPublished).reversed())
+                .sorted(Comparator.comparing(Comment::getCreatedDate).reversed())
                 .collect(Collectors.toList());
 
         assertEquals(sortByIdAndDescExpected, commentService.findAllByTypeAndDesc("id", true));
@@ -280,7 +270,7 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
                 .collect(Collectors.toList());
 
         List<Comment> test5 = comments.stream()
-                .sorted(Comparator.comparing(Comment::getPublished).reversed())
+                .sorted(Comparator.comparing(Comment::getCreatedDate).reversed())
                 .limit(2)
                 .skip(1)
                 .collect(Collectors.toList());

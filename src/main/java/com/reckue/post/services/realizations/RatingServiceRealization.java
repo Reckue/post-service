@@ -7,12 +7,14 @@ import com.reckue.post.models.Rating;
 import com.reckue.post.repositories.PostRepository;
 import com.reckue.post.repositories.RatingRepository;
 import com.reckue.post.services.RatingService;
-import com.reckue.post.utils.Generator;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -34,15 +36,11 @@ public class RatingServiceRealization implements RatingService {
      */
     @Override
     public Rating create(Rating rating) {
-        rating.setId(Generator.id());
         validateCreatingRating(rating);
-        Date date = new Date();
-        rating.setPublished(date.getTime());
 
         if (ratingRepository.existsByUserIdAndPostId(rating.getUserId(), rating.getPostId())) {
             Rating existRating = ratingRepository.findByUserIdAndPostId(rating.getUserId(), rating.getPostId());
             ratingRepository.deleteById(existRating.getId());
-            deleteById(rating.getId());
         }
 
         return ratingRepository.save(rating);
@@ -56,9 +54,6 @@ public class RatingServiceRealization implements RatingService {
      * @param rating object of class Rating
      */
     public void validateCreatingRating(Rating rating) {
-        if (ratingRepository.existsById(rating.getId())) {
-            throw new ModelAlreadyExistsException("Rating already exists");
-        }
         if (!postRepository.existsById(rating.getPostId())) {
             throw new ModelNotFoundException("Post identifier '" + rating.getPostId() + "' is not found");
         }
@@ -87,7 +82,6 @@ public class RatingServiceRealization implements RatingService {
                 .id(existRating.getId())
                 .userId(existRating.getUserId())
                 .postId(existRating.getPostId())
-                .published(existRating.getPublished())
                 .build();
         return ratingRepository.save(savedRating);
     }
@@ -154,7 +148,7 @@ public class RatingServiceRealization implements RatingService {
 
         switch (sort) {
             case "published":
-                return findAllAndSortByPublished();
+                return findAllAndSortByCreatedDate();
             case "id":
                 return findAllAndSortById();
         }
@@ -177,9 +171,9 @@ public class RatingServiceRealization implements RatingService {
      *
      * @return list of objects of class Rating sorted by published
      */
-    public List<Rating> findAllAndSortByPublished() {
+    public List<Rating> findAllAndSortByCreatedDate() {
         return findAll().stream()
-                .sorted(Comparator.comparing(Rating::getPublished))
+                .sorted(Comparator.comparing(Rating::getCreatedDate))
                 .collect(Collectors.toList());
     }
 

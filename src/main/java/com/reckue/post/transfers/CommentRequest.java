@@ -26,8 +26,6 @@ public class CommentRequest {
     @NotNull
     @ApiModelProperty(notes = "Post id")
     private String postId;
-    @ApiModelProperty(notes = "Publication date")
-    private long published;
     @ApiModelProperty(notes = "List of comments in the current comment")
     private List<Comment> comments;
 }

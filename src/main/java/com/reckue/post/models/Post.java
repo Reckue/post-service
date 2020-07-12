@@ -1,15 +1,16 @@
 package com.reckue.post.models;
 
-import com.reckue.post.models.nodes.Parent;
 import com.reckue.post.models.types.StatusType;
-import com.reckue.post.utils.NodeContent;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -32,7 +33,10 @@ public class Post {
     private String source;
     private String userId;
     private List<Tag> tags;
-    private long published;
-    private long changed;
     private StatusType status;
+
+    @LastModifiedDate
+    private LocalDateTime modificationDate;
+    @CreatedDate
+    private LocalDateTime createdDate;
 }

@@ -1,10 +1,7 @@
 package com.reckue.post.transfers;
 
-import com.reckue.post.models.Node;
 import com.reckue.post.models.Tag;
 import com.reckue.post.models.types.StatusType;
-import com.reckue.post.transfers.nodes.NodeParentRequest;
-import com.reckue.post.utils.NodeContent;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
@@ -40,12 +37,6 @@ public class PostRequest {
 
     @ApiModelProperty(notes = "List of keywords used in the post")
     private List<Tag> tags;
-
-    @ApiModelProperty(notes = "Publication date")
-    private long published;
-
-    @ApiModelProperty(notes = "Date of changes")
-    private long changed;
 
     @NotNull
     @ApiModelProperty(notes = "Post activity status")
