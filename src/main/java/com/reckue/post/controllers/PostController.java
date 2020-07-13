@@ -22,7 +22,7 @@ import static com.reckue.post.utils.converters.PostConverter.convert;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/posts")
+@RequestMapping(value = "/api/posts")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PostController implements PostApi {
 

@@ -22,7 +22,7 @@ import static com.reckue.post.utils.converters.CommentConverter.convert;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/comments")
+@RequestMapping(value = "/api/comments")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class CommentController implements CommentApi {
 

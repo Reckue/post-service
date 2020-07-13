@@ -82,7 +82,7 @@
 //                .collect(Collectors.toList());
 //
 //        List<NodeResponse<?>> actual = objectMapper
-//                .readValue(this.mockMvc.perform(get("/nodes?desc=true&limit=2&offset=0&sort=id"))
+//                .readValue(this.mockMvc.perform(get("/api/nodes?desc=true&limit=2&offset=0&sort=id"))
 //                .andDo(print())
 //                .andExpect(status().isOk())
 //                .andReturn()
@@ -100,7 +100,7 @@
 //                .collect(Collectors.toList());
 //
 //        List<NodeResponse<?>> actual = objectMapper
-//                .readValue(this.mockMvc.perform(get("/nodes?desc=false&limit=3&offset=0&sort=id"))
+//                .readValue(this.mockMvc.perform(get("/api/nodes?desc=false&limit=3&offset=0&sort=id"))
 //                .andDo(print()).andExpect(status()
 //                        .isOk())
 //                .andReturn()
@@ -119,7 +119,7 @@
 //                .collect(Collectors.toList());
 //
 //        List<NodeResponse<?>> actual = objectMapper
-//                .readValue(this.mockMvc.perform(get("/nodes?desc=false&limit=2&offset=0&sort=username"))
+//                .readValue(this.mockMvc.perform(get("/api/nodes?desc=false&limit=2&offset=0&sort=username"))
 //                .andDo(print())
 //                .andExpect(status().isOk())
 //                .andReturn()
@@ -138,7 +138,7 @@
 //                .collect(Collectors.toList());
 //
 //        List<NodeResponse<?>> actual = objectMapper
-//                .readValue(this.mockMvc.perform(get("/nodes?desc=true&limit=2&offset=0&sort=username"))
+//                .readValue(this.mockMvc.perform(get("/api/nodes?desc=true&limit=2&offset=0&sort=username"))
 //                .andDo(print())
 //                .andExpect(status().isOk())
 //                .andReturn()
@@ -152,7 +152,7 @@
 //    public void findById() throws Exception {
 //        NodeResponse<?> expected = NodeConverter.convert(nodeRepository.findAll().get(0));
 //
-//        NodeResponse<?> actual = objectMapper.readValue(this.mockMvc.perform(get("/nodes/" + expected.getId()))
+//        NodeResponse<?> actual = objectMapper.readValue(this.mockMvc.perform(get("/api/nodes/" + expected.getId()))
 //                .andDo(print())
 //                .andExpect(status().isOk())
 //                .andReturn()
@@ -176,7 +176,7 @@
 //                .status(StatusType.ACTIVE)
 //                .build());
 //
-//        MockHttpServletRequestBuilder builder = put("/nodes/" + nodeRepository.findAll().get(0).getId())
+//        MockHttpServletRequestBuilder builder = put("/api/nodes/" + nodeRepository.findAll().get(0).getId())
 //                .contentType(MediaType.APPLICATION_JSON_VALUE)
 //                .accept(MediaType.APPLICATION_JSON)
 //                .characterEncoding("UTF-8")
@@ -199,7 +199,7 @@
 //                .status(StatusType.ACTIVE)
 //                .build());
 //
-//        MockHttpServletRequestBuilder builder = post("/nodes")
+//        MockHttpServletRequestBuilder builder = post("/api/nodes")
 //                .contentType(MediaType.APPLICATION_JSON_VALUE)
 //                .accept(MediaType.APPLICATION_JSON)
 //                .characterEncoding("UTF-8")
@@ -233,7 +233,7 @@
 //                .status(StatusType.ACTIVE)
 //                .build());
 //
-//        MockHttpServletRequestBuilder builder = post("/nodes")
+//        MockHttpServletRequestBuilder builder = post("/api/nodes")
 //                .contentType(MediaType.APPLICATION_JSON_VALUE)
 //                .accept(MediaType.APPLICATION_JSON)
 //                .characterEncoding("UTF-8")
@@ -262,7 +262,7 @@
 //    @Test
 //    void deleteById() throws Exception {
 //        String id = nodeRepository.findAll().get(0).getId();
-//        this.mockMvc.perform(delete("/nodes/" + id))
+//        this.mockMvc.perform(delete("/api/nodes/" + id))
 //                .andDo(print())
 //                .andExpect(status().isOk());
 //

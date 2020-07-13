@@ -25,7 +25,7 @@ import static com.reckue.post.utils.converters.RatingConverter.convert;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/rating")
+@RequestMapping(value = "/api/rating")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class RatingController implements RatingApi {
     private final RatingService ratingService;

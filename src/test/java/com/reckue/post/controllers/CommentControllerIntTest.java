@@ -87,7 +87,7 @@ public class CommentControllerIntTest extends PostServiceApplicationTests {
                 .collect(Collectors.toList());
 
         List<CommentResponse> actual = objectMapper
-                .readValue(this.mockMvc.perform(get("/comments?desc=false&limit=3&offset=0&sort=id"))
+                .readValue(this.mockMvc.perform(get("/api/comments?desc=false&limit=3&offset=0&sort=id"))
                         .andDo(print()).andExpect(status()
                                 .isOk())
                         .andReturn()
@@ -106,7 +106,7 @@ public class CommentControllerIntTest extends PostServiceApplicationTests {
                 .collect(Collectors.toList());
 
         List<CommentResponse> actual = objectMapper
-                .readValue(this.mockMvc.perform(get("/comments?desc=true&limit=2&offset=0&sort=id"))
+                .readValue(this.mockMvc.perform(get("/api/comments?desc=true&limit=2&offset=0&sort=id"))
                         .andDo(print())
                         .andExpect(status().isOk())
                         .andReturn()
@@ -125,7 +125,7 @@ public class CommentControllerIntTest extends PostServiceApplicationTests {
                 .collect(Collectors.toList());
 
         List<CommentResponse> actual = objectMapper
-                .readValue(this.mockMvc.perform(get("/comments?desc=false&limit=2&offset=0&sort=text"))
+                .readValue(this.mockMvc.perform(get("/api/comments?desc=false&limit=2&offset=0&sort=text"))
                         .andDo(print())
                         .andExpect(status().isOk())
                         .andReturn()
@@ -144,7 +144,7 @@ public class CommentControllerIntTest extends PostServiceApplicationTests {
                 .collect(Collectors.toList());
 
         List<CommentResponse> actual = objectMapper
-                .readValue(this.mockMvc.perform(get("/comments?desc=true&limit=2&offset=0&sort=text"))
+                .readValue(this.mockMvc.perform(get("/api/comments?desc=true&limit=2&offset=0&sort=text"))
                         .andDo(print())
                         .andExpect(status().isOk())
                         .andReturn()
@@ -163,7 +163,7 @@ public class CommentControllerIntTest extends PostServiceApplicationTests {
                 .collect(Collectors.toList());
 
         List<CommentResponse> actual = objectMapper
-                .readValue(this.mockMvc.perform(get("/comments?desc=false&limit=2&offset=0&sort=userId"))
+                .readValue(this.mockMvc.perform(get("/api/comments?desc=false&limit=2&offset=0&sort=userId"))
                         .andDo(print())
                         .andExpect(status().isOk())
                         .andReturn()
@@ -182,7 +182,7 @@ public class CommentControllerIntTest extends PostServiceApplicationTests {
                 .collect(Collectors.toList());
 
         List<CommentResponse> actual = objectMapper
-                .readValue(this.mockMvc.perform(get("/comments?desc=true&limit=2&offset=0&sort=userId"))
+                .readValue(this.mockMvc.perform(get("/api/comments?desc=true&limit=2&offset=0&sort=userId"))
                         .andDo(print())
                         .andExpect(status().isOk())
                         .andReturn()
@@ -201,7 +201,7 @@ public class CommentControllerIntTest extends PostServiceApplicationTests {
                 .collect(Collectors.toList());
 
         List<CommentResponse> actual = objectMapper
-                .readValue(this.mockMvc.perform(get("/comments?desc=false&limit=2&offset=0&sort=postId"))
+                .readValue(this.mockMvc.perform(get("/api/comments?desc=false&limit=2&offset=0&sort=postId"))
                         .andDo(print())
                         .andExpect(status().isOk())
                         .andReturn()
@@ -220,7 +220,7 @@ public class CommentControllerIntTest extends PostServiceApplicationTests {
                 .collect(Collectors.toList());
 
         List<CommentResponse> actual = objectMapper
-                .readValue(this.mockMvc.perform(get("/comments?desc=true&limit=2&offset=0&sort=postId"))
+                .readValue(this.mockMvc.perform(get("/api/comments?desc=true&limit=2&offset=0&sort=postId"))
                         .andDo(print())
                         .andExpect(status().isOk())
                         .andReturn()
@@ -239,7 +239,7 @@ public class CommentControllerIntTest extends PostServiceApplicationTests {
                 .collect(Collectors.toList());
 
         List<CommentResponse> actual = objectMapper
-                .readValue(this.mockMvc.perform(get("/comments?desc=false&limit=2&offset=0&sort=published"))
+                .readValue(this.mockMvc.perform(get("/api/comments?desc=false&limit=2&offset=0&sort=published"))
                         .andDo(print())
                         .andExpect(status().isOk())
                         .andReturn()
@@ -258,7 +258,7 @@ public class CommentControllerIntTest extends PostServiceApplicationTests {
                 .collect(Collectors.toList());
 
         List<CommentResponse> actual = objectMapper
-                .readValue(this.mockMvc.perform(get("/comments?desc=true&limit=2&offset=0&sort=published"))
+                .readValue(this.mockMvc.perform(get("/api/comments?desc=true&limit=2&offset=0&sort=published"))
                         .andDo(print())
                         .andExpect(status().isOk())
                         .andReturn()
@@ -272,7 +272,7 @@ public class CommentControllerIntTest extends PostServiceApplicationTests {
     public void findById() throws Exception {
         CommentResponse expected = CommentConverter.convert(commentRepository.findAll().get(0));
 
-        CommentResponse actual = objectMapper.readValue(this.mockMvc.perform(get("/comments/" + expected.getId()))
+        CommentResponse actual = objectMapper.readValue(this.mockMvc.perform(get("/api/comments/" + expected.getId()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn()
@@ -298,7 +298,7 @@ public class CommentControllerIntTest extends PostServiceApplicationTests {
                 .published(1491379422L)
                 .build());
 
-        MockHttpServletRequestBuilder builder = put("/comments/" + commentRepository.findAll().get(0).getId())
+        MockHttpServletRequestBuilder builder = put("/api/comments/" + commentRepository.findAll().get(0).getId())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
@@ -323,7 +323,7 @@ public class CommentControllerIntTest extends PostServiceApplicationTests {
                 .comments(null)
                 .build());
 
-        MockHttpServletRequestBuilder builder = post("/comments")
+        MockHttpServletRequestBuilder builder = post("/api/comments")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
@@ -350,7 +350,7 @@ public class CommentControllerIntTest extends PostServiceApplicationTests {
     @Test
     void deleteById() throws Exception {
         String id = commentRepository.findAll().get(0).getId();
-        this.mockMvc.perform(delete("/comments/" + id))
+        this.mockMvc.perform(delete("/api/comments/" + id))
                 .andDo(print())
                 .andExpect(status().isOk());
 

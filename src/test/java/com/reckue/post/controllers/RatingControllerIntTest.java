@@ -90,7 +90,7 @@ public class RatingControllerIntTest extends PostServiceApplicationTests {
                 .collect(Collectors.toList());
 
         List<RatingResponse> actual = objectMapper
-                .readValue(this.mockMvc.perform(get("/rating?desc=false&limit=3&offset=0&sort=id"))
+                .readValue(this.mockMvc.perform(get("/api/rating?desc=false&limit=3&offset=0&sort=id"))
                         .andDo(print()).andExpect(status()
                                 .isOk())
                         .andReturn()
@@ -109,7 +109,7 @@ public class RatingControllerIntTest extends PostServiceApplicationTests {
                 .collect(Collectors.toList());
 
         List<RatingResponse> actual = objectMapper
-                .readValue(this.mockMvc.perform(get("/rating?desc=true&limit=2&offset=0&sort=id"))
+                .readValue(this.mockMvc.perform(get("/api/rating?desc=true&limit=2&offset=0&sort=id"))
                         .andDo(print())
                         .andExpect(status().isOk())
                         .andReturn()
@@ -128,7 +128,7 @@ public class RatingControllerIntTest extends PostServiceApplicationTests {
                 .collect(Collectors.toList());
 
         List<RatingResponse> actual = objectMapper
-                .readValue(this.mockMvc.perform(get("/rating?desc=false&limit=2&offset=0&sort=published"))
+                .readValue(this.mockMvc.perform(get("/api/rating?desc=false&limit=2&offset=0&sort=published"))
                         .andDo(print())
                         .andExpect(status().isOk())
                         .andReturn()
@@ -147,7 +147,7 @@ public class RatingControllerIntTest extends PostServiceApplicationTests {
                 .collect(Collectors.toList());
 
         List<RatingResponse> actual = objectMapper
-                .readValue(this.mockMvc.perform(get("/rating?desc=true&limit=2&offset=0&sort=published"))
+                .readValue(this.mockMvc.perform(get("/api/rating?desc=true&limit=2&offset=0&sort=published"))
                         .andDo(print())
                         .andExpect(status().isOk())
                         .andReturn()
@@ -171,7 +171,7 @@ public class RatingControllerIntTest extends PostServiceApplicationTests {
                 .postId(ratingRepository.findAll().get(0).getPostId())
                 .build());
 
-        MockHttpServletRequestBuilder builder = put("/rating/" + ratingRepository.findAll().get(0).getId())
+        MockHttpServletRequestBuilder builder = put("/api/rating/" + ratingRepository.findAll().get(0).getId())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
@@ -197,7 +197,7 @@ public class RatingControllerIntTest extends PostServiceApplicationTests {
                 .postId(post.getId())
                 .build());
 
-        MockHttpServletRequestBuilder builder = post("/rating")
+        MockHttpServletRequestBuilder builder = post("/api/rating")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
@@ -227,7 +227,7 @@ public class RatingControllerIntTest extends PostServiceApplicationTests {
                 .postId("2020")
                 .build());
 
-        MockHttpServletRequestBuilder builder = post("/rating")
+        MockHttpServletRequestBuilder builder = post("/api/rating")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
@@ -248,7 +248,7 @@ public class RatingControllerIntTest extends PostServiceApplicationTests {
     @Test
     void deleteById() throws Exception {
         String id = ratingRepository.findAll().get(0).getId();
-        this.mockMvc.perform(delete("/rating/" + id))
+        this.mockMvc.perform(delete("/api/rating/" + id))
                 .andDo(print())
                 .andExpect(status().isOk());
 

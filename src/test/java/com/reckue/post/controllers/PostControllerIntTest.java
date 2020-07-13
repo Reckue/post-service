@@ -111,7 +111,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
         PostResponse expected = PostConverter.convert(postRepository.findAll().get(0));
 
         PostResponse actual = objectMapper.readValue(this.mockMvc
-                .perform(get("/posts/" + expected.getId()))
+                .perform(get("/api/posts/" + expected.getId()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn()
@@ -129,7 +129,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .collect(Collectors.toList());
 
         List<PostResponse> actual = objectMapper.readValue(this.mockMvc
-                .perform(get("/posts?desc=true&limit=2&offset=0&sort=id"))
+                .perform(get("/api/posts?desc=true&limit=2&offset=0&sort=id"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn()
@@ -148,7 +148,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .collect(Collectors.toList());
 
         List<PostResponse> actual = objectMapper.readValue(this.mockMvc
-                .perform(get("/posts?desc=false&limit=3&offset=0&sort=title"))
+                .perform(get("/api/posts?desc=false&limit=3&offset=0&sort=title"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn()
@@ -167,7 +167,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .collect(Collectors.toList());
 
         List<PostResponse> actual = objectMapper.readValue(this.mockMvc
-                .perform(get("/posts?desc=true&limit=3&offset=0&sort=source"))
+                .perform(get("/api/posts?desc=true&limit=3&offset=0&sort=source"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn()
@@ -186,7 +186,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .collect(Collectors.toList());
 
         List<PostResponse> actual = objectMapper.readValue(this.mockMvc
-                .perform(get("/posts?desc=false&limit=2&offset=0&sort=published"))
+                .perform(get("/api/posts?desc=false&limit=2&offset=0&sort=published"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn()
@@ -206,7 +206,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .collect(Collectors.toList());
 
         List<PostResponse> actual = objectMapper.readValue(this.mockMvc
-                .perform(get("/posts?desc=true&limit=2&offset=1&sort=changed"))
+                .perform(get("/api/posts?desc=true&limit=2&offset=1&sort=changed"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn()
@@ -226,7 +226,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .collect(Collectors.toList());
 
         List<PostResponse> actual = objectMapper.readValue(this.mockMvc
-                .perform(get("/posts?desc=false&limit=2&offset=1&sort=status"))
+                .perform(get("/api/posts?desc=false&limit=2&offset=1&sort=status"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn()
@@ -250,7 +250,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .build();
 
         PostResponse actual = objectMapper.readValue(this.mockMvc
-                .perform(MockMvcRequestBuilders.post("/posts")
+                .perform(MockMvcRequestBuilders.post("/api/posts")
                         .content(objectMapper.writeValueAsString(postRequest))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -287,7 +287,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .build();
 
         PostResponse actual = objectMapper.readValue(this.mockMvc
-                .perform(MockMvcRequestBuilders.post("/posts")
+                .perform(MockMvcRequestBuilders.post("/api/posts")
                         .content(objectMapper.writeValueAsString(postRequest))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -323,7 +323,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .build();
 
         PostResponse actual = objectMapper.readValue(this.mockMvc
-                .perform(MockMvcRequestBuilders.post("/posts")
+                .perform(MockMvcRequestBuilders.post("/api/posts")
                         .content(objectMapper.writeValueAsString(postRequest))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -360,7 +360,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .build();
 
         PostResponse actual = objectMapper.readValue(this.mockMvc
-                .perform(MockMvcRequestBuilders.post("/posts")
+                .perform(MockMvcRequestBuilders.post("/api/posts")
                         .content(objectMapper.writeValueAsString(postRequest))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -396,7 +396,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .build();
 
         PostResponse actual = objectMapper.readValue(this.mockMvc
-                .perform(MockMvcRequestBuilders.post("/posts")
+                .perform(MockMvcRequestBuilders.post("/api/posts")
                         .content(objectMapper.writeValueAsString(postRequest))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -432,7 +432,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .build();
 
         PostResponse actual = objectMapper.readValue(this.mockMvc
-                .perform(MockMvcRequestBuilders.post("/posts")
+                .perform(MockMvcRequestBuilders.post("/api/posts")
                         .content(objectMapper.writeValueAsString(postRequest))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -468,7 +468,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .build();
 
         PostResponse actual = objectMapper.readValue(this.mockMvc
-                .perform(MockMvcRequestBuilders.post("/posts")
+                .perform(MockMvcRequestBuilders.post("/api/posts")
                         .content(objectMapper.writeValueAsString(postRequest))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -504,7 +504,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .build();
 
         PostResponse actual = objectMapper.readValue(this.mockMvc
-                .perform(MockMvcRequestBuilders.post("/posts")
+                .perform(MockMvcRequestBuilders.post("/api/posts")
                         .content(objectMapper.writeValueAsString(postRequest))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -533,7 +533,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .build();
 
         PostResponse actual = objectMapper.readValue(this.mockMvc
-                .perform(MockMvcRequestBuilders.put("/posts/2")
+                .perform(MockMvcRequestBuilders.put("/api/posts/2")
                         .content(objectMapper.writeValueAsString(postRequest))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -551,7 +551,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
     @Test
     public void deleteByIdTest() throws Exception {
         int size = postRepository.findAll().size();
-        this.mockMvc.perform(delete("/posts/" + postRepository.findAll().get(0).getId()))
+        this.mockMvc.perform(delete("/api/posts/" + postRepository.findAll().get(0).getId()))
                 .andDo(print())
                 .andExpect(status().isOk());
         Assertions.assertEquals(size - 1, postRepository.findAll().size());
