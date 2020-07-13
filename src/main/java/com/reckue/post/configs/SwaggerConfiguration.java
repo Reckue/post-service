@@ -51,7 +51,7 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
                 .groupName("API for post service")
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.reckue.post.controllers"))
-                .paths(PathSelectors.regex( "/api/.*"))
+                .paths(PathSelectors.regex( "/[^d].*"))
                 .build()
                 .useDefaultResponseMessages(false)
                 .additionalModels(typeResolver.resolve(ErrorResponse.class))

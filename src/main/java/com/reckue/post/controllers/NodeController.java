@@ -24,7 +24,7 @@ import static com.reckue.post.utils.converters.NodeConverter.convert;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/api/nodes")
+@RequestMapping(value = "/nodes")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class NodeController implements NodeApi {
 

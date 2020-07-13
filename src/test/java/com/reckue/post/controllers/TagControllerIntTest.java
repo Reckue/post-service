@@ -79,7 +79,7 @@ public class TagControllerIntTest extends PostServiceApplicationTests {
                 .collect(Collectors.toList());
 
         List<TagResponse> actual = objectMapper
-                .readValue(this.mockMvc.perform(get("/api/tags?desc=true&limit=2&offset=0&sort=id"))
+                .readValue(this.mockMvc.perform(get("/tags?desc=true&limit=2&offset=0&sort=id"))
                         .andDo(print())
                         .andExpect(status().isOk())
                         .andReturn()
@@ -97,7 +97,7 @@ public class TagControllerIntTest extends PostServiceApplicationTests {
                 .collect(Collectors.toList());
 
         List<TagResponse> actual = objectMapper
-                .readValue(this.mockMvc.perform(get("/api/tags?desc=false&limit=3&offset=0&sort=id"))
+                .readValue(this.mockMvc.perform(get("/tags?desc=false&limit=3&offset=0&sort=id"))
                         .andDo(print()).andExpect(status()
                                 .isOk())
                         .andReturn()
@@ -116,7 +116,7 @@ public class TagControllerIntTest extends PostServiceApplicationTests {
                 .collect(Collectors.toList());
 
         List<TagResponse> actual = objectMapper
-                .readValue(this.mockMvc.perform(get("/api/tags?desc=false&limit=2&offset=0&sort=name"))
+                .readValue(this.mockMvc.perform(get("/tags?desc=false&limit=2&offset=0&sort=name"))
                         .andDo(print())
                         .andExpect(status().isOk())
                         .andReturn()
@@ -135,7 +135,7 @@ public class TagControllerIntTest extends PostServiceApplicationTests {
                 .collect(Collectors.toList());
 
         List<TagResponse> actual = objectMapper
-                .readValue(this.mockMvc.perform(get("/api/tags?desc=true&limit=2&offset=0&sort=name"))
+                .readValue(this.mockMvc.perform(get("/tags?desc=true&limit=2&offset=0&sort=name"))
                         .andDo(print())
                         .andExpect(status().isOk())
                         .andReturn()
@@ -149,7 +149,7 @@ public class TagControllerIntTest extends PostServiceApplicationTests {
     public void findById() throws Exception {
         TagResponse expected = TagConverter.convert(tagRepository.findAll().get(0));
 
-        TagResponse actual = objectMapper.readValue(this.mockMvc.perform(get("/api/tags/" + expected.getId()))
+        TagResponse actual = objectMapper.readValue(this.mockMvc.perform(get("/tags/" + expected.getId()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn()
@@ -169,7 +169,7 @@ public class TagControllerIntTest extends PostServiceApplicationTests {
                 .name("Alex")
                 .build());
 
-        MockHttpServletRequestBuilder builder = put("/api/tags/" + tagRepository.findAll().get(0).getId())
+        MockHttpServletRequestBuilder builder = put("/tags/" + tagRepository.findAll().get(0).getId())
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
@@ -190,7 +190,7 @@ public class TagControllerIntTest extends PostServiceApplicationTests {
                 .name("Alex")
                 .build());
 
-        MockHttpServletRequestBuilder builder = post("/api/tags")
+        MockHttpServletRequestBuilder builder = post("/tags")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
@@ -213,7 +213,7 @@ public class TagControllerIntTest extends PostServiceApplicationTests {
     @Test
     void deleteById() throws Exception {
         String id = tagRepository.findAll().get(0).getId();
-        this.mockMvc.perform(delete("/api/tags/" + id))
+        this.mockMvc.perform(delete("/tags/" + id))
                 .andDo(print())
                 .andExpect(status().isOk());
 
