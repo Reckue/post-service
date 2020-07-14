@@ -5,7 +5,6 @@ import com.reckue.post.exceptions.AuthenticationException;
 import com.reckue.post.transfers.errors.ErrorResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.lang.NonNullApi;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -50,7 +49,8 @@ public class AccessFilter extends OncePerRequestFilter {
             }
         } catch (AuthenticationException e) {
             SecurityContextHolder.clearContext();
-            ErrorResponse responseInfo = new ErrorResponse(e.getMessage(), e.getHttpStatus(), e.getHttpStatus().value());
+            ErrorResponse responseInfo = new ErrorResponse(e.getMessage(), e.getHttpStatus(),
+                    e.getHttpStatus().value());
             httpServletResponse.resetBuffer();
             httpServletResponse.setStatus(e.getHttpStatus().value());
             httpServletResponse.setHeader("Content-Type", "application/json");
