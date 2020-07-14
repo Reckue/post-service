@@ -94,7 +94,8 @@ public class PollNodeServiceRealizationTest extends PostServiceApplicationTests 
     public void findByIdIfNotExist() {
         PollNode node = PollNode.builder().id("saturn").title("title").build();
 
-        Exception exception = assertThrows(PollNodeNotFoundException.class, () -> pollNodeService.findById(node.getId()));
+        Exception exception = assertThrows(PollNodeNotFoundException.class,
+                () -> pollNodeService.findById(node.getId()));
         assertEquals("PollNode by id " + node.getId() + " is not found", exception.getMessage());
     }
 

@@ -93,7 +93,8 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
     public void updateCommentWithNullId() {
         Comment nullableComm = Comment.builder().build();
 
-        Exception exception = assertThrows(ReckueIllegalArgumentException.class, () -> commentService.update(nullableComm));
+        Exception exception = assertThrows(ReckueIllegalArgumentException.class,
+                () -> commentService.update(nullableComm));
         assertEquals("The parameter is null", exception.getMessage());
     }
 
