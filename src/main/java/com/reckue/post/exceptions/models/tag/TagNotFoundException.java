@@ -1,6 +1,7 @@
 package com.reckue.post.exceptions.models.tag;
 
 import com.reckue.post.exceptions.ModelNotFoundException;
+import lombok.Getter;
 
 /**
  * Class TagNotFoundException is responsible for throwing
@@ -8,12 +9,13 @@ import com.reckue.post.exceptions.ModelNotFoundException;
  *
  * @author Artur Magomedov
  */
+@Getter
 public class TagNotFoundException extends ModelNotFoundException {
 
     private final String message;
 
     public TagNotFoundException() {
-        this.message = "Tag Not Found";
+        message = "Tag Not Found";
     }
 
     public TagNotFoundException(String id) {

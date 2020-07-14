@@ -1,8 +1,10 @@
 package com.reckue.post.services.realizations;
 
 import com.reckue.post.PostServiceApplicationTests;
-import com.reckue.post.exceptions.ModelAlreadyExistsException;
-import com.reckue.post.exceptions.ModelNotFoundException;
+import com.reckue.post.exceptions.ReckueIllegalArgumentException;
+import com.reckue.post.exceptions.models.post.PostNotFoundException;
+import com.reckue.post.exceptions.models.rating.RatingAlreadyExistException;
+import com.reckue.post.exceptions.models.rating.RatingNotFoundException;
 import com.reckue.post.models.Post;
 import com.reckue.post.models.Rating;
 import com.reckue.post.repositories.PostRepository;
@@ -91,17 +93,20 @@ public class RatingServiceRealizationTest extends PostServiceApplicationTests {
     @Test
     public void createIfExists() {
         doReturn(true).when(ratingRepository).existsById(Mockito.anyString());
-        Exception exception = assertThrows(ModelAlreadyExistsException.class, () -> ratingService.create(rating1));
+        doReturn(true).when(postRepository).existsById(rating1.getPostId());
+        Exception exception = assertThrows(RatingAlreadyExistException.class, () -> ratingService.create(rating1));
 
-        assertEquals("Rating already exists", exception.getMessage());
+        assertEquals("Rating by id " + rating1.getId() + " already exist", exception.getMessage());
     }
 
     @Test
     public void createIfNotFound() {
         when(ratingRepository.existsById(rating1.getId())).thenReturn(false);
-        Exception exception = assertThrows(ModelNotFoundException.class, () -> ratingService.create(rating1));
+        doReturn(false).when(postRepository).existsById(rating1.getPostId());
 
-        assertEquals("Post identifier '" + rating1.getPostId() + "' is not found", exception.getMessage());
+        Exception exception = assertThrows(PostNotFoundException.class, () -> ratingService.create(rating1));
+
+        assertEquals("Post by id " + rating1.getPostId() + " is not found", exception.getMessage());
     }
 
     @Test
@@ -123,7 +128,7 @@ public class RatingServiceRealizationTest extends PostServiceApplicationTests {
         Rating ratingOne = Rating.builder()
                 .build();
 
-        assertThrows(IllegalArgumentException.class, () -> ratingService.update(ratingOne));
+        assertThrows(ReckueIllegalArgumentException.class, () -> ratingService.update(ratingOne));
     }
 
     @Test
@@ -131,7 +136,7 @@ public class RatingServiceRealizationTest extends PostServiceApplicationTests {
         when(ratingRepository.existsById(rating1.getId())).thenReturn(false);
         when(ratingRepository.save(rating1)).thenReturn(rating1);
 
-        assertThrows(ModelNotFoundException.class, () -> ratingService.update(rating1));
+        assertThrows(RatingNotFoundException.class, () -> ratingService.update(rating1));
     }
 
     @Test
@@ -150,7 +155,7 @@ public class RatingServiceRealizationTest extends PostServiceApplicationTests {
 
     @Test
     public void deleteByIdWithException() {
-        Exception exception = assertThrows(ModelNotFoundException.class,
+        Exception exception = assertThrows(RatingNotFoundException.class,
                 () -> ratingService.deleteById(rating1.getId()));
         assertEquals("Rating by id " + rating1.getId() + " is not found", exception.getMessage());
     }

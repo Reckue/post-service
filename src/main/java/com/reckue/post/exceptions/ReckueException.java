@@ -6,4 +6,6 @@ package com.reckue.post.exceptions;
  * @author Artur Magomedov
  */
 public abstract class ReckueException extends RuntimeException {
+
+    protected String message;
 }

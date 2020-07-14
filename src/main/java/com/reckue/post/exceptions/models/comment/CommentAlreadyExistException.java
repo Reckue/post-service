@@ -1,6 +1,7 @@
 package com.reckue.post.exceptions.models.comment;
 
 import com.reckue.post.exceptions.ModelAlreadyExistsException;
+import lombok.Getter;
 
 /**
  * Class CommentAlreadyExistException is responsible for throwing
@@ -8,6 +9,7 @@ import com.reckue.post.exceptions.ModelAlreadyExistsException;
  *
  * @author Artur Magomedov
  */
+@Getter
 public class CommentAlreadyExistException extends ModelAlreadyExistsException {
 
     private final String message;

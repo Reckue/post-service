@@ -28,19 +28,20 @@ public class CodeErrorDistributor {
     public static Map<Class<? extends ReckueException>, String> codeErrors = new HashMap<>();
 
     static {
-        codeErrors.put(PostNotFoundException.class, "RE-001");
-        codeErrors.put(NodeNotFoundException.class, "RE-002");
-        codeErrors.put(TagNotFoundException.class, "RE-003");
-        codeErrors.put(CommentNotFoundException.class, "RE-004");
-        codeErrors.put(RatingNotFoundException.class, "RE-005");
-        codeErrors.put(PollNodeNotFoundException.class, "RE-006");
-        codeErrors.put(PostAlreadyExistException.class, "RE-051");
-        codeErrors.put(NodeAlreadyExistException.class, "RE-052");
-        codeErrors.put(TagAlreadyExistException.class, "RE-053");
-        codeErrors.put(CommentAlreadyExistException.class, "RE-054");
-        codeErrors.put(RatingAlreadyExistException.class, "RE-055");
-        codeErrors.put(PollNodeAlreadyExistException.class, "RE-056");
+        codeErrors.put(PostNotFoundException.class, "RPE-001");
+        codeErrors.put(NodeNotFoundException.class, "RPE-002");
+        codeErrors.put(TagNotFoundException.class, "RPE-003");
+        codeErrors.put(CommentNotFoundException.class, "RPE-004");
+        codeErrors.put(RatingNotFoundException.class, "RPE-005");
+        codeErrors.put(PollNodeNotFoundException.class, "RPE-006");
 
-        codeErrors.put(ReckueIllegalArgumentException.class, "RE-071");
+        codeErrors.put(PostAlreadyExistException.class, "RPE-1001");
+        codeErrors.put(NodeAlreadyExistException.class, "RPE-1002");
+        codeErrors.put(TagAlreadyExistException.class, "RPE-1003");
+        codeErrors.put(CommentAlreadyExistException.class, "RPE-1004");
+        codeErrors.put(RatingAlreadyExistException.class, "RPE-1005");
+        codeErrors.put(PollNodeAlreadyExistException.class, "RPE-1006");
+
+        codeErrors.put(ReckueIllegalArgumentException.class, "RPE-1500");
     }
 }

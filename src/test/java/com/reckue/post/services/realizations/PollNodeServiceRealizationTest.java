@@ -1,10 +1,10 @@
 package com.reckue.post.services.realizations;
 
 import com.reckue.post.PostServiceApplicationTests;
-import com.reckue.post.exceptions.ModelAlreadyExistsException;
-import com.reckue.post.exceptions.ModelNotFoundException;
+import com.reckue.post.exceptions.ReckueIllegalArgumentException;
+import com.reckue.post.exceptions.models.nodes.pollnode.PollNodeAlreadyExistException;
+import com.reckue.post.exceptions.models.nodes.pollnode.PollNodeNotFoundException;
 import com.reckue.post.models.nodes.PollNode;
-import com.reckue.post.models.Tag;
 import com.reckue.post.repositories.PollNodeRepository;
 import com.reckue.post.utils.Generator;
 import org.junit.jupiter.api.Assertions;
@@ -51,8 +51,8 @@ public class PollNodeServiceRealizationTest extends PostServiceApplicationTests 
 
         doReturn(true).when(pollNodeRepository).existsById(Mockito.anyString());
 
-        Exception exception = assertThrows(ModelAlreadyExistsException.class, () -> pollNodeService.create(node));
-        assertEquals("PollNode already exists", exception.getMessage());
+        Exception exception = assertThrows(PollNodeAlreadyExistException.class, () -> pollNodeService.create(node));
+        assertEquals("PollNode by id " + node.getId() + " already exist", exception.getMessage());
     }
 
     @Test
@@ -69,7 +69,7 @@ public class PollNodeServiceRealizationTest extends PostServiceApplicationTests 
     public void updateTagWithNullId() {
         PollNode node = PollNode.builder().build();
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> pollNodeService.update(node));
+        Exception exception = assertThrows(ReckueIllegalArgumentException.class, () -> pollNodeService.update(node));
         assertEquals("The parameter is null", exception.getMessage());
     }
 
@@ -78,7 +78,7 @@ public class PollNodeServiceRealizationTest extends PostServiceApplicationTests 
         PollNode node = PollNode.builder().id("1").title("title").build();
         when(pollNodeRepository.existsById(node.getId())).thenReturn(false);
 
-        Exception exception = assertThrows(ModelNotFoundException.class, () -> pollNodeService.update(node));
+        Exception exception = assertThrows(PollNodeNotFoundException.class, () -> pollNodeService.update(node));
         assertEquals("PollNode by id " + node.getId() + " is not found", exception.getMessage());
     }
 
@@ -94,7 +94,7 @@ public class PollNodeServiceRealizationTest extends PostServiceApplicationTests 
     public void findByIdIfNotExist() {
         PollNode node = PollNode.builder().id("saturn").title("title").build();
 
-        Exception exception = assertThrows(ModelNotFoundException.class, () -> pollNodeService.findById(node.getId()));
+        Exception exception = assertThrows(PollNodeNotFoundException.class, () -> pollNodeService.findById(node.getId()));
         assertEquals("PollNode by id " + node.getId() + " is not found", exception.getMessage());
     }
 
@@ -265,7 +265,7 @@ public class PollNodeServiceRealizationTest extends PostServiceApplicationTests 
         PollNode node = PollNode.builder().id("0").title("title").build();
 
         Exception exception = assertThrows(
-                ModelNotFoundException.class, () -> pollNodeService.deleteById(node.getId()));
+                PollNodeNotFoundException.class, () -> pollNodeService.deleteById(node.getId()));
         assertEquals("PollNode by id " + node.getId() + " is not found", exception.getMessage());
     }
 }

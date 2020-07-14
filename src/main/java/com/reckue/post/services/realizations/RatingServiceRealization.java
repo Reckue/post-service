@@ -62,8 +62,6 @@ public class RatingServiceRealization implements RatingService {
             throw new RatingAlreadyExistException(rating.getId());
         }
         if (!postRepository.existsById(rating.getPostId())) {
-            // TODO...
-//            throw new ModelNotFoundException("Post identifier '" + rating.getPostId() + "' is not found");
             throw new PostNotFoundException(rating.getPostId());
         }
     }
