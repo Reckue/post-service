@@ -55,10 +55,7 @@ public class CommentServiceRealization implements CommentService {
      */
     @Override
     public Comment update(Comment comment) {
-        if (comment.getId() == null) {
-            throw new IllegalArgumentException("The parameter is null");
-        }
-        if (!commentRepository.existsById(comment.getId())) {
+        if (comment.getId() == null || !commentRepository.existsById(comment.getId())) {
             throw new ModelNotFoundException("Comment by id " + comment.getId() + " is not found");
         }
         Comment savedComment = Comment.builder()

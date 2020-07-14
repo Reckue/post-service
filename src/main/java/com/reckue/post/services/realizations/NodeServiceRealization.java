@@ -60,10 +60,7 @@ public class NodeServiceRealization implements NodeService {
      */
     @Override
     public Node update(Node node) {
-        if (node.getId() == null) {
-            throw new IllegalArgumentException("The parameter is null");
-        }
-        if (!nodeRepository.existsById(node.getId())) {
+        if (node.getId() == null || !nodeRepository.existsById(node.getId())) {
             throw new ModelNotFoundException("Node by id " + node.getId() + " is not found");
         }
         Node savedNode = Node.builder()

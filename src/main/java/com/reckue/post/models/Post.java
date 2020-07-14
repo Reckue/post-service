@@ -1,12 +1,10 @@
 package com.reckue.post.models;
 
 import com.reckue.post.models.nodes.Parent;
+import com.reckue.post.models.types.PostStatusType;
 import com.reckue.post.models.types.StatusType;
 import com.reckue.post.utils.NodeContent;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -34,5 +32,5 @@ public class Post {
     private List<Tag> tags;
     private long published;
     private long changed;
-    private StatusType status;
+    private PostStatusType status;
 }

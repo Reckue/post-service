@@ -3,6 +3,7 @@ package com.reckue.post.services.realizations;
 import com.reckue.post.exceptions.ModelAlreadyExistsException;
 import com.reckue.post.exceptions.ModelNotFoundException;
 import com.reckue.post.models.Post;
+import com.reckue.post.models.types.PostStatusType;
 import com.reckue.post.repositories.PostRepository;
 import com.reckue.post.services.NodeService;
 import com.reckue.post.services.PostService;
@@ -41,11 +42,22 @@ public class PostServiceRealization implements PostService {
         if (!postRepository.existsById(post.getId())) {
             if (post.getNodes() != null) {
                 post.getNodes().forEach(nodeService::create);
-
             }
+            validateOnCreateStatus(post);
             return postRepository.save(post);
         } else {
             throw new ModelAlreadyExistsException("Post already exists");
+        }
+    }
+
+    private void validateOnCreateStatus(Post post) {
+        if (post != null && post.getStatus() == PostStatusType.DRAFT) {
+            return;
+        }
+        if (post != null && post.getStatus() == PostStatusType.PUBLISHED && post.getNodes() == null) {
+            throw new RuntimeException("Nodes are null");
+        } else {
+            throw new RuntimeException("Post hasn't such status");
         }
     }
 
@@ -61,10 +73,7 @@ public class PostServiceRealization implements PostService {
      */
     @Override
     public Post update(Post post) {
-        if (post.getId() == null) {
-            throw new IllegalArgumentException("The parameter is null");
-        }
-        if (!postRepository.existsById(post.getId())) {
+        if (post.getId() == null || !postRepository.existsById(post.getId())) {
             throw new ModelNotFoundException("Post by id " + post.getId() + " is not found");
         }
         Post savedPost = Post.builder()
@@ -78,7 +87,12 @@ public class PostServiceRealization implements PostService {
                 .changed(post.getChanged())
                 .status(post.getStatus())
                 .build();
+        validateOnUpdateStatus(post);
         return postRepository.save(savedPost);
+    }
+
+    private void validateOnUpdateStatus(Post post) {
+
     }
 
     /**

@@ -55,10 +55,7 @@ public class TagServiceRealization implements TagService {
      */
     @Override
     public Tag update(Tag tag) {
-        if (tag.getId() == null) {
-            throw new IllegalArgumentException("The parameter is null");
-        }
-        if (!tagRepository.existsById(tag.getId())) {
+        if (tag.getId() == null || !tagRepository.existsById(tag.getId())) {
             throw new ModelNotFoundException("Tag by id " + tag.getId() + " is not found");
         }
         Tag savedTag = Tag.builder()

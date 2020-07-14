@@ -55,10 +55,7 @@ public class PollNodeServiceRealization implements PollNodeService {
      */
     @Override
     public PollNode update(PollNode node) {
-        if (node.getId() == null) {
-            throw new IllegalArgumentException("The parameter is null");
-        }
-        if (!pollNodeRepository.existsById(node.getId())) {
+        if (node.getId() == null || !pollNodeRepository.existsById(node.getId())) {
             throw new ModelNotFoundException("PollNode by id " + node.getId() + " is not found");
         }
         PollNode savedPollNode = PollNode.builder()
