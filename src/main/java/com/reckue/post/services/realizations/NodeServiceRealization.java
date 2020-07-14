@@ -1,5 +1,6 @@
 package com.reckue.post.services.realizations;
 
+import com.reckue.post.exceptions.ReckueIllegalArgumentException;
 import com.reckue.post.exceptions.models.nodes.NodeAlreadyExistException;
 import com.reckue.post.exceptions.models.nodes.NodeNotFoundException;
 import com.reckue.post.models.Node;
@@ -30,7 +31,7 @@ public class NodeServiceRealization implements NodeService {
 
     /**
      * This method is used to create an object of class Node.
-     * Throws {@link IllegalArgumentException} in case if nodes type is not found.
+     * Throws {@link NodeAlreadyExistException} in case if nodes type is already exist.
      *
      * @param node object of class Node
      * @return node object of class Node
@@ -49,7 +50,7 @@ public class NodeServiceRealization implements NodeService {
      * This method is used to update data in an object of class Node.
      * Throws {@link NodeNotFoundException} in case
      * if such object isn't contained in database.
-     * Throws {@link IllegalArgumentException} in case
+     * Throws {@link ReckueIllegalArgumentException} in case
      * if parameter equals null.
      *
      * @param node object of class Node
@@ -58,7 +59,7 @@ public class NodeServiceRealization implements NodeService {
     @Override
     public Node update(Node node) {
         if (node.getId() == null) {
-            throw new IllegalArgumentException("The parameter is null");
+            throw new ReckueIllegalArgumentException("The parameter is null");
         }
         if (!nodeRepository.existsById(node.getId())) {
             throw new NodeNotFoundException(node.getId());
@@ -102,7 +103,7 @@ public class NodeServiceRealization implements NodeService {
         if (desc == null) desc = false;
 
         if (limit < 0 || offset < 0) {
-            throw new IllegalArgumentException("Limit or offset is incorrect");
+            throw new ReckueIllegalArgumentException("Limit or offset is incorrect");
         }
         return findAllByTypeAndDesc(sort, desc).stream()
                 .limit(limit)
@@ -148,7 +149,7 @@ public class NodeServiceRealization implements NodeService {
             case "id":
                 return findAllAndSortById();
         }
-        throw new IllegalArgumentException("Such field as " + sort + " doesn't exist");
+        throw new ReckueIllegalArgumentException("Such field as " + sort + " doesn't exist");
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.reckue.post.services.realizations;
 
 
+import com.reckue.post.exceptions.ReckueIllegalArgumentException;
 import com.reckue.post.exceptions.models.comment.CommentAlreadyExistException;
 import com.reckue.post.exceptions.models.comment.CommentNotFoundException;
 import com.reckue.post.models.Comment;
@@ -48,7 +49,7 @@ public class CommentServiceRealization implements CommentService {
      * This method is used to update data in an object of class Comment.
      * Throws {@link CommentNotFoundException} in case
      * if such object isn't contained in database.
-     * Throws {@link IllegalArgumentException} in case
+     * Throws {@link ReckueIllegalArgumentException} in case
      * if such parameter is null.
      *
      * @param comment object of class Comment
@@ -57,7 +58,7 @@ public class CommentServiceRealization implements CommentService {
     @Override
     public Comment update(Comment comment) {
         if (comment.getId() == null) {
-            throw new IllegalArgumentException("The parameter is null");
+            throw new ReckueIllegalArgumentException("The parameter is null");
         }
         if (!commentRepository.existsById(comment.getId())) {
             throw new CommentNotFoundException(comment.getId());
@@ -101,7 +102,7 @@ public class CommentServiceRealization implements CommentService {
         if (desc == null) desc = false;
 
         if (limit < 0 || offset < 0) {
-            throw new IllegalArgumentException("Limit or offset is incorrect");
+            throw new ReckueIllegalArgumentException("Limit or offset is incorrect");
         }
         return findAllByTypeAndDesc(sort, desc).stream()
                 .limit(limit)
@@ -145,7 +146,7 @@ public class CommentServiceRealization implements CommentService {
             case "published":
                 return findAllAndSortByPublished();
         }
-        throw new IllegalArgumentException("Such field as " + sort + " doesn't exist");
+        throw new ReckueIllegalArgumentException("Such field as " + sort + " doesn't exist");
     }
 
     /**

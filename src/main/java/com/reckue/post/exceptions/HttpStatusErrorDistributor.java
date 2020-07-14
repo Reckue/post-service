@@ -17,7 +17,13 @@ import org.springframework.http.HttpStatus;
 import java.util.HashMap;
 import java.util.Map;
 
-public class StatusDistributor {
+/**
+ * Class HttpStatusErrorDistributor represents is a map, where the key is the Reckue subclass,
+ * and the value is HttpStatus.
+ *
+ * @author Artur Magomedov
+ */
+public class HttpStatusErrorDistributor {
     public static Map<Class<? extends ReckueException>, HttpStatus> httpStatuses = new HashMap<>();
 
     static {
@@ -33,5 +39,7 @@ public class StatusDistributor {
         httpStatuses.put(CommentAlreadyExistException.class, HttpStatus.CONFLICT);
         httpStatuses.put(RatingAlreadyExistException.class, HttpStatus.CONFLICT);
         httpStatuses.put(PollNodeAlreadyExistException.class, HttpStatus.CONFLICT);
+
+        httpStatuses.put(ReckueIllegalArgumentException.class, HttpStatus.BAD_REQUEST);
     }
 }

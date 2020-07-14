@@ -1,5 +1,6 @@
 package com.reckue.post.services.realizations;
 
+import com.reckue.post.exceptions.ReckueIllegalArgumentException;
 import com.reckue.post.exceptions.models.post.PostAlreadyExistException;
 import com.reckue.post.exceptions.models.post.PostNotFoundException;
 import com.reckue.post.models.Post;
@@ -53,7 +54,7 @@ public class PostServiceRealization implements PostService {
      * This method is used to update data in an object of class Post.
      * Throws {@link PostNotFoundException} in case
      * if such object isn't contained in database.
-     * Throws {@link IllegalArgumentException} in case
+     * Throws {@link ReckueIllegalArgumentException} in case
      * if parameter equals null.
      *
      * @param post object of class Post
@@ -62,7 +63,7 @@ public class PostServiceRealization implements PostService {
     @Override
     public Post update(Post post) {
         if (post.getId() == null) {
-            throw new IllegalArgumentException("The parameter is null");
+            throw new ReckueIllegalArgumentException("The parameter is null");
         }
         if (!postRepository.existsById(post.getId())) {
             throw new PostNotFoundException(post.getId());
@@ -109,7 +110,7 @@ public class PostServiceRealization implements PostService {
         if (desc == null) desc = false;
 
         if (limit < 0 || offset < 0) {
-            throw new IllegalArgumentException("Limit or offset is incorrect");
+            throw new ReckueIllegalArgumentException("Limit or offset is incorrect");
         }
         return findAllByTypeAndDesc(sort, desc).stream()
                 .limit(limit)
@@ -157,7 +158,7 @@ public class PostServiceRealization implements PostService {
             case "userId":
                 return findAllAndSortByUserId();
         }
-        throw new IllegalArgumentException("Such field as " + sort + " doesn't exist");
+        throw new ReckueIllegalArgumentException("Such field as " + sort + " doesn't exist");
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.reckue.post.utils.converters;
 
+import com.reckue.post.exceptions.ReckueIllegalArgumentException;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -28,7 +29,7 @@ public class Converter {
      */
     public static <T> T convert(Object src, Class<T> dest) {
         if (src == null) {
-            throw new IllegalArgumentException("Null parameters are not allowed");
+            throw new ReckueIllegalArgumentException("Null parameters are not allowed");
         }
         return mapper.map(src, dest);
     }
@@ -43,7 +44,7 @@ public class Converter {
      */
     public static <S, T> List<T> convert(List<S> list, Class<T> dest) {
         if (list == null) {
-            throw new IllegalArgumentException("Null parameters are not allowed");
+            throw new ReckueIllegalArgumentException("Null parameters are not allowed");
         }
         return list
                 .stream()

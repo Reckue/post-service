@@ -1,5 +1,6 @@
 package com.reckue.post.utils.converters;
 
+import com.reckue.post.exceptions.ReckueIllegalArgumentException;
 import com.reckue.post.models.Comment;
 import com.reckue.post.transfers.CommentRequest;
 import com.reckue.post.transfers.CommentResponse;
@@ -19,7 +20,7 @@ public class CommentConverter {
      */
     public static Comment convert(CommentRequest commentRequest) {
         if (commentRequest == null) {
-            throw new IllegalArgumentException("Null parameters are not allowed");
+            throw new ReckueIllegalArgumentException("Null parameters are not allowed");
         }
         return Comment.builder()
                 .text(commentRequest.getText())
@@ -38,7 +39,7 @@ public class CommentConverter {
      */
     public static CommentResponse convert(Comment comment) {
         if (comment == null) {
-            throw new IllegalArgumentException("Null parameters are not allowed");
+            throw new ReckueIllegalArgumentException("Null parameters are not allowed");
         }
         return CommentResponse.builder()
                 .id(comment.getId())

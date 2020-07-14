@@ -1,5 +1,6 @@
 package com.reckue.post.utils.converters;
 
+import com.reckue.post.exceptions.ReckueIllegalArgumentException;
 import com.reckue.post.models.Tag;
 import com.reckue.post.transfers.TagRequest;
 import com.reckue.post.transfers.TagResponse;
@@ -19,7 +20,7 @@ public class TagConverter {
      */
     public static Tag convert(TagRequest tagRequest) {
         if (tagRequest == null) {
-            throw new IllegalArgumentException("Null parameters are not allowed");
+            throw new ReckueIllegalArgumentException("Null parameters are not allowed");
         }
         return Tag.builder()
                 .name(tagRequest.getName())
@@ -34,7 +35,7 @@ public class TagConverter {
      */
     public static TagResponse convert(Tag tag) {
         if (tag == null) {
-            throw new IllegalArgumentException("Null parameters are not allowed");
+            throw new ReckueIllegalArgumentException("Null parameters are not allowed");
         }
         return TagResponse.builder()
                 .id(tag.getId())

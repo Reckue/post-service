@@ -7,8 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import static com.reckue.post.exceptions.ExceptionDistributor.codeErrors;
-import static com.reckue.post.exceptions.StatusDistributor.httpStatuses;
+import static com.reckue.post.exceptions.CodeErrorDistributor.codeErrors;
+import static com.reckue.post.exceptions.HttpStatusErrorDistributor.httpStatuses;
 
 /**
  * Class CustomExceptionHandler allows to handle all exceptions.
@@ -27,6 +27,4 @@ public class CustomExceptionHandler {
                 .cause(ExceptionUtils.getStackTrace(e))
                 .build(), httpStatuses.get(e.getClass()));
     }
-
-    // TODO... Handler for IllegalArgumentException class
 }

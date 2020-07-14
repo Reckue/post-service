@@ -1,5 +1,6 @@
 package com.reckue.post.utils.converters;
 
+import com.reckue.post.exceptions.ReckueIllegalArgumentException;
 import com.reckue.post.models.Node;
 import com.reckue.post.models.Post;
 import com.reckue.post.transfers.NodeRequest;
@@ -28,7 +29,7 @@ public class PostConverter {
      */
     public static Post convert(PostRequest postRequest) {
         if (postRequest == null) {
-            throw new IllegalArgumentException("Null parameters are not allowed");
+            throw new ReckueIllegalArgumentException("Null parameters are not allowed");
         }
         List<Node> nodes = new ArrayList<>();
         if (postRequest.getNodes() != null) {
@@ -58,7 +59,7 @@ public class PostConverter {
      */
     public static PostResponse convert(Post post) {
         if (post == null) {
-            throw new IllegalArgumentException("Null parameters are not allowed");
+            throw new ReckueIllegalArgumentException("Null parameters are not allowed");
         }
 
         List<NodeResponse> nodes = new ArrayList<>();

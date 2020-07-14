@@ -1,5 +1,6 @@
 package com.reckue.post.services.realizations;
 
+import com.reckue.post.exceptions.ReckueIllegalArgumentException;
 import com.reckue.post.exceptions.models.post.PostNotFoundException;
 import com.reckue.post.exceptions.models.rating.RatingAlreadyExistException;
 import com.reckue.post.exceptions.models.rating.RatingNotFoundException;
@@ -71,7 +72,7 @@ public class RatingServiceRealization implements RatingService {
      * This method is used to update data in an object of class Rating.
      * Throws {@link RatingNotFoundException} in case
      * if such object isn't contained in database.
-     * Throws {@link IllegalArgumentException} in case
+     * Throws {@link ReckueIllegalArgumentException} in case
      * if parameter equals null.
      *
      * @param rating object of class Rating
@@ -81,7 +82,7 @@ public class RatingServiceRealization implements RatingService {
     @Override
     public Rating update(Rating rating) {
         if (rating.getId() == null) {
-            throw new IllegalArgumentException("The parameter is null");
+            throw new ReckueIllegalArgumentException("The parameter is null");
         }
         Rating existRating = ratingRepository.findById(rating.getId())
                 .orElseThrow(() -> new RatingNotFoundException(rating.getId()));
@@ -122,7 +123,7 @@ public class RatingServiceRealization implements RatingService {
         if (desc == null) desc = false;
 
         if (limit < 0 || offset < 0) {
-            throw new IllegalArgumentException("Limit or offset is incorrect");
+            throw new ReckueIllegalArgumentException("Limit or offset is incorrect");
         }
         return findAllByTypeAndDesc(sort, desc).stream()
                 .limit(limit)
@@ -161,7 +162,7 @@ public class RatingServiceRealization implements RatingService {
             case "id":
                 return findAllAndSortById();
         }
-        throw new IllegalArgumentException("Such field as " + sort + " doesn't exist");
+        throw new ReckueIllegalArgumentException("Such field as " + sort + " doesn't exist");
     }
 
     /**
@@ -240,7 +241,7 @@ public class RatingServiceRealization implements RatingService {
         if (offset == null) offset = 0;
 
         if (limit < 0 || offset < 0) {
-            throw new IllegalArgumentException("Limit or offset is incorrect");
+            throw new ReckueIllegalArgumentException("Limit or offset is incorrect");
         }
         List<Post> posts = new ArrayList<>();
         for (Rating rating : ratings) {

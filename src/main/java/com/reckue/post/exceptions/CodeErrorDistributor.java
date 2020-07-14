@@ -17,7 +17,13 @@ import com.reckue.post.models.Rating;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ExceptionDistributor {
+/**
+ * Class CodeErrorDistributor represents is a map, where the key is the some Reckue subclass,
+ * and the value is code error.
+ *
+ * @author Artur Magomedov
+ */
+public class CodeErrorDistributor {
 
     public static Map<Class<? extends ReckueException>, String> codeErrors = new HashMap<>();
 
@@ -34,5 +40,7 @@ public class ExceptionDistributor {
         codeErrors.put(CommentAlreadyExistException.class, "RE-054");
         codeErrors.put(RatingAlreadyExistException.class, "RE-055");
         codeErrors.put(PollNodeAlreadyExistException.class, "RE-056");
+
+        codeErrors.put(ReckueIllegalArgumentException.class, "RE-071");
     }
 }

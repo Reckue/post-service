@@ -1,5 +1,6 @@
 package com.reckue.post.utils.converters;
 
+import com.reckue.post.exceptions.ReckueIllegalArgumentException;
 import com.reckue.post.models.Node;
 import com.reckue.post.models.nodes.*;
 import com.reckue.post.models.types.NodeType;
@@ -41,7 +42,7 @@ public class NodeConverter {
      */
     public static Node convert(NodeRequest nodeRequest) {
         if (nodeRequest == null) {
-            throw new IllegalArgumentException("Null parameters are not allowed");
+            throw new ReckueIllegalArgumentException("Null parameters are not allowed");
         }
         Map<NodeType, Class<?>> map = Map.of(
                 NodeType.TEXT, TextNode.class,
@@ -73,7 +74,7 @@ public class NodeConverter {
      */
     public static NodeResponse convert(Node node) {
         if (node == null) {
-            throw new IllegalArgumentException("Null parameters are not allowed");
+            throw new ReckueIllegalArgumentException("Null parameters are not allowed");
         }
 
         Map<NodeType, Class<?>> map = Map.of(

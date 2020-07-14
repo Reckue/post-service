@@ -1,5 +1,6 @@
 package com.reckue.post.services.realizations;
 
+import com.reckue.post.exceptions.ReckueIllegalArgumentException;
 import com.reckue.post.exceptions.models.nodes.pollnode.PollNodeAlreadyExistException;
 import com.reckue.post.exceptions.models.nodes.pollnode.PollNodeNotFoundException;
 import com.reckue.post.models.nodes.PollNode;
@@ -47,7 +48,7 @@ public class PollNodeServiceRealization implements PollNodeService {
      * This method is used to update data in an object of class PollNode.
      * Throws {@link PollNodeNotFoundException} in case
      * if such object isn't contained in database.
-     * Throws {@link IllegalArgumentException} in case
+     * Throws {@link ReckueIllegalArgumentException} in case
      * if such parameter is null.
      *
      * @param node object of class PollNode
@@ -56,7 +57,7 @@ public class PollNodeServiceRealization implements PollNodeService {
     @Override
     public PollNode update(PollNode node) {
         if (node.getId() == null) {
-            throw new IllegalArgumentException("The parameter is null");
+            throw new ReckueIllegalArgumentException("The parameter is null");
         }
         if (!pollNodeRepository.existsById(node.getId())) {
             throw new PollNodeNotFoundException(node.getId());
@@ -96,7 +97,7 @@ public class PollNodeServiceRealization implements PollNodeService {
         if (desc == null) desc = false;
 
         if (limit < 0 || offset < 0) {
-            throw new IllegalArgumentException("Limit or offset is incorrect");
+            throw new ReckueIllegalArgumentException("Limit or offset is incorrect");
         }
         return findAllByTypeAndDesc(sort, desc).stream()
                 .limit(limit)
@@ -135,7 +136,7 @@ public class PollNodeServiceRealization implements PollNodeService {
             case "id":
                 return findAllAndSortById();
         }
-        throw new IllegalArgumentException("Such field as " + sort + " doesn't exist");
+        throw new ReckueIllegalArgumentException("Such field as " + sort + " doesn't exist");
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.reckue.post.services.realizations;
 
+import com.reckue.post.exceptions.ReckueIllegalArgumentException;
 import com.reckue.post.exceptions.models.tag.TagAlreadyExistException;
 import com.reckue.post.exceptions.models.tag.TagNotFoundException;
 import com.reckue.post.models.Tag;
@@ -47,7 +48,7 @@ public class TagServiceRealization implements TagService {
      * This method is used to update data in an object of class Tag.
      * Throws {@link TagNotFoundException} in case
      * if such object isn't contained in database.
-     * Throws {@link IllegalArgumentException} in case
+     * Throws {@link ReckueIllegalArgumentException} in case
      * if such parameter is null.
      *
      * @param tag object of class Tag
@@ -56,7 +57,7 @@ public class TagServiceRealization implements TagService {
     @Override
     public Tag update(Tag tag) {
         if (tag.getId() == null) {
-            throw new IllegalArgumentException("The parameter is null");
+            throw new ReckueIllegalArgumentException("The parameter is null");
         }
         if (!tagRepository.existsById(tag.getId())) {
             throw new TagNotFoundException(tag.getId());
@@ -95,7 +96,7 @@ public class TagServiceRealization implements TagService {
         if (desc == null) desc = false;
 
         if (limit < 0 || offset < 0) {
-            throw new IllegalArgumentException("Limit or offset is incorrect");
+            throw new ReckueIllegalArgumentException("Limit or offset is incorrect");
         }
         return findAllByTypeAndDesc(sort, desc).stream()
                 .limit(limit)
@@ -134,7 +135,7 @@ public class TagServiceRealization implements TagService {
             case "id":
                 return findAllAndSortById();
         }
-        throw new IllegalArgumentException("Such field as " + sort + " doesn't exist");
+        throw new ReckueIllegalArgumentException("Such field as " + sort + " doesn't exist");
     }
 
     /**
