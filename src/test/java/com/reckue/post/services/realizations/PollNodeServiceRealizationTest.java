@@ -52,7 +52,7 @@ public class PollNodeServiceRealizationTest extends PostServiceApplicationTests 
         doReturn(true).when(pollNodeRepository).existsById(Mockito.anyString());
 
         Exception exception = assertThrows(PollNodeAlreadyExistException.class, () -> pollNodeService.create(node));
-        assertEquals("PollNode by id " + node.getId() + " already exist", exception.getMessage());
+        assertEquals("PollNode by id '" + node.getId() + "' already exist", exception.getMessage());
     }
 
     @Test
@@ -79,7 +79,7 @@ public class PollNodeServiceRealizationTest extends PostServiceApplicationTests 
         when(pollNodeRepository.existsById(node.getId())).thenReturn(false);
 
         Exception exception = assertThrows(PollNodeNotFoundException.class, () -> pollNodeService.update(node));
-        assertEquals("PollNode by id " + node.getId() + " is not found", exception.getMessage());
+        assertEquals("PollNode by id '" + node.getId() + "' is not found", exception.getMessage());
     }
 
     @Test
@@ -96,7 +96,7 @@ public class PollNodeServiceRealizationTest extends PostServiceApplicationTests 
 
         Exception exception = assertThrows(PollNodeNotFoundException.class,
                 () -> pollNodeService.findById(node.getId()));
-        assertEquals("PollNode by id " + node.getId() + " is not found", exception.getMessage());
+        assertEquals("PollNode by id '" + node.getId() + "' is not found", exception.getMessage());
     }
 
     @Test
@@ -267,6 +267,6 @@ public class PollNodeServiceRealizationTest extends PostServiceApplicationTests 
 
         Exception exception = assertThrows(
                 PollNodeNotFoundException.class, () -> pollNodeService.deleteById(node.getId()));
-        assertEquals("PollNode by id " + node.getId() + " is not found", exception.getMessage());
+        assertEquals("PollNode by id '" + node.getId() + "' is not found", exception.getMessage());
     }
 }
