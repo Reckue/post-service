@@ -16,12 +16,15 @@ import org.springframework.http.HttpStatus;
 @Builder
 public class ErrorResponse {
 
+    @ApiModelProperty(notes = "Error type")
+    private String title;
+
     @ApiModelProperty(notes = "Error message")
     private String message;
 
     @ApiModelProperty(notes = "Reckue error code")
     private String code;
 
-    @ApiModelProperty(notes = "Cause")
-    private String cause;
+    @ApiModelProperty(notes = "Stack trace with exception message")
+    private String trace;
 }

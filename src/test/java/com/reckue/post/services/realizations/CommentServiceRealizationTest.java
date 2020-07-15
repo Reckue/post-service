@@ -78,7 +78,7 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
         doReturn(true).when(commentRepository).existsById(Mockito.anyString());
 
         Exception exception = assertThrows(CommentAlreadyExistException.class, () -> commentService.create(comment));
-        assertEquals("Comment by id " + comment.getId() + " already exist", exception.getMessage());
+        assertEquals("Comment by id '" + comment.getId() + "' already exist", exception.getMessage());
     }
 
     @Test
@@ -103,7 +103,7 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
         when(commentRepository.existsById(comment.getId())).thenReturn(false);
 
         Exception exception = assertThrows(CommentNotFoundException.class, () -> commentService.update(comment));
-        assertEquals("Comment by id " + comment.getId() + " is not found", exception.getMessage());
+        assertEquals("Comment by id '" + comment.getId() + "' is not found", exception.getMessage());
     }
 
     @Test
@@ -117,7 +117,7 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
     public void findByIdIfNotExist() {
         Exception exception = assertThrows(CommentNotFoundException.class,
                 () -> commentService.findById(comment.getId()));
-        assertEquals("Comment by id " + comment.getId() + " is not found", exception.getMessage());
+        assertEquals("Comment by id '" + comment.getId() + "' is not found", exception.getMessage());
     }
 
     @Test
@@ -313,6 +313,6 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
     public void deleteByIdWithException() {
         Exception exception = assertThrows(CommentNotFoundException.class,
                 () -> commentService.deleteById(comment.getId()));
-        assertEquals("Comment by id " + comment.getId() + " is not found", exception.getMessage());
+        assertEquals("Comment by id '" + comment.getId() + "' is not found", exception.getMessage());
     }
 }

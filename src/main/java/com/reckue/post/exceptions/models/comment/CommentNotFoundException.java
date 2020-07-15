@@ -19,6 +19,6 @@ public class CommentNotFoundException extends ModelNotFoundException {
     }
 
     public CommentNotFoundException(String id) {
-        this.message = "Comment by id " + id + " is not found";
+        this.message = "Comment by id '" + id + "' is not found";
     }
 }

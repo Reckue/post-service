@@ -19,6 +19,6 @@ public class TagNotFoundException extends ModelNotFoundException {
     }
 
     public TagNotFoundException(String id) {
-        message = "Tag by id " + id + " is not found";
+        message = "Tag by id '" + id + "' is not found";
     }
 }

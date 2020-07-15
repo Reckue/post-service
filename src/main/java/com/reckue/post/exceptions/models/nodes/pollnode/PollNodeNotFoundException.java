@@ -19,6 +19,6 @@ public class PollNodeNotFoundException extends ModelNotFoundException {
     }
 
     public PollNodeNotFoundException(String id) {
-        this.message = "PollNode by id " + id + " is not found";
+        this.message = "PollNode by id '" + id + "' is not found";
     }
 }

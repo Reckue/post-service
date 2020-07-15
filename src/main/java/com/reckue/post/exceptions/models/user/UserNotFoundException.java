@@ -17,6 +17,6 @@ public class UserNotFoundException extends ModelNotFoundException {
     }
 
     public UserNotFoundException(String id) {
-        message = "User by id " + id + " is not found";
+        message = "User by id '" + id + "' is not found";
     }
 }

@@ -22,9 +22,10 @@ public class CustomExceptionHandler {
     @ExceptionHandler(ReckueException.class)
     public ResponseEntity<?> handleReckueException(ReckueException e) {
         return new ResponseEntity<>(ErrorResponse.builder()
+                .title(e.getClass().getSimpleName())
                 .code(codeErrors.get(e.getClass()))
                 .message(e.getMessage())
-                .cause(ExceptionUtils.getStackTrace(e))
+                .trace(ExceptionUtils.getStackTrace(e))
                 .build(), httpStatuses.get(e.getClass()));
     }
 }

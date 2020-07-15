@@ -19,6 +19,6 @@ public class PostNotFoundException extends ModelNotFoundException {
     }
 
     public PostNotFoundException(String id) {
-        this.message = "Post by id " + id + " is not found";
+        this.message = "Post by id '" + id + "' is not found";
     }
 }

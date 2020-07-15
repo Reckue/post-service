@@ -19,6 +19,6 @@ public class RatingNotFoundException extends ModelNotFoundException {
     }
 
     public RatingNotFoundException(String id) {
-        this.message = "Rating by id " + id + " is not found";
+        this.message = "Rating by id '" + id + "' is not found";
     }
 }

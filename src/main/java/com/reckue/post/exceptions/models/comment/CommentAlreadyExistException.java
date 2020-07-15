@@ -19,6 +19,6 @@ public class CommentAlreadyExistException extends ModelAlreadyExistsException {
     }
 
     public CommentAlreadyExistException(String id) {
-        message = "Comment by id " + id + " already exist";
+        message = "Comment by id '" + id + "' already exist";
     }
 }

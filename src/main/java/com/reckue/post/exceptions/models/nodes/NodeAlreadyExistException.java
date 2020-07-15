@@ -1,6 +1,7 @@
 package com.reckue.post.exceptions.models.nodes;
 
 import com.reckue.post.exceptions.ModelAlreadyExistsException;
+import lombok.Getter;
 
 /**
  * Class NodeAlreadyExistException is responsible for throwing
@@ -8,6 +9,7 @@ import com.reckue.post.exceptions.ModelAlreadyExistsException;
  *
  * @author Artur Magomedov
  */
+@Getter
 public class NodeAlreadyExistException extends ModelAlreadyExistsException {
 
     private final String message;

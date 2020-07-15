@@ -19,6 +19,6 @@ public class TagAlreadyExistException extends ModelAlreadyExistsException {
     }
 
     public TagAlreadyExistException(String id) {
-        message = "Tag by id " + id + " already exist";
+        message = "Tag by id '" + id + "' already exist";
     }
 }

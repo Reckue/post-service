@@ -54,7 +54,7 @@ public class TagServiceRealizationUnitTest extends PostServiceApplicationTests {
         doReturn(true).when(tagRepository).existsById(Mockito.anyString());
 
         Exception exception = assertThrows(TagAlreadyExistException.class, () -> tagService.create(tag));
-        assertEquals("Tag by id " + tag.getId() + " already exist", exception.getMessage());
+        assertEquals("Tag by id '" + tag.getId() + "' already exist", exception.getMessage());
     }
 
     @Test
@@ -81,7 +81,7 @@ public class TagServiceRealizationUnitTest extends PostServiceApplicationTests {
         when(tagRepository.existsById(tag.getId())).thenReturn(false);
 
         Exception exception = assertThrows(ModelNotFoundException.class, () -> tagService.update(tag));
-        assertEquals("Tag by id " + tag.getId() + " is not found", exception.getMessage());
+        assertEquals("Tag by id '" + tag.getId() + "' is not found", exception.getMessage());
     }
 
     @Test
@@ -97,7 +97,7 @@ public class TagServiceRealizationUnitTest extends PostServiceApplicationTests {
         Tag tag = Tag.builder().id("saturn").name("tricia").build();
 
         Exception exception = assertThrows(ModelNotFoundException.class, () -> tagService.findById(tag.getId()));
-        assertEquals("Tag by id " + tag.getId() + " is not found", exception.getMessage());
+        assertEquals("Tag by id '" + tag.getId() + "' is not found", exception.getMessage());
     }
 
     @Test
@@ -268,6 +268,6 @@ public class TagServiceRealizationUnitTest extends PostServiceApplicationTests {
 
 //        Exception exception = assertThrows(ModelNotFoundException.class, () -> tagService.deleteById(tag.getId()));
         Exception exception = assertThrows(TagNotFoundException.class, () -> tagService.deleteById(tag.getId()));
-        assertEquals("Tag by id " + tag.getId() + " is not found", exception.getMessage());
+        assertEquals("Tag by id '" + tag.getId() + "' is not found", exception.getMessage());
     }
 }

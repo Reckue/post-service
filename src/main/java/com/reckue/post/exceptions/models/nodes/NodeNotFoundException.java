@@ -1,6 +1,7 @@
 package com.reckue.post.exceptions.models.nodes;
 
 import com.reckue.post.exceptions.ModelNotFoundException;
+import lombok.Getter;
 
 /**
  * Class NodeNotFoundException is responsible for throwing
@@ -8,6 +9,7 @@ import com.reckue.post.exceptions.ModelNotFoundException;
  *
  * @author Artur Magomedov
  */
+@Getter
 public class NodeNotFoundException extends ModelNotFoundException {
 
     private final String message;

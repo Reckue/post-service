@@ -96,7 +96,7 @@ public class RatingServiceRealizationTest extends PostServiceApplicationTests {
         doReturn(true).when(postRepository).existsById(rating1.getPostId());
         Exception exception = assertThrows(RatingAlreadyExistException.class, () -> ratingService.create(rating1));
 
-        assertEquals("Rating by id " + rating1.getId() + " already exist", exception.getMessage());
+        assertEquals("Rating by id '" + rating1.getId() + "' already exist", exception.getMessage());
     }
 
     @Test
@@ -106,7 +106,7 @@ public class RatingServiceRealizationTest extends PostServiceApplicationTests {
 
         Exception exception = assertThrows(PostNotFoundException.class, () -> ratingService.create(rating1));
 
-        assertEquals("Post by id " + rating1.getPostId() + " is not found", exception.getMessage());
+        assertEquals("Post by id '" + rating1.getPostId() + "' is not found", exception.getMessage());
     }
 
     @Test
@@ -157,6 +157,6 @@ public class RatingServiceRealizationTest extends PostServiceApplicationTests {
     public void deleteByIdWithException() {
         Exception exception = assertThrows(RatingNotFoundException.class,
                 () -> ratingService.deleteById(rating1.getId()));
-        assertEquals("Rating by id " + rating1.getId() + " is not found", exception.getMessage());
+        assertEquals("Rating by id '" + rating1.getId() + "' is not found", exception.getMessage());
     }
 }

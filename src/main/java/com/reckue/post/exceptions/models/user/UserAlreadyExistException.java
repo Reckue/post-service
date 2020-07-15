@@ -17,6 +17,6 @@ public class UserAlreadyExistException extends ModelAlreadyExistsException {
     }
 
     public UserAlreadyExistException(String id) {
-        message = "User by id " + id + " already exist";
+        message = "User by id '" + id + "' already exist";
     }
 }
