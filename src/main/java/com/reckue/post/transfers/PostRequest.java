@@ -1,10 +1,7 @@
 package com.reckue.post.transfers;
 
-import com.reckue.post.models.Node;
 import com.reckue.post.models.Tag;
 import com.reckue.post.models.types.StatusType;
-import com.reckue.post.transfers.nodes.NodeParentRequest;
-import com.reckue.post.utils.NodeContent;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
@@ -35,6 +32,7 @@ public class PostRequest {
     @ApiModelProperty(notes = "The source used to write the post")
     private String source;
 
+    @NotNull
     @ApiModelProperty(notes = "Post author id")
     private String userId;
 
