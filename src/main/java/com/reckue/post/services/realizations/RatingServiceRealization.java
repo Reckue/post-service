@@ -4,6 +4,7 @@ import com.reckue.post.exceptions.ReckueIllegalArgumentException;
 import com.reckue.post.exceptions.models.post.PostNotFoundException;
 import com.reckue.post.exceptions.models.rating.RatingAlreadyExistException;
 import com.reckue.post.exceptions.models.rating.RatingNotFoundException;
+import com.reckue.post.exceptions.models.user.UserNotFoundException;
 import com.reckue.post.models.Post;
 import com.reckue.post.models.Rating;
 import com.reckue.post.repositories.PostRepository;
@@ -210,8 +211,6 @@ public class RatingServiceRealization implements RatingService {
     @Override
     public int getRatingsCountByPostId(String postId) {
         if (!ratingRepository.existsByPostId(postId)) {
-            // TODO...
-//            throw new ModelNotFoundException("Post identifier '" + postId + "' is not found");
             throw new PostNotFoundException(postId);
         }
         List<Rating> ratings = ratingRepository.findByPostId(postId);
@@ -230,9 +229,7 @@ public class RatingServiceRealization implements RatingService {
     @Override
     public List<Post> findAllPostsWithRatingsByUserId(String userId, Integer limit, Integer offset) {
         if (!ratingRepository.existsByUserId(userId)) {
-            throw new RuntimeException("User identifier '" + userId + "' is not found");
-            // TODO....
-//            throw new ModelNotFoundException("User identifier '" + userId + "' is not found");
+            throw new UserNotFoundException(userId);
         }
         List<Rating> ratings = ratingRepository.findByUserId(userId);
         if (limit == null) limit = 10;
