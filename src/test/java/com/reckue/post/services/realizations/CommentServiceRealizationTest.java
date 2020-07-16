@@ -74,7 +74,7 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
     }
 
     @Test
-    public void createIfCommentAlreadyExist() {
+    public void createIfCommentAlreadyExists() {
         doReturn(true).when(commentRepository).existsById(Mockito.anyString());
 
         Exception exception = assertThrows(CommentAlreadyExistsException.class, () -> commentService.create(comment));

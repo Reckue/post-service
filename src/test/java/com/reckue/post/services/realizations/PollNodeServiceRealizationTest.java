@@ -46,7 +46,7 @@ public class PollNodeServiceRealizationTest extends PostServiceApplicationTests 
     }
 
     @Test
-    public void createIfPollAlreadyExist() {
+    public void createIfPollAlreadyExists() {
         PollNode node = PollNode.builder().id("1").title("title").build();
 
         doReturn(true).when(pollNodeRepository).existsById(Mockito.anyString());

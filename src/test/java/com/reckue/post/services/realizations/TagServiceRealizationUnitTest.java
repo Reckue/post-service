@@ -92,10 +92,10 @@ public class TagServiceRealizationUnitTest extends PostServiceApplicationTests {
     }
 
     @Test
-    public void findByIdIfNotExist() {
+    public void findByIdIfNotExists() {
         Tag tag = Tag.builder().id("saturn").name("tricia").build();
 
-        Exception exception = assertThrows(ModelNotFoundException.class, () -> tagService.findById(tag.getId()));
+        Exception exception = assertThrows(TagNotFoundException.class, () -> tagService.findById(tag.getId()));
         assertEquals("Tag by id '" + tag.getId() + "' is not found", exception.getMessage());
     }
 
