@@ -1,7 +1,6 @@
 package com.reckue.post.services.realizations;
 
 import com.reckue.post.PostServiceApplicationTests;
-import com.reckue.post.exceptions.ModelAlreadyExistsException;
 import com.reckue.post.exceptions.ModelNotFoundException;
 import com.reckue.post.models.Post;
 import com.reckue.post.models.Rating;
@@ -11,7 +10,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,14 +84,6 @@ public class RatingServiceRealizationTest extends PostServiceApplicationTests {
         doReturn(true).when(postRepository).existsById(post.getId());
 
         assertEquals(rating, ratingService.create(rating));
-    }
-
-    @Test
-    public void createIfExists() {
-        doReturn(true).when(ratingRepository).existsById(Mockito.anyString());
-        Exception exception = assertThrows(ModelAlreadyExistsException.class, () -> ratingService.create(rating1));
-
-        assertEquals("Rating already exists", exception.getMessage());
     }
 
     @Test
