@@ -18,7 +18,6 @@ import javax.validation.constraints.NotNull;
 @Builder
 public class NodeRequest {
 
-    @NotNull
     @ApiModelProperty(notes = "Type of node content")
     private NodeType type;
 

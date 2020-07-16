@@ -7,24 +7,14 @@ import com.reckue.post.models.types.NodeType;
 import com.reckue.post.transfers.NodeRequest;
 import com.reckue.post.transfers.NodeResponse;
 import com.reckue.post.transfers.nodes.NodeParentResponse;
-import com.reckue.post.transfers.nodes.audio.AudioNodeRequest;
 import com.reckue.post.transfers.nodes.audio.AudioNodeResponse;
-import com.reckue.post.transfers.nodes.code.CodeNodeRequest;
 import com.reckue.post.transfers.nodes.code.CodeNodeResponse;
-import com.reckue.post.transfers.nodes.image.ImageNodeRequest;
 import com.reckue.post.transfers.nodes.image.ImageNodeResponse;
-import com.reckue.post.transfers.nodes.list.ListNodeRequest;
 import com.reckue.post.transfers.nodes.list.ListNodeResponse;
-import com.reckue.post.transfers.nodes.poll.PollNodeRequest;
 import com.reckue.post.transfers.nodes.poll.PollNodeResponse;
-import com.reckue.post.transfers.nodes.text.TextNodeRequest;
 import com.reckue.post.transfers.nodes.text.TextNodeResponse;
-import com.reckue.post.transfers.nodes.video.VideoNodeRequest;
 import com.reckue.post.transfers.nodes.video.VideoNodeResponse;
-import org.apache.tomcat.jni.Poll;
-import org.w3c.dom.Text;
 
-import java.util.List;
 import java.util.Map;
 
 /**

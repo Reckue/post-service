@@ -19,10 +19,9 @@ server:
 
 spring:
   profiles: staging
-
-MONGO_URI: mongodb://127.0.0.1
-MONGO_PORT: 27017
-MONGO_DBNAME: mongo-staging
+  data:
+    mongodb:
+      database: post-staging
 
 
 --- # develop # ---
@@ -32,7 +31,6 @@ server:
 spring:
   profiles:
     active: develop
-
-MONGO_URI: mongodb://127.0.0.1
-MONGO_PORT: 27017
-MONGO_DBNAME: mongo-develop
+  data:
+    mongodb:
+      database: post-develop

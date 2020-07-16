@@ -1,5 +1,6 @@
 package com.reckue.post.exceptions;
 
+import com.reckue.post.exceptions.models.InvalidModelFieldSizeException;
 import com.reckue.post.exceptions.models.comment.CommentAlreadyExistsException;
 import com.reckue.post.exceptions.models.comment.CommentNotFoundException;
 import com.reckue.post.exceptions.models.nodes.NodeAlreadyExistsException;
@@ -42,5 +43,6 @@ public class CodeErrorDistributor {
         codeErrors.put(PollNodeAlreadyExistsException.class, "RPE-1006");
 
         codeErrors.put(ReckueIllegalArgumentException.class, "RPE-1500");
+        codeErrors.put(InvalidModelFieldSizeException.class, "RPE-1501");
     }
 }

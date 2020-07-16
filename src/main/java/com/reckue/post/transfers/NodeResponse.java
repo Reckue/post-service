@@ -3,7 +3,6 @@ package com.reckue.post.transfers;
 import com.reckue.post.models.types.NodeType;
 import com.reckue.post.models.types.StatusType;
 import com.reckue.post.transfers.nodes.NodeParentResponse;
-import com.reckue.post.utils.NodeContent;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;

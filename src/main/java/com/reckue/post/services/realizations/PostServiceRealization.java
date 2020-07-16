@@ -1,6 +1,7 @@
 package com.reckue.post.services.realizations;
 
 import com.reckue.post.exceptions.ReckueIllegalArgumentException;
+import com.reckue.post.exceptions.models.InvalidModelFieldSizeException;
 import com.reckue.post.exceptions.models.post.PostAlreadyExistsException;
 import com.reckue.post.exceptions.models.post.PostNotFoundException;
 import com.reckue.post.models.Post;
@@ -10,6 +11,7 @@ import com.reckue.post.services.PostService;
 import com.reckue.post.utils.Generator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.Collections;
@@ -36,18 +38,30 @@ public class PostServiceRealization implements PostService {
      * @param post object of class Post
      * @return post object of class Post
      */
+    @Transactional
     @Override
     public Post create(Post post) {
         post.setId(Generator.id());
-        if (!postRepository.existsById(post.getId())) {
-            if (post.getNodes() != null) {
-                post.getNodes().forEach(nodeService::create);
-
-            }
-            return postRepository.save(post);
-        } else {
-            throw new PostAlreadyExistsException(post.getId());
+        validate(post);
+        if (post.getNodes() != null) {
+            post.getNodes().forEach(nodeService::create);
         }
+        return postRepository.save(post);
+    }
+
+    /**
+     * Validate post before sending to database
+     * Throws {@link PostAlreadyExistsException} in case if such object already exists.
+     * Throws {@link InvalidModelFieldSizeException} in case if model field size is invalid.
+     *
+     * @param post post object of class Post
+     */
+    public void validate(Post post) {
+        if (post.getId() != null && postRepository.existsById(post.getId()))
+            throw new PostAlreadyExistsException(post.getId());
+
+        if (post.getTitle().length() < 1)
+            throw new InvalidModelFieldSizeException();
     }
 
     /**
@@ -62,10 +76,7 @@ public class PostServiceRealization implements PostService {
      */
     @Override
     public Post update(Post post) {
-        if (post.getId() == null) {
-            throw new ReckueIllegalArgumentException("The parameter is null");
-        }
-        if (!postRepository.existsById(post.getId())) {
+        if (post.getId() != null && !postRepository.existsById(post.getId())) {
             throw new PostNotFoundException(post.getId());
         }
         Post savedPost = Post.builder()

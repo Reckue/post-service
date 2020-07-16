@@ -1,5 +1,6 @@
 package com.reckue.post.exceptions;
 
+import com.reckue.post.exceptions.models.InvalidModelFieldSizeException;
 import com.reckue.post.exceptions.models.comment.CommentAlreadyExistsException;
 import com.reckue.post.exceptions.models.comment.CommentNotFoundException;
 import com.reckue.post.exceptions.models.nodes.NodeAlreadyExistsException;
@@ -41,5 +42,6 @@ public class HttpStatusErrorDistributor {
         httpStatuses.put(PollNodeAlreadyExistsException.class, HttpStatus.CONFLICT);
 
         httpStatuses.put(ReckueIllegalArgumentException.class, HttpStatus.BAD_REQUEST);
+        httpStatuses.put(InvalidModelFieldSizeException.class, HttpStatus.BAD_REQUEST);
     }
 }

@@ -16,17 +16,18 @@ import com.reckue.post.transfers.nodes.video.VideoNodeResponse;
  *
  * @author Kamila Meshcheryakova
  */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.EXISTING_PROPERTY,
+        property = "type",
+        visible = true)
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = TextNodeResponse.class, name = "text"),
-        @JsonSubTypes.Type(value = ImageNodeResponse.class, name = "image"),
-        @JsonSubTypes.Type(value = VideoNodeResponse.class, name = "video"),
-        @JsonSubTypes.Type(value = CodeNodeResponse.class, name = "code"),
-        @JsonSubTypes.Type(value = ListNodeResponse.class, name = "list"),
-        @JsonSubTypes.Type(value = AudioNodeResponse.class, name = "audio"),
-        @JsonSubTypes.Type(value = PollNodeResponse.class, name = "poll")
+        @JsonSubTypes.Type(value = TextNodeResponse.class, name = "TEXT"),
+        @JsonSubTypes.Type(value = ImageNodeResponse.class, name = "IMAGE"),
+        @JsonSubTypes.Type(value = VideoNodeResponse.class, name = "VIDEO"),
+        @JsonSubTypes.Type(value = CodeNodeResponse.class, name = "CODE"),
+        @JsonSubTypes.Type(value = ListNodeResponse.class, name = "LIST"),
+        @JsonSubTypes.Type(value = AudioNodeResponse.class, name = "AUDIO"),
+        @JsonSubTypes.Type(value = PollNodeResponse.class, name = "POLL")
 })
 public class NodeParentResponse {
 }
