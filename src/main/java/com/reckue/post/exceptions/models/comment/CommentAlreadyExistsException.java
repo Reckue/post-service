@@ -15,10 +15,10 @@ public class CommentAlreadyExistsException extends ModelAlreadyExistsException {
     private final String message;
 
     public CommentAlreadyExistsException() {
-        message = "Comment Already Exist";
+        message = "Comment Already Exists";
     }
 
     public CommentAlreadyExistsException(String id) {
-        message = "Comment by id '" + id + "' already exist";
+        message = "Comment by id '" + id + "' already exists";
     }
 }

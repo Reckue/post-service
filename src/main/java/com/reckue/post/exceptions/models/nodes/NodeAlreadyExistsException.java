@@ -15,10 +15,10 @@ public class NodeAlreadyExistsException extends ModelAlreadyExistsException {
     private final String message;
 
     public NodeAlreadyExistsException() {
-        message = "Node Already Exist";
+        message = "Node Already Exists";
     }
 
     public NodeAlreadyExistsException(String id) {
-        message = "Node by id " + id + " already exist";
+        message = "Node by id " + id + " already exists";
     }
 }

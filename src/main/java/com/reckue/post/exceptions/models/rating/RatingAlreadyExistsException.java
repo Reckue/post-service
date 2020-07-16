@@ -15,10 +15,10 @@ public class RatingAlreadyExistsException extends ModelAlreadyExistsException {
     private final String message;
 
     public RatingAlreadyExistsException() {
-        this.message = "Rating Already Exist";
+        this.message = "Rating Already Exists";
     }
 
     public RatingAlreadyExistsException(String id) {
-        this.message = "Rating by id '" + id + "' already exist";
+        this.message = "Rating by id '" + id + "' already exists";
     }
 }

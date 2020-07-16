@@ -48,12 +48,12 @@ public class TagServiceRealizationUnitTest extends PostServiceApplicationTests {
 
     @Test
     public void createIfTagAlreadyExist() {
-        Tag tag = Tag.builder().id("1").name("exist").build();
+        Tag tag = Tag.builder().id("1").name("exists").build();
 
         doReturn(true).when(tagRepository).existsById(Mockito.anyString());
 
         Exception exception = assertThrows(TagAlreadyExistsException.class, () -> tagService.create(tag));
-        assertEquals("Tag by id '" + tag.getId() + "' already exist", exception.getMessage());
+        assertEquals("Tag by id '" + tag.getId() + "' already exists", exception.getMessage());
     }
 
     @Test

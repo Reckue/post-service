@@ -96,7 +96,7 @@ public class RatingServiceRealizationTest extends PostServiceApplicationTests {
         doReturn(true).when(postRepository).existsById(rating1.getPostId());
         Exception exception = assertThrows(RatingAlreadyExistsException.class, () -> ratingService.create(rating1));
 
-        assertEquals("Rating by id '" + rating1.getId() + "' already exist", exception.getMessage());
+        assertEquals("Rating by id '" + rating1.getId() + "' already exists", exception.getMessage());
     }
 
     @Test

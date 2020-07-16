@@ -15,10 +15,10 @@ public class PollNodeAlreadyExistsException extends ModelAlreadyExistsException 
     private final String message;
 
     public PollNodeAlreadyExistsException() {
-        this.message = "PollNode Already Exist";
+        this.message = "PollNode Already Exists";
     }
 
     public PollNodeAlreadyExistsException(String id) {
-        this.message = "PollNode by id '" + id + "' already exist";
+        this.message = "PollNode by id '" + id + "' already exists";
     }
 }

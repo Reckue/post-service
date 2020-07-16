@@ -15,10 +15,10 @@ public class PostAlreadyExistsException extends ModelAlreadyExistsException {
     private final String message;
 
     public PostAlreadyExistsException() {
-        message = "Post Already Exist";
+        message = "Post Already Exists";
     }
 
     public PostAlreadyExistsException(String id) {
-        message = "Post by id '" + id + "' already exist";
+        message = "Post by id '" + id + "' already exists";
     }
 }

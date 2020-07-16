@@ -15,10 +15,10 @@ public class TagAlreadyExistsException extends ModelAlreadyExistsException {
     private final String message;
 
     public TagAlreadyExistsException() {
-        message = "Tag Already Exist";
+        message = "Tag Already Exists";
     }
 
     public TagAlreadyExistsException(String id) {
-        message = "Tag by id '" + id + "' already exist";
+        message = "Tag by id '" + id + "' already exists";
     }
 }
