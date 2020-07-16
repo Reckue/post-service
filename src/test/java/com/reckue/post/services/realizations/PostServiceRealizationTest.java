@@ -4,9 +4,12 @@ import com.reckue.post.PostServiceApplicationTests;
 import com.reckue.post.exceptions.ReckueIllegalArgumentException;
 import com.reckue.post.exceptions.models.post.PostAlreadyExistsException;
 import com.reckue.post.exceptions.models.post.PostNotFoundException;
+import com.reckue.post.models.Node;
 import com.reckue.post.models.Post;
+import com.reckue.post.models.Tag;
 import com.reckue.post.models.types.StatusType;
 import com.reckue.post.repositories.PostRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -18,8 +21,7 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * Class PostServiceRealizationTest represents test for PostService class.
@@ -47,14 +49,34 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
 
     @Test
     public void update() {
+        Node node = mock(Node.class);
+        Tag tag = mock(Tag.class);
+        Post postRequest = Post.builder()
+                .id("1")
+                .title("newTitle")
+                .nodes(Collections.singletonList(node))
+                .source("newSource")
+                .userId("1")
+                .status(StatusType.ACTIVE)
+                .tags(Collections.singletonList(tag))
+                .build();
         Post postOne = Post.builder()
                 .id("1")
                 .title("postOne")
                 .build();
-        when(postRepository.existsById(postOne.getId())).thenReturn(true);
+        when(postRepository.findById(postRequest.getId())).thenReturn(Optional.of(postOne));
         when(postRepository.save(postOne)).thenReturn(postOne);
 
-        assertEquals(postOne, postService.update(postOne));
+        postService.update(postRequest);
+
+        Assertions.assertAll(
+                () -> assertEquals(postRequest.getTitle(), postOne.getTitle()),
+                () -> assertEquals(postRequest.getNodes(), postOne.getNodes()),
+                () -> assertEquals(postRequest.getSource(), postOne.getSource()),
+                () -> assertEquals(postRequest.getUserId(), postOne.getUserId()),
+                () -> assertEquals(postRequest.getStatus(), postOne.getStatus()),
+                () -> assertEquals(postRequest.getTags(), postOne.getTags())
+        );
     }
 
     @Test

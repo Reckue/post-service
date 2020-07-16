@@ -52,13 +52,10 @@ public class TagServiceRealization implements TagService {
         if (tag.getId() == null) {
             throw new ReckueIllegalArgumentException("The parameter is null");
         }
-        if (!tagRepository.existsById(tag.getId())) {
-            throw new TagNotFoundException(tag.getId());
-        }
-        Tag savedTag = Tag.builder()
-                .id(tag.getId())
-                .name(tag.getName())
-                .build();
+        Tag savedTag = tagRepository
+                .findById(tag.getId())
+                .orElseThrow(() -> new TagNotFoundException(tag.getId()));
+        savedTag.setName(tag.getName());
         return tagRepository.save(savedTag);
     }
 

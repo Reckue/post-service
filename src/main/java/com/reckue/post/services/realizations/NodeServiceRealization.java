@@ -27,7 +27,6 @@ public class NodeServiceRealization implements NodeService {
 
     /**
      * This method is used to create an object of class Node.
-     * Throws {@link IllegalArgumentException} in case if nodes type is not found.
      *
      * @param node object of class Node
      * @return node object of class Node
@@ -52,16 +51,14 @@ public class NodeServiceRealization implements NodeService {
         if (node.getId() == null) {
             throw new ReckueIllegalArgumentException("The parameter is null");
         }
-        if (!nodeRepository.existsById(node.getId())) {
-            throw new NodeNotFoundException(node.getId());
-        }
-        Node savedNode = Node.builder()
-                .id(node.getId())
-                .userId(node.getUserId())
-                .type(node.getType())
-                .source(node.getSource())
-                .status(node.getStatus())
-                .build();
+        Node savedNode = nodeRepository
+                .findById(node.getId())
+                .orElseThrow(() -> new NodeNotFoundException(node.getId()));
+        savedNode.setUserId(node.getUserId());
+        savedNode.setType(node.getType());
+        savedNode.setSource(node.getSource());
+        savedNode.setStatus(node.getStatus());
+
         return nodeRepository.save(savedNode);
     }
 
@@ -121,7 +118,7 @@ public class NodeServiceRealization implements NodeService {
     /**
      * This method is used to sort objects by type.
      *
-     * @param sort type of sorting: type, status, source, published, userId default - id
+     * @param sort type of sorting: type, status, source, createdDate, modificationDate, userId default - id
      * @return list of objects of class Node sorted by the selected parameter for sorting
      */
     public List<Node> findAllBySortType(String sort) {
@@ -132,14 +129,27 @@ public class NodeServiceRealization implements NodeService {
                 return findAllAndSortByStatus();
             case "source":
                 return findAllAndSortBySource();
-            case "published":
+            case "createdDate":
                 return findAllAndSortByCreatedDate();
+            case "modificationDate":
+                return findAllAndSortByModificationDate();
             case "userId":
                 return findAllAndSortByUserId();
             case "id":
                 return findAllAndSortById();
         }
         throw new ReckueIllegalArgumentException("Such field as " + sort + " doesn't exist");
+    }
+
+    /**
+     * This method is used to sort objects by modificationDate.
+     *
+     * @return list of objects of class Node sorted by modificationDate
+     */
+    private List<Node> findAllAndSortByModificationDate() {
+        return findAll().stream()
+                .sorted(Comparator.comparing(Node::getModificationDate))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -198,9 +208,9 @@ public class NodeServiceRealization implements NodeService {
     }
 
     /**
-     * This method is used to sort objects by publication date.
+     * This method is used to sort objects by createdDate.
      *
-     * @return list of objects of class Node sorted by publication date
+     * @return list of objects of class Node sorted by createdDate
      */
     public List<Node> findAllAndSortByCreatedDate() {
         return findAll().stream()

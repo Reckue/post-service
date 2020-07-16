@@ -15,6 +15,7 @@ import com.reckue.post.transfers.nodes.poll.PollNodeResponse;
 import com.reckue.post.transfers.nodes.text.TextNodeResponse;
 import com.reckue.post.transfers.nodes.video.VideoNodeResponse;
 
+import java.time.ZoneId;
 import java.util.Map;
 
 /**
@@ -83,7 +84,8 @@ public class NodeConverter {
                 .postId(node.getPostId())
                 .source(node.getSource())
                 .userId(node.getUserId())
-                .createdDate(node.getCreatedDate())
+                .createdDate(node.getCreatedDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
+                .modificationDate(node.getModificationDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
                 .node((NodeParentResponse) Converter.convert(node.getNode(), targetClass))
                 .status(node.getStatus())
                 .build();

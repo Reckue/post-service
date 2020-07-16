@@ -135,7 +135,7 @@ public class RatingControllerIntTest extends PostServiceApplicationTests {
                 .collect(Collectors.toList());
 
         List<RatingResponse> actual = objectMapper
-                .readValue(this.mockMvc.perform(get("/rating?desc=false&limit=2&offset=0&sort=published"))
+                .readValue(this.mockMvc.perform(get("/rating?desc=false&limit=2&offset=0&sort=createdDate"))
                         .andDo(print())
                         .andExpect(status().isOk())
                         .andReturn()
@@ -154,7 +154,7 @@ public class RatingControllerIntTest extends PostServiceApplicationTests {
                 .collect(Collectors.toList());
 
         List<RatingResponse> actual = objectMapper
-                .readValue(this.mockMvc.perform(get("/rating?desc=true&limit=2&offset=0&sort=published"))
+                .readValue(this.mockMvc.perform(get("/rating?desc=true&limit=2&offset=0&sort=createdDate"))
                         .andDo(print())
                         .andExpect(status().isOk())
                         .andReturn()
@@ -166,12 +166,6 @@ public class RatingControllerIntTest extends PostServiceApplicationTests {
 
     @Test
     void update() throws Exception {
-        RatingResponse expected = RatingConverter.convert(Rating.builder()
-                .id(ratingRepository.findAll().get(0).getId())
-                .userId(ratingRepository.findAll().get(0).getUserId())
-                .postId(ratingRepository.findAll().get(0).getPostId())
-                .build());
-
         String json = objectMapper.writeValueAsString(RatingRequest.builder()
                 .userId(ratingRepository.findAll().get(0).getUserId())
                 .postId(ratingRepository.findAll().get(0).getPostId())
@@ -188,6 +182,12 @@ public class RatingControllerIntTest extends PostServiceApplicationTests {
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse().getContentAsString(), RatingResponse.class);
+
+        RatingResponse expected = RatingResponse.builder()
+                .id(ratingRepository.findAll().get(0).getId())
+                .userId(ratingRepository.findAll().get(0).getUserId())
+                .postId(ratingRepository.findAll().get(0).getPostId())
+                .build();
 
         Assertions.assertAll(
                 () -> assertEquals(expected.getId(), actual.getId()),
@@ -218,11 +218,11 @@ public class RatingControllerIntTest extends PostServiceApplicationTests {
                 .andReturn()
                 .getResponse().getContentAsString(), RatingResponse.class);
 
-        RatingResponse expected = RatingConverter.convert(Rating.builder()
+        RatingResponse expected = RatingResponse.builder()
                 .id(actual.getId())
                 .userId("23")
                 .postId(post.getId())
-                .build());
+                .build();
 
         Assertions.assertAll(
                 () -> assertEquals(expected.getId(), actual.getId()),
@@ -233,25 +233,24 @@ public class RatingControllerIntTest extends PostServiceApplicationTests {
     @Test
     void notSaveNotFoundPost() throws Exception {
 
-        String json = objectMapper.writeValueAsString(RatingRequest.builder()
-                .userId("23")
-                .postId("2020")
+       String json = objectMapper.writeValueAsString(RatingRequest.builder()
+               .userId("23")
+               .postId("2020")
                 .build());
 
-        MockHttpServletRequestBuilder builder = post("/rating")
+       MockHttpServletRequestBuilder builder = post("/rating")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .content(json);
 
-        RatingResponse actual = objectMapper.readValue(this.mockMvc.perform(builder)
-                .andDo(print())
+       RatingResponse actual = objectMapper.readValue(this.mockMvc.perform(builder)
+               .andDo(print())
                 .andExpect(status().isNotFound())
                 .andReturn()
                 .getResponse().getContentAsString(), RatingResponse.class);
 
-        RatingResponse expected = RatingConverter.convert(Rating.builder()
-                .build());
+        RatingResponse expected = RatingResponse.builder().build();
 
         Assertions.assertEquals(expected, actual);
     }

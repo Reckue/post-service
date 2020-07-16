@@ -51,15 +51,11 @@ public class RatingServiceRealization implements RatingService {
 
     /**
      * This method is used to check rating validation.
-     * Throws {@link RatingAlreadyExistsException} in case if such object already exists.
      * Throws {@link PostNotFoundException} in case if such object isn't contained in database.
      *
      * @param rating object of class Rating
      */
     public void validateCreatingRating(Rating rating) {
-        if (ratingRepository.existsById(rating.getId())) {
-            throw new RatingAlreadyExistsException(rating.getId());
-        }
         if (!postRepository.existsById(rating.getPostId())) {
             throw new PostNotFoundException(rating.getPostId());
         }
@@ -75,20 +71,16 @@ public class RatingServiceRealization implements RatingService {
      * @param rating object of class Rating
      * @return rating object of class Rating
      */
-
     @Override
     public Rating update(Rating rating) {
         if (rating.getId() == null) {
             throw new ReckueIllegalArgumentException("The parameter is null");
         }
-        Rating existRating = ratingRepository.findById(rating.getId())
+        Rating savedRating = ratingRepository
+                .findById(rating.getId())
                 .orElseThrow(() -> new RatingNotFoundException(rating.getId()));
-
-        Rating savedRating = Rating.builder()
-                .id(existRating.getId())
-                .userId(existRating.getUserId())
-                .postId(existRating.getPostId())
-                .build();
+        savedRating.setUserId(savedRating.getUserId());
+        savedRating.setPostId(savedRating.getPostId());
         return ratingRepository.save(savedRating);
     }
 
@@ -147,14 +139,16 @@ public class RatingServiceRealization implements RatingService {
     /**
      * This method is used to sort objects by type.
      *
-     * @param sort type of sorting: published, default - id
+     * @param sort type of sorting: createdDate, modificationDate, default - id
      * @return list of objects of class Rating sorted by the selected parameter for sorting
      */
     public List<Rating> findAllBySortType(String sort) {
 
         switch (sort) {
-            case "published":
+            case "createdDate":
                 return findAllAndSortByCreatedDate();
+            case "modificationDate":
+                return findAllAndSortByModificationDate();
             case "id":
                 return findAllAndSortById();
         }
@@ -173,13 +167,24 @@ public class RatingServiceRealization implements RatingService {
     }
 
     /**
-     * This method is used to sort objects by created date.
+     * This method is used to sort objects by createdDate.
      *
-     * @return list of objects of class Rating sorted by published
+     * @return list of objects of class Rating sorted by createdDate
      */
     public List<Rating> findAllAndSortByCreatedDate() {
         return findAll().stream()
                 .sorted(Comparator.comparing(Rating::getCreatedDate))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * This method is used to sort objects by modificationDate.
+     *
+     * @return list of objects of class Rating sorted by modificationDate
+     */
+    public List<Rating> findAllAndSortByModificationDate() {
+        return findAll().stream()
+                .sorted(Comparator.comparing(Rating::getModificationDate))
                 .collect(Collectors.toList());
     }
 

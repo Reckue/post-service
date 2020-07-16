@@ -20,7 +20,6 @@ public interface NodeApi {
     @ApiOperation(value = "Add a node")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "The node successfully added"),
-            @ApiResponse(code = 409, message = "The node you want to add already exists"),
             @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")})
     NodeResponse create(NodeRequest nodeRequest);
 

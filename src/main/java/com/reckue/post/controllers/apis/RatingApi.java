@@ -21,7 +21,6 @@ public interface RatingApi {
     @ApiOperation(value = "Add a rating")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "The rating successfully added"),
-            @ApiResponse(code = 409, message = "The rating you want to add already exists"),
             @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")})
     RatingResponse create(RatingRequest ratingRequest);
 

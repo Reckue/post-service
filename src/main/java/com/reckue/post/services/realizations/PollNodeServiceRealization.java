@@ -52,14 +52,11 @@ public class PollNodeServiceRealization implements PollNodeService {
         if (node.getId() == null) {
             throw new ReckueIllegalArgumentException("The parameter is null");
         }
-        if (!pollNodeRepository.existsById(node.getId())) {
-            throw new PollNodeNotFoundException(node.getId());
-        }
-        PollNode savedPollNode = PollNode.builder()
-                .id(node.getId())
-                .title(node.getTitle())
-                .items(node.getItems())
-                .build();
+        PollNode savedPollNode = pollNodeRepository
+                .findById(node.getId())
+                .orElseThrow(() -> new PollNodeNotFoundException(node.getId()));
+        savedPollNode.setTitle(node.getTitle());
+        savedPollNode.setItems(node.getItems());
         return pollNodeRepository.save(savedPollNode);
     }
 

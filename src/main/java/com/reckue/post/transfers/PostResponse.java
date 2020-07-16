@@ -6,7 +6,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -36,11 +35,11 @@ public class PostResponse {
     @ApiModelProperty(notes = "List of keywords used in the post")
     private List<Tag> tags;
 
-    @ApiModelProperty(notes = "Publication date")
-    private LocalDateTime createdDate;
+    @ApiModelProperty(notes = "Created date")
+    private long createdDate;
 
-    @ApiModelProperty(notes = "Date of changes")
-    private LocalDateTime modificationDate;
+    @ApiModelProperty(notes = "Modification date")
+    private long modificationDate;
 
     @ApiModelProperty(notes = "Post activity status")
     private StatusType status;

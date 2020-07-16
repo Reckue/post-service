@@ -74,10 +74,31 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
 
     @Test
     public void update() {
-        when(commentRepository.existsById(comment.getId())).thenReturn(true);
+        Comment commentRequest = Comment.builder()
+                .id("1")
+                .text("newText")
+                .userId("2")
+                .postId("3")
+                .comments(Collections.singletonList(comment))
+                .build();
+
+        Comment comment = Comment.builder()
+                .id("1")
+                .text("text")
+                .userId("2jjjj")
+                .postId("4ijkml")
+                .build();
+        when(commentRepository.findById(commentRequest.getId())).thenReturn(Optional.of(comment));
         when(commentRepository.save(comment)).thenReturn(comment);
 
-        Assertions.assertEquals(comment, commentService.update(comment));
+        commentService.update(commentRequest);
+
+        Assertions.assertAll(
+                () -> assertEquals(commentRequest.getText(), comment.getText()),
+                () -> assertEquals(commentRequest.getUserId(), comment.getUserId()),
+                () -> assertEquals(commentRequest.getPostId(), comment.getPostId()),
+                () -> assertEquals(commentRequest.getComments(), comment.getComments())
+        );
     }
 
     @Test
@@ -209,7 +230,7 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
         assertEquals(sortedByTextExpected, commentService.findAllBySortType("text"));
         assertEquals(sortedByUserIdExpected, commentService.findAllBySortType("userId"));
         assertEquals(sortedByPostIdExpected, commentService.findAllBySortType("postId"));
-        assertEquals(sortedByPublishedExpected, commentService.findAllBySortType("published"));
+        assertEquals(sortedByPublishedExpected, commentService.findAllBySortType("createdDate"));
     }
 
     @Test
@@ -241,7 +262,7 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
         assertEquals(sortByTextAndDescExpected, commentService.findAllByTypeAndDesc("text", true));
         assertEquals(sortByUserIdAndDescExpected, commentService.findAllByTypeAndDesc("userId", true));
         assertEquals(sortByPostIdAndDescExpected, commentService.findAllByTypeAndDesc("postId", true));
-        assertEquals(sortByPublishedAndDescExpected, commentService.findAllByTypeAndDesc("published", true));
+        assertEquals(sortByPublishedAndDescExpected, commentService.findAllByTypeAndDesc("createdDate", true));
     }
 
     @Test
@@ -282,7 +303,7 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
         assertEquals(test2, commentService.findAll(3, 0, "text", true));
         assertEquals(test3, commentService.findAll(1, 2, "userId", false));
         assertEquals(test4, commentService.findAll(2, 1, "postId", false));
-        assertEquals(test5, commentService.findAll(2, 1, "published", true));
+        assertEquals(test5, commentService.findAll(2, 1, "createdDate", true));
     }
 
     @Test
