@@ -2,7 +2,7 @@ package com.reckue.post.services.realizations;
 
 import com.reckue.post.exceptions.ReckueIllegalArgumentException;
 import com.reckue.post.exceptions.models.post.PostNotFoundException;
-import com.reckue.post.exceptions.models.rating.RatingAlreadyExistException;
+import com.reckue.post.exceptions.models.rating.RatingAlreadyExistsException;
 import com.reckue.post.exceptions.models.rating.RatingNotFoundException;
 import com.reckue.post.exceptions.models.user.UserNotFoundException;
 import com.reckue.post.models.Post;
@@ -53,14 +53,14 @@ public class RatingServiceRealization implements RatingService {
 
     /**
      * This method is used to check rating validation.
-     * Throws {@link RatingAlreadyExistException} in case if such object already exists.
+     * Throws {@link RatingAlreadyExistsException} in case if such object already exists.
      * Throws {@link PostNotFoundException} in case if such object isn't contained in database.
      *
      * @param rating object of class Rating
      */
     public void validateCreatingRating(Rating rating) {
         if (ratingRepository.existsById(rating.getId())) {
-            throw new RatingAlreadyExistException(rating.getId());
+            throw new RatingAlreadyExistsException(rating.getId());
         }
         if (!postRepository.existsById(rating.getPostId())) {
             throw new PostNotFoundException(rating.getPostId());

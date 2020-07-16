@@ -2,7 +2,7 @@ package com.reckue.post.services.realizations;
 
 
 import com.reckue.post.exceptions.ReckueIllegalArgumentException;
-import com.reckue.post.exceptions.models.comment.CommentAlreadyExistException;
+import com.reckue.post.exceptions.models.comment.CommentAlreadyExistsException;
 import com.reckue.post.exceptions.models.comment.CommentNotFoundException;
 import com.reckue.post.models.Comment;
 import com.reckue.post.repositories.CommentRepository;
@@ -30,7 +30,7 @@ public class CommentServiceRealization implements CommentService {
 
     /**
      * This method is used to create an object of class Comment.
-     * Throws {@link CommentAlreadyExistException} in case if such object already exists.
+     * Throws {@link CommentAlreadyExistsException} in case if such object already exists.
      *
      * @param comment object of class Comment
      * @return comment object of class Comment
@@ -41,7 +41,7 @@ public class CommentServiceRealization implements CommentService {
         if (!commentRepository.existsById(comment.getId())) {
             return commentRepository.save(comment);
         } else {
-            throw new CommentAlreadyExistException(comment.getId());
+            throw new CommentAlreadyExistsException(comment.getId());
         }
     }
 

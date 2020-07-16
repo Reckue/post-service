@@ -4,21 +4,21 @@ import com.reckue.post.exceptions.ModelAlreadyExistsException;
 import lombok.Getter;
 
 /**
- * Class CommentAlreadyExistException is responsible for throwing
+ * Class CommentAlreadyExistsException is responsible for throwing
  * exception when the created Comment already exists in database.
  *
  * @author Artur Magomedov
  */
 @Getter
-public class CommentAlreadyExistException extends ModelAlreadyExistsException {
+public class CommentAlreadyExistsException extends ModelAlreadyExistsException {
 
     private final String message;
 
-    public CommentAlreadyExistException() {
+    public CommentAlreadyExistsException() {
         message = "Comment Already Exist";
     }
 
-    public CommentAlreadyExistException(String id) {
+    public CommentAlreadyExistsException(String id) {
         message = "Comment by id '" + id + "' already exist";
     }
 }

@@ -1,7 +1,7 @@
 package com.reckue.post.services.realizations;
 
 import com.reckue.post.exceptions.ReckueIllegalArgumentException;
-import com.reckue.post.exceptions.models.nodes.pollnode.PollNodeAlreadyExistException;
+import com.reckue.post.exceptions.models.nodes.pollnode.PollNodeAlreadyExistsException;
 import com.reckue.post.exceptions.models.nodes.pollnode.PollNodeNotFoundException;
 import com.reckue.post.models.nodes.PollNode;
 import com.reckue.post.repositories.PollNodeRepository;
@@ -29,7 +29,7 @@ public class PollNodeServiceRealization implements PollNodeService {
 
     /**
      * This method is used to create an object of class PollNode.
-     * Throws {@link PollNodeAlreadyExistException} in case if such object already exists.
+     * Throws {@link PollNodeAlreadyExistsException} in case if such object already exists.
      *
      * @param node object of class PollNode
      * @return node object of class PollNode
@@ -40,7 +40,7 @@ public class PollNodeServiceRealization implements PollNodeService {
         if (!pollNodeRepository.existsById(node.getId())) {
             return pollNodeRepository.save(node);
         } else {
-            throw new PollNodeAlreadyExistException(node.getId());
+            throw new PollNodeAlreadyExistsException(node.getId());
         }
     }
 

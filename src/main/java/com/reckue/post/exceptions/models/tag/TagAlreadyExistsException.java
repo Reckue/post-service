@@ -4,21 +4,21 @@ import com.reckue.post.exceptions.ModelAlreadyExistsException;
 import lombok.Getter;
 
 /**
- * Class TagAlreadyExistException is responsible for throwing
+ * Class TagAlreadyExistsException is responsible for throwing
  * exception when the created Tag already exists in database.
  *
  * @author Artur Magomedov
  */
 @Getter
-public class TagAlreadyExistException extends ModelAlreadyExistsException {
+public class TagAlreadyExistsException extends ModelAlreadyExistsException {
 
     private final String message;
 
-    public TagAlreadyExistException() {
+    public TagAlreadyExistsException() {
         message = "Tag Already Exist";
     }
 
-    public TagAlreadyExistException(String id) {
+    public TagAlreadyExistsException(String id) {
         message = "Tag by id '" + id + "' already exist";
     }
 }

@@ -3,7 +3,7 @@ package com.reckue.post.services.realizations;
 import com.reckue.post.PostServiceApplicationTests;
 import com.reckue.post.exceptions.ReckueIllegalArgumentException;
 import com.reckue.post.exceptions.models.post.PostNotFoundException;
-import com.reckue.post.exceptions.models.rating.RatingAlreadyExistException;
+import com.reckue.post.exceptions.models.rating.RatingAlreadyExistsException;
 import com.reckue.post.exceptions.models.rating.RatingNotFoundException;
 import com.reckue.post.models.Post;
 import com.reckue.post.models.Rating;
@@ -94,7 +94,7 @@ public class RatingServiceRealizationTest extends PostServiceApplicationTests {
     public void createIfExists() {
         doReturn(true).when(ratingRepository).existsById(Mockito.anyString());
         doReturn(true).when(postRepository).existsById(rating1.getPostId());
-        Exception exception = assertThrows(RatingAlreadyExistException.class, () -> ratingService.create(rating1));
+        Exception exception = assertThrows(RatingAlreadyExistsException.class, () -> ratingService.create(rating1));
 
         assertEquals("Rating by id '" + rating1.getId() + "' already exist", exception.getMessage());
     }

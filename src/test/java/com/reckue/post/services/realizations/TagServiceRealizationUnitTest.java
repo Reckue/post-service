@@ -1,10 +1,9 @@
 package com.reckue.post.services.realizations;
 
 import com.reckue.post.PostServiceApplicationTests;
-import com.reckue.post.exceptions.ModelAlreadyExistsException;
 import com.reckue.post.exceptions.ModelNotFoundException;
 import com.reckue.post.exceptions.ReckueIllegalArgumentException;
-import com.reckue.post.exceptions.models.tag.TagAlreadyExistException;
+import com.reckue.post.exceptions.models.tag.TagAlreadyExistsException;
 import com.reckue.post.exceptions.models.tag.TagNotFoundException;
 import com.reckue.post.models.Tag;
 import com.reckue.post.repositories.TagRepository;
@@ -53,7 +52,7 @@ public class TagServiceRealizationUnitTest extends PostServiceApplicationTests {
 
         doReturn(true).when(tagRepository).existsById(Mockito.anyString());
 
-        Exception exception = assertThrows(TagAlreadyExistException.class, () -> tagService.create(tag));
+        Exception exception = assertThrows(TagAlreadyExistsException.class, () -> tagService.create(tag));
         assertEquals("Tag by id '" + tag.getId() + "' already exist", exception.getMessage());
     }
 

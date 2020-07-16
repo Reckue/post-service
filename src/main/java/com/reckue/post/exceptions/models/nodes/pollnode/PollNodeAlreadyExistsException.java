@@ -4,21 +4,21 @@ import com.reckue.post.exceptions.ModelAlreadyExistsException;
 import lombok.Getter;
 
 /**
- * Class PollNodeAlreadyExistException is responsible for throwing
+ * Class PollNodeAlreadyExistsException is responsible for throwing
  * exception when the created PollNode already exists in database.
  *
  * @author Artur Magomedov
  */
 @Getter
-public class PollNodeAlreadyExistException extends ModelAlreadyExistsException {
+public class PollNodeAlreadyExistsException extends ModelAlreadyExistsException {
 
     private final String message;
 
-    public PollNodeAlreadyExistException() {
+    public PollNodeAlreadyExistsException() {
         this.message = "PollNode Already Exist";
     }
 
-    public PollNodeAlreadyExistException(String id) {
+    public PollNodeAlreadyExistsException(String id) {
         this.message = "PollNode by id '" + id + "' already exist";
     }
 }

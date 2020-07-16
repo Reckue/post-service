@@ -4,21 +4,21 @@ import com.reckue.post.exceptions.ModelAlreadyExistsException;
 import lombok.Getter;
 
 /**
- * Class PostAlreadyExistException is responsible for throwing
+ * Class PostAlreadyExistsException is responsible for throwing
  * exception when the created Post already exists in database.
  *
  * @author Artur Magomedov
  */
 @Getter
-public class PostAlreadyExistException extends ModelAlreadyExistsException {
+public class PostAlreadyExistsException extends ModelAlreadyExistsException {
 
     private final String message;
 
-    public PostAlreadyExistException() {
+    public PostAlreadyExistsException() {
         message = "Post Already Exist";
     }
 
-    public PostAlreadyExistException(String id) {
+    public PostAlreadyExistsException(String id) {
         message = "Post by id '" + id + "' already exist";
     }
 }

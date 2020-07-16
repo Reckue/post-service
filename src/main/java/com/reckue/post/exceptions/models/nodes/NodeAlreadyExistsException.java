@@ -4,21 +4,21 @@ import com.reckue.post.exceptions.ModelAlreadyExistsException;
 import lombok.Getter;
 
 /**
- * Class NodeAlreadyExistException is responsible for throwing
+ * Class NodeAlreadyExistsException is responsible for throwing
  * exception when the created Node already exists in database.
  *
  * @author Artur Magomedov
  */
 @Getter
-public class NodeAlreadyExistException extends ModelAlreadyExistsException {
+public class NodeAlreadyExistsException extends ModelAlreadyExistsException {
 
     private final String message;
 
-    public NodeAlreadyExistException() {
+    public NodeAlreadyExistsException() {
         message = "Node Already Exist";
     }
 
-    public NodeAlreadyExistException(String id) {
+    public NodeAlreadyExistsException(String id) {
         message = "Node by id " + id + " already exist";
     }
 }

@@ -1,7 +1,7 @@
 package com.reckue.post.services.realizations;
 
 import com.reckue.post.exceptions.ReckueIllegalArgumentException;
-import com.reckue.post.exceptions.models.nodes.NodeAlreadyExistException;
+import com.reckue.post.exceptions.models.nodes.NodeAlreadyExistsException;
 import com.reckue.post.exceptions.models.nodes.NodeNotFoundException;
 import com.reckue.post.models.Node;
 import com.reckue.post.repositories.NodeRepository;
@@ -31,7 +31,7 @@ public class NodeServiceRealization implements NodeService {
 
     /**
      * This method is used to create an object of class Node.
-     * Throws {@link NodeAlreadyExistException} in case if nodes type is already exist.
+     * Throws {@link NodeAlreadyExistsException} in case if nodes type is already exist.
      *
      * @param node object of class Node
      * @return node object of class Node
@@ -42,7 +42,7 @@ public class NodeServiceRealization implements NodeService {
         if (!nodeRepository.existsById(node.getId())) {
             return nodeRepository.save(node);
         } else {
-            throw new NodeAlreadyExistException(node.getId());
+            throw new NodeAlreadyExistsException(node.getId());
         }
     }
 

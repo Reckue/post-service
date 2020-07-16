@@ -1,7 +1,7 @@
 package com.reckue.post.services.realizations;
 
 import com.reckue.post.exceptions.ReckueIllegalArgumentException;
-import com.reckue.post.exceptions.models.post.PostAlreadyExistException;
+import com.reckue.post.exceptions.models.post.PostAlreadyExistsException;
 import com.reckue.post.exceptions.models.post.PostNotFoundException;
 import com.reckue.post.models.Post;
 import com.reckue.post.repositories.PostRepository;
@@ -31,7 +31,7 @@ public class PostServiceRealization implements PostService {
 
     /**
      * This method is used to create an object of class Post.
-     * Throws {@link PostAlreadyExistException} in case if such object already exists.
+     * Throws {@link PostAlreadyExistsException} in case if such object already exists.
      *
      * @param post object of class Post
      * @return post object of class Post
@@ -46,7 +46,7 @@ public class PostServiceRealization implements PostService {
             }
             return postRepository.save(post);
         } else {
-            throw new PostAlreadyExistException(post.getId());
+            throw new PostAlreadyExistsException(post.getId());
         }
     }
 

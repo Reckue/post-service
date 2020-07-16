@@ -2,7 +2,7 @@ package com.reckue.post.services.realizations;
 
 import com.reckue.post.PostServiceApplicationTests;
 import com.reckue.post.exceptions.ReckueIllegalArgumentException;
-import com.reckue.post.exceptions.models.comment.CommentAlreadyExistException;
+import com.reckue.post.exceptions.models.comment.CommentAlreadyExistsException;
 import com.reckue.post.exceptions.models.comment.CommentNotFoundException;
 import com.reckue.post.models.Comment;
 import com.reckue.post.repositories.CommentRepository;
@@ -77,7 +77,7 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
     public void createIfCommentAlreadyExist() {
         doReturn(true).when(commentRepository).existsById(Mockito.anyString());
 
-        Exception exception = assertThrows(CommentAlreadyExistException.class, () -> commentService.create(comment));
+        Exception exception = assertThrows(CommentAlreadyExistsException.class, () -> commentService.create(comment));
         assertEquals("Comment by id '" + comment.getId() + "' already exist", exception.getMessage());
     }
 

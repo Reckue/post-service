@@ -2,7 +2,7 @@ package com.reckue.post.services.realizations;
 
 import com.reckue.post.PostServiceApplicationTests;
 import com.reckue.post.exceptions.ReckueIllegalArgumentException;
-import com.reckue.post.exceptions.models.post.PostAlreadyExistException;
+import com.reckue.post.exceptions.models.post.PostAlreadyExistsException;
 import com.reckue.post.exceptions.models.post.PostNotFoundException;
 import com.reckue.post.models.Post;
 import com.reckue.post.models.types.StatusType;
@@ -54,7 +54,7 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
                 .build();
         doReturn(true).when(postRepository).existsById(Mockito.anyString());
 
-        assertThrows(PostAlreadyExistException.class, () -> postService.create(postOne));
+        assertThrows(PostAlreadyExistsException.class, () -> postService.create(postOne));
     }
 
     @Test

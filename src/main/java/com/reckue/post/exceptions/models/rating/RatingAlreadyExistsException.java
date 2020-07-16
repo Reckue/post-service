@@ -4,21 +4,21 @@ import com.reckue.post.exceptions.ModelAlreadyExistsException;
 import lombok.Getter;
 
 /**
- * Class RatingAlreadyExistException is responsible for throwing
+ * Class RatingAlreadyExistsException is responsible for throwing
  * exception when the created Rating already exists in database.
  *
  * @author Artur Magomedov
  */
 @Getter
-public class RatingAlreadyExistException extends ModelAlreadyExistsException {
+public class RatingAlreadyExistsException extends ModelAlreadyExistsException {
 
     private final String message;
 
-    public RatingAlreadyExistException() {
+    public RatingAlreadyExistsException() {
         this.message = "Rating Already Exist";
     }
 
-    public RatingAlreadyExistException(String id) {
+    public RatingAlreadyExistsException(String id) {
         this.message = "Rating by id '" + id + "' already exist";
     }
 }
