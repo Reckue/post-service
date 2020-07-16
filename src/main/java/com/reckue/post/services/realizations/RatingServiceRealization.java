@@ -210,8 +210,11 @@ public class RatingServiceRealization implements RatingService {
      */
     @Override
     public int getRatingsCountByPostId(String postId) {
-        if (!ratingRepository.existsByPostId(postId)) {
+        if (!postRepository.existsById(postId)) {
             throw new PostNotFoundException(postId);
+        }
+        if (postRepository.existsById(postId) && !ratingRepository.existsByPostId(postId)) {
+            return 0;
         }
         List<Rating> ratings = ratingRepository.findByPostId(postId);
         return ratings.size();
