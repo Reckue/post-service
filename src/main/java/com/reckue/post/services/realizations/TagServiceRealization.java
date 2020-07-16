@@ -6,7 +6,6 @@ import com.reckue.post.exceptions.models.tag.TagNotFoundException;
 import com.reckue.post.models.Tag;
 import com.reckue.post.repositories.TagRepository;
 import com.reckue.post.services.TagService;
-import com.reckue.post.utils.Generator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -29,19 +28,13 @@ public class TagServiceRealization implements TagService {
 
     /**
      * This method is used to create an object of class Tag.
-     * Throws {@link TagAlreadyExistsException} in case if such object already exists.
      *
      * @param tag object of class Tag
      * @return tag object of class Tag
      */
     @Override
     public Tag create(Tag tag) {
-        tag.setId(Generator.id());
-        if (!tagRepository.existsById(tag.getId())) {
-            return tagRepository.save(tag);
-        } else {
-            throw new TagAlreadyExistsException(tag.getId());
-        }
+        return tagRepository.save(tag);
     }
 
     /**

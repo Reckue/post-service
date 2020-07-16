@@ -7,7 +7,6 @@ import com.reckue.post.exceptions.models.comment.CommentNotFoundException;
 import com.reckue.post.models.Comment;
 import com.reckue.post.repositories.CommentRepository;
 import com.reckue.post.services.CommentService;
-import com.reckue.post.utils.Generator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -37,12 +36,7 @@ public class CommentServiceRealization implements CommentService {
      */
     @Override
     public Comment create(Comment comment) {
-        comment.setId(Generator.id());
-        if (!commentRepository.existsById(comment.getId())) {
-            return commentRepository.save(comment);
-        } else {
-            throw new CommentAlreadyExistsException(comment.getId());
-        }
+        return commentRepository.save(comment);
     }
 
     /**
@@ -68,7 +62,7 @@ public class CommentServiceRealization implements CommentService {
                 .text(comment.getText())
                 .postId(comment.getPostId())
                 .userId(comment.getUserId())
-                .published(comment.getPublished())
+                .createdDate(comment.getCreatedDate())
                 .comments(comment.getComments())
                 .build();
 
@@ -144,7 +138,7 @@ public class CommentServiceRealization implements CommentService {
             case "postId":
                 return findAllAndSortByPostId();
             case "published":
-                return findAllAndSortByPublished();
+                return findAllAndSortByCreatedDate();
         }
         throw new ReckueIllegalArgumentException("Such field as " + sort + " doesn't exist");
     }
@@ -198,9 +192,9 @@ public class CommentServiceRealization implements CommentService {
      *
      * @return list of objects of class Comment sorted by published date
      */
-    public List<Comment> findAllAndSortByPublished() {
+    public List<Comment> findAllAndSortByCreatedDate() {
         return findAll().stream()
-                .sorted(Comparator.comparing(Comment::getPublished))
+                .sorted(Comparator.comparing(Comment::getCreatedDate))
                 .collect(Collectors.toList());
     }
 

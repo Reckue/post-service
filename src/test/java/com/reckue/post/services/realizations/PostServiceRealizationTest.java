@@ -10,17 +10,16 @@ import com.reckue.post.repositories.PostRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.when;
 
 /**
  * Class PostServiceRealizationTest represents test for PostService class.
@@ -44,17 +43,6 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
         when(postRepository.save(post)).thenReturn(post);
 
         assertEquals(post, postService.create(post));
-    }
-
-    @Test
-    public void createWithExistId() {
-        Post postOne = Post.builder()
-                .id("1")
-                .title("postOne")
-                .build();
-        doReturn(true).when(postRepository).existsById(Mockito.anyString());
-
-        assertThrows(PostAlreadyExistsException.class, () -> postService.create(postOne));
     }
 
     @Test
@@ -194,34 +182,46 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
 
     @Test
     public void findAllSortByPublished() {
-        Post postOne = Post.builder().published(1).build();
-        Post postTwo = Post.builder().published(2).build();
-        Post postThree = Post.builder().published(3).build();
+        Post postOne = Post.builder()
+                .createdDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(1), TimeZone.getDefault().toZoneId()))
+                .build();
+        Post postTwo = Post.builder()
+                .createdDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(2), TimeZone.getDefault().toZoneId()))
+                .build();
+        Post postThree = Post.builder()
+                .createdDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(3), TimeZone.getDefault().toZoneId()))
+                .build();
         List<Post> posts = List.of(postOne, postTwo, postThree);
 
         when(postRepository.findAll()).thenReturn(posts);
 
         List<Post> expected = posts.stream()
-                .sorted(Comparator.comparing(Post::getPublished))
+                .sorted(Comparator.comparing(Post::getCreatedDate))
                 .collect(Collectors.toList());
 
-        assertEquals(expected, postService.findAllAndSortByPublished());
+        assertEquals(expected, postService.findAllAndSortByCreatedDate());
     }
 
     @Test
     public void findAllSortByChanged() {
-        Post postOne = Post.builder().changed(1).build();
-        Post postTwo = Post.builder().changed(2).build();
-        Post postThree = Post.builder().changed(3).build();
+        Post postOne = Post.builder()
+                .modificationDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(1), TimeZone.getDefault().toZoneId()))
+                .build();
+        Post postTwo = Post.builder()
+                .modificationDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(2), TimeZone.getDefault().toZoneId()))
+                .build();
+        Post postThree = Post.builder()
+                .modificationDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(3), TimeZone.getDefault().toZoneId()))
+                .build();
         List<Post> posts = List.of(postOne, postTwo, postThree);
 
         when(postRepository.findAll()).thenReturn(posts);
 
         List<Post> expected = posts.stream()
-                .sorted(Comparator.comparing(Post::getChanged))
+                .sorted(Comparator.comparing(Post::getModificationDate))
                 .collect(Collectors.toList());
 
-        assertEquals(expected, postService.findAllAndSortByChanged());
+        assertEquals(expected, postService.findAllAndSortByModificationDate());
     }
 
     @Test

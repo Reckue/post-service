@@ -7,7 +7,6 @@ import com.reckue.post.exceptions.models.tag.TagAlreadyExistsException;
 import com.reckue.post.exceptions.models.tag.TagNotFoundException;
 import com.reckue.post.models.Tag;
 import com.reckue.post.repositories.TagRepository;
-import com.reckue.post.utils.Generator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -39,21 +38,10 @@ public class TagServiceRealizationUnitTest extends PostServiceApplicationTests {
 
     @Test
     public void create() {
-        String ID = Generator.id();
-        Tag tag = Tag.builder().id(ID).name("core").build();
+        Tag tag = Tag.builder().name("core").build();
         when(tagRepository.save(tag)).thenReturn(tag);
 
         assertEquals(tag, tagService.create(tag));
-    }
-
-    @Test
-    public void createIfTagAlreadyExist() {
-        Tag tag = Tag.builder().id("1").name("exists").build();
-
-        doReturn(true).when(tagRepository).existsById(Mockito.anyString());
-
-        Exception exception = assertThrows(TagAlreadyExistsException.class, () -> tagService.create(tag));
-        assertEquals("Tag by id '" + tag.getId() + "' already exists", exception.getMessage());
     }
 
     @Test

@@ -1,14 +1,12 @@
 package com.reckue.post.transfers;
 
-import com.reckue.post.models.Node;
 import com.reckue.post.models.Tag;
 import com.reckue.post.models.types.StatusType;
-import com.reckue.post.transfers.nodes.NodeParentResponse;
-import com.reckue.post.utils.NodeContent;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -39,10 +37,10 @@ public class PostResponse {
     private List<Tag> tags;
 
     @ApiModelProperty(notes = "Publication date")
-    private long published;
+    private LocalDateTime createdDate;
 
     @ApiModelProperty(notes = "Date of changes")
-    private long changed;
+    private LocalDateTime modificationDate;
 
     @ApiModelProperty(notes = "Post activity status")
     private StatusType status;

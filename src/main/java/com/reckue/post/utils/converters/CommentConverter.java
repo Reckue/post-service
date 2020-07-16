@@ -26,7 +26,6 @@ public class CommentConverter {
                 .text(commentRequest.getText())
                 .userId(commentRequest.getUserId())
                 .postId(commentRequest.getPostId())
-                .published(commentRequest.getPublished())
                 .comments(commentRequest.getComments())
                 .build();
     }
@@ -46,7 +45,7 @@ public class CommentConverter {
                 .text(comment.getText())
                 .userId(comment.getUserId())
                 .postId(comment.getPostId())
-                .published(comment.getPublished())
+                .createdDate(comment.getCreatedDate())
                 .comments(comment.getComments())
                 .build();
     }

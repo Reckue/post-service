@@ -7,7 +7,6 @@ import com.reckue.post.models.Post;
 import com.reckue.post.repositories.PostRepository;
 import com.reckue.post.services.NodeService;
 import com.reckue.post.services.PostService;
-import com.reckue.post.utils.Generator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -31,23 +30,16 @@ public class PostServiceRealization implements PostService {
 
     /**
      * This method is used to create an object of class Post.
-     * Throws {@link PostAlreadyExistsException} in case if such object already exists.
      *
      * @param post object of class Post
      * @return post object of class Post
      */
     @Override
     public Post create(Post post) {
-        post.setId(Generator.id());
-        if (!postRepository.existsById(post.getId())) {
-            if (post.getNodes() != null) {
-                post.getNodes().forEach(nodeService::create);
-
-            }
-            return postRepository.save(post);
-        } else {
-            throw new PostAlreadyExistsException(post.getId());
+        if (post.getNodes() != null) {
+            post.getNodes().forEach(nodeService::create);
         }
+        return postRepository.save(post);
     }
 
     /**
@@ -75,8 +67,6 @@ public class PostServiceRealization implements PostService {
                 .nodes(post.getNodes())
                 .source(post.getSource())
                 .tags(post.getTags())
-                .published(post.getPublished())
-                .changed(post.getChanged())
                 .status(post.getStatus())
                 .build();
         return postRepository.save(savedPost);
@@ -148,9 +138,9 @@ public class PostServiceRealization implements PostService {
             case "source":
                 return findAllAndSortBySource();
             case "published":
-                return findAllAndSortByPublished();
+                return findAllAndSortByCreatedDate();
             case "changed":
-                return findAllAndSortByChanged();
+                return findAllAndSortByModificationDate();
             case "status":
                 return findAllAndSortByStatus();
             case "id":
@@ -210,9 +200,9 @@ public class PostServiceRealization implements PostService {
      *
      * @return list of objects of class Post sorted by publication date
      */
-    public List<Post> findAllAndSortByPublished() {
+    public List<Post> findAllAndSortByCreatedDate() {
         return findAll().stream()
-                .sorted(Comparator.comparing(Post::getPublished))
+                .sorted(Comparator.comparing(Post::getCreatedDate))
                 .collect(Collectors.toList());
     }
 
@@ -221,9 +211,9 @@ public class PostServiceRealization implements PostService {
      *
      * @return list of objects of class Post sorted by date modified
      */
-    public List<Post> findAllAndSortByChanged() {
+    public List<Post> findAllAndSortByModificationDate() {
         return findAll().stream()
-                .sorted(Comparator.comparing(Post::getChanged))
+                .sorted(Comparator.comparing(Post::getModificationDate))
                 .collect(Collectors.toList());
     }
 
