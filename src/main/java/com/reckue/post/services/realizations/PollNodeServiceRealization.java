@@ -5,6 +5,7 @@ import com.reckue.post.exceptions.ModelNotFoundException;
 import com.reckue.post.models.nodes.PollNode;
 import com.reckue.post.repositories.PollNodeRepository;
 import com.reckue.post.services.PollNodeService;
+import com.reckue.post.utils.Generator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -34,7 +35,12 @@ public class PollNodeServiceRealization implements PollNodeService {
      */
     @Override
     public PollNode create(PollNode node) {
-        return pollNodeRepository.save(node);
+        node.setId(Generator.id());
+        if (!pollNodeRepository.existsById(node.getId())) {
+            return pollNodeRepository.save(node);
+        } else {
+            throw new ModelAlreadyExistsException("PollNode already exists");
+        }
     }
 
     /**

@@ -1,9 +1,12 @@
 package com.reckue.post.services.realizations;
 
 import com.reckue.post.PostServiceApplicationTests;
+import com.reckue.post.exceptions.ModelAlreadyExistsException;
 import com.reckue.post.exceptions.ModelNotFoundException;
 import com.reckue.post.models.nodes.PollNode;
+import com.reckue.post.models.Tag;
 import com.reckue.post.repositories.PollNodeRepository;
+import com.reckue.post.utils.Generator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -35,10 +38,21 @@ public class PollNodeServiceRealizationTest extends PostServiceApplicationTests 
 
     @Test
     public void create() {
-        PollNode node = PollNode.builder().title("title").build();
+        String ID = Generator.id();
+        PollNode node = PollNode.builder().id(ID).title("title").build();
         when(pollNodeRepository.save(node)).thenReturn(node);
 
         assertEquals(node, pollNodeService.create(node));
+    }
+
+    @Test
+    public void createIfPollAlreadyExist() {
+        PollNode node = PollNode.builder().id("1").title("title").build();
+
+        doReturn(true).when(pollNodeRepository).existsById(Mockito.anyString());
+
+        Exception exception = assertThrows(ModelAlreadyExistsException.class, () -> pollNodeService.create(node));
+        assertEquals("PollNode already exists", exception.getMessage());
     }
 
     @Test

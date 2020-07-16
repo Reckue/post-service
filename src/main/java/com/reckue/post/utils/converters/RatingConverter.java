@@ -39,8 +39,7 @@ public class RatingConverter {
         return RatingResponse.builder()
                 .postId(rating.getPostId())
                 .userId(rating.getUserId())
-                .createdDate(rating.getCreatedDate())
-                .modificationDate(rating.getModificationDate())
+                .published(rating.getPublished())
                 .id(rating.getId())
                 .build();
     }

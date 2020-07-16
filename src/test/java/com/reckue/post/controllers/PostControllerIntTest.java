@@ -9,7 +9,6 @@ import com.reckue.post.models.types.NodeType;
 import com.reckue.post.models.types.StatusType;
 import com.reckue.post.repositories.PostRepository;
 import com.reckue.post.transfers.NodeRequest;
-import com.reckue.post.transfers.NodeResponse;
 import com.reckue.post.transfers.PostRequest;
 import com.reckue.post.transfers.PostResponse;
 import com.reckue.post.transfers.nodes.audio.AudioNodeRequest;
@@ -29,16 +28,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
-import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 import static com.reckue.post.utils.converters.PostConverter.convert;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -72,10 +67,8 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .id("4")
                 .title("oracle")
                 .source("Github.com")
-                .modificationDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(1491379425L),
-                        TimeZone.getDefault().toZoneId()))
-                .createdDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(1491465825L),
-                        TimeZone.getDefault().toZoneId()))
+                .published(1491379425L)
+                .changed(1491465825L)
                 .status(StatusType.DELETED)
                 .userId("daria")
                 .build());
@@ -83,10 +76,8 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .id("1")
                 .title("string")
                 .source("Wikipedia.com")
-                .modificationDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(1591379425L),
-                        TimeZone.getDefault().toZoneId()))
-                .createdDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(1591465825L),
-                        TimeZone.getDefault().toZoneId()))
+                .published(1591379425L)
+                .changed(1591465825L)
                 .status(StatusType.ACTIVE)
                 .userId("egnaf")
                 .build());
@@ -94,10 +85,8 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .id("3")
                 .title("pupil")
                 .source("Google.com")
-                .modificationDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(1601920225L),
-                        TimeZone.getDefault().toZoneId()))
-                .createdDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(1602006625L),
-                        TimeZone.getDefault().toZoneId()))
+                .published(1601920225L)
+                .changed(1602006625L)
                 .status(StatusType.BANNED)
                 .userId("camelya")
                 .build());
@@ -105,10 +94,8 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .id("2")
                 .title("title")
                 .source("Habr.com")
-                .modificationDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(1701920225L),
-                        TimeZone.getDefault().toZoneId()))
-                .createdDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(1702006625L),
-                        TimeZone.getDefault().toZoneId()))
+                .published(1701920225L)
+                .changed(1702006625L)
                 .status(StatusType.MODERATED)
                 .userId("hardele")
                 .build());
@@ -130,7 +117,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .andReturn()
                 .getResponse().getContentAsString(), PostResponse.class);
 
-        assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
@@ -149,7 +136,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .getResponse().getContentAsString(), new TypeReference<>() {
         });
 
-        assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
@@ -168,7 +155,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .getResponse().getContentAsString(), new TypeReference<>() {
         });
 
-        assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
@@ -187,14 +174,14 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .getResponse().getContentAsString(), new TypeReference<>() {
         });
 
-        assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
     public void findAllSortedByPublishedAscTest() throws Exception {
         List<PostResponse> expected = postRepository.findAll().stream()
                 .map(PostConverter::convert)
-                .sorted(Comparator.comparing(PostResponse::getCreatedDate))
+                .sorted(Comparator.comparing(PostResponse::getPublished))
                 .limit(2)
                 .collect(Collectors.toList());
 
@@ -206,14 +193,14 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .getResponse().getContentAsString(), new TypeReference<>() {
         });
 
-        assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
     public void findAllSortedByChangedDescTest() throws Exception {
         List<PostResponse> expected = postRepository.findAll().stream()
                 .map(PostConverter::convert)
-                .sorted(Comparator.comparing(PostResponse::getModificationDate).reversed())
+                .sorted(Comparator.comparing(PostResponse::getChanged).reversed())
                 .limit(2)
                 .skip(1)
                 .collect(Collectors.toList());
@@ -226,7 +213,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .getResponse().getContentAsString(), new TypeReference<>() {
         });
 
-        assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
@@ -246,7 +233,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .getResponse().getContentAsString(), new TypeReference<>() {
         });
 
-        assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
@@ -257,6 +244,8 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .source("Habr.com")
                 .tags(null)
                 .userId("camelya")
+                .published(1591465825L)
+                .changed(1591465825L)
                 .status(StatusType.MODERATED)
                 .build();
 
@@ -273,13 +262,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
         PostResponse expected = PostConverter.convert(PostConverter.convert(postRequest));
         expected.setId(actual.getId());
 
-        Assertions.assertAll(
-                () -> assertEquals(expected.getTitle(), actual.getTitle()),
-                () -> assertEquals(expected.getNodes(), actual.getNodes()),
-                () -> assertEquals(expected.getSource(), actual.getSource()),
-                () -> assertEquals(expected.getTags(), actual.getTags()),
-                () -> assertEquals(expected.getUserId(), actual.getUserId()),
-                () -> assertEquals(expected.getStatus(), actual.getStatus()));
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
@@ -288,9 +271,9 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .postId("1")
                 .type(NodeType.POLL)
                 .node(PollNodeRequest.builder()
-                        .title("news")
-                        .items(List.of("One", "Two"))
-                        .build())
+                    .title("news")
+                    .items(List.of("One", "Two"))
+                    .build())
                 .build();
         PostRequest postRequest = PostRequest.builder()
                 .title("news")
@@ -298,6 +281,8 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .source("Habr.com")
                 .tags(null)
                 .userId("camelya")
+                .published(1591465825L)
+                .changed(1591465825L)
                 .status(StatusType.MODERATED)
                 .build();
 
@@ -314,20 +299,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
         expected.setId(actual.getId());
         expected.getNodes().get(0).setId(actual.getNodes().get(0).getId());
 
-        NodeResponse expectedNode = expected.getNodes().get(0);
-        NodeResponse actualNode = actual.getNodes().get(0);
-
-        Assertions.assertAll(
-                () -> assertEquals(expected.getTitle(), actual.getTitle()),
-                () -> assertEquals(expected.getSource(), actual.getSource()),
-                () -> assertEquals(expected.getTags(), actual.getTags()),
-                () -> assertEquals(expected.getUserId(), actual.getUserId()),
-                () -> assertEquals(expected.getStatus(), actual.getStatus()),
-                () -> assertEquals(expectedNode.getType(), actualNode.getType()),
-                () -> assertEquals(expectedNode.getPostId(), actualNode.getPostId()),
-                () -> assertEquals(expectedNode.getUserId(), actualNode.getUserId()),
-                () -> assertEquals(expectedNode.getSource(), actualNode.getSource())
-        );
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
@@ -345,6 +317,8 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .source("Habr.com")
                 .tags(null)
                 .userId("camelya")
+                .published(1591465825L)
+                .changed(1591465825L)
                 .status(StatusType.MODERATED)
                 .build();
 
@@ -360,20 +334,8 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
         PostResponse expected = convert(convert(postRequest));
         expected.setId(actual.getId());
         expected.getNodes().get(0).setId(actual.getNodes().get(0).getId());
-        NodeResponse expectedNode = expected.getNodes().get(0);
-        NodeResponse actualNode = actual.getNodes().get(0);
 
-        Assertions.assertAll(
-                () -> assertEquals(expected.getTitle(), actual.getTitle()),
-                () -> assertEquals(expected.getSource(), actual.getSource()),
-                () -> assertEquals(expected.getTags(), actual.getTags()),
-                () -> assertEquals(expected.getUserId(), actual.getUserId()),
-                () -> assertEquals(expected.getStatus(), actual.getStatus()),
-                () -> assertEquals(expectedNode.getType(), actualNode.getType()),
-                () -> assertEquals(expectedNode.getPostId(), actualNode.getPostId()),
-                () -> assertEquals(expectedNode.getUserId(), actualNode.getUserId()),
-                () -> assertEquals(expectedNode.getSource(), actualNode.getSource())
-        );
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
@@ -392,6 +354,8 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .source("Habr.com")
                 .tags(null)
                 .userId("camelya")
+                .published(1591465825L)
+                .changed(1591465825L)
                 .status(StatusType.MODERATED)
                 .build();
 
@@ -407,20 +371,8 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
         PostResponse expected = convert(convert(postRequest));
         expected.setId(actual.getId());
         expected.getNodes().get(0).setId(actual.getNodes().get(0).getId());
-        NodeResponse expectedNode = expected.getNodes().get(0);
-        NodeResponse actualNode = actual.getNodes().get(0);
 
-        Assertions.assertAll(
-                () -> assertEquals(expected.getTitle(), actual.getTitle()),
-                () -> assertEquals(expected.getSource(), actual.getSource()),
-                () -> assertEquals(expected.getTags(), actual.getTags()),
-                () -> assertEquals(expected.getUserId(), actual.getUserId()),
-                () -> assertEquals(expected.getStatus(), actual.getStatus()),
-                () -> assertEquals(expectedNode.getType(), actualNode.getType()),
-                () -> assertEquals(expectedNode.getPostId(), actualNode.getPostId()),
-                () -> assertEquals(expectedNode.getUserId(), actualNode.getUserId()),
-                () -> assertEquals(expectedNode.getSource(), actualNode.getSource())
-        );
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
@@ -438,6 +390,8 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .source("Habr.com")
                 .tags(null)
                 .userId("camelya")
+                .published(1591465825L)
+                .changed(1591465825L)
                 .status(StatusType.MODERATED)
                 .build();
 
@@ -453,20 +407,8 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
         PostResponse expected = convert(convert(postRequest));
         expected.setId(actual.getId());
         expected.getNodes().get(0).setId(actual.getNodes().get(0).getId());
-        NodeResponse expectedNode = expected.getNodes().get(0);
-        NodeResponse actualNode = actual.getNodes().get(0);
 
-        Assertions.assertAll(
-                () -> assertEquals(expected.getTitle(), actual.getTitle()),
-                () -> assertEquals(expected.getSource(), actual.getSource()),
-                () -> assertEquals(expected.getTags(), actual.getTags()),
-                () -> assertEquals(expected.getUserId(), actual.getUserId()),
-                () -> assertEquals(expected.getStatus(), actual.getStatus()),
-                () -> assertEquals(expectedNode.getType(), actualNode.getType()),
-                () -> assertEquals(expectedNode.getPostId(), actualNode.getPostId()),
-                () -> assertEquals(expectedNode.getUserId(), actualNode.getUserId()),
-                () -> assertEquals(expectedNode.getSource(), actualNode.getSource())
-        );
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
@@ -484,6 +426,8 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .source("Habr.com")
                 .tags(null)
                 .userId("camelya")
+                .published(1591465825L)
+                .changed(1591465825L)
                 .status(StatusType.MODERATED)
                 .build();
 
@@ -499,20 +443,8 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
         PostResponse expected = convert(convert(postRequest));
         expected.setId(actual.getId());
         expected.getNodes().get(0).setId(actual.getNodes().get(0).getId());
-        NodeResponse expectedNode = expected.getNodes().get(0);
-        NodeResponse actualNode = actual.getNodes().get(0);
 
-        Assertions.assertAll(
-                () -> assertEquals(expected.getTitle(), actual.getTitle()),
-                () -> assertEquals(expected.getSource(), actual.getSource()),
-                () -> assertEquals(expected.getTags(), actual.getTags()),
-                () -> assertEquals(expected.getUserId(), actual.getUserId()),
-                () -> assertEquals(expected.getStatus(), actual.getStatus()),
-                () -> assertEquals(expectedNode.getType(), actualNode.getType()),
-                () -> assertEquals(expectedNode.getPostId(), actualNode.getPostId()),
-                () -> assertEquals(expectedNode.getUserId(), actualNode.getUserId()),
-                () -> assertEquals(expectedNode.getSource(), actualNode.getSource())
-        );
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
@@ -530,6 +462,8 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .source("Habr.com")
                 .tags(null)
                 .userId("camelya")
+                .published(1591465825L)
+                .changed(1591465825L)
                 .status(StatusType.MODERATED)
                 .build();
 
@@ -545,20 +479,8 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
         PostResponse expected = convert(convert(postRequest));
         expected.setId(actual.getId());
         expected.getNodes().get(0).setId(actual.getNodes().get(0).getId());
-        NodeResponse expectedNode = expected.getNodes().get(0);
-        NodeResponse actualNode = actual.getNodes().get(0);
 
-        Assertions.assertAll(
-                () -> assertEquals(expected.getTitle(), actual.getTitle()),
-                () -> assertEquals(expected.getSource(), actual.getSource()),
-                () -> assertEquals(expected.getTags(), actual.getTags()),
-                () -> assertEquals(expected.getUserId(), actual.getUserId()),
-                () -> assertEquals(expected.getStatus(), actual.getStatus()),
-                () -> assertEquals(expectedNode.getType(), actualNode.getType()),
-                () -> assertEquals(expectedNode.getPostId(), actualNode.getPostId()),
-                () -> assertEquals(expectedNode.getUserId(), actualNode.getUserId()),
-                () -> assertEquals(expectedNode.getSource(), actualNode.getSource())
-        );
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
@@ -576,6 +498,8 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .source("Habr.com")
                 .tags(null)
                 .userId("camelya")
+                .published(1591465825L)
+                .changed(1591465825L)
                 .status(StatusType.MODERATED)
                 .build();
 
@@ -591,20 +515,8 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
         PostResponse expected = convert(convert(postRequest));
         expected.setId(actual.getId());
         expected.getNodes().get(0).setId(actual.getNodes().get(0).getId());
-        NodeResponse expectedNode = expected.getNodes().get(0);
-        NodeResponse actualNode = actual.getNodes().get(0);
 
-        Assertions.assertAll(
-                () -> assertEquals(expected.getTitle(), actual.getTitle()),
-                () -> assertEquals(expected.getSource(), actual.getSource()),
-                () -> assertEquals(expected.getTags(), actual.getTags()),
-                () -> assertEquals(expected.getUserId(), actual.getUserId()),
-                () -> assertEquals(expected.getStatus(), actual.getStatus()),
-                () -> assertEquals(expectedNode.getType(), actualNode.getType()),
-                () -> assertEquals(expectedNode.getPostId(), actualNode.getPostId()),
-                () -> assertEquals(expectedNode.getUserId(), actualNode.getUserId()),
-                () -> assertEquals(expectedNode.getSource(), actualNode.getSource())
-        );
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
@@ -615,6 +527,8 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .source("Habr.com")
                 .tags(null)
                 .userId("hardele")
+                .published(1701920225L)
+                .changed(1802006625L)
                 .status(StatusType.ACTIVE)
                 .build();
 
@@ -631,14 +545,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
         PostResponse expected = PostConverter.convert(PostConverter.convert(postRequest));
         expected.setId(actual.getId());
 
-        Assertions.assertAll(
-                () -> assertEquals(expected.getTitle(), actual.getTitle()),
-                () -> assertEquals(expected.getNodes(), actual.getNodes()),
-                () -> assertEquals(expected.getSource(), actual.getSource()),
-                () -> assertEquals(expected.getTags(), actual.getTags()),
-                () -> assertEquals(expected.getUserId(), actual.getUserId()),
-                () -> assertEquals(expected.getStatus(), actual.getStatus())
-        );
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
@@ -647,6 +554,6 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
         this.mockMvc.perform(delete("/posts/" + postRepository.findAll().get(0).getId()))
                 .andDo(print())
                 .andExpect(status().isOk());
-        assertEquals(size - 1, postRepository.findAll().size());
+        Assertions.assertEquals(size - 1, postRepository.findAll().size());
     }
 }

@@ -17,15 +17,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
-import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -59,24 +55,21 @@ public class CommentControllerIntTest extends PostServiceApplicationTests {
                 .text("comment1")
                 .userId("anton")
                 .postId("planets")
-                .createdDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(1491379425L),
-                        TimeZone.getDefault().toZoneId()))
+                .published(1491379425L)
                 .build());
         commentRepository.save(Comment.builder()
                 .id("2")
                 .text("comment5")
                 .userId("vlad cepesh")
                 .postId("books")
-                .createdDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(1591379425L),
-                        TimeZone.getDefault().toZoneId()))
+                .published(1591379425L)
                 .build());
         commentRepository.save(Comment.builder()
                 .id("3")
                 .text("comment10")
                 .userId("semen")
                 .postId("cows")
-                .createdDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(1601920225L),
-                        TimeZone.getDefault().toZoneId()))
+                .published(1601920225L)
                 .build());
     }
 
@@ -241,7 +234,7 @@ public class CommentControllerIntTest extends PostServiceApplicationTests {
     public void findAllSortedByPublishedAsc() throws Exception {
         List<CommentResponse> expected = commentRepository.findAll().stream()
                 .map(CommentConverter::convert)
-                .sorted(Comparator.comparing(CommentResponse::getCreatedDate))
+                .sorted(Comparator.comparing(CommentResponse::getPublished))
                 .limit(2)
                 .collect(Collectors.toList());
 
@@ -260,7 +253,7 @@ public class CommentControllerIntTest extends PostServiceApplicationTests {
     public void findAllSortedByPublishedDesc() throws Exception {
         List<CommentResponse> expected = commentRepository.findAll().stream()
                 .map(CommentConverter::convert)
-                .sorted(Comparator.comparing(CommentResponse::getCreatedDate).reversed())
+                .sorted(Comparator.comparing(CommentResponse::getPublished).reversed())
                 .limit(2)
                 .collect(Collectors.toList());
 
@@ -295,12 +288,14 @@ public class CommentControllerIntTest extends PostServiceApplicationTests {
                 .text("eleven")
                 .userId("best id ever")
                 .postId("simple")
+                .published(1491379422L)
                 .build());
 
         String json = objectMapper.writeValueAsString(CommentRequest.builder()
                 .text("eleven")
                 .userId("best id ever")
                 .postId("simple")
+                .published(1491379422L)
                 .build());
 
         MockHttpServletRequestBuilder builder = put("/comments/" + commentRepository.findAll().get(0).getId())
@@ -324,6 +319,7 @@ public class CommentControllerIntTest extends PostServiceApplicationTests {
                 .text("oda")
                 .userId("23")
                 .postId("2020")
+                .published(1491379422L)
                 .comments(null)
                 .build());
 
@@ -344,15 +340,11 @@ public class CommentControllerIntTest extends PostServiceApplicationTests {
                 .text("oda")
                 .userId("23")
                 .postId("2020")
+                .published(1491379422L)
                 .comments(null)
                 .build());
 
-        Assertions.assertAll(
-                () -> assertEquals(expected.getId(), actual.getId()),
-                () -> assertEquals(expected.getText(), actual.getText()),
-                () -> assertEquals(expected.getUserId(), actual.getUserId()),
-                () -> assertEquals(expected.getPostId(), actual.getPostId()),
-                () -> assertEquals(expected.getComments(), actual.getComments()));
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
