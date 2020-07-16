@@ -1,6 +1,5 @@
 package com.reckue.post.services.realizations;
 
-import com.reckue.post.exceptions.ModelAlreadyExistsException;
 import com.reckue.post.exceptions.ModelNotFoundException;
 import com.reckue.post.models.Post;
 import com.reckue.post.repositories.PostRepository;
@@ -29,7 +28,6 @@ public class PostServiceRealization implements PostService {
 
     /**
      * This method is used to create an object of class Post.
-     * Throws {@link ModelAlreadyExistsException} in case if such object already exists.
      *
      * @param post object of class Post
      * @return post object of class Post
@@ -57,18 +55,16 @@ public class PostServiceRealization implements PostService {
         if (post.getId() == null) {
             throw new IllegalArgumentException("The parameter is null");
         }
-        if (!postRepository.existsById(post.getId())) {
-            throw new ModelNotFoundException("Post by id " + post.getId() + " is not found");
-        }
-        Post savedPost = Post.builder()
-                .id(post.getId())
-                .userId(post.getUserId())
-                .title(post.getTitle())
-                .nodes(post.getNodes())
-                .source(post.getSource())
-                .tags(post.getTags())
-                .status(post.getStatus())
-                .build();
+        Post savedPost = postRepository
+                .findById(post.getId())
+                .orElseThrow(() -> new ModelNotFoundException("Post by id " + post.getId() + " is not found"));
+        savedPost.setUserId(post.getUserId());
+        savedPost.setTitle(post.getTitle());
+        savedPost.setNodes(post.getNodes());
+        savedPost.setSource(post.getSource());
+        savedPost.setTags(post.getTags());
+        savedPost.setStatus(post.getStatus());
+
         return postRepository.save(savedPost);
     }
 
@@ -128,7 +124,7 @@ public class PostServiceRealization implements PostService {
     /**
      * This method is used to sort objects by type.
      *
-     * @param sort type of sorting: title, source, published, changed, status, default - id
+     * @param sort type of sorting: title, source, createdDate, modificationDate, status, default - id
      * @return list of objects of class Post sorted by the selected parameter for sorting
      */
     public List<Post> findAllBySortType(String sort) {
@@ -137,9 +133,9 @@ public class PostServiceRealization implements PostService {
                 return findAllAndSortByTitle();
             case "source":
                 return findAllAndSortBySource();
-            case "published":
+            case "createdDate":
                 return findAllAndSortByCreatedDate();
-            case "changed":
+            case "modificationDate":
                 return findAllAndSortByModificationDate();
             case "status":
                 return findAllAndSortByStatus();
@@ -196,9 +192,9 @@ public class PostServiceRealization implements PostService {
     }
 
     /**
-     * This method is used to sort objects by publication date.
+     * This method is used to sort objects by createdDate.
      *
-     * @return list of objects of class Post sorted by publication date
+     * @return list of objects of class Post sorted by createdDate
      */
     public List<Post> findAllAndSortByCreatedDate() {
         return findAll().stream()
@@ -207,9 +203,9 @@ public class PostServiceRealization implements PostService {
     }
 
     /**
-     * This method is used to sort objects by date modified.
+     * This method is used to sort objects by modificationDate.
      *
-     * @return list of objects of class Post sorted by date modified
+     * @return list of objects of class Post sorted by modificationDate
      */
     public List<Post> findAllAndSortByModificationDate() {
         return findAll().stream()

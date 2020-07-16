@@ -9,7 +9,6 @@ import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
 
 /**
  * Class NodeResponse represents an outgoing DTO for receiving a node.
@@ -40,8 +39,11 @@ public class NodeResponse {
     @ApiModelProperty(notes = "Node author identifier")
     private String userId;
 
-    @ApiModelProperty(notes = "Publication date")
-    private LocalDateTime createdDate;
+    @ApiModelProperty(notes = "Created date")
+    private long createdDate;
+
+    @ApiModelProperty(notes = "Modification date")
+    private long modificationDate;
 
     @ApiModelProperty(notes = "Node activity status")
     private StatusType status;

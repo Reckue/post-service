@@ -20,7 +20,6 @@ public interface CommentApi {
     @ApiOperation(value = "Add a comment")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "The comment successfully added"),
-            @ApiResponse(code = 409, message = "The comment you want to add already exists"),
             @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")})
     CommentResponse create(CommentRequest commentRequest);
 

@@ -1,6 +1,5 @@
 package com.reckue.post.services.realizations;
 
-import com.reckue.post.exceptions.ModelAlreadyExistsException;
 import com.reckue.post.exceptions.ModelNotFoundException;
 import com.reckue.post.models.Tag;
 import com.reckue.post.repositories.TagRepository;
@@ -27,7 +26,6 @@ public class TagServiceRealization implements TagService {
 
     /**
      * This method is used to create an object of class Tag.
-     * Throws {@link ModelAlreadyExistsException} in case if such object already exists.
      *
      * @param tag object of class Tag
      * @return tag object of class Tag
@@ -52,13 +50,10 @@ public class TagServiceRealization implements TagService {
         if (tag.getId() == null) {
             throw new IllegalArgumentException("The parameter is null");
         }
-        if (!tagRepository.existsById(tag.getId())) {
-            throw new ModelNotFoundException("Tag by id " + tag.getId() + " is not found");
-        }
-        Tag savedTag = Tag.builder()
-                .id(tag.getId())
-                .name(tag.getName())
-                .build();
+        Tag savedTag = tagRepository
+                .findById(tag.getId())
+                .orElseThrow(() -> new ModelNotFoundException("Tag by id " + tag.getId() + " is not found"));
+        savedTag.setName(tag.getName());
         return tagRepository.save(savedTag);
     }
 

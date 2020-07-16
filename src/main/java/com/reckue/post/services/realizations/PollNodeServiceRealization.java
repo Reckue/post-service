@@ -1,6 +1,5 @@
 package com.reckue.post.services.realizations;
 
-import com.reckue.post.exceptions.ModelAlreadyExistsException;
 import com.reckue.post.exceptions.ModelNotFoundException;
 import com.reckue.post.models.nodes.PollNode;
 import com.reckue.post.repositories.PollNodeRepository;
@@ -27,7 +26,6 @@ public class PollNodeServiceRealization implements PollNodeService {
 
     /**
      * This method is used to create an object of class PollNode.
-     * Throws {@link ModelAlreadyExistsException} in case if such object already exists.
      *
      * @param node object of class PollNode
      * @return node object of class PollNode
@@ -52,14 +50,11 @@ public class PollNodeServiceRealization implements PollNodeService {
         if (node.getId() == null) {
             throw new IllegalArgumentException("The parameter is null");
         }
-        if (!pollNodeRepository.existsById(node.getId())) {
-            throw new ModelNotFoundException("PollNode by id " + node.getId() + " is not found");
-        }
-        PollNode savedPollNode = PollNode.builder()
-                .id(node.getId())
-                .title(node.getTitle())
-                .items(node.getItems())
-                .build();
+        PollNode savedPollNode = pollNodeRepository
+                .findById(node.getId())
+                .orElseThrow(() -> new ModelNotFoundException("PollNode by id " + node.getId() + " is not found"));
+        savedPollNode.setTitle(node.getTitle());
+        savedPollNode.setItems(node.getItems());
         return pollNodeRepository.save(savedPollNode);
     }
 

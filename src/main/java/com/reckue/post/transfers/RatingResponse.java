@@ -4,8 +4,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.LocalDateTime;
-
 /**
  * Class RatingResponse represents an outgoing DTO for receiving a rating.
  *
@@ -24,9 +22,9 @@ public class RatingResponse {
     @ApiModelProperty(notes = "Post Id")
     private String postId;
 
-    @ApiModelProperty(notes = "Publication date")
-    private LocalDateTime createdDate;
+    @ApiModelProperty(notes = "Created date")
+    private long createdDate;
 
-    @ApiModelProperty(notes = "Date of changes")
-    private LocalDateTime modificationDate;
+    @ApiModelProperty(notes = "Modification date")
+    private long modificationDate;
 }

@@ -21,7 +21,6 @@ public interface PostApi {
     @ApiOperation(value = "Add a post")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "The post successfully added"),
-            @ApiResponse(code = 409, message = "The post you want to add already exists"),
             @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")})
     PostResponse create(PostRequest postRequest);
 

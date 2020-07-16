@@ -13,12 +13,19 @@ import com.reckue.post.transfers.NodeResponse;
 import com.reckue.post.transfers.PostRequest;
 import com.reckue.post.transfers.PostResponse;
 import com.reckue.post.transfers.nodes.audio.AudioNodeRequest;
+import com.reckue.post.transfers.nodes.audio.AudioNodeResponse;
 import com.reckue.post.transfers.nodes.code.CodeNodeRequest;
+import com.reckue.post.transfers.nodes.code.CodeNodeResponse;
 import com.reckue.post.transfers.nodes.image.ImageNodeRequest;
+import com.reckue.post.transfers.nodes.image.ImageNodeResponse;
 import com.reckue.post.transfers.nodes.list.ListNodeRequest;
+import com.reckue.post.transfers.nodes.list.ListNodeResponse;
 import com.reckue.post.transfers.nodes.poll.PollNodeRequest;
+import com.reckue.post.transfers.nodes.poll.PollNodeResponse;
 import com.reckue.post.transfers.nodes.text.TextNodeRequest;
+import com.reckue.post.transfers.nodes.text.TextNodeResponse;
 import com.reckue.post.transfers.nodes.video.VideoNodeRequest;
+import com.reckue.post.transfers.nodes.video.VideoNodeResponse;
 import com.reckue.post.utils.converters.PostConverter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,12 +38,12 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
 
-import static com.reckue.post.utils.converters.PostConverter.convert;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -199,7 +206,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .collect(Collectors.toList());
 
         List<PostResponse> actual = objectMapper.readValue(this.mockMvc
-                .perform(get("/posts?desc=false&limit=2&offset=0&sort=published"))
+                .perform(get("/posts?desc=false&limit=2&offset=0&sort=createdDate"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn()
@@ -219,7 +226,7 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .collect(Collectors.toList());
 
         List<PostResponse> actual = objectMapper.readValue(this.mockMvc
-                .perform(get("/posts?desc=true&limit=2&offset=1&sort=changed"))
+                .perform(get("/posts?desc=true&limit=2&offset=1&sort=modificationDate"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn()
@@ -270,8 +277,14 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .andReturn()
                 .getResponse().getContentAsString(), PostResponse.class);
 
-        PostResponse expected = PostConverter.convert(PostConverter.convert(postRequest));
-        expected.setId(actual.getId());
+        PostResponse expected = PostResponse.builder()
+                .title("news")
+                .nodes(Collections.emptyList())
+                .source("Habr.com")
+                .tags(null)
+                .userId("camelya")
+                .status(StatusType.MODERATED)
+                .build();
 
         Assertions.assertAll(
                 () -> assertEquals(expected.getTitle(), actual.getTitle()),
@@ -310,10 +323,23 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse().getContentAsString(), PostResponse.class);
-        PostResponse expected = convert(convert(postRequest));
-        expected.setId(actual.getId());
-        expected.getNodes().get(0).setId(actual.getNodes().get(0).getId());
-
+        PostResponse expected = PostResponse.builder()
+                .id(actual.getId())
+                .title("news")
+                .nodes(List.of(NodeResponse.builder()
+                        .id(actual.getNodes().get(0).getId())
+                        .postId("1")
+                        .type(NodeType.POLL)
+                        .node(PollNodeResponse.builder()
+                                .title("news")
+                                .items(List.of("One", "Two"))
+                                .build())
+                        .build()))
+                .source("Habr.com")
+                .tags(null)
+                .userId("camelya")
+                .status(StatusType.MODERATED)
+                .build();
         NodeResponse expectedNode = expected.getNodes().get(0);
         NodeResponse actualNode = actual.getNodes().get(0);
 
@@ -357,9 +383,24 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse().getContentAsString(), PostResponse.class);
-        PostResponse expected = convert(convert(postRequest));
-        expected.setId(actual.getId());
-        expected.getNodes().get(0).setId(actual.getNodes().get(0).getId());
+
+        PostResponse expected = PostResponse.builder()
+                .id(actual.getId())
+                .title("news")
+                .nodes(List.of(NodeResponse.builder()
+                        .id(actual.getNodes().get(0).getId())
+                        .postId("1")
+                        .type(NodeType.AUDIO)
+                        .node(AudioNodeResponse.builder()
+                                .audioUrl("url")
+                                .build())
+                        .build()))
+                .source("Habr.com")
+                .tags(null)
+                .userId("camelya")
+                .status(StatusType.MODERATED)
+                .build();
+
         NodeResponse expectedNode = expected.getNodes().get(0);
         NodeResponse actualNode = actual.getNodes().get(0);
 
@@ -404,9 +445,24 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse().getContentAsString(), PostResponse.class);
-        PostResponse expected = convert(convert(postRequest));
-        expected.setId(actual.getId());
-        expected.getNodes().get(0).setId(actual.getNodes().get(0).getId());
+        PostResponse expected = PostResponse.builder()
+                .id(actual.getId())
+                .title("news")
+                .nodes(List.of(NodeResponse.builder()
+                        .id(actual.getNodes().get(0).getId())
+                        .postId("1")
+                        .type(NodeType.CODE)
+                        .node(CodeNodeResponse.builder()
+                                .language(LangType.JAVA)
+                                .content("main")
+                                .build())
+                        .build()))
+                .source("Habr.com")
+                .tags(null)
+                .userId("camelya")
+                .status(StatusType.MODERATED)
+                .build();
+
         NodeResponse expectedNode = expected.getNodes().get(0);
         NodeResponse actualNode = actual.getNodes().get(0);
 
@@ -450,9 +506,24 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse().getContentAsString(), PostResponse.class);
-        PostResponse expected = convert(convert(postRequest));
-        expected.setId(actual.getId());
-        expected.getNodes().get(0).setId(actual.getNodes().get(0).getId());
+
+        PostResponse expected = PostResponse.builder()
+                .id(actual.getId())
+                .title("news")
+                .nodes(List.of(NodeResponse.builder()
+                        .id(actual.getNodes().get(0).getId())
+                        .postId("1")
+                        .type(NodeType.TEXT)
+                        .node(TextNodeResponse.builder()
+                                .content("Just Text")
+                                .build())
+                        .build()))
+                .source("Habr.com")
+                .tags(null)
+                .userId("camelya")
+                .status(StatusType.MODERATED)
+                .build();
+
         NodeResponse expectedNode = expected.getNodes().get(0);
         NodeResponse actualNode = actual.getNodes().get(0);
 
@@ -496,9 +567,24 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse().getContentAsString(), PostResponse.class);
-        PostResponse expected = convert(convert(postRequest));
-        expected.setId(actual.getId());
-        expected.getNodes().get(0).setId(actual.getNodes().get(0).getId());
+
+        PostResponse expected = PostResponse.builder()
+                .id(actual.getId())
+                .title("news")
+                .nodes(List.of(NodeResponse.builder()
+                        .id(actual.getNodes().get(0).getId())
+                        .postId("1")
+                        .type(NodeType.IMAGE)
+                        .node(ImageNodeResponse.builder()
+                                .imageUrl("url")
+                                .build())
+                        .build()))
+                .source("Habr.com")
+                .tags(null)
+                .userId("camelya")
+                .status(StatusType.MODERATED)
+                .build();
+
         NodeResponse expectedNode = expected.getNodes().get(0);
         NodeResponse actualNode = actual.getNodes().get(0);
 
@@ -542,9 +628,24 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse().getContentAsString(), PostResponse.class);
-        PostResponse expected = convert(convert(postRequest));
-        expected.setId(actual.getId());
-        expected.getNodes().get(0).setId(actual.getNodes().get(0).getId());
+
+        PostResponse expected = PostResponse.builder()
+                .id(actual.getId())
+                .title("news")
+                .nodes(List.of(NodeResponse.builder()
+                        .id(actual.getNodes().get(0).getId())
+                        .postId("1")
+                        .type(NodeType.LIST)
+                        .node(ListNodeResponse.builder()
+                                .content(List.of("List"))
+                                .build())
+                        .build()))
+                .source("Habr.com")
+                .tags(null)
+                .userId("camelya")
+                .status(StatusType.MODERATED)
+                .build();
+
         NodeResponse expectedNode = expected.getNodes().get(0);
         NodeResponse actualNode = actual.getNodes().get(0);
 
@@ -588,9 +689,24 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse().getContentAsString(), PostResponse.class);
-        PostResponse expected = convert(convert(postRequest));
-        expected.setId(actual.getId());
-        expected.getNodes().get(0).setId(actual.getNodes().get(0).getId());
+
+        PostResponse expected = PostResponse.builder()
+                .id(actual.getId())
+                .title("news")
+                .nodes(List.of(NodeResponse.builder()
+                        .id(actual.getNodes().get(0).getId())
+                        .postId("1")
+                        .type(NodeType.VIDEO)
+                        .node(VideoNodeResponse.builder()
+                                .videoUrl("url")
+                                .build())
+                        .build()))
+                .source("Habr.com")
+                .tags(null)
+                .userId("camelya")
+                .status(StatusType.MODERATED)
+                .build();
+
         NodeResponse expectedNode = expected.getNodes().get(0);
         NodeResponse actualNode = actual.getNodes().get(0);
 
@@ -628,8 +744,15 @@ public class PostControllerIntTest extends PostServiceApplicationTests {
                 .andReturn()
                 .getResponse().getContentAsString(), PostResponse.class);
 
-        PostResponse expected = PostConverter.convert(PostConverter.convert(postRequest));
-        expected.setId(actual.getId());
+        PostResponse expected = PostResponse.builder()
+                .id(actual.getId())
+                .title("title")
+                .nodes(Collections.emptyList())
+                .source("Habr.com")
+                .tags(null)
+                .userId("hardele")
+                .status(StatusType.ACTIVE)
+                .build();
 
         Assertions.assertAll(
                 () -> assertEquals(expected.getTitle(), actual.getTitle()),

@@ -1,6 +1,5 @@
 package com.reckue.post.services.realizations;
 
-import com.reckue.post.exceptions.ModelAlreadyExistsException;
 import com.reckue.post.exceptions.ModelNotFoundException;
 import com.reckue.post.models.Comment;
 import com.reckue.post.repositories.CommentRepository;
@@ -27,7 +26,6 @@ public class CommentServiceRealization implements CommentService {
 
     /**
      * This method is used to create an object of class Comment.
-     * Throws {@link ModelAlreadyExistsException} in case if such object already exists.
      *
      * @param comment object of class Comment
      * @return comment object of class Comment
@@ -52,17 +50,13 @@ public class CommentServiceRealization implements CommentService {
         if (comment.getId() == null) {
             throw new IllegalArgumentException("The parameter is null");
         }
-        if (!commentRepository.existsById(comment.getId())) {
-            throw new ModelNotFoundException("Comment by id " + comment.getId() + " is not found");
-        }
-        Comment savedComment = Comment.builder()
-                .id(comment.getId())
-                .text(comment.getText())
-                .postId(comment.getPostId())
-                .userId(comment.getUserId())
-                .createdDate(comment.getCreatedDate())
-                .comments(comment.getComments())
-                .build();
+        Comment savedComment = commentRepository
+                .findById(comment.getId())
+                .orElseThrow(() -> new ModelNotFoundException("Comment by id " + comment.getId() + " is not found"));
+        savedComment.setText(comment.getText());
+        savedComment.setPostId(comment.getPostId());
+        savedComment.setUserId(comment.getUserId());
+        savedComment.setComments(comment.getComments());
 
         return commentRepository.save(savedComment);
     }
@@ -122,7 +116,7 @@ public class CommentServiceRealization implements CommentService {
     /**
      * This method is used to sort objects by type.
      *
-     * @param sort type of sorting: id, text, userId, postId or published
+     * @param sort type of sorting: id, text, userId, postId, createdDate or modificationDate
      * @return list of objects of class Comment sorted by the selected parameter for sorting
      */
     public List<Comment> findAllBySortType(String sort) {
@@ -135,10 +129,23 @@ public class CommentServiceRealization implements CommentService {
                 return findAllAndSortByUserId();
             case "postId":
                 return findAllAndSortByPostId();
-            case "published":
+            case "createdDate":
                 return findAllAndSortByCreatedDate();
+            case "modificationDate":
+                return findAllAndSortByModificationDate();
         }
         throw new IllegalArgumentException("Such field as " + sort + " doesn't exist");
+    }
+
+    /**
+     * This method is used to sort objects by modificationDate.
+     *
+     * @return list of objects of class Comment sorted by modificationDate
+     */
+    private List<Comment> findAllAndSortByModificationDate() {
+        return findAll().stream()
+                .sorted(Comparator.comparing(Comment::getModificationDate))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -186,9 +193,9 @@ public class CommentServiceRealization implements CommentService {
     }
 
     /**
-     * This method is used to sort objects by published date.
+     * This method is used to sort objects by createdDate.
      *
-     * @return list of objects of class Comment sorted by published date
+     * @return list of objects of class Comment sorted by createdDate
      */
     public List<Comment> findAllAndSortByCreatedDate() {
         return findAll().stream()

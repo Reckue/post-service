@@ -4,7 +4,6 @@ import com.reckue.post.PostServiceApplicationTests;
 import com.reckue.post.exceptions.ModelNotFoundException;
 import com.reckue.post.models.Tag;
 import com.reckue.post.repositories.TagRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -43,12 +42,21 @@ public class TagServiceRealizationUnitTest extends PostServiceApplicationTests {
 
     @Test
     public void update() {
-        Tag tag = Tag.builder().id("1").name("code").build();
+        Tag tagRequest = Tag.builder()
+                .id("1")
+                .name("newName")
+                .build();
+        Tag tag = Tag.builder()
+                .id("1")
+                .name("code")
+                .build();
 
-        when(tagRepository.existsById(tag.getId())).thenReturn(true);
+        when(tagRepository.findById(tagRequest.getId())).thenReturn(Optional.of(tag));
         when(tagRepository.save(tag)).thenReturn(tag);
 
-        Assertions.assertEquals(tag, tagService.update(tag));
+        tagService.update(tagRequest);
+
+        assertEquals(tagRequest.getName(), tag.getName());
     }
 
     @Test

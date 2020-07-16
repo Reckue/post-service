@@ -17,11 +17,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
-import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -55,28 +52,19 @@ public class CommentControllerIntTest extends PostServiceApplicationTests {
         commentRepository.deleteAll();
 
         commentRepository.save(Comment.builder()
-                .id("1")
                 .text("comment1")
                 .userId("anton")
                 .postId("planets")
-                .createdDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(1491379425L),
-                        TimeZone.getDefault().toZoneId()))
                 .build());
         commentRepository.save(Comment.builder()
-                .id("2")
                 .text("comment5")
                 .userId("vlad cepesh")
                 .postId("books")
-                .createdDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(1591379425L),
-                        TimeZone.getDefault().toZoneId()))
                 .build());
         commentRepository.save(Comment.builder()
-                .id("3")
                 .text("comment10")
                 .userId("semen")
                 .postId("cows")
-                .createdDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(1601920225L),
-                        TimeZone.getDefault().toZoneId()))
                 .build());
     }
 
@@ -238,7 +226,7 @@ public class CommentControllerIntTest extends PostServiceApplicationTests {
     }
 
     @Test
-    public void findAllSortedByPublishedAsc() throws Exception {
+    public void findAllSortedByCreatedDateAsc() throws Exception {
         List<CommentResponse> expected = commentRepository.findAll().stream()
                 .map(CommentConverter::convert)
                 .sorted(Comparator.comparing(CommentResponse::getCreatedDate))
@@ -246,7 +234,7 @@ public class CommentControllerIntTest extends PostServiceApplicationTests {
                 .collect(Collectors.toList());
 
         List<CommentResponse> actual = objectMapper
-                .readValue(this.mockMvc.perform(get("/comments?desc=false&limit=2&offset=0&sort=published"))
+                .readValue(this.mockMvc.perform(get("/comments?desc=false&limit=2&offset=0&sort=createdDate"))
                         .andDo(print())
                         .andExpect(status().isOk())
                         .andReturn()
@@ -257,7 +245,7 @@ public class CommentControllerIntTest extends PostServiceApplicationTests {
     }
 
     @Test
-    public void findAllSortedByPublishedDesc() throws Exception {
+    public void findAllSortedByCreatedDateDesc() throws Exception {
         List<CommentResponse> expected = commentRepository.findAll().stream()
                 .map(CommentConverter::convert)
                 .sorted(Comparator.comparing(CommentResponse::getCreatedDate).reversed())
@@ -265,7 +253,7 @@ public class CommentControllerIntTest extends PostServiceApplicationTests {
                 .collect(Collectors.toList());
 
         List<CommentResponse> actual = objectMapper
-                .readValue(this.mockMvc.perform(get("/comments?desc=true&limit=2&offset=0&sort=published"))
+                .readValue(this.mockMvc.perform(get("/comments?desc=true&limit=2&offset=0&sort=createdDate"))
                         .andDo(print())
                         .andExpect(status().isOk())
                         .andReturn()
@@ -290,12 +278,11 @@ public class CommentControllerIntTest extends PostServiceApplicationTests {
 
     @Test
     void update() throws Exception {
-        CommentResponse expected = CommentConverter.convert(Comment.builder()
-                .id(commentRepository.findAll().get(0).getId())
+        CommentResponse expected = CommentResponse.builder()
                 .text("eleven")
                 .userId("best id ever")
                 .postId("simple")
-                .build());
+                .build();
 
         String json = objectMapper.writeValueAsString(CommentRequest.builder()
                 .text("eleven")
@@ -315,7 +302,11 @@ public class CommentControllerIntTest extends PostServiceApplicationTests {
                 .andReturn()
                 .getResponse().getContentAsString(), CommentResponse.class);
 
-        Assertions.assertEquals(expected, actual);
+        Assertions.assertAll(
+                () -> assertEquals(expected.getText(), actual.getText()),
+                () -> assertEquals(expected.getUserId(), actual.getUserId()),
+                () -> assertEquals(expected.getPostId(), actual.getPostId())
+        );
     }
 
     @Test
@@ -339,19 +330,20 @@ public class CommentControllerIntTest extends PostServiceApplicationTests {
                 .andReturn()
                 .getResponse().getContentAsString(), CommentResponse.class);
 
-        CommentResponse expected = CommentConverter.convert(Comment.builder()
+        CommentResponse expected = CommentResponse.builder()
                 .id(actual.getId())
                 .text("oda")
                 .userId("23")
                 .postId("2020")
                 .comments(null)
-                .build());
+                .build();
 
         Assertions.assertAll(
                 () -> assertEquals(expected.getId(), actual.getId()),
                 () -> assertEquals(expected.getText(), actual.getText()),
                 () -> assertEquals(expected.getUserId(), actual.getUserId()),
                 () -> assertEquals(expected.getPostId(), actual.getPostId()),
+                () -> assertEquals(actual.getModificationDate(), actual.getCreatedDate()),
                 () -> assertEquals(expected.getComments(), actual.getComments()));
     }
 

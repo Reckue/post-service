@@ -6,6 +6,7 @@ import com.reckue.post.models.Post;
 import com.reckue.post.models.Rating;
 import com.reckue.post.repositories.PostRepository;
 import com.reckue.post.repositories.RatingRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -96,16 +97,25 @@ public class RatingServiceRealizationTest extends PostServiceApplicationTests {
 
     @Test
     public void update() {
+        Rating ratingRequest = Rating.builder()
+                .id("1")
+                .userId("asad")
+                .postId("asdasdfdf")
+                .build();
         Rating ratingOne = Rating.builder()
                 .id("1")
                 .userId("1a35")
                 .postId("1ft2")
                 .build();
-        when(ratingRepository.findById(ratingOne.getId())).thenReturn(Optional.of(ratingOne));
+        when(ratingRepository.findById(ratingRequest.getId())).thenReturn(Optional.of(ratingOne));
         when(ratingRepository.save(ratingOne)).thenReturn(ratingOne);
-        doReturn(true).when(postRepository).existsById(ratingOne.getPostId());
 
-        assertEquals(ratingOne, ratingService.update(ratingOne));
+        ratingService.update(ratingRequest);
+
+        Assertions.assertAll(
+                () -> assertEquals(ratingRequest.getUserId(), ratingOne.getUserId()),
+                () -> assertEquals(ratingRequest.getPostId(), ratingOne.getPostId())
+        );
     }
 
     @Test

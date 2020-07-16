@@ -10,10 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -43,12 +40,26 @@ public class PollNodeServiceRealizationTest extends PostServiceApplicationTests 
 
     @Test
     public void update() {
-        PollNode node = PollNode.builder().id("1").title("title").build();
+        PollNode nodeRequest = PollNode.builder()
+                .id("1")
+                .title("newTitle")
+                .items(Collections.singletonList("newItem"))
+                .build();
 
-        when(pollNodeRepository.existsById(node.getId())).thenReturn(true);
+        PollNode node = PollNode.builder()
+                .id("1")
+                .title("title")
+                .build();
+
+        when(pollNodeRepository.findById(nodeRequest.getId())).thenReturn(Optional.of(node));
         when(pollNodeRepository.save(node)).thenReturn(node);
 
-        Assertions.assertEquals(node, pollNodeService.update(node));
+        pollNodeService.update(nodeRequest);
+
+        Assertions.assertAll(
+                () -> assertEquals(nodeRequest.getTitle(), node.getTitle()),
+                () -> assertEquals(nodeRequest.getItems(), node.getItems())
+        );
     }
 
     @Test

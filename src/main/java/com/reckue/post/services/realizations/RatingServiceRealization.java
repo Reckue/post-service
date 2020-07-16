@@ -1,6 +1,5 @@
 package com.reckue.post.services.realizations;
 
-import com.reckue.post.exceptions.ModelAlreadyExistsException;
 import com.reckue.post.exceptions.ModelNotFoundException;
 import com.reckue.post.models.Post;
 import com.reckue.post.models.Rating;
@@ -48,7 +47,6 @@ public class RatingServiceRealization implements RatingService {
 
     /**
      * This method is used to check rating validation.
-     * Throws {@link ModelAlreadyExistsException} in case if such object already exists.
      * Throws {@link ModelNotFoundException} in case if such object isn't contained in database.
      *
      * @param rating object of class Rating
@@ -69,20 +67,16 @@ public class RatingServiceRealization implements RatingService {
      * @param rating object of class Rating
      * @return rating object of class Rating
      */
-
     @Override
     public Rating update(Rating rating) {
         if (rating.getId() == null) {
             throw new IllegalArgumentException("The parameter is null");
         }
-        Rating existRating = ratingRepository.findById(rating.getId())
+        Rating savedRating = ratingRepository
+                .findById(rating.getId())
                 .orElseThrow(() -> new ModelNotFoundException("Rating by id " + rating.getId() + " is not found"));
-
-        Rating savedRating = Rating.builder()
-                .id(existRating.getId())
-                .userId(existRating.getUserId())
-                .postId(existRating.getPostId())
-                .build();
+        savedRating.setUserId(rating.getUserId());
+        savedRating.setPostId(rating.getPostId());
         return ratingRepository.save(savedRating);
     }
 
@@ -141,14 +135,16 @@ public class RatingServiceRealization implements RatingService {
     /**
      * This method is used to sort objects by type.
      *
-     * @param sort type of sorting: published, default - id
+     * @param sort type of sorting: createdDate, modificationDate, default - id
      * @return list of objects of class Rating sorted by the selected parameter for sorting
      */
     public List<Rating> findAllBySortType(String sort) {
 
         switch (sort) {
-            case "published":
+            case "createdDate":
                 return findAllAndSortByCreatedDate();
+            case "modificationDate":
+                return findAllAndSortByModificationDate();
             case "id":
                 return findAllAndSortById();
         }
@@ -167,13 +163,24 @@ public class RatingServiceRealization implements RatingService {
     }
 
     /**
-     * This method is used to sort objects by created date.
+     * This method is used to sort objects by createdDate.
      *
-     * @return list of objects of class Rating sorted by published
+     * @return list of objects of class Rating sorted by createdDate
      */
     public List<Rating> findAllAndSortByCreatedDate() {
         return findAll().stream()
                 .sorted(Comparator.comparing(Rating::getCreatedDate))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * This method is used to sort objects by modificationDate.
+     *
+     * @return list of objects of class Rating sorted by modificationDate
+     */
+    public List<Rating> findAllAndSortByModificationDate() {
+        return findAll().stream()
+                .sorted(Comparator.comparing(Rating::getModificationDate))
                 .collect(Collectors.toList());
     }
 
