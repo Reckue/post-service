@@ -1,47 +1,31 @@
 package com.reckue.post.handlers;
 
-import com.reckue.post.exceptions.ModelAlreadyExistsException;
-import com.reckue.post.exceptions.ModelNotFoundException;
+import com.reckue.post.exceptions.ReckueException;
 import com.reckue.post.transfers.errors.ErrorResponse;
-import org.springframework.http.HttpStatus;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import static com.reckue.post.exceptions.CodeErrorDistributor.codeErrors;
+import static com.reckue.post.exceptions.HttpStatusErrorDistributor.httpStatuses;
+
 /**
  * Class CustomExceptionHandler allows to handle all exceptions.
  *
- * @author Kamila Meshcheryakova
+ * @author Artur Magomedov
  */
 @RestControllerAdvice
 @SuppressWarnings("unused")
 public class CustomExceptionHandler {
 
-    @ExceptionHandler(ModelAlreadyExistsException.class)
-    public ResponseEntity<?> handleModelAlreadyExistsException(ModelAlreadyExistsException e) {
-        return new ResponseEntity<>(new ErrorResponse(
-                e.getMessage(), HttpStatus.CONFLICT, HttpStatus.CONFLICT.value()),
-                HttpStatus.CONFLICT);
+    @ExceptionHandler(ReckueException.class)
+    public ResponseEntity<?> handleReckueException(ReckueException e) {
+        return new ResponseEntity<>(ErrorResponse.builder()
+                .title(e.getClass().getSimpleName())
+                .code(codeErrors.get(e.getClass()))
+                .message(e.getMessage())
+                .trace(ExceptionUtils.getStackTrace(e))
+                .build(), httpStatuses.get(e.getClass()));
     }
-
-    @ExceptionHandler(ModelNotFoundException.class)
-    public ResponseEntity<?> handleModelNotFoundException(ModelNotFoundException e) {
-        return new ResponseEntity<>(new ErrorResponse(
-                e.getMessage(), HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND.value()),
-                HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<?> handleIllegalArgumentException(IllegalArgumentException e) {
-        return new ResponseEntity<>(new ErrorResponse(
-                e.getMessage(), HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value()),
-                HttpStatus.BAD_REQUEST);
-    }
-
-//    @ExceptionHandler(Exception.class)
-//    public ResponseEntity<?> handleException(Exception e) {
-//        return new ResponseEntity<>(new ErrorResponse(
-//                e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR.value()),
-//                HttpStatus.INTERNAL_SERVER_ERROR);
-//    }
 }

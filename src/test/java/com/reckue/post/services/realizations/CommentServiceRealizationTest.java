@@ -1,8 +1,9 @@
 package com.reckue.post.services.realizations;
 
 import com.reckue.post.PostServiceApplicationTests;
-import com.reckue.post.exceptions.ModelAlreadyExistsException;
-import com.reckue.post.exceptions.ModelNotFoundException;
+import com.reckue.post.exceptions.ReckueIllegalArgumentException;
+import com.reckue.post.exceptions.models.comment.CommentAlreadyExistsException;
+import com.reckue.post.exceptions.models.comment.CommentNotFoundException;
 import com.reckue.post.models.Comment;
 import com.reckue.post.repositories.CommentRepository;
 import org.junit.jupiter.api.Assertions;
@@ -73,11 +74,11 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
     }
 
     @Test
-    public void createIfCommentAlreadyExist() {
+    public void createIfCommentAlreadyExists() {
         doReturn(true).when(commentRepository).existsById(Mockito.anyString());
 
-        Exception exception = assertThrows(ModelAlreadyExistsException.class, () -> commentService.create(comment));
-        assertEquals("Comment already exists", exception.getMessage());
+        Exception exception = assertThrows(CommentAlreadyExistsException.class, () -> commentService.create(comment));
+        assertEquals("Comment by id '" + comment.getId() + "' already exists", exception.getMessage());
     }
 
     @Test
@@ -92,7 +93,8 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
     public void updateCommentWithNullId() {
         Comment nullableComm = Comment.builder().build();
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> commentService.update(nullableComm));
+        Exception exception = assertThrows(ReckueIllegalArgumentException.class,
+                () -> commentService.update(nullableComm));
         assertEquals("The parameter is null", exception.getMessage());
     }
 
@@ -100,8 +102,8 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
     public void updateCommentIfNotExistId() {
         when(commentRepository.existsById(comment.getId())).thenReturn(false);
 
-        Exception exception = assertThrows(ModelNotFoundException.class, () -> commentService.update(comment));
-        assertEquals("Comment by id " + comment.getId() + " is not found", exception.getMessage());
+        Exception exception = assertThrows(CommentNotFoundException.class, () -> commentService.update(comment));
+        assertEquals("Comment by id '" + comment.getId() + "' is not found", exception.getMessage());
     }
 
     @Test
@@ -113,9 +115,9 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
 
     @Test
     public void findByIdIfNotExist() {
-        Exception exception = assertThrows(ModelNotFoundException.class,
+        Exception exception = assertThrows(CommentNotFoundException.class,
                 () -> commentService.findById(comment.getId()));
-        assertEquals("Comment by id " + comment.getId() + " is not found", exception.getMessage());
+        assertEquals("Comment by id '" + comment.getId() + "' is not found", exception.getMessage());
     }
 
     @Test
@@ -309,8 +311,8 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
 
     @Test
     public void deleteByIdWithException() {
-        Exception exception = assertThrows(ModelNotFoundException.class,
+        Exception exception = assertThrows(CommentNotFoundException.class,
                 () -> commentService.deleteById(comment.getId()));
-        assertEquals("Comment by id " + comment.getId() + " is not found", exception.getMessage());
+        assertEquals("Comment by id '" + comment.getId() + "' is not found", exception.getMessage());
     }
 }

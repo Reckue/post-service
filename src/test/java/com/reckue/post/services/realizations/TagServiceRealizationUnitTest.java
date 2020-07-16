@@ -1,8 +1,10 @@
 package com.reckue.post.services.realizations;
 
 import com.reckue.post.PostServiceApplicationTests;
-import com.reckue.post.exceptions.ModelAlreadyExistsException;
 import com.reckue.post.exceptions.ModelNotFoundException;
+import com.reckue.post.exceptions.ReckueIllegalArgumentException;
+import com.reckue.post.exceptions.models.tag.TagAlreadyExistsException;
+import com.reckue.post.exceptions.models.tag.TagNotFoundException;
 import com.reckue.post.models.Tag;
 import com.reckue.post.repositories.TagRepository;
 import com.reckue.post.utils.Generator;
@@ -46,12 +48,12 @@ public class TagServiceRealizationUnitTest extends PostServiceApplicationTests {
 
     @Test
     public void createIfTagAlreadyExist() {
-        Tag tag = Tag.builder().id("1").name("exist").build();
+        Tag tag = Tag.builder().id("1").name("exists").build();
 
         doReturn(true).when(tagRepository).existsById(Mockito.anyString());
 
-        Exception exception = assertThrows(ModelAlreadyExistsException.class, () -> tagService.create(tag));
-        assertEquals("Tag already exists", exception.getMessage());
+        Exception exception = assertThrows(TagAlreadyExistsException.class, () -> tagService.create(tag));
+        assertEquals("Tag by id '" + tag.getId() + "' already exists", exception.getMessage());
     }
 
     @Test
@@ -68,7 +70,7 @@ public class TagServiceRealizationUnitTest extends PostServiceApplicationTests {
     public void updateTagWithNullId() {
         Tag tag = Tag.builder().build();
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> tagService.update(tag));
+        Exception exception = assertThrows(ReckueIllegalArgumentException.class, () -> tagService.update(tag));
         assertEquals("The parameter is null", exception.getMessage());
     }
 
@@ -78,7 +80,7 @@ public class TagServiceRealizationUnitTest extends PostServiceApplicationTests {
         when(tagRepository.existsById(tag.getId())).thenReturn(false);
 
         Exception exception = assertThrows(ModelNotFoundException.class, () -> tagService.update(tag));
-        assertEquals("Tag by id " + tag.getId() + " is not found", exception.getMessage());
+        assertEquals("Tag by id '" + tag.getId() + "' is not found", exception.getMessage());
     }
 
     @Test
@@ -90,11 +92,11 @@ public class TagServiceRealizationUnitTest extends PostServiceApplicationTests {
     }
 
     @Test
-    public void findByIdIfNotExist() {
+    public void findByIdIfNotExists() {
         Tag tag = Tag.builder().id("saturn").name("tricia").build();
 
-        Exception exception = assertThrows(ModelNotFoundException.class, () -> tagService.findById(tag.getId()));
-        assertEquals("Tag by id " + tag.getId() + " is not found", exception.getMessage());
+        Exception exception = assertThrows(TagNotFoundException.class, () -> tagService.findById(tag.getId()));
+        assertEquals("Tag by id '" + tag.getId() + "' is not found", exception.getMessage());
     }
 
     @Test
@@ -263,7 +265,8 @@ public class TagServiceRealizationUnitTest extends PostServiceApplicationTests {
     public void deleteByIdWithException() {
         Tag tag = Tag.builder().id("0").name("name").build();
 
-        Exception exception = assertThrows(ModelNotFoundException.class, () -> tagService.deleteById(tag.getId()));
-        assertEquals("Tag by id " + tag.getId() + " is not found", exception.getMessage());
+//        Exception exception = assertThrows(ModelNotFoundException.class, () -> tagService.deleteById(tag.getId()));
+        Exception exception = assertThrows(TagNotFoundException.class, () -> tagService.deleteById(tag.getId()));
+        assertEquals("Tag by id '" + tag.getId() + "' is not found", exception.getMessage());
     }
 }

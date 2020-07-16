@@ -1,8 +1,9 @@
 package com.reckue.post.services.realizations;
 
 import com.reckue.post.PostServiceApplicationTests;
-import com.reckue.post.exceptions.ModelAlreadyExistsException;
-import com.reckue.post.exceptions.ModelNotFoundException;
+import com.reckue.post.exceptions.ReckueIllegalArgumentException;
+import com.reckue.post.exceptions.models.post.PostAlreadyExistsException;
+import com.reckue.post.exceptions.models.post.PostNotFoundException;
 import com.reckue.post.models.Post;
 import com.reckue.post.models.types.StatusType;
 import com.reckue.post.repositories.PostRepository;
@@ -53,7 +54,7 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
                 .build();
         doReturn(true).when(postRepository).existsById(Mockito.anyString());
 
-        assertThrows(ModelAlreadyExistsException.class, () -> postService.create(postOne));
+        assertThrows(PostAlreadyExistsException.class, () -> postService.create(postOne));
     }
 
     @Test
@@ -74,7 +75,7 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
                 .title("postOne")
                 .build();
 
-        assertThrows(IllegalArgumentException.class, () -> postService.update(postOne));
+        assertThrows(ReckueIllegalArgumentException.class, () -> postService.update(postOne));
     }
 
     @Test
@@ -86,7 +87,7 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
         when(postRepository.existsById(postOne.getId())).thenReturn(false);
         when(postRepository.save(postOne)).thenReturn(postOne);
 
-        assertThrows(ModelNotFoundException.class, () -> postService.update(postOne));
+        assertThrows(PostNotFoundException.class, () -> postService.update(postOne));
     }
 
     @Test
@@ -108,7 +109,7 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
                 .build();
         when(postRepository.findById(postOne.getId())).thenReturn(Optional.empty());
 
-        assertThrows(ModelNotFoundException.class, () -> postService.findById(postOne.getId()));
+        assertThrows(PostNotFoundException.class, () -> postService.findById(postOne.getId()));
     }
 
     @Test
@@ -275,13 +276,13 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
 
     @Test
     public void findAllWithIllegalArgLimit() {
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(ReckueIllegalArgumentException.class,
                 () -> postService.findAll(-1, 1, "name", true));
     }
 
     @Test
     public void findAllWithIllegalArgOffset() {
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(ReckueIllegalArgumentException.class,
                 () -> postService.findAll(1, -1, "name", true));
     }
 
@@ -311,6 +312,6 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
                 .build();
         when(postRepository.existsById(postOne.getId())).thenReturn(false);
 
-        assertThrows(ModelNotFoundException.class, () -> postService.deleteById(postOne.getId()));
+        assertThrows(PostNotFoundException.class, () -> postService.deleteById(postOne.getId()));
     }
 }
