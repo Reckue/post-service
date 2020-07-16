@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -31,7 +30,7 @@ public class CommentResponse {
     @ApiModelProperty(notes = "Post id")
     private String postId;
     @ApiModelProperty(notes = "Publication date")
-    private LocalDateTime createdDate;
+    private long published;
     @ApiModelProperty(notes = "List of comments in the current comment")
     private List<Comment> comments;
 }

@@ -3,13 +3,13 @@ package com.reckue.post.transfers;
 import com.reckue.post.models.types.NodeType;
 import com.reckue.post.models.types.StatusType;
 import com.reckue.post.transfers.nodes.NodeParentResponse;
+import com.reckue.post.utils.NodeContent;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
 
 /**
  * Class NodeResponse represents an outgoing DTO for receiving a node.
@@ -41,7 +41,7 @@ public class NodeResponse {
     private String userId;
 
     @ApiModelProperty(notes = "Publication date")
-    private LocalDateTime createdDate;
+    private long published;
 
     @ApiModelProperty(notes = "Node activity status")
     private StatusType status;

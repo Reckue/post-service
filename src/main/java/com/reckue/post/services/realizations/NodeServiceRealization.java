@@ -1,9 +1,15 @@
 package com.reckue.post.services.realizations;
 
+import com.reckue.post.exceptions.ModelAlreadyExistsException;
 import com.reckue.post.exceptions.ModelNotFoundException;
 import com.reckue.post.models.Node;
+import com.reckue.post.models.nodes.*;
+import com.reckue.post.models.types.NodeType;
 import com.reckue.post.repositories.NodeRepository;
+import com.reckue.post.repositories.PostRepository;
 import com.reckue.post.services.NodeService;
+import com.reckue.post.utils.Generator;
+import com.reckue.post.utils.converters.Converter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -23,6 +29,7 @@ import java.util.stream.Collectors;
 public class NodeServiceRealization implements NodeService {
 
     private final NodeRepository nodeRepository;
+    private final PostRepository postRepository;
 
     /**
      * This method is used to create an object of class Node.
@@ -33,7 +40,12 @@ public class NodeServiceRealization implements NodeService {
      */
     @Override
     public Node create(Node node) {
-        return nodeRepository.save(node);
+        node.setId(Generator.id());
+        if (!nodeRepository.existsById(node.getId())) {
+            return nodeRepository.save(node);
+        } else {
+            throw new ModelAlreadyExistsException("Node already exists");
+        }
     }
 
     /**
@@ -60,6 +72,7 @@ public class NodeServiceRealization implements NodeService {
                 .type(node.getType())
                 .source(node.getSource())
                 .status(node.getStatus())
+                .published(node.getPublished())
                 .build();
         return nodeRepository.save(savedNode);
     }
@@ -132,7 +145,7 @@ public class NodeServiceRealization implements NodeService {
             case "source":
                 return findAllAndSortBySource();
             case "published":
-                return findAllAndSortByCreatedDate();
+                return findAllAndSortByPublished();
             case "userId":
                 return findAllAndSortByUserId();
             case "id":
@@ -201,9 +214,9 @@ public class NodeServiceRealization implements NodeService {
      *
      * @return list of objects of class Node sorted by publication date
      */
-    public List<Node> findAllAndSortByCreatedDate() {
+    public List<Node> findAllAndSortByPublished() {
         return findAll().stream()
-                .sorted(Comparator.comparing(Node::getCreatedDate))
+                .sorted(Comparator.comparing(Node::getPublished))
                 .collect(Collectors.toList());
     }
 

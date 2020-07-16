@@ -2,6 +2,7 @@ package com.reckue.post.transfers;
 
 import com.reckue.post.models.types.NodeType;
 import com.reckue.post.transfers.nodes.NodeParentRequest;
+import com.reckue.post.utils.NodeContent;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
@@ -33,4 +34,7 @@ public class NodeRequest {
 
     @ApiModelProperty(notes = "Node author identifier")
     private String userId;
+
+    @ApiModelProperty(notes = "Publication date")
+    private long published;
 }

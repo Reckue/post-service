@@ -27,7 +27,6 @@ package com.reckue.post;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.mongodb.config.EnableMongoAuditing;
 
 /**
  * Service for publications, tutorials and articles.
@@ -39,10 +38,8 @@ import org.springframework.data.mongodb.config.EnableMongoAuditing;
  * @author Viktor Grigoriev
  * @author Iveri Narozashvili
  * @author Artur Magomedov
- * @author Marina Buinevich
  */
 @SpringBootApplication
-@EnableMongoAuditing
 public class PostServiceApplication {
 
     public static void main(String[] args) {
