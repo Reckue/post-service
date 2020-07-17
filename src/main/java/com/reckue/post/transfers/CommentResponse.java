@@ -23,14 +23,21 @@ public class CommentResponse {
     @NotNull
     @ApiModelProperty(notes = "Text of comment")
     private String text;
+
     @NotNull
     @ApiModelProperty(notes = "User id")
     private String userId;
+
     @NotNull
     @ApiModelProperty(notes = "Post id")
     private String postId;
-    @ApiModelProperty(notes = "Publication date")
-    private long published;
+
+    @ApiModelProperty(notes = "Created date")
+    private long createdDate;
+
+    @ApiModelProperty(notes = "Modification date")
+    private long modificationDate;
+
     @ApiModelProperty(notes = "List of comments in the current comment")
     private List<Comment> comments;
 }

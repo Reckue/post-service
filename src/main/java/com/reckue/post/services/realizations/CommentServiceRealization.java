@@ -7,7 +7,6 @@ import com.reckue.post.exceptions.models.comment.CommentNotFoundException;
 import com.reckue.post.models.Comment;
 import com.reckue.post.repositories.CommentRepository;
 import com.reckue.post.services.CommentService;
-import com.reckue.post.utils.Generator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -30,19 +29,13 @@ public class CommentServiceRealization implements CommentService {
 
     /**
      * This method is used to create an object of class Comment.
-     * Throws {@link CommentAlreadyExistsException} in case if such object already exists.
      *
      * @param comment object of class Comment
      * @return comment object of class Comment
      */
     @Override
     public Comment create(Comment comment) {
-        comment.setId(Generator.id());
-        if (!commentRepository.existsById(comment.getId())) {
-            return commentRepository.save(comment);
-        } else {
-            throw new CommentAlreadyExistsException(comment.getId());
-        }
+        return commentRepository.save(comment);
     }
 
     /**
@@ -60,17 +53,13 @@ public class CommentServiceRealization implements CommentService {
         if (comment.getId() == null) {
             throw new ReckueIllegalArgumentException("The parameter is null");
         }
-        if (!commentRepository.existsById(comment.getId())) {
-            throw new CommentNotFoundException(comment.getId());
-        }
-        Comment savedComment = Comment.builder()
-                .id(comment.getId())
-                .text(comment.getText())
-                .postId(comment.getPostId())
-                .userId(comment.getUserId())
-                .published(comment.getPublished())
-                .comments(comment.getComments())
-                .build();
+        Comment savedComment = commentRepository
+                .findById(comment.getId())
+                .orElseThrow(() -> new CommentNotFoundException(comment.getId()));
+        savedComment.setText(comment.getText());
+        savedComment.setPostId(comment.getPostId());
+        savedComment.setUserId(comment.getUserId());
+        savedComment.setComments(comment.getComments());
 
         return commentRepository.save(savedComment);
     }
@@ -130,7 +119,7 @@ public class CommentServiceRealization implements CommentService {
     /**
      * This method is used to sort objects by type.
      *
-     * @param sort type of sorting: id, text, userId, postId or published
+     * @param sort type of sorting: id, text, userId, postId, createdDate or modificationDate
      * @return list of objects of class Comment sorted by the selected parameter for sorting
      */
     public List<Comment> findAllBySortType(String sort) {
@@ -143,10 +132,23 @@ public class CommentServiceRealization implements CommentService {
                 return findAllAndSortByUserId();
             case "postId":
                 return findAllAndSortByPostId();
-            case "published":
-                return findAllAndSortByPublished();
+            case "createdDate":
+                return findAllAndSortByCreatedDate();
+            case "modificationDate":
+                return findAllAndSortByModificationDate();
         }
         throw new ReckueIllegalArgumentException("Such field as " + sort + " doesn't exist");
+    }
+
+    /**
+     * This method is used to sort objects by modificationDate.
+     *
+     * @return list of objects of class Comment sorted by modificationDate
+     */
+    private List<Comment> findAllAndSortByModificationDate() {
+        return findAll().stream()
+                .sorted(Comparator.comparing(Comment::getModificationDate))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -194,13 +196,13 @@ public class CommentServiceRealization implements CommentService {
     }
 
     /**
-     * This method is used to sort objects by published date.
+     * This method is used to sort objects by createdDate.
      *
-     * @return list of objects of class Comment sorted by published date
+     * @return list of objects of class Comment sorted by createdDate
      */
-    public List<Comment> findAllAndSortByPublished() {
+    public List<Comment> findAllAndSortByCreatedDate() {
         return findAll().stream()
-                .sorted(Comparator.comparing(Comment::getPublished))
+                .sorted(Comparator.comparing(Comment::getCreatedDate))
                 .collect(Collectors.toList());
     }
 

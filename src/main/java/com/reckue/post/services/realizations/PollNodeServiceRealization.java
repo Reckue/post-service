@@ -6,7 +6,6 @@ import com.reckue.post.exceptions.models.nodes.pollnode.PollNodeNotFoundExceptio
 import com.reckue.post.models.nodes.PollNode;
 import com.reckue.post.repositories.PollNodeRepository;
 import com.reckue.post.services.PollNodeService;
-import com.reckue.post.utils.Generator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -29,19 +28,13 @@ public class PollNodeServiceRealization implements PollNodeService {
 
     /**
      * This method is used to create an object of class PollNode.
-     * Throws {@link PollNodeAlreadyExistsException} in case if such object already exists.
      *
      * @param node object of class PollNode
      * @return node object of class PollNode
      */
     @Override
     public PollNode create(PollNode node) {
-        node.setId(Generator.id());
-        if (!pollNodeRepository.existsById(node.getId())) {
-            return pollNodeRepository.save(node);
-        } else {
-            throw new PollNodeAlreadyExistsException(node.getId());
-        }
+        return pollNodeRepository.save(node);
     }
 
     /**
@@ -59,14 +52,11 @@ public class PollNodeServiceRealization implements PollNodeService {
         if (node.getId() == null) {
             throw new ReckueIllegalArgumentException("The parameter is null");
         }
-        if (!pollNodeRepository.existsById(node.getId())) {
-            throw new PollNodeNotFoundException(node.getId());
-        }
-        PollNode savedPollNode = PollNode.builder()
-                .id(node.getId())
-                .title(node.getTitle())
-                .items(node.getItems())
-                .build();
+        PollNode savedPollNode = pollNodeRepository
+                .findById(node.getId())
+                .orElseThrow(() -> new PollNodeNotFoundException(node.getId()));
+        savedPollNode.setTitle(node.getTitle());
+        savedPollNode.setItems(node.getItems());
         return pollNodeRepository.save(savedPollNode);
     }
 

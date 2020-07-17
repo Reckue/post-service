@@ -20,7 +20,6 @@ public interface TagApi {
     @ApiOperation(value = "Add a tag")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "The tag successfully added"),
-            @ApiResponse(code = 409, message = "The tag you want to add already exists"),
             @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")})
     TagResponse create(TagRequest tagRequest);
 

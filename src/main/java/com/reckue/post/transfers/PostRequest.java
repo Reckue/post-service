@@ -39,12 +39,6 @@ public class PostRequest {
     @ApiModelProperty(notes = "List of keywords used in the post")
     private List<Tag> tags;
 
-    @ApiModelProperty(notes = "Publication date")
-    private long published;
-
-    @ApiModelProperty(notes = "Date of changes")
-    private long changed;
-
     @NotNull
     @ApiModelProperty(notes = "Post activity status")
     private StatusType status;

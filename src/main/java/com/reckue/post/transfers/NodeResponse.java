@@ -3,7 +3,6 @@ package com.reckue.post.transfers;
 import com.reckue.post.models.types.NodeType;
 import com.reckue.post.models.types.StatusType;
 import com.reckue.post.transfers.nodes.NodeParentResponse;
-import com.reckue.post.utils.NodeContent;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
@@ -40,8 +39,11 @@ public class NodeResponse {
     @ApiModelProperty(notes = "Node author identifier")
     private String userId;
 
-    @ApiModelProperty(notes = "Publication date")
-    private long published;
+    @ApiModelProperty(notes = "Created date")
+    private long createdDate;
+
+    @ApiModelProperty(notes = "Modification date")
+    private long modificationDate;
 
     @ApiModelProperty(notes = "Node activity status")
     private StatusType status;

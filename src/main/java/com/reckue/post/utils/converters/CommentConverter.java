@@ -5,6 +5,8 @@ import com.reckue.post.models.Comment;
 import com.reckue.post.transfers.CommentRequest;
 import com.reckue.post.transfers.CommentResponse;
 
+import java.time.ZoneId;
+
 /**
  * Class for converting CommentRequest object to Comment and Comment object to CommentResponse.
  *
@@ -26,7 +28,6 @@ public class CommentConverter {
                 .text(commentRequest.getText())
                 .userId(commentRequest.getUserId())
                 .postId(commentRequest.getPostId())
-                .published(commentRequest.getPublished())
                 .comments(commentRequest.getComments())
                 .build();
     }
@@ -46,7 +47,10 @@ public class CommentConverter {
                 .text(comment.getText())
                 .userId(comment.getUserId())
                 .postId(comment.getPostId())
-                .published(comment.getPublished())
+                .createdDate(comment.getCreatedDate()
+                        .atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
+                .modificationDate(comment.getModificationDate()
+                        .atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
                 .comments(comment.getComments())
                 .build();
     }

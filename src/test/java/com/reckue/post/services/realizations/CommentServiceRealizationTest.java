@@ -13,10 +13,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -46,7 +45,7 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
                 .text("front")
                 .userId("vlad")
                 .postId("007")
-                .published(404L)
+                .createdDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(404L), TimeZone.getDefault().toZoneId()))
                 .build();
 
         comment2 = Comment.builder()
@@ -54,7 +53,7 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
                 .text("test")
                 .userId("ivery")
                 .postId("911")
-                .published(500L)
+                .createdDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(500L), TimeZone.getDefault().toZoneId()))
                 .build();
 
         comment3 = Comment.builder().
@@ -62,7 +61,7 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
                 text("web").
                 userId("sherzod").
                 postId("666").
-                published(200L).
+                createdDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(200L), TimeZone.getDefault().toZoneId())).
                 build();
     }
 
@@ -74,19 +73,32 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
     }
 
     @Test
-    public void createIfCommentAlreadyExists() {
-        doReturn(true).when(commentRepository).existsById(Mockito.anyString());
-
-        Exception exception = assertThrows(CommentAlreadyExistsException.class, () -> commentService.create(comment));
-        assertEquals("Comment by id '" + comment.getId() + "' already exists", exception.getMessage());
-    }
-
-    @Test
     public void update() {
-        when(commentRepository.existsById(comment.getId())).thenReturn(true);
+        Comment commentRequest = Comment.builder()
+                .id("1")
+                .text("newText")
+                .userId("2")
+                .postId("3")
+                .comments(Collections.singletonList(comment))
+                .build();
+
+        Comment comment = Comment.builder()
+                .id("1")
+                .text("text")
+                .userId("2jjjj")
+                .postId("4ijkml")
+                .build();
+        when(commentRepository.findById(commentRequest.getId())).thenReturn(Optional.of(comment));
         when(commentRepository.save(comment)).thenReturn(comment);
 
-        Assertions.assertEquals(comment, commentService.update(comment));
+        commentService.update(commentRequest);
+
+        Assertions.assertAll(
+                () -> assertEquals(commentRequest.getText(), comment.getText()),
+                () -> assertEquals(commentRequest.getUserId(), comment.getUserId()),
+                () -> assertEquals(commentRequest.getPostId(), comment.getPostId()),
+                () -> assertEquals(commentRequest.getComments(), comment.getComments())
+        );
     }
 
     @Test
@@ -183,10 +195,10 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
         when(commentRepository.findAll()).thenReturn(comments);
 
         List<Comment> expected = comments.stream()
-                .sorted(Comparator.comparing(Comment::getPublished))
+                .sorted(Comparator.comparing(Comment::getCreatedDate))
                 .collect(Collectors.toList());
 
-        assertEquals(expected, commentService.findAllAndSortByPublished());
+        assertEquals(expected, commentService.findAllAndSortByCreatedDate());
     }
 
     @Test
@@ -211,14 +223,14 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
                 .collect(Collectors.toList());
 
         List<Comment> sortedByPublishedExpected = comments.stream()
-                .sorted(Comparator.comparing(Comment::getPublished))
+                .sorted(Comparator.comparing(Comment::getCreatedDate))
                 .collect(Collectors.toList());
 
         assertEquals(sortedByIdExpected, commentService.findAllBySortType("id"));
         assertEquals(sortedByTextExpected, commentService.findAllBySortType("text"));
         assertEquals(sortedByUserIdExpected, commentService.findAllBySortType("userId"));
         assertEquals(sortedByPostIdExpected, commentService.findAllBySortType("postId"));
-        assertEquals(sortedByPublishedExpected, commentService.findAllBySortType("published"));
+        assertEquals(sortedByPublishedExpected, commentService.findAllBySortType("createdDate"));
     }
 
     @Test
@@ -243,14 +255,14 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
                 .collect(Collectors.toList());
 
         List<Comment> sortByPublishedAndDescExpected = comments.stream()
-                .sorted(Comparator.comparing(Comment::getPublished).reversed())
+                .sorted(Comparator.comparing(Comment::getCreatedDate).reversed())
                 .collect(Collectors.toList());
 
         assertEquals(sortByIdAndDescExpected, commentService.findAllByTypeAndDesc("id", true));
         assertEquals(sortByTextAndDescExpected, commentService.findAllByTypeAndDesc("text", true));
         assertEquals(sortByUserIdAndDescExpected, commentService.findAllByTypeAndDesc("userId", true));
         assertEquals(sortByPostIdAndDescExpected, commentService.findAllByTypeAndDesc("postId", true));
-        assertEquals(sortByPublishedAndDescExpected, commentService.findAllByTypeAndDesc("published", true));
+        assertEquals(sortByPublishedAndDescExpected, commentService.findAllByTypeAndDesc("createdDate", true));
     }
 
     @Test
@@ -282,7 +294,7 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
                 .collect(Collectors.toList());
 
         List<Comment> test5 = comments.stream()
-                .sorted(Comparator.comparing(Comment::getPublished).reversed())
+                .sorted(Comparator.comparing(Comment::getCreatedDate).reversed())
                 .limit(2)
                 .skip(1)
                 .collect(Collectors.toList());
@@ -291,7 +303,7 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
         assertEquals(test2, commentService.findAll(3, 0, "text", true));
         assertEquals(test3, commentService.findAll(1, 2, "userId", false));
         assertEquals(test4, commentService.findAll(2, 1, "postId", false));
-        assertEquals(test5, commentService.findAll(2, 1, "published", true));
+        assertEquals(test5, commentService.findAll(2, 1, "createdDate", true));
     }
 
     @Test

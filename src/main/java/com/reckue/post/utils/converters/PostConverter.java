@@ -3,14 +3,13 @@ package com.reckue.post.utils.converters;
 import com.reckue.post.exceptions.ReckueIllegalArgumentException;
 import com.reckue.post.models.Node;
 import com.reckue.post.models.Post;
-import com.reckue.post.transfers.NodeRequest;
 import com.reckue.post.transfers.NodeResponse;
 import com.reckue.post.transfers.PostRequest;
 import com.reckue.post.transfers.PostResponse;
 
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -44,8 +43,6 @@ public class PostConverter {
                 .nodes(nodes)
                 .source(postRequest.getSource())
                 .tags(postRequest.getTags())
-                .published(postRequest.getPublished())
-                .changed(postRequest.getChanged())
                 .status(postRequest.getStatus())
                 .build();
     }
@@ -76,8 +73,8 @@ public class PostConverter {
                 .nodes(nodes)
                 .source(post.getSource())
                 .tags(post.getTags())
-                .published(post.getPublished())
-                .changed(post.getChanged())
+                .createdDate(post.getCreatedDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
+                .modificationDate(post.getModificationDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
                 .status(post.getStatus())
                 .build();
     }
