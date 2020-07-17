@@ -22,6 +22,9 @@ public class RatingResponse {
     @ApiModelProperty(notes = "Post Id")
     private String postId;
 
-    @ApiModelProperty(notes = "Publication date")
-    private long published;
+    @ApiModelProperty(notes = "Created date")
+    private long createdDate;
+
+    @ApiModelProperty(notes = "Modification date")
+    private long modificationDate;
 }

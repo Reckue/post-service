@@ -1,11 +1,11 @@
 package com.reckue.post.services.realizations;
 
-import com.reckue.post.exceptions.ModelAlreadyExistsException;
-import com.reckue.post.exceptions.ModelNotFoundException;
+import com.reckue.post.exceptions.ReckueIllegalArgumentException;
+import com.reckue.post.exceptions.models.tag.TagAlreadyExistsException;
+import com.reckue.post.exceptions.models.tag.TagNotFoundException;
 import com.reckue.post.models.Tag;
 import com.reckue.post.repositories.TagRepository;
 import com.reckue.post.services.TagService;
-import com.reckue.post.utils.Generator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -28,26 +28,20 @@ public class TagServiceRealization implements TagService {
 
     /**
      * This method is used to create an object of class Tag.
-     * Throws {@link ModelAlreadyExistsException} in case if such object already exists.
      *
      * @param tag object of class Tag
      * @return tag object of class Tag
      */
     @Override
     public Tag create(Tag tag) {
-        tag.setId(Generator.id());
-        if (!tagRepository.existsById(tag.getId())) {
-            return tagRepository.save(tag);
-        } else {
-            throw new ModelAlreadyExistsException("Tag already exists");
-        }
+        return tagRepository.save(tag);
     }
 
     /**
      * This method is used to update data in an object of class Tag.
-     * Throws {@link ModelNotFoundException} in case
+     * Throws {@link TagNotFoundException} in case
      * if such object isn't contained in database.
-     * Throws {@link IllegalArgumentException} in case
+     * Throws {@link ReckueIllegalArgumentException} in case
      * if such parameter is null.
      *
      * @param tag object of class Tag
@@ -55,13 +49,13 @@ public class TagServiceRealization implements TagService {
      */
     @Override
     public Tag update(Tag tag) {
-        if (tag.getId() == null || !tagRepository.existsById(tag.getId())) {
-            throw new ModelNotFoundException("Tag by id " + tag.getId() + " is not found");
+        if (tag.getId() == null) {
+            throw new ReckueIllegalArgumentException("The parameter is null");
         }
-        Tag savedTag = Tag.builder()
-                .id(tag.getId())
-                .name(tag.getName())
-                .build();
+        Tag savedTag = tagRepository
+                .findById(tag.getId())
+                .orElseThrow(() -> new TagNotFoundException(tag.getId()));
+        savedTag.setName(tag.getName());
         return tagRepository.save(savedTag);
     }
 
@@ -92,7 +86,7 @@ public class TagServiceRealization implements TagService {
         if (desc == null) desc = false;
 
         if (limit < 0 || offset < 0) {
-            throw new IllegalArgumentException("Limit or offset is incorrect");
+            throw new ReckueIllegalArgumentException("Limit or offset is incorrect");
         }
         return findAllByTypeAndDesc(sort, desc).stream()
                 .limit(limit)
@@ -131,7 +125,7 @@ public class TagServiceRealization implements TagService {
             case "id":
                 return findAllAndSortById();
         }
-        throw new IllegalArgumentException("Such field as " + sort + " doesn't exist");
+        throw new ReckueIllegalArgumentException("Such field as " + sort + " doesn't exist");
     }
 
     /**
@@ -158,7 +152,7 @@ public class TagServiceRealization implements TagService {
 
     /**
      * This method is used to get an object by id.
-     * Throws {@link ModelNotFoundException} in case if such object isn't contained in database.
+     * Throws {@link TagNotFoundException} in case if such object isn't contained in database.
      *
      * @param id object
      * @return object of class Tag
@@ -166,12 +160,12 @@ public class TagServiceRealization implements TagService {
     @Override
     public Tag findById(String id) {
         return tagRepository.findById(id).orElseThrow(
-                () -> new ModelNotFoundException("Tag by id " + id + " is not found"));
+                () -> new TagNotFoundException(id));
     }
 
     /**
      * This method is used to delete an object by id.
-     * Throws {@link ModelNotFoundException} in case
+     * Throws {@link TagNotFoundException} in case
      * if such object isn't contained in database.
      *
      * @param id object
@@ -181,7 +175,7 @@ public class TagServiceRealization implements TagService {
         if (tagRepository.existsById(id)) {
             tagRepository.deleteById(id);
         } else {
-            throw new ModelNotFoundException("Tag by id " + id + " is not found");
+            throw new TagNotFoundException(id);
         }
     }
 }

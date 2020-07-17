@@ -1,13 +1,13 @@
 package com.reckue.post.services.realizations;
 
-import com.reckue.post.exceptions.ModelAlreadyExistsException;
-import com.reckue.post.exceptions.ModelNotFoundException;
+import com.reckue.post.exceptions.ReckueIllegalArgumentException;
+import com.reckue.post.exceptions.models.post.PostAlreadyExistsException;
+import com.reckue.post.exceptions.models.post.PostNotFoundException;
 import com.reckue.post.models.Post;
 import com.reckue.post.models.types.PostStatusType;
 import com.reckue.post.repositories.PostRepository;
 import com.reckue.post.services.NodeService;
 import com.reckue.post.services.PostService;
-import com.reckue.post.utils.Generator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -31,23 +31,17 @@ public class PostServiceRealization implements PostService {
 
     /**
      * This method is used to create an object of class Post.
-     * Throws {@link ModelAlreadyExistsException} in case if such object already exists.
      *
      * @param post object of class Post
      * @return post object of class Post
      */
     @Override
     public Post create(Post post) {
-        post.setId(Generator.id());
-        if (!postRepository.existsById(post.getId())) {
-            if (post.getNodes() != null) {
-                post.getNodes().forEach(nodeService::create);
-            }
-            validateOnCreateStatus(post);
-            return postRepository.save(post);
-        } else {
-            throw new ModelAlreadyExistsException("Post already exists");
+        if (post.getNodes() != null) {
+            post.getNodes().forEach(nodeService::create);
         }
+        validateOnCreateStatus(post);
+        return postRepository.save(post);
     }
 
     private void validateOnCreateStatus(Post post) {
@@ -63,9 +57,9 @@ public class PostServiceRealization implements PostService {
 
     /**
      * This method is used to update data in an object of class Post.
-     * Throws {@link ModelNotFoundException} in case
+     * Throws {@link PostNotFoundException} in case
      * if such object isn't contained in database.
-     * Throws {@link IllegalArgumentException} in case
+     * Throws {@link ReckueIllegalArgumentException} in case
      * if parameter equals null.
      *
      * @param post object of class Post
@@ -73,26 +67,20 @@ public class PostServiceRealization implements PostService {
      */
     @Override
     public Post update(Post post) {
-        if (post.getId() == null || !postRepository.existsById(post.getId())) {
-            throw new ModelNotFoundException("Post by id " + post.getId() + " is not found");
+        if (post.getId() == null) {
+            throw new ReckueIllegalArgumentException("The parameter is null");
         }
-        Post savedPost = Post.builder()
-                .id(post.getId())
-                .userId(post.getUserId())
-                .title(post.getTitle())
-                .nodes(post.getNodes())
-                .source(post.getSource())
-                .tags(post.getTags())
-                .published(post.getPublished())
-                .changed(post.getChanged())
-                .status(post.getStatus())
-                .build();
-        validateOnUpdateStatus(post);
+        Post savedPost = postRepository
+                .findById(post.getId())
+                .orElseThrow(() -> new PostNotFoundException(post.getId()));
+        savedPost.setUserId(post.getUserId());
+        savedPost.setTitle(post.getTitle());
+        savedPost.setNodes(post.getNodes());
+        savedPost.setSource(post.getSource());
+        savedPost.setTags(post.getTags());
+        savedPost.setStatus(post.getStatus());
+
         return postRepository.save(savedPost);
-    }
-
-    private void validateOnUpdateStatus(Post post) {
-
     }
 
     /**
@@ -123,7 +111,7 @@ public class PostServiceRealization implements PostService {
         if (desc == null) desc = false;
 
         if (limit < 0 || offset < 0) {
-            throw new IllegalArgumentException("Limit or offset is incorrect");
+            throw new ReckueIllegalArgumentException("Limit or offset is incorrect");
         }
         return findAllByTypeAndDesc(sort, desc).stream()
                 .limit(limit)
@@ -151,7 +139,7 @@ public class PostServiceRealization implements PostService {
     /**
      * This method is used to sort objects by type.
      *
-     * @param sort type of sorting: title, source, published, changed, status, default - id
+     * @param sort type of sorting: title, source, createdDate, modificationDate, status, default - id
      * @return list of objects of class Post sorted by the selected parameter for sorting
      */
     public List<Post> findAllBySortType(String sort) {
@@ -160,10 +148,10 @@ public class PostServiceRealization implements PostService {
                 return findAllAndSortByTitle();
             case "source":
                 return findAllAndSortBySource();
-            case "published":
-                return findAllAndSortByPublished();
-            case "changed":
-                return findAllAndSortByChanged();
+            case "createdDate":
+                return findAllAndSortByCreatedDate();
+            case "modificationDate":
+                return findAllAndSortByModificationDate();
             case "status":
                 return findAllAndSortByStatus();
             case "id":
@@ -171,7 +159,7 @@ public class PostServiceRealization implements PostService {
             case "userId":
                 return findAllAndSortByUserId();
         }
-        throw new IllegalArgumentException("Such field as " + sort + " doesn't exist");
+        throw new ReckueIllegalArgumentException("Such field as " + sort + " doesn't exist");
     }
 
     /**
@@ -219,24 +207,24 @@ public class PostServiceRealization implements PostService {
     }
 
     /**
-     * This method is used to sort objects by publication date.
+     * This method is used to sort objects by createdDate.
      *
-     * @return list of objects of class Post sorted by publication date
+     * @return list of objects of class Post sorted by createdDate
      */
-    public List<Post> findAllAndSortByPublished() {
+    public List<Post> findAllAndSortByCreatedDate() {
         return findAll().stream()
-                .sorted(Comparator.comparing(Post::getPublished))
+                .sorted(Comparator.comparing(Post::getCreatedDate))
                 .collect(Collectors.toList());
     }
 
     /**
-     * This method is used to sort objects by date modified.
+     * This method is used to sort objects by modificationDate.
      *
-     * @return list of objects of class Post sorted by date modified
+     * @return list of objects of class Post sorted by modificationDate
      */
-    public List<Post> findAllAndSortByChanged() {
+    public List<Post> findAllAndSortByModificationDate() {
         return findAll().stream()
-                .sorted(Comparator.comparing(Post::getChanged))
+                .sorted(Comparator.comparing(Post::getModificationDate))
                 .collect(Collectors.toList());
     }
 
@@ -253,7 +241,7 @@ public class PostServiceRealization implements PostService {
 
     /**
      * This method is used to get an object by id.
-     * Throws {@link ModelNotFoundException} in case if such object isn't contained in database.
+     * Throws {@link PostNotFoundException} in case if such object isn't contained in database.
      *
      * @param id object
      * @return post object of class Post
@@ -261,12 +249,12 @@ public class PostServiceRealization implements PostService {
     @Override
     public Post findById(String id) {
         return postRepository.findById(id).orElseThrow(
-                () -> new ModelNotFoundException("Post by id " + id + " is not found"));
+                () -> new PostNotFoundException(id));
     }
 
     /**
      * This method is used to delete an object by id.
-     * Throws {@link ModelNotFoundException} in case if such object isn't contained in database.
+     * Throws {@link PostNotFoundException} in case if such object isn't contained in database.
      *
      * @param id object
      */
@@ -275,7 +263,7 @@ public class PostServiceRealization implements PostService {
         if (postRepository.existsById(id)) {
             postRepository.deleteById(id);
         } else {
-            throw new ModelNotFoundException("Post by id " + id + " is not found");
+            throw new PostNotFoundException(id);
         }
     }
 

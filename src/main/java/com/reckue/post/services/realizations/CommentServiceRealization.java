@@ -1,11 +1,12 @@
 package com.reckue.post.services.realizations;
 
-import com.reckue.post.exceptions.ModelAlreadyExistsException;
-import com.reckue.post.exceptions.ModelNotFoundException;
+
+import com.reckue.post.exceptions.ReckueIllegalArgumentException;
+import com.reckue.post.exceptions.models.comment.CommentAlreadyExistsException;
+import com.reckue.post.exceptions.models.comment.CommentNotFoundException;
 import com.reckue.post.models.Comment;
 import com.reckue.post.repositories.CommentRepository;
 import com.reckue.post.services.CommentService;
-import com.reckue.post.utils.Generator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -28,26 +29,20 @@ public class CommentServiceRealization implements CommentService {
 
     /**
      * This method is used to create an object of class Comment.
-     * Throws {@link ModelAlreadyExistsException} in case if such object already exists.
      *
      * @param comment object of class Comment
      * @return comment object of class Comment
      */
     @Override
     public Comment create(Comment comment) {
-        comment.setId(Generator.id());
-        if (!commentRepository.existsById(comment.getId())) {
-            return commentRepository.save(comment);
-        } else {
-            throw new ModelAlreadyExistsException("Comment already exists");
-        }
+        return commentRepository.save(comment);
     }
 
     /**
      * This method is used to update data in an object of class Comment.
-     * Throws {@link ModelNotFoundException} in case
+     * Throws {@link CommentNotFoundException} in case
      * if such object isn't contained in database.
-     * Throws {@link IllegalArgumentException} in case
+     * Throws {@link ReckueIllegalArgumentException} in case
      * if such parameter is null.
      *
      * @param comment object of class Comment
@@ -55,17 +50,16 @@ public class CommentServiceRealization implements CommentService {
      */
     @Override
     public Comment update(Comment comment) {
-        if (comment.getId() == null || !commentRepository.existsById(comment.getId())) {
-            throw new ModelNotFoundException("Comment by id " + comment.getId() + " is not found");
+        if (comment.getId() == null) {
+            throw new ReckueIllegalArgumentException("The parameter is null");
         }
-        Comment savedComment = Comment.builder()
-                .id(comment.getId())
-                .text(comment.getText())
-                .postId(comment.getPostId())
-                .userId(comment.getUserId())
-                .published(comment.getPublished())
-                .comments(comment.getComments())
-                .build();
+        Comment savedComment = commentRepository
+                .findById(comment.getId())
+                .orElseThrow(() -> new CommentNotFoundException(comment.getId()));
+        savedComment.setText(comment.getText());
+        savedComment.setPostId(comment.getPostId());
+        savedComment.setUserId(comment.getUserId());
+        savedComment.setComments(comment.getComments());
 
         return commentRepository.save(savedComment);
     }
@@ -97,7 +91,7 @@ public class CommentServiceRealization implements CommentService {
         if (desc == null) desc = false;
 
         if (limit < 0 || offset < 0) {
-            throw new IllegalArgumentException("Limit or offset is incorrect");
+            throw new ReckueIllegalArgumentException("Limit or offset is incorrect");
         }
         return findAllByTypeAndDesc(sort, desc).stream()
                 .limit(limit)
@@ -125,7 +119,7 @@ public class CommentServiceRealization implements CommentService {
     /**
      * This method is used to sort objects by type.
      *
-     * @param sort type of sorting: id, text, userId, postId or published
+     * @param sort type of sorting: id, text, userId, postId, createdDate or modificationDate
      * @return list of objects of class Comment sorted by the selected parameter for sorting
      */
     public List<Comment> findAllBySortType(String sort) {
@@ -138,10 +132,23 @@ public class CommentServiceRealization implements CommentService {
                 return findAllAndSortByUserId();
             case "postId":
                 return findAllAndSortByPostId();
-            case "published":
-                return findAllAndSortByPublished();
+            case "createdDate":
+                return findAllAndSortByCreatedDate();
+            case "modificationDate":
+                return findAllAndSortByModificationDate();
         }
-        throw new IllegalArgumentException("Such field as " + sort + " doesn't exist");
+        throw new ReckueIllegalArgumentException("Such field as " + sort + " doesn't exist");
+    }
+
+    /**
+     * This method is used to sort objects by modificationDate.
+     *
+     * @return list of objects of class Comment sorted by modificationDate
+     */
+    private List<Comment> findAllAndSortByModificationDate() {
+        return findAll().stream()
+                .sorted(Comparator.comparing(Comment::getModificationDate))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -189,19 +196,19 @@ public class CommentServiceRealization implements CommentService {
     }
 
     /**
-     * This method is used to sort objects by published date.
+     * This method is used to sort objects by createdDate.
      *
-     * @return list of objects of class Comment sorted by published date
+     * @return list of objects of class Comment sorted by createdDate
      */
-    public List<Comment> findAllAndSortByPublished() {
+    public List<Comment> findAllAndSortByCreatedDate() {
         return findAll().stream()
-                .sorted(Comparator.comparing(Comment::getPublished))
+                .sorted(Comparator.comparing(Comment::getCreatedDate))
                 .collect(Collectors.toList());
     }
 
     /**
      * This method is used to get an object by id.
-     * Throws {@link ModelNotFoundException} in case if such object isn't contained in database.
+     * Throws {@link CommentNotFoundException} in case if such object isn't contained in database.
      *
      * @param id object
      * @return object of class Comment
@@ -209,12 +216,13 @@ public class CommentServiceRealization implements CommentService {
     @Override
     public Comment findById(String id) {
         return commentRepository.findById(id).orElseThrow(
-                () -> new ModelNotFoundException("Comment by id " + id + " is not found"));
+//                () -> new ModelNotFoundException("Comment by id " + id + " is not found"));
+                () -> new CommentNotFoundException(id));
     }
 
     /**
      * This method is used to delete an object by id.
-     * Throws {@link ModelNotFoundException} in case
+     * Throws {@link CommentNotFoundException} in case
      * if such object isn't contained in database.
      *
      * @param id object
@@ -224,7 +232,7 @@ public class CommentServiceRealization implements CommentService {
         if (commentRepository.existsById(id)) {
             commentRepository.deleteById(id);
         } else {
-            throw new ModelNotFoundException("Comment by id " + id + " is not found");
+            throw new CommentNotFoundException(id);
         }
     }
 }

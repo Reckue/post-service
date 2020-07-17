@@ -1,8 +1,11 @@
 package com.reckue.post.utils.converters;
 
+import com.reckue.post.exceptions.ReckueIllegalArgumentException;
 import com.reckue.post.models.Comment;
 import com.reckue.post.transfers.CommentRequest;
 import com.reckue.post.transfers.CommentResponse;
+
+import java.time.ZoneId;
 
 /**
  * Class for converting CommentRequest object to Comment and Comment object to CommentResponse.
@@ -19,13 +22,12 @@ public class CommentConverter {
      */
     public static Comment convert(CommentRequest commentRequest) {
         if (commentRequest == null) {
-            throw new IllegalArgumentException("Null parameters are not allowed");
+            throw new ReckueIllegalArgumentException("Null parameters are not allowed");
         }
         return Comment.builder()
                 .text(commentRequest.getText())
                 .userId(commentRequest.getUserId())
                 .postId(commentRequest.getPostId())
-                .published(commentRequest.getPublished())
                 .comments(commentRequest.getComments())
                 .build();
     }
@@ -38,14 +40,17 @@ public class CommentConverter {
      */
     public static CommentResponse convert(Comment comment) {
         if (comment == null) {
-            throw new IllegalArgumentException("Null parameters are not allowed");
+            throw new ReckueIllegalArgumentException("Null parameters are not allowed");
         }
         return CommentResponse.builder()
                 .id(comment.getId())
                 .text(comment.getText())
                 .userId(comment.getUserId())
                 .postId(comment.getPostId())
-                .published(comment.getPublished())
+                .createdDate(comment.getCreatedDate()
+                        .atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
+                .modificationDate(comment.getModificationDate()
+                        .atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
                 .comments(comment.getComments())
                 .build();
     }

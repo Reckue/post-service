@@ -1,11 +1,11 @@
 package com.reckue.post.services.realizations;
 
-import com.reckue.post.exceptions.ModelAlreadyExistsException;
-import com.reckue.post.exceptions.ModelNotFoundException;
+import com.reckue.post.exceptions.ReckueIllegalArgumentException;
+import com.reckue.post.exceptions.models.nodes.pollnode.PollNodeAlreadyExistsException;
+import com.reckue.post.exceptions.models.nodes.pollnode.PollNodeNotFoundException;
 import com.reckue.post.models.nodes.PollNode;
 import com.reckue.post.repositories.PollNodeRepository;
 import com.reckue.post.services.PollNodeService;
-import com.reckue.post.utils.Generator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -28,26 +28,20 @@ public class PollNodeServiceRealization implements PollNodeService {
 
     /**
      * This method is used to create an object of class PollNode.
-     * Throws {@link ModelAlreadyExistsException} in case if such object already exists.
      *
      * @param node object of class PollNode
      * @return node object of class PollNode
      */
     @Override
     public PollNode create(PollNode node) {
-        node.setId(Generator.id());
-        if (!pollNodeRepository.existsById(node.getId())) {
-            return pollNodeRepository.save(node);
-        } else {
-            throw new ModelAlreadyExistsException("PollNode already exists");
-        }
+        return pollNodeRepository.save(node);
     }
 
     /**
      * This method is used to update data in an object of class PollNode.
-     * Throws {@link ModelNotFoundException} in case
+     * Throws {@link PollNodeNotFoundException} in case
      * if such object isn't contained in database.
-     * Throws {@link IllegalArgumentException} in case
+     * Throws {@link ReckueIllegalArgumentException} in case
      * if such parameter is null.
      *
      * @param node object of class PollNode
@@ -55,14 +49,14 @@ public class PollNodeServiceRealization implements PollNodeService {
      */
     @Override
     public PollNode update(PollNode node) {
-        if (node.getId() == null || !pollNodeRepository.existsById(node.getId())) {
-            throw new ModelNotFoundException("PollNode by id " + node.getId() + " is not found");
+        if (node.getId() == null) {
+            throw new ReckueIllegalArgumentException("The parameter is null");
         }
-        PollNode savedPollNode = PollNode.builder()
-                .id(node.getId())
-                .title(node.getTitle())
-                .items(node.getItems())
-                .build();
+        PollNode savedPollNode = pollNodeRepository
+                .findById(node.getId())
+                .orElseThrow(() -> new PollNodeNotFoundException(node.getId()));
+        savedPollNode.setTitle(node.getTitle());
+        savedPollNode.setItems(node.getItems());
         return pollNodeRepository.save(savedPollNode);
     }
 
@@ -93,7 +87,7 @@ public class PollNodeServiceRealization implements PollNodeService {
         if (desc == null) desc = false;
 
         if (limit < 0 || offset < 0) {
-            throw new IllegalArgumentException("Limit or offset is incorrect");
+            throw new ReckueIllegalArgumentException("Limit or offset is incorrect");
         }
         return findAllByTypeAndDesc(sort, desc).stream()
                 .limit(limit)
@@ -132,7 +126,7 @@ public class PollNodeServiceRealization implements PollNodeService {
             case "id":
                 return findAllAndSortById();
         }
-        throw new IllegalArgumentException("Such field as " + sort + " doesn't exist");
+        throw new ReckueIllegalArgumentException("Such field as " + sort + " doesn't exist");
     }
 
     /**
@@ -159,7 +153,7 @@ public class PollNodeServiceRealization implements PollNodeService {
 
     /**
      * This method is used to get an object by id.
-     * Throws {@link ModelNotFoundException} in case if such object isn't contained in database.
+     * Throws {@link PollNodeNotFoundException} in case if such object isn't contained in database.
      *
      * @param id object
      * @return object of class PollNode
@@ -167,12 +161,12 @@ public class PollNodeServiceRealization implements PollNodeService {
     @Override
     public PollNode findById(String id) {
         return pollNodeRepository.findById(id).orElseThrow(
-                () -> new ModelNotFoundException("PollNode by id " + id + " is not found"));
+                () -> new PollNodeNotFoundException(id));
     }
 
     /**
      * This method is used to delete an object by id.
-     * Throws {@link ModelNotFoundException} in case
+     * Throws {@link PollNodeNotFoundException} in case
      * if such object isn't contained in database.
      *
      * @param id object
@@ -182,7 +176,7 @@ public class PollNodeServiceRealization implements PollNodeService {
         if (pollNodeRepository.existsById(id)) {
             pollNodeRepository.deleteById(id);
         } else {
-            throw new ModelNotFoundException("PollNode by id " + id + " is not found");
+            throw new PollNodeNotFoundException(id);
         }
     }
 }

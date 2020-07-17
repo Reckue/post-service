@@ -48,9 +48,10 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
     public Docket api(TypeResolver typeResolver) {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
+                .groupName("API for post service")
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.reckue.post.controllers"))
-                .paths(PathSelectors.any())
+                .paths(PathSelectors.regex( "/[^d].*"))
                 .build()
                 .useDefaultResponseMessages(false)
                 .additionalModels(typeResolver.resolve(ErrorResponse.class))
@@ -93,6 +94,31 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
                 .useDefaultResponseMessages(false)
                 .additionalModels(typeResolver.resolve(ErrorResponse.class))
                 .globalResponseMessage(RequestMethod.DELETE, newArrayList(new ResponseMessageBuilder().code(404)
+                                .message("NOT_FOUND")
+                                .responseModel(new ModelRef("ErrorResponse"))
+                                .build(),
+                        new ResponseMessageBuilder().code(500)
+                                .message("INTERNAL_SERVER_ERROR")
+                                .responseModel(new ModelRef("ErrorResponse"))
+                                .build()));
+    }
+    /**
+     * Creates a customised Docket bean for debug specification.
+     *
+     * @return instance of the implementation of the interface Docket
+     */
+    @Bean
+    public Docket api2(TypeResolver typeResolver) {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .apiInfo(apiInfo())
+                .groupName("debug")
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.reckue.post.controllers"))
+                .paths(PathSelectors.ant("/debug/*"))
+                .build()
+                .useDefaultResponseMessages(false)
+                .additionalModels(typeResolver.resolve(ErrorResponse.class))
+                .globalResponseMessage(RequestMethod.GET, newArrayList(new ResponseMessageBuilder().code(404)
                                 .message("NOT_FOUND")
                                 .responseModel(new ModelRef("ErrorResponse"))
                                 .build(),

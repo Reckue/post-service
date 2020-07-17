@@ -1,6 +1,7 @@
 package com.reckue.post.utils.converters;
 
 import com.reckue.post.PostServiceApplicationTests;
+import com.reckue.post.exceptions.ReckueIllegalArgumentException;
 import com.reckue.post.objects.Check;
 import com.reckue.post.objects.CheckResponse;
 import org.junit.jupiter.api.Test;
@@ -37,7 +38,7 @@ class ConverterTest extends PostServiceApplicationTests {
 
     @Test
     void checkCheckIsNull() {
-        Throwable exception = assertThrows(IllegalArgumentException.class,
+        Throwable exception = assertThrows(ReckueIllegalArgumentException.class,
                 () -> Converter.convert((Object) null, CheckResponse.class));
         assertEquals("Null parameters are not allowed", exception.getMessage());
     }
@@ -72,7 +73,7 @@ class ConverterTest extends PostServiceApplicationTests {
     @Test
     void checkListIsNull() {
         List<Check> checks = null;
-        Throwable exception = assertThrows(IllegalArgumentException.class,
+        Throwable exception = assertThrows(ReckueIllegalArgumentException.class,
                 () -> Converter.convert(checks, CheckResponse.class));
         assertEquals("Null parameters are not allowed", exception.getMessage());
     }

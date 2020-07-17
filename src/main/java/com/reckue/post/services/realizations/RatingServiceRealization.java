@@ -1,18 +1,23 @@
 package com.reckue.post.services.realizations;
 
-import com.reckue.post.exceptions.ModelAlreadyExistsException;
-import com.reckue.post.exceptions.ModelNotFoundException;
+import com.reckue.post.exceptions.ReckueIllegalArgumentException;
+import com.reckue.post.exceptions.models.post.PostNotFoundException;
+import com.reckue.post.exceptions.models.rating.RatingAlreadyExistsException;
+import com.reckue.post.exceptions.models.rating.RatingNotFoundException;
+import com.reckue.post.exceptions.models.user.UserNotFoundException;
 import com.reckue.post.models.Post;
 import com.reckue.post.models.Rating;
 import com.reckue.post.repositories.PostRepository;
 import com.reckue.post.repositories.RatingRepository;
 import com.reckue.post.services.RatingService;
-import com.reckue.post.utils.Generator;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -34,15 +39,11 @@ public class RatingServiceRealization implements RatingService {
      */
     @Override
     public Rating create(Rating rating) {
-        rating.setId(Generator.id());
         validateCreatingRating(rating);
-        Date date = new Date();
-        rating.setPublished(date.getTime());
 
         if (ratingRepository.existsByUserIdAndPostId(rating.getUserId(), rating.getPostId())) {
             Rating existRating = ratingRepository.findByUserIdAndPostId(rating.getUserId(), rating.getPostId());
             ratingRepository.deleteById(existRating.getId());
-            deleteById(rating.getId());
         }
 
         return ratingRepository.save(rating);
@@ -50,45 +51,36 @@ public class RatingServiceRealization implements RatingService {
 
     /**
      * This method is used to check rating validation.
-     * Throws {@link ModelAlreadyExistsException} in case if such object already exists.
-     * Throws {@link ModelNotFoundException} in case if such object isn't contained in database.
+     * Throws {@link PostNotFoundException} in case if such object isn't contained in database.
      *
      * @param rating object of class Rating
      */
     public void validateCreatingRating(Rating rating) {
-        if (ratingRepository.existsById(rating.getId())) {
-            throw new ModelAlreadyExistsException("Rating already exists");
-        }
         if (!postRepository.existsById(rating.getPostId())) {
-            throw new ModelNotFoundException("Post identifier '" + rating.getPostId() + "' is not found");
+            throw new PostNotFoundException(rating.getPostId());
         }
     }
 
     /**
      * This method is used to update data in an object of class Rating.
-     * Throws {@link ModelNotFoundException} in case
+     * Throws {@link RatingNotFoundException} in case
      * if such object isn't contained in database.
-     * Throws {@link IllegalArgumentException} in case
+     * Throws {@link ReckueIllegalArgumentException} in case
      * if parameter equals null.
      *
      * @param rating object of class Rating
      * @return rating object of class Rating
      */
-
     @Override
     public Rating update(Rating rating) {
         if (rating.getId() == null) {
-            throw new IllegalArgumentException("The parameter is null");
+            throw new ReckueIllegalArgumentException("The parameter is null");
         }
-        Rating existRating = ratingRepository.findById(rating.getId())
-                .orElseThrow(() -> new ModelNotFoundException("Rating by id " + rating.getId() + " is not found"));
-
-        Rating savedRating = Rating.builder()
-                .id(existRating.getId())
-                .userId(existRating.getUserId())
-                .postId(existRating.getPostId())
-                .published(existRating.getPublished())
-                .build();
+        Rating savedRating = ratingRepository
+                .findById(rating.getId())
+                .orElseThrow(() -> new RatingNotFoundException(rating.getId()));
+        savedRating.setUserId(savedRating.getUserId());
+        savedRating.setPostId(savedRating.getPostId());
         return ratingRepository.save(savedRating);
     }
 
@@ -119,7 +111,7 @@ public class RatingServiceRealization implements RatingService {
         if (desc == null) desc = false;
 
         if (limit < 0 || offset < 0) {
-            throw new IllegalArgumentException("Limit or offset is incorrect");
+            throw new ReckueIllegalArgumentException("Limit or offset is incorrect");
         }
         return findAllByTypeAndDesc(sort, desc).stream()
                 .limit(limit)
@@ -147,18 +139,20 @@ public class RatingServiceRealization implements RatingService {
     /**
      * This method is used to sort objects by type.
      *
-     * @param sort type of sorting: published, default - id
+     * @param sort type of sorting: createdDate, modificationDate, default - id
      * @return list of objects of class Rating sorted by the selected parameter for sorting
      */
     public List<Rating> findAllBySortType(String sort) {
 
         switch (sort) {
-            case "published":
-                return findAllAndSortByPublished();
+            case "createdDate":
+                return findAllAndSortByCreatedDate();
+            case "modificationDate":
+                return findAllAndSortByModificationDate();
             case "id":
                 return findAllAndSortById();
         }
-        throw new IllegalArgumentException("Such field as " + sort + " doesn't exist");
+        throw new ReckueIllegalArgumentException("Such field as " + sort + " doesn't exist");
     }
 
     /**
@@ -173,19 +167,30 @@ public class RatingServiceRealization implements RatingService {
     }
 
     /**
-     * This method is used to sort objects by created date.
+     * This method is used to sort objects by createdDate.
      *
-     * @return list of objects of class Rating sorted by published
+     * @return list of objects of class Rating sorted by createdDate
      */
-    public List<Rating> findAllAndSortByPublished() {
+    public List<Rating> findAllAndSortByCreatedDate() {
         return findAll().stream()
-                .sorted(Comparator.comparing(Rating::getPublished))
+                .sorted(Comparator.comparing(Rating::getCreatedDate))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * This method is used to sort objects by modificationDate.
+     *
+     * @return list of objects of class Rating sorted by modificationDate
+     */
+    public List<Rating> findAllAndSortByModificationDate() {
+        return findAll().stream()
+                .sorted(Comparator.comparing(Rating::getModificationDate))
                 .collect(Collectors.toList());
     }
 
     /**
      * This method is used to delete an object by id.
-     * Throws {@link ModelNotFoundException} in case if such object isn't contained in database.
+     * Throws {@link RatingNotFoundException} in case if such object isn't contained in database.
      *
      * @param id object
      */
@@ -194,21 +199,24 @@ public class RatingServiceRealization implements RatingService {
         if (ratingRepository.existsById(id)) {
             ratingRepository.deleteById(id);
         } else {
-            throw new ModelNotFoundException("Rating by id " + id + " is not found");
+            throw new RatingNotFoundException(id);
         }
     }
 
     /**
      * This method is used to get the number of ratings to a single post.
-     * Throws {@link ModelNotFoundException} in case if such post id isn't contained in database.
+     * Throws {@link PostNotFoundException} in case if such post id isn't contained in database.
      *
      * @param postId the post identifier
      * @return quantity of ratings to a post
      */
     @Override
     public int getRatingsCountByPostId(String postId) {
-        if (!ratingRepository.existsByPostId(postId)) {
-            throw new ModelNotFoundException("Post identifier '" + postId + "' is not found");
+        if (!postRepository.existsById(postId)) {
+            throw new PostNotFoundException(postId);
+        }
+        if (postRepository.existsById(postId) && !ratingRepository.existsByPostId(postId)) {
+            return 0;
         }
         List<Rating> ratings = ratingRepository.findByPostId(postId);
         return ratings.size();
@@ -216,7 +224,7 @@ public class RatingServiceRealization implements RatingService {
 
     /**
      * This method is used to get all posts with ratings by user id.
-     * Throws {@link ModelNotFoundException} in case if such user id isn't contained in database.
+     * Throws {@link PostNotFoundException} in case if such user id isn't contained in database.
      *
      * @param userId the user identifier
      * @param limit  quantity of objects
@@ -226,19 +234,19 @@ public class RatingServiceRealization implements RatingService {
     @Override
     public List<Post> findAllPostsWithRatingsByUserId(String userId, Integer limit, Integer offset) {
         if (!ratingRepository.existsByUserId(userId)) {
-            throw new ModelNotFoundException("User identifier '" + userId + "' is not found");
+            throw new UserNotFoundException(userId);
         }
         List<Rating> ratings = ratingRepository.findByUserId(userId);
         if (limit == null) limit = 10;
         if (offset == null) offset = 0;
 
         if (limit < 0 || offset < 0) {
-            throw new IllegalArgumentException("Limit or offset is incorrect");
+            throw new ReckueIllegalArgumentException("Limit or offset is incorrect");
         }
         List<Post> posts = new ArrayList<>();
         for (Rating rating : ratings) {
             Post post = postRepository.findById(rating.getPostId())
-                    .orElseThrow(ModelNotFoundException::new);
+                    .orElseThrow(PostNotFoundException::new);
             posts.add(post);
         }
 

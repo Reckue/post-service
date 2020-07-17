@@ -1,8 +1,11 @@
 package com.reckue.post.utils.converters;
 
+import com.reckue.post.exceptions.ReckueIllegalArgumentException;
 import com.reckue.post.models.Rating;
 import com.reckue.post.transfers.RatingRequest;
 import com.reckue.post.transfers.RatingResponse;
+
+import java.time.ZoneId;
 
 /**
  * Class for converting RatingRequest object to Rating and Rating object to RatingResponse.
@@ -18,7 +21,7 @@ public class RatingConverter {
      */
     public static Rating convert(RatingRequest ratingRequest) {
         if (ratingRequest == null) {
-            throw new IllegalArgumentException("Null parameters are not allowed");
+            throw new ReckueIllegalArgumentException("Null parameters are not allowed");
         }
         return Rating.builder()
                 .postId(ratingRequest.getPostId())
@@ -34,12 +37,15 @@ public class RatingConverter {
      */
     public static RatingResponse convert(Rating rating) {
         if (rating == null) {
-            throw new IllegalArgumentException("Null parameters are not allowed");
+            throw new ReckueIllegalArgumentException("Null parameters are not allowed");
         }
         return RatingResponse.builder()
                 .postId(rating.getPostId())
                 .userId(rating.getUserId())
-                .published(rating.getPublished())
+                .createdDate(rating.getCreatedDate()
+                        .atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
+                .modificationDate(rating.getModificationDate()
+                        .atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
                 .id(rating.getId())
                 .build();
     }
