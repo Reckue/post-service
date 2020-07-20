@@ -79,8 +79,23 @@ public class PostServiceRealization implements PostService {
         savedPost.setSource(post.getSource());
         savedPost.setTags(post.getTags());
         savedPost.setStatus(post.getStatus());
-
+        validateOnUpdateStatus(post);
         return postRepository.save(savedPost);
+    }
+
+    private void validateOnUpdateStatus(Post post) {
+
+        if (post != null && post.getStatus() == PostStatusType.PUBLISHED) {
+            if (postRepository.findById(post.getId()).get().getStatus() == PostStatusType.BANNED)
+                throw new RuntimeException("Post is banned");
+        }
+        if (post != null && post.getStatus() == PostStatusType.PUBLISHED && post.getNodes() == null) {
+            throw new RuntimeException("Nodes are null");
+        }
+        if (post != null && post.getStatus() == PostStatusType.PENDING) {
+            if (postRepository.findById(post.getId()).get().getStatus() == PostStatusType.DRAFT)
+                throw new RuntimeException("Post need to publish first");
+        }
     }
 
     /**

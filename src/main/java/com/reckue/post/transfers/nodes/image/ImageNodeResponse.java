@@ -9,6 +9,7 @@ import lombok.*;
  *
  * @author Kamila Meshcheryakova
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
