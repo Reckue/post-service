@@ -48,6 +48,15 @@ public class PostServiceRealization implements PostService {
         if (post != null && post.getStatus() == PostStatusType.DRAFT) {
             return;
         }
+        if (post != null && post.getStatus() == PostStatusType.BANNED) {
+            throw new RuntimeException("Post can't be banned");
+        }
+        if (post != null && post.getStatus() == PostStatusType.PENDING) {
+            throw new RuntimeException("Post can't be pending");
+        }
+        if (post != null && post.getStatus() == PostStatusType.DELETED) {
+            throw new RuntimeException("Post can't be deleted");
+        }
         if (post != null && post.getStatus() == PostStatusType.PUBLISHED && post.getNodes() == null) {
             throw new RuntimeException("Nodes are null");
         } else {
