@@ -1,15 +1,14 @@
 package com.reckue.post.transfers.nodes.poll;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.reckue.post.models.types.NodeType;
 import com.reckue.post.transfers.nodes.NodeParentRequest;
-import com.reckue.post.utils.NodeContent;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
 
@@ -18,21 +17,28 @@ import java.util.List;
  *
  * @author Viktor Grigoriev
  */
-@EqualsAndHashCode(callSuper = true)
 @Builder
 @Data
-public class PollNodeRequest extends NodeParentRequest {
+public class PollNodeRequest implements NodeParentRequest {
 
+    @NotNull
     @NotEmpty
     @Size(min = 1, max = 128)
     private String title;
 
+    @NotNull
     @NotEmpty
     private List<@Size(min = 1, max = 128) String> items;
 
+    @NotNull
+    private NodeType type;
+
     @JsonCreator
-    public PollNodeRequest(String title, List<String> items) {
+    public PollNodeRequest(@NotNull @NotEmpty @Size(min = 1, max = 128) String title,
+                           @NotNull @NotEmpty List<@Size(min = 1, max = 128) String> items,
+                           @NotNull NodeType type) {
         this.title = title;
         this.items = items;
+        this.type = type;
     }
 }

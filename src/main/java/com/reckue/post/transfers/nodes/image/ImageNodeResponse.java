@@ -1,7 +1,6 @@
 package com.reckue.post.transfers.nodes.image;
 
 import com.reckue.post.transfers.nodes.NodeParentResponse;
-import com.reckue.post.utils.NodeContent;
 import lombok.*;
 
 /**
@@ -13,7 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ImageNodeResponse extends NodeParentResponse {
+public class ImageNodeResponse implements NodeParentResponse {
 
     private String imageUrl;
 }

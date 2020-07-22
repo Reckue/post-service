@@ -1,6 +1,7 @@
 package com.reckue.post.transfers.nodes.video;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.reckue.post.models.types.NodeType;
 import com.reckue.post.transfers.nodes.NodeParentRequest;
 import lombok.Builder;
 import lombok.Data;
@@ -13,16 +14,20 @@ import javax.validation.constraints.NotNull;
  *
  * @author Kamila Meshcheryakova
  */
-@EqualsAndHashCode(callSuper = true)
 @Builder
 @Data
-public class VideoNodeRequest extends NodeParentRequest {
+public class VideoNodeRequest implements NodeParentRequest {
 
     @NotNull
     private String videoUrl;
 
+    @NotNull
+    private NodeType type;
+
     @JsonCreator
-    public VideoNodeRequest(@NotNull String videoUrl) {
+    public VideoNodeRequest(@NotNull String videoUrl,
+                            @NotNull NodeType type) {
         this.videoUrl = videoUrl;
+        this.type = type;
     }
 }

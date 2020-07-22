@@ -13,7 +13,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CodeNodeResponse extends NodeParentResponse {
+public class CodeNodeResponse implements NodeParentResponse {
 
     private LangType language;
     private String content;

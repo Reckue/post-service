@@ -1,6 +1,5 @@
 package com.reckue.post.transfers.nodes.audio;
 
-import com.reckue.post.transfers.nodes.NodeParentRequest;
 import com.reckue.post.transfers.nodes.NodeParentResponse;
 import lombok.*;
 
@@ -13,7 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AudioNodeResponse extends NodeParentResponse {
+public class AudioNodeResponse implements NodeParentResponse {
 
     private String audioUrl;
 }

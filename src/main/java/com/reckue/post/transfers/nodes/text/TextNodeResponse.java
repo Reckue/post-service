@@ -12,7 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TextNodeResponse extends NodeParentResponse {
+public class TextNodeResponse implements NodeParentResponse {
 
     private String content;
 }
