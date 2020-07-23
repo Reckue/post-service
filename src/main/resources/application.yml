@@ -6,6 +6,7 @@ spring:
   profiles: cloud
   data:
     mongodb:
+      authentication-database: admin
       host: mongo
       port: 27017
       database: sampledb
