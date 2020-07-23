@@ -12,7 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class VideoNodeResponse extends NodeParentResponse {
+public class VideoNodeResponse implements NodeParentResponse {
 
     private String videoUrl;
 }

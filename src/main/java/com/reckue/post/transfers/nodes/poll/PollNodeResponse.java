@@ -1,7 +1,6 @@
 package com.reckue.post.transfers.nodes.poll;
 
 import com.reckue.post.transfers.nodes.NodeParentResponse;
-import com.reckue.post.utils.NodeContent;
 import lombok.*;
 
 import java.util.List;
@@ -15,9 +14,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PollNodeResponse extends NodeParentResponse {
+public class PollNodeResponse implements NodeParentResponse {
 
-    private String id;
     private String title;
     private List<String> items;
 }

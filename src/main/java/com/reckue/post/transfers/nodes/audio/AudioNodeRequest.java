@@ -1,6 +1,7 @@
 package com.reckue.post.transfers.nodes.audio;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.reckue.post.models.types.NodeType;
 import com.reckue.post.transfers.nodes.NodeParentRequest;
 import lombok.Builder;
 import lombok.Data;
@@ -13,16 +14,20 @@ import javax.validation.constraints.NotNull;
  *
  * @author Daria Smirnova
  */
-@EqualsAndHashCode(callSuper = true)
 @Builder
 @Data
-public class AudioNodeRequest extends NodeParentRequest {
+public class AudioNodeRequest implements NodeParentRequest {
 
     @NotNull
     private String audioUrl;
 
+    @NotNull
+    private NodeType type;
+
     @JsonCreator
-    public AudioNodeRequest(@NotNull String audioUrl) {
+    public AudioNodeRequest(@NotNull String audioUrl,
+                            @NotNull NodeType type) {
         this.audioUrl = audioUrl;
+        this.type = type;
     }
 }

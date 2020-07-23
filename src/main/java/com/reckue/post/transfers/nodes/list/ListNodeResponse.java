@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ListNodeResponse extends NodeParentResponse {
+public class ListNodeResponse implements NodeParentResponse {
 
     private List<String> content;
 }

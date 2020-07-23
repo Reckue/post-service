@@ -1,7 +1,6 @@
 package com.reckue.post.services.realizations;
 
 import com.reckue.post.exceptions.ReckueIllegalArgumentException;
-import com.reckue.post.exceptions.models.post.PostAlreadyExistsException;
 import com.reckue.post.exceptions.models.post.PostNotFoundException;
 import com.reckue.post.models.Post;
 import com.reckue.post.repositories.PostRepository;

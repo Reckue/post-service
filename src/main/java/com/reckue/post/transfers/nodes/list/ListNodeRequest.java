@@ -1,11 +1,13 @@
 package com.reckue.post.transfers.nodes.list;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.reckue.post.models.types.NodeType;
 import com.reckue.post.transfers.nodes.NodeParentRequest;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -13,15 +15,20 @@ import java.util.List;
  *
  * @author Kamila Meshcheryakova
  */
-@EqualsAndHashCode(callSuper = true)
 @Builder
 @Data
-public class ListNodeRequest extends NodeParentRequest {
+public class ListNodeRequest implements NodeParentRequest {
 
+    @NotNull
     private List<String> content;
 
+    @NotNull
+    private NodeType type;
+
     @JsonCreator
-    public ListNodeRequest(List<String> content) {
+    public ListNodeRequest(@NotNull List<String> content,
+                           @NotNull NodeType type) {
         this.content = content;
+        this.type = type;
     }
 }
