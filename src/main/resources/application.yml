@@ -10,7 +10,6 @@ spring:
       port: 27017
 
 
-
 --- # staging # ---
 server:
   port: 9003
@@ -32,9 +31,7 @@ spring:
   data:
     mongodb:
       database: post-develop
-      database: mongo-cloud
-      username: userX0W
-      password: CbAk3J7f2FTxA6EF
+
 
 # example
 #
