@@ -35,12 +35,6 @@ spring:
       database: mongo-cloud
       username: userX0W
       password: CbAk3J7f2FTxA6EF
-      
-
---- # develop # ---
-server:
-  port: 9002
-
 
 # example
 #
