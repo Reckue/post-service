@@ -44,6 +44,7 @@ public class RatingServiceRealization implements RatingService {
         if (ratingRepository.existsByUserIdAndPostId(rating.getUserId(), rating.getPostId())) {
             Rating existRating = ratingRepository.findByUserIdAndPostId(rating.getUserId(), rating.getPostId());
             ratingRepository.deleteById(existRating.getId());
+            deleteById(rating.getId());
         }
 
         return ratingRepository.save(rating);
