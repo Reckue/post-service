@@ -5,7 +5,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.8.RELEASE'
 }
 
-group = 'com.reckure'
+group = 'com.reckue'
 version = '1.0.1.RELEASE'
 
 sourceCompatibility = JavaVersion.VERSION_11
@@ -23,7 +23,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
     /* security */
-    // implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-security:2.3.1.RELEASE'
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
 
     /* database */
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
@@ -43,6 +44,12 @@ dependencies {
     /* lombok */
     compileOnly 'org.projectlombok:lombok:1.18.12'
     annotationProcessor 'org.projectlombok:lombok:1.18.12'
+
+    /* actuator */
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    /* eureka client */
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:2.2.2.RELEASE'
 
     testCompileOnly 'org.projectlombok:lombok:1.18.12'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
