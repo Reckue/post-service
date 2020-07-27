@@ -11,7 +11,6 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
 @Builder
 public class TextNodeResponse implements NodeParentResponse {
 
