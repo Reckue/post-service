@@ -1,3 +1,7 @@
+spring:
+  application:
+    name: post-api
+
 --- # cloud # ---
 server:
   port: 8080
@@ -9,6 +13,10 @@ spring:
       host: mongodb
       port: 27017
 
+eureka:
+  client:
+    service-url:
+      defaultZone: http://registry-service:8761/eureka
 
 --- # staging # ---
 server:
@@ -19,7 +27,6 @@ spring:
   data:
     mongodb:
       database: post-staging
-
 
 --- # develop # ---
 server:
@@ -32,6 +39,15 @@ spring:
     mongodb:
       database: post-develop
 
+  security:
+    user:
+      name: user
+      password: 123456
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
 
 # example
 #
