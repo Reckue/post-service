@@ -7,6 +7,7 @@ import com.reckue.post.exceptions.models.post.PostNotFoundException;
 import com.reckue.post.models.Node;
 import com.reckue.post.models.Post;
 import com.reckue.post.models.Tag;
+import com.reckue.post.models.types.PostStatusType;
 import com.reckue.post.models.types.StatusType;
 import com.reckue.post.repositories.PostRepository;
 import org.junit.jupiter.api.Assertions;
@@ -57,7 +58,7 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
                 .nodes(Collections.singletonList(node))
                 .source("newSource")
                 .userId("1")
-                .status(StatusType.ACTIVE)
+                .status(PostStatusType.DRAFT)
                 .tags(Collections.singletonList(tag))
                 .build();
         Post postOne = Post.builder()
@@ -248,9 +249,9 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
 
     @Test
     public void findAllSortByStatus() {
-        Post postOne = Post.builder().status(StatusType.ACTIVE).build();
-        Post postTwo = Post.builder().status(StatusType.BANNED).build();
-        Post postThree = Post.builder().status(StatusType.DELETED).build();
+        Post postOne = Post.builder().status(PostStatusType.DRAFT).build();
+        Post postTwo = Post.builder().status(PostStatusType.BANNED).build();
+        Post postThree = Post.builder().status(PostStatusType.DELETED).build();
         List<Post> posts = List.of(postOne, postTwo, postThree);
 
         when(postRepository.findAll()).thenReturn(posts);

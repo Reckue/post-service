@@ -3,6 +3,7 @@ package com.reckue.post.services.realizations;
 import com.reckue.post.exceptions.ReckueIllegalArgumentException;
 import com.reckue.post.exceptions.models.post.PostNotFoundException;
 import com.reckue.post.models.Post;
+import com.reckue.post.models.types.PostStatusType;
 import com.reckue.post.repositories.PostRepository;
 import com.reckue.post.services.NodeService;
 import com.reckue.post.services.PostService;
@@ -38,7 +39,35 @@ public class PostServiceRealization implements PostService {
         if (post.getNodes() != null) {
             post.getNodes().forEach(nodeService::create);
         }
+        validateOnCreateStatus(post);
         return postRepository.save(post);
+    }
+
+    private void validateOnCreateStatus(Post post) {
+        if (post != null && post.getStatus() == null) {
+            post.setStatus(PostStatusType.DRAFT);
+            return;
+        }
+        if (post != null && post.getStatus() == PostStatusType.DRAFT) {
+            return;
+        }
+        if (post != null && post.getStatus() == PostStatusType.PUBLISHED && post.getNodes() != null) {
+            return;
+        }
+        if (post != null && post.getStatus() == PostStatusType.BANNED) {
+            throw new RuntimeException("Post can't be banned");
+        }
+        if (post != null && post.getStatus() == PostStatusType.PENDING) {
+            throw new RuntimeException("Post can't be pending");
+        }
+        if (post != null && post.getStatus() == PostStatusType.DELETED) {
+            throw new RuntimeException("Post can't be deleted");
+        }
+        if (post != null && post.getStatus() == PostStatusType.PUBLISHED && post.getNodes() == null) {
+            throw new RuntimeException("Nodes are null");
+        } else {
+            throw new RuntimeException("Post hasn't such status");
+        }
     }
 
     /**
@@ -64,10 +93,43 @@ public class PostServiceRealization implements PostService {
         savedPost.setNodes(post.getNodes());
         savedPost.setSource(post.getSource());
         savedPost.setTags(post.getTags());
-        savedPost.setStatus(post.getStatus());
+        validateOnUpdateStatus(post);
 
         return postRepository.save(savedPost);
     }
+
+    private void validateOnUpdateStatus(Post post) {
+        if (post != null && post.getStatus() == null) {
+            return;
+        }
+        if (post != null && post.getStatus() == PostStatusType.DRAFT) {
+            postRepository.findById(post.getId()).get().setStatus(PostStatusType.DRAFT);
+            return;
+        }
+        if (post != null && post.getStatus() == PostStatusType.PUBLISHED) {
+            postRepository.findById(post.getId()).get().setStatus(PostStatusType.PUBLISHED);
+            return;
+        }
+        if (post != null && post.getStatus() == PostStatusType.DELETED) {
+            postRepository.findById(post.getId()).get().setStatus(PostStatusType.DELETED);
+            return;
+        }
+        if (post != null && post.getStatus() == PostStatusType.BANNED) {
+            throw new RuntimeException("Only for admin");
+        }
+        if (post != null && post.getStatus() == PostStatusType.PUBLISHED && post.getNodes() == null) {
+            throw new RuntimeException("Nodes are null");
+        }
+        if (post != null && post.getStatus() == PostStatusType.PENDING) {
+            Post currentPost = postRepository.findById(post.getId()).get();
+            if (currentPost.getStatus() == PostStatusType.PUBLISHED) {
+                currentPost.setStatus(PostStatusType.PENDING);
+            } else {
+                throw new RuntimeException();
+            }
+        }
+    }
+
 
     /**
      * This method is used to get all objects of class Post.

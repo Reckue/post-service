@@ -1,7 +1,7 @@
 package com.reckue.post.transfers;
 
 import com.reckue.post.models.Tag;
-import com.reckue.post.models.types.StatusType;
+import com.reckue.post.models.types.PostStatusType;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
@@ -41,5 +41,5 @@ public class PostRequest {
 
     @NotNull
     @ApiModelProperty(notes = "Post activity status")
-    private StatusType status;
+    private PostStatusType status;
 }
