@@ -41,5 +41,5 @@ jobs:
           parameters: '{"apitoken": "${{ secrets.API_TOKEN }}", "acceptUntrustedCerts": "true"}'
           cmd: |
             'version'
-            'delete -f ./config/k8s/deploy.yaml'
-            'create -f ./config/k8s/deploy.yaml'
+            'delete -f ./config/k8s/template.yaml'
+            'create -f ./config/k8s/template.yaml'

@@ -6,15 +6,18 @@ Service for publications, tutorials and articles.
 ![deploy](https://github.com/Reckue/post-api/workflows/deploy/badge.svg)
 
 ## Stacks
-- JDK 11
-- Gradle
+- OpenJDK 11
+- Gradle (Groovy)
 - Spring Boot
 - Spring Data
 - Spring Security
 - Spring Cloud
+- Netflix Eureka
+- Netflix Zuul
+- Ribbon
 - MongoDB
 - Lombok
-- ModelMapper
+- Model Mapper
 - Mongobee
 - Swagger
 - Junit 5
@@ -22,6 +25,7 @@ Service for publications, tutorials and articles.
 - DevTools
 - GitHub Workflow
 - Checkstyle
+- Openshift CLI
 
 
 ## Run with terminal
