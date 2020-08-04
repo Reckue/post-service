@@ -37,7 +37,9 @@ spring:
     active: develop
   data:
     mongodb:
+      host: localhost
       database: post-develop
+      port: 27017
 
   security:
     user:
