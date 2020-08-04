@@ -39,7 +39,6 @@ public class PostRequest {
     @ApiModelProperty(notes = "List of keywords used in the post")
     private List<Tag> tags;
 
-    @NotNull
     @ApiModelProperty(notes = "Post activity status")
     private PostStatusType status;
 }
