@@ -39,7 +39,7 @@ public interface BaseService<T> {
      * @param offset quantity to skip
      * @param sort   parameter for sorting
      * @param desc   sorting descending
-     * @return list of objects of class Post
+     * @return list of objects of desired class
      */
     List<T> findAll(Integer limit, Integer offset, String sort, Boolean desc);
 
@@ -69,7 +69,7 @@ public interface BaseService<T> {
     }
 
     /**
-     * This method is used to delete all posts.
+     * This method is used to delete all objects of desired class.
      */
     @Deprecated
     default void deleteAll() {
