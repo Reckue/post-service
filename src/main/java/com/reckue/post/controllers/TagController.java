@@ -2,7 +2,7 @@ package com.reckue.post.controllers;
 
 import com.reckue.post.controllers.apis.TagApi;
 import com.reckue.post.models.Tag;
-import com.reckue.post.services.TagService;
+import com.reckue.post.services.BaseService;
 import com.reckue.post.transfers.TagRequest;
 import com.reckue.post.transfers.TagResponse;
 import com.reckue.post.utils.converters.TagConverter;
@@ -26,7 +26,7 @@ import static com.reckue.post.utils.converters.TagConverter.convert;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class TagController implements TagApi {
 
-    private final TagService tagService;
+    private final BaseService<Tag> tagService;
 
     /**
      * This type of request allows to create and process it using the converter.

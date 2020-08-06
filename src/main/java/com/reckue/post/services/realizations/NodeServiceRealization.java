@@ -4,7 +4,7 @@ import com.reckue.post.exceptions.ReckueIllegalArgumentException;
 import com.reckue.post.exceptions.models.nodes.NodeNotFoundException;
 import com.reckue.post.models.Node;
 import com.reckue.post.repositories.NodeRepository;
-import com.reckue.post.services.NodeService;
+import com.reckue.post.services.BaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -15,13 +15,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Class NodeServiceRealization represents realization of NodeService.
+ * Class NodeServiceRealization represents realization of BaseService<Node>.
  *
  * @author Kamila Meshcheryakova
  */
 @Service
 @RequiredArgsConstructor
-public class NodeServiceRealization implements NodeService {
+public class NodeServiceRealization implements BaseService<Node> {
 
     private final NodeRepository nodeRepository;
 

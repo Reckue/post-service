@@ -2,7 +2,7 @@ package com.reckue.post.controllers;
 
 import com.reckue.post.controllers.apis.PostApi;
 import com.reckue.post.models.Post;
-import com.reckue.post.services.PostService;
+import com.reckue.post.services.BaseService;
 import com.reckue.post.transfers.PostRequest;
 import com.reckue.post.transfers.PostResponse;
 import com.reckue.post.utils.converters.PostConverter;
@@ -26,7 +26,7 @@ import static com.reckue.post.utils.converters.PostConverter.convert;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PostController implements PostApi {
 
-    private final PostService postService;
+    private final BaseService<Post> postService;
 
     /**
      * This type of request allows to create, process it using the converter and save.

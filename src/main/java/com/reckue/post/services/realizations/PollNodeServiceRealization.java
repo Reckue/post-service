@@ -1,11 +1,10 @@
 package com.reckue.post.services.realizations;
 
 import com.reckue.post.exceptions.ReckueIllegalArgumentException;
-import com.reckue.post.exceptions.models.nodes.pollnode.PollNodeAlreadyExistsException;
 import com.reckue.post.exceptions.models.nodes.pollnode.PollNodeNotFoundException;
 import com.reckue.post.models.nodes.PollNode;
 import com.reckue.post.repositories.PollNodeRepository;
-import com.reckue.post.services.PollNodeService;
+import com.reckue.post.services.BaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -16,13 +15,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Class PollNodeServiceRealization represents realization of PollNodeService.
+ * Class PollNodeServiceRealization represents realization of BaseService<PollNode>.
  *
  * @author Grigoriev Viktor
  */
 @Service
 @RequiredArgsConstructor
-public class PollNodeServiceRealization implements PollNodeService {
+public class PollNodeServiceRealization implements BaseService<PollNode> {
 
     private final PollNodeRepository pollNodeRepository;
 

@@ -2,7 +2,7 @@ package com.reckue.post.controllers;
 
 import com.reckue.post.controllers.apis.RatingApi;
 import com.reckue.post.models.Rating;
-import com.reckue.post.services.RatingService;
+import com.reckue.post.services.realizations.RatingServiceRealization;
 import com.reckue.post.transfers.PostRatingResponse;
 import com.reckue.post.transfers.PostResponse;
 import com.reckue.post.transfers.RatingRequest;
@@ -28,7 +28,7 @@ import static com.reckue.post.utils.converters.RatingConverter.convert;
 @RequestMapping(value = "/rating")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class RatingController implements RatingApi {
-    private final RatingService ratingService;
+    private final RatingServiceRealization ratingService;
 
     /**
      * This type of request allows to create and process it using the converter.

@@ -2,10 +2,10 @@ package com.reckue.post.services.realizations;
 
 import com.reckue.post.exceptions.ReckueIllegalArgumentException;
 import com.reckue.post.exceptions.models.post.PostNotFoundException;
+import com.reckue.post.models.Node;
 import com.reckue.post.models.Post;
 import com.reckue.post.repositories.PostRepository;
-import com.reckue.post.services.NodeService;
-import com.reckue.post.services.PostService;
+import com.reckue.post.services.BaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -16,16 +16,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Class PostServiceRealization represents realization of PostService.
+ * Class PostServiceRealization represents realization of BaseService<Post>.
  *
  * @author Kamila Meshcheryakova
  */
 @Service
 @RequiredArgsConstructor
-public class PostServiceRealization implements PostService {
+public class PostServiceRealization implements BaseService<Post> {
 
     private final PostRepository postRepository;
-    private final NodeService nodeService;
+    private final BaseService<Node> nodeService;
 
     /**
      * This method is used to create an object of class Post.

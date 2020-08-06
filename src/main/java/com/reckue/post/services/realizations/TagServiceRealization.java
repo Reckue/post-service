@@ -1,11 +1,10 @@
 package com.reckue.post.services.realizations;
 
 import com.reckue.post.exceptions.ReckueIllegalArgumentException;
-import com.reckue.post.exceptions.models.tag.TagAlreadyExistsException;
 import com.reckue.post.exceptions.models.tag.TagNotFoundException;
 import com.reckue.post.models.Tag;
 import com.reckue.post.repositories.TagRepository;
-import com.reckue.post.services.TagService;
+import com.reckue.post.services.BaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -16,13 +15,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Class TagServiceRealization represents realization of TagService.
+ * Class TagServiceRealization represents realization of BaseService<Tag>.
  *
  * @author Kamila Meshcheryakova
  */
 @Service
 @RequiredArgsConstructor
-public class TagServiceRealization implements TagService {
+public class TagServiceRealization implements BaseService<Tag> {
 
     private final TagRepository tagRepository;
 

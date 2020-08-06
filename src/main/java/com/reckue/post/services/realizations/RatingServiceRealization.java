@@ -2,14 +2,13 @@ package com.reckue.post.services.realizations;
 
 import com.reckue.post.exceptions.ReckueIllegalArgumentException;
 import com.reckue.post.exceptions.models.post.PostNotFoundException;
-import com.reckue.post.exceptions.models.rating.RatingAlreadyExistsException;
 import com.reckue.post.exceptions.models.rating.RatingNotFoundException;
 import com.reckue.post.exceptions.models.user.UserNotFoundException;
 import com.reckue.post.models.Post;
 import com.reckue.post.models.Rating;
 import com.reckue.post.repositories.PostRepository;
 import com.reckue.post.repositories.RatingRepository;
-import com.reckue.post.services.RatingService;
+import com.reckue.post.services.BaseService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -27,7 +26,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @RequiredArgsConstructor
-public class RatingServiceRealization implements RatingService {
+public class RatingServiceRealization implements BaseService<Rating> {
     private final RatingRepository ratingRepository;
     private final PostRepository postRepository;
 
@@ -118,6 +117,11 @@ public class RatingServiceRealization implements RatingService {
                 .limit(limit)
                 .skip(offset)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Rating findById(String id) {
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -211,7 +215,6 @@ public class RatingServiceRealization implements RatingService {
      * @param postId the post identifier
      * @return quantity of ratings to a post
      */
-    @Override
     public int getRatingsCountByPostId(String postId) {
         if (!postRepository.existsById(postId)) {
             throw new PostNotFoundException(postId);
@@ -232,7 +235,6 @@ public class RatingServiceRealization implements RatingService {
      * @param offset quantity to skip
      * @return list of objects of class Post
      */
-    @Override
     public List<Post> findAllPostsWithRatingsByUserId(String userId, Integer limit, Integer offset) {
         if (!ratingRepository.existsByUserId(userId)) {
             throw new UserNotFoundException(userId);

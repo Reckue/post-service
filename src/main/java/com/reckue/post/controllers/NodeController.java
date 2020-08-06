@@ -2,7 +2,7 @@ package com.reckue.post.controllers;
 
 import com.reckue.post.controllers.apis.NodeApi;
 import com.reckue.post.models.Node;
-import com.reckue.post.services.NodeService;
+import com.reckue.post.services.BaseService;
 import com.reckue.post.transfers.NodeRequest;
 import com.reckue.post.transfers.NodeResponse;
 import com.reckue.post.utils.converters.NodeConverter;
@@ -28,7 +28,7 @@ import static com.reckue.post.utils.converters.NodeConverter.convert;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class NodeController implements NodeApi {
 
-    private final NodeService nodeService;
+    private final BaseService<Node> nodeService;
 
     /**
      * This type of request allows to create and process it using the converter.
