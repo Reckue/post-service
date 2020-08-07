@@ -2,7 +2,6 @@ package com.reckue.post.services.realizations;
 
 import com.reckue.post.exceptions.ReckueIllegalArgumentException;
 import com.reckue.post.exceptions.models.post.PostNotFoundException;
-import com.reckue.post.exceptions.models.rating.RatingAlreadyExistsException;
 import com.reckue.post.exceptions.models.rating.RatingNotFoundException;
 import com.reckue.post.exceptions.models.user.UserNotFoundException;
 import com.reckue.post.models.Post;
@@ -28,6 +27,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class RatingServiceRealization implements RatingService {
+
     private final RatingRepository ratingRepository;
     private final PostRepository postRepository;
 

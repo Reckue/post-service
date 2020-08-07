@@ -1,7 +1,6 @@
 package com.reckue.post.services.realizations;
 
 import com.reckue.post.exceptions.ReckueIllegalArgumentException;
-import com.reckue.post.exceptions.models.tag.TagAlreadyExistsException;
 import com.reckue.post.exceptions.models.tag.TagNotFoundException;
 import com.reckue.post.models.Tag;
 import com.reckue.post.repositories.TagRepository;
