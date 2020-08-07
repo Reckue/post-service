@@ -2,7 +2,6 @@ package com.reckue.post.services.realizations;
 
 
 import com.reckue.post.exceptions.ReckueIllegalArgumentException;
-import com.reckue.post.exceptions.models.comment.CommentAlreadyExistsException;
 import com.reckue.post.exceptions.models.comment.CommentNotFoundException;
 import com.reckue.post.models.Comment;
 import com.reckue.post.repositories.CommentRepository;
@@ -216,7 +215,6 @@ public class CommentServiceRealization implements CommentService {
     @Override
     public Comment findById(String id) {
         return commentRepository.findById(id).orElseThrow(
-//                () -> new ModelNotFoundException("Comment by id " + id + " is not found"));
                 () -> new CommentNotFoundException(id));
     }
 

@@ -6,51 +6,22 @@ import com.reckue.post.models.Rating;
 import java.util.List;
 
 /**
- * Interface RatingService represents service with CRUD operations.
+ * Interface RatingService extends base interface with CRUD-operations and add own methods.
  *
  * @author Kamila Meshcheryakova
  */
-public interface RatingService {
-    /**
-     * This method is used to create an object of class Rating.
-     *
-     * @param rating object of class Rating
-     * @return rating object of class Rating
-     */
-    Rating create(Rating rating);
+public interface RatingService extends BaseService<Rating> {
 
     /**
-     * This method is used to update data in an object of class Rating.
+     * {@inheritDoc}
      *
-     * @param rating object of class Rating
-     * @return rating object of class Rating
+     * @throws UnsupportedOperationException {@inheritDoc}
+     * @implSpec This implementation always throws an
+     * {@code UnsupportedOperationException}.
      */
-    Rating update(Rating rating);
-
-    /**
-     * This method is used to get all object of class Rating.
-     *
-     * @return list of object of class Rating
-     */
-    List<Rating> findAll();
-
-    /**
-     * This method is used to get all objects of class Rating by parameters.
-     *
-     * @param limit  quantity of objects
-     * @param offset quantity to skip
-     * @param sort   parameter for sorting
-     * @param desc   sorting descending
-     * @return list of objects of class Rating
-     */
-    List<Rating> findAll(Integer limit, Integer offset, String sort, Boolean desc);
-
-    /**
-     * This method is used to delete an object by id.
-     *
-     * @param id object
-     */
-    void deleteById(String id);
+    default Rating findById(String id) {
+        throw new UnsupportedOperationException();
+    }
 
     /**
      * This method is used to get the number of ratings to a single post.

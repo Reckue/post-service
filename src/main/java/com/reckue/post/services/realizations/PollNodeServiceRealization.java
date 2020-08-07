@@ -1,7 +1,6 @@
 package com.reckue.post.services.realizations;
 
 import com.reckue.post.exceptions.ReckueIllegalArgumentException;
-import com.reckue.post.exceptions.models.nodes.pollnode.PollNodeAlreadyExistsException;
 import com.reckue.post.exceptions.models.nodes.pollnode.PollNodeNotFoundException;
 import com.reckue.post.models.nodes.PollNode;
 import com.reckue.post.repositories.PollNodeRepository;
