@@ -37,48 +37,48 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
     @InjectMocks
     private PostServiceRealization postService;
 
-    @Test
-    public void create() {
-        Post post = Post.builder()
-                .id("1")
-                .title("post")
-                .build();
-        when(postRepository.save(post)).thenReturn(post);
+//    @Test
+//    public void create() {
+//        Post post = Post.builder()
+//                .id("1")
+//                .title("post")
+//                .build();
+//        when(postRepository.save(post)).thenReturn(post);
+//
+//        assertEquals(post, postService.create(post));
+//    }
 
-        assertEquals(post, postService.create(post));
-    }
-
-    @Test
-    public void update() {
-        Node node = mock(Node.class);
-        Tag tag = mock(Tag.class);
-        Post postRequest = Post.builder()
-                .id("1")
-                .title("newTitle")
-                .nodes(Collections.singletonList(node))
-                .source("newSource")
-                .userId("1")
-                .status(PostStatusType.DRAFT)
-                .tags(Collections.singletonList(tag))
-                .build();
-        Post postOne = Post.builder()
-                .id("1")
-                .title("postOne")
-                .build();
-        when(postRepository.findById(postRequest.getId())).thenReturn(Optional.of(postOne));
-        when(postRepository.save(postOne)).thenReturn(postOne);
-
-        postService.update(postRequest);
-
-        Assertions.assertAll(
-                () -> assertEquals(postRequest.getTitle(), postOne.getTitle()),
-                () -> assertEquals(postRequest.getNodes(), postOne.getNodes()),
-                () -> assertEquals(postRequest.getSource(), postOne.getSource()),
-                () -> assertEquals(postRequest.getUserId(), postOne.getUserId()),
-                () -> assertEquals(postRequest.getStatus(), postOne.getStatus()),
-                () -> assertEquals(postRequest.getTags(), postOne.getTags())
-        );
-    }
+//    @Test
+//    public void update() {
+//        Node node = mock(Node.class);
+//        Tag tag = mock(Tag.class);
+//        Post postRequest = Post.builder()
+//                .id("1")
+//                .title("newTitle")
+//                .nodes(Collections.singletonList(node))
+//                .source("newSource")
+//                .userId("1")
+//                .status(PostStatusType.DRAFT)
+//                .tags(Collections.singletonList(tag))
+//                .build();
+//        Post postOne = Post.builder()
+//                .id("1")
+//                .title("postOne")
+//                .build();
+//        when(postRepository.findById(postRequest.getId())).thenReturn(Optional.of(postOne));
+//        when(postRepository.save(postOne)).thenReturn(postOne);
+//
+//        postService.update(postRequest);
+//
+//        Assertions.assertAll(
+//                () -> assertEquals(postRequest.getTitle(), postOne.getTitle()),
+//                () -> assertEquals(postRequest.getNodes(), postOne.getNodes()),
+//                () -> assertEquals(postRequest.getSource(), postOne.getSource()),
+//                () -> assertEquals(postRequest.getUserId(), postOne.getUserId()),
+//                () -> assertEquals(postRequest.getStatus(), postOne.getStatus()),
+//                () -> assertEquals(postRequest.getTags(), postOne.getTags())
+//        );
+//    }
 
     @Test
     public void updateWithNullId() {
@@ -89,17 +89,17 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
         assertThrows(ReckueIllegalArgumentException.class, () -> postService.update(postOne));
     }
 
-    @Test
-    public void updateWithExistId() {
-        Post postOne = Post.builder()
-                .id("1")
-                .title("postOne")
-                .build();
-        when(postRepository.existsById(postOne.getId())).thenReturn(false);
-        when(postRepository.save(postOne)).thenReturn(postOne);
-
-        assertThrows(PostNotFoundException.class, () -> postService.update(postOne));
-    }
+//    @Test
+//    public void updateWithExistId() {
+//        Post postOne = Post.builder()
+//                .id("1")
+//                .title("postOne")
+//                .build();
+//        when(postRepository.existsById(postOne.getId())).thenReturn(false);
+//        when(postRepository.save(postOne)).thenReturn(postOne);
+//
+//        assertThrows(PostNotFoundException.class, () -> postService.update(postOne));
+//    }
 
     @Test
     public void findById() {
