@@ -1,7 +1,7 @@
 package com.reckue.post.transfers;
 
 import com.reckue.post.models.Tag;
-import com.reckue.post.models.types.StatusType;
+import com.reckue.post.models.types.PostStatusType;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
@@ -39,7 +39,6 @@ public class PostRequest {
     @ApiModelProperty(notes = "List of keywords used in the post")
     private List<Tag> tags;
 
-    @NotNull
     @ApiModelProperty(notes = "Post activity status")
-    private StatusType status;
+    private PostStatusType status;
 }

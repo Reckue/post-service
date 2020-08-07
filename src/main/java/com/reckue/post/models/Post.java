@@ -1,5 +1,6 @@
 package com.reckue.post.models;
 
+import com.reckue.post.models.types.PostStatusType;
 import com.reckue.post.models.types.StatusType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,7 +34,7 @@ public class Post {
     private String source;
     private String userId;
     private List<Tag> tags;
-    private StatusType status;
+    private PostStatusType status;
 
     @LastModifiedDate
     private LocalDateTime modificationDate;
