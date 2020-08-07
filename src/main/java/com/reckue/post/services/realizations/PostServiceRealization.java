@@ -9,6 +9,7 @@ import com.reckue.post.services.NodeService;
 import com.reckue.post.services.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.Collections;
@@ -35,35 +36,39 @@ public class PostServiceRealization implements PostService {
      * @return post object of class Post
      */
     @Override
+    @Transactional
     public Post create(Post post) {
-        if (post.getNodes() != null) {
-            post.getNodes().forEach(nodeService::create);
+        if (post == null) {
+            throw new RuntimeException("Post is null");
         }
         validateOnCreateStatus(post);
+        if (!post.getNodes().isEmpty()) {
+            post.getNodes().forEach(nodeService::create);
+        }
         return postRepository.save(post);
     }
 
     private void validateOnCreateStatus(Post post) {
-        if (post != null && post.getStatus() == null) {
+        if (post.getStatus() == null) {
             post.setStatus(PostStatusType.DRAFT);
             return;
         }
-        if (post != null && post.getStatus() == PostStatusType.DRAFT) {
+        if (post.getStatus() == PostStatusType.DRAFT) {
             return;
         }
-        if (post != null && post.getStatus() == PostStatusType.PUBLISHED && !post.getNodes().isEmpty()) {
+        if (post.getStatus() == PostStatusType.PUBLISHED && !post.getNodes().isEmpty()) {
             return;
         }
-        if (post != null && post.getStatus() == PostStatusType.BANNED) {
+        if (post.getStatus() == PostStatusType.BANNED) {
             throw new RuntimeException("Post can't be banned");
         }
-        if (post != null && post.getStatus() == PostStatusType.PENDING) {
+        if (post.getStatus() == PostStatusType.PENDING) {
             throw new RuntimeException("Post can't be pending");
         }
-        if (post != null && post.getStatus() == PostStatusType.DELETED) {
+        if (post.getStatus() == PostStatusType.DELETED) {
             throw new RuntimeException("Post can't be deleted");
         }
-        if (post != null && post.getStatus() == PostStatusType.PUBLISHED && post.getNodes().isEmpty()) {
+        if (post.getStatus() == PostStatusType.PUBLISHED && post.getNodes().isEmpty()) {
             throw new RuntimeException("Nodes are empty");
         }
     }
@@ -79,10 +84,18 @@ public class PostServiceRealization implements PostService {
      * @return post object of class Post
      */
     @Override
+    @Transactional
     public Post update(Post post) {
+        if (post == null) {
+            throw new RuntimeException("Post is null");
+        }
         if (post.getId() == null) {
             throw new ReckueIllegalArgumentException("The parameter is null");
         }
+        if (!post.getNodes().isEmpty()) {
+            post.getNodes().forEach(nodeService::create);
+        }
+        validateOnUpdateStatus(post);
         Post savedPost = postRepository
                 .findById(post.getId())
                 .orElseThrow(() -> new PostNotFoundException(post.getId()));
@@ -91,34 +104,33 @@ public class PostServiceRealization implements PostService {
         savedPost.setNodes(post.getNodes());
         savedPost.setSource(post.getSource());
         savedPost.setTags(post.getTags());
-        validateOnUpdateStatus(post);
 
         return postRepository.save(savedPost);
     }
 
     private void validateOnUpdateStatus(Post post) {
-        if (post != null && post.getStatus() == null) {
+        if (post.getStatus() == null) {
             return;
         }
-        if (post != null && post.getStatus() == PostStatusType.DRAFT) {
+        if (post.getStatus() == PostStatusType.DRAFT) {
             postRepository.findById(post.getId()).get().setStatus(PostStatusType.DRAFT);
             return;
         }
-        if (post != null && post.getStatus() == PostStatusType.PUBLISHED) {
+        if (post.getStatus() == PostStatusType.PUBLISHED) {
             postRepository.findById(post.getId()).get().setStatus(PostStatusType.PUBLISHED);
             return;
         }
-        if (post != null && post.getStatus() == PostStatusType.DELETED) {
+        if (post.getStatus() == PostStatusType.DELETED) {
             postRepository.findById(post.getId()).get().setStatus(PostStatusType.DELETED);
             return;
         }
-        if (post != null && post.getStatus() == PostStatusType.BANNED) {
+        if (post.getStatus() == PostStatusType.BANNED) {
             throw new RuntimeException("Only for admin");
         }
-        if (post != null && post.getStatus() == PostStatusType.PUBLISHED && post.getNodes() == null) {
+        if (post.getStatus() == PostStatusType.PUBLISHED && post.getNodes() == null) {
             throw new RuntimeException("Nodes are null");
         }
-        if (post != null && post.getStatus() == PostStatusType.PENDING) {
+        if (post.getStatus() == PostStatusType.PENDING) {
             Post currentPost = postRepository.findById(post.getId()).get();
             if (currentPost.getStatus() == PostStatusType.PUBLISHED) {
                 currentPost.setStatus(PostStatusType.PENDING);
