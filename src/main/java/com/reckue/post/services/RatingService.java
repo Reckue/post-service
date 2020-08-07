@@ -15,10 +15,9 @@ public interface RatingService extends BaseService<Rating> {
     /**
      * {@inheritDoc}
      *
-     * @implSpec
-     * This implementation always throws an
-     * {@code UnsupportedOperationException}.
      * @throws UnsupportedOperationException {@inheritDoc}
+     * @implSpec This implementation always throws an
+     * {@code UnsupportedOperationException}.
      */
     default Rating findById(String id) {
         throw new UnsupportedOperationException();
