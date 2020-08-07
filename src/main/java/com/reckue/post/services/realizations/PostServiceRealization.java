@@ -51,7 +51,7 @@ public class PostServiceRealization implements PostService {
         if (post != null && post.getStatus() == PostStatusType.DRAFT) {
             return;
         }
-        if (post != null && post.getStatus() == PostStatusType.PUBLISHED && post.getNodes() != null) {
+        if (post != null && post.getStatus() == PostStatusType.PUBLISHED && !post.getNodes().isEmpty()) {
             return;
         }
         if (post != null && post.getStatus() == PostStatusType.BANNED) {
@@ -63,10 +63,8 @@ public class PostServiceRealization implements PostService {
         if (post != null && post.getStatus() == PostStatusType.DELETED) {
             throw new RuntimeException("Post can't be deleted");
         }
-        if (post != null && post.getStatus() == PostStatusType.PUBLISHED && post.getNodes() == null) {
-            throw new RuntimeException("Nodes are null");
-        } else {
-            throw new RuntimeException("Post hasn't such status");
+        if (post != null && post.getStatus() == PostStatusType.PUBLISHED && post.getNodes().isEmpty()) {
+            throw new RuntimeException("Nodes are empty");
         }
     }
 
