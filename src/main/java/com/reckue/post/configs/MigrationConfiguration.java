@@ -12,6 +12,8 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
  *
  * @author Kamila Meshcheryakova
  */
+@EnableMongoAuditing
+@EnableMongoRepositories("com.reckue.post.repositories")
 @Configuration
 public class MigrationConfiguration {
 
@@ -21,9 +23,9 @@ public class MigrationConfiguration {
      * @return runner the object of Mongobee class
      */
     @Bean
-    public Mongobee mongobee(@Value("${DATABASE.HOST}") String host,
-                             @Value("${DATABASE.PORT}") String port,
-                             @Value("${DATABASE.NAME}") String database) {
+    public Mongobee mongobee(@Value("${spring.data.mongodb.host}") String host,
+                             @Value("${spring.data.mongodb.port}") String port,
+                             @Value("${spring.data.mongodb.database}") String database) {
         Mongobee runner = new Mongobee("mongodb://" + host + ":" + port + "/" + database);
         runner.setChangeLogsScanPackage("com.reckue.post.migrations");
         return runner;

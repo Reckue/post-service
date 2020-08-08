@@ -14,11 +14,6 @@ spring:
       port: 27017
       database: post-cloud
 
-DATABASE:
-  HOST: mongodb
-  PORT: 27017
-  NAME: post-cloud
-
 --- # staging # ---
 spring:
   profiles: staging
@@ -31,11 +26,6 @@ spring:
 server:
   port: 9003
 
-DATABASE:
-  HOST: localhost
-  PORT: 27017
-  NAME: post-staging
-
 --- # develop # ---
 spring:
   profiles:
@@ -44,15 +34,11 @@ spring:
     user:
       name: user
       password: 123456
-  mongodb:
-    host: localhost
-    port: 27017
-    database: post-develop
-
-DATABASE:
-  HOST: localhost
-  PORT: 27017
-  NAME: post-develop
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: post-develop
 
 server:
   port: 9002

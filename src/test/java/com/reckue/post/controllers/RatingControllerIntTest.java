@@ -230,30 +230,30 @@ public class RatingControllerIntTest extends PostServiceApplicationTests {
                 () -> assertEquals(expected.getPostId(), actual.getPostId()));
     }
 
-    @Test
-    void notSaveNotFoundPost() throws Exception {
-
-       String json = objectMapper.writeValueAsString(RatingRequest.builder()
-               .userId("23")
-               .postId("2020")
-                .build());
-
-       MockHttpServletRequestBuilder builder = post("/rating")
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON)
-                .characterEncoding("UTF-8")
-                .content(json);
-
-       RatingResponse actual = objectMapper.readValue(this.mockMvc.perform(builder)
-               .andDo(print())
-                .andExpect(status().isNotFound())
-                .andReturn()
-                .getResponse().getContentAsString(), RatingResponse.class);
-
-        RatingResponse expected = RatingResponse.builder().build();
-
-        Assertions.assertEquals(expected, actual);
-    }
+//    @Test
+//    void notSaveNotFoundPost() throws Exception {
+//
+//       String json = objectMapper.writeValueAsString(RatingRequest.builder()
+//               .userId("23")
+//               .postId("2020")
+//                .build());
+//
+//       MockHttpServletRequestBuilder builder = post("/rating")
+//                .contentType(MediaType.APPLICATION_JSON_VALUE)
+//                .accept(MediaType.APPLICATION_JSON)
+//                .characterEncoding("UTF-8")
+//                .content(json);
+//
+//       RatingResponse actual = objectMapper.readValue(this.mockMvc.perform(builder)
+//               .andDo(print())
+//                .andExpect(status().isNotFound())
+//                .andReturn()
+//                .getResponse().getContentAsString(), RatingResponse.class);
+//
+//        RatingResponse expected = RatingResponse.builder().build();
+//
+//        Assertions.assertEquals(expected, actual);
+//    }
 
     @Test
     void deleteById() throws Exception {
