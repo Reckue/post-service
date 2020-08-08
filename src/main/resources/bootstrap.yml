@@ -2,59 +2,62 @@ spring:
   application:
     name: post-api
 
---- # cloud # ---
 server:
-  port: 8080
+  port: 8081
 
+--- # cloud # ---
 spring:
   profiles: cloud
   data:
     mongodb:
       host: mongodb
       port: 27017
+      database: post-cloud
 
-eureka:
-  client:
-    service-url:
-      defaultZone: http://registry-service:8761/eureka
+DATABASE:
+  HOST: mongodb
+  PORT: 27017
+  NAME: post-cloud
 
 --- # staging # ---
-server:
-  port: 9003
-
 spring:
   profiles: staging
   data:
     mongodb:
+      host: localhost
+      port: 27017
       database: post-staging
 
---- # develop # ---
 server:
-  port: 9002
+  port: 9003
 
+DATABASE:
+  HOST: localhost
+  PORT: 27017
+  NAME: post-staging
+
+--- # develop # ---
 spring:
   profiles:
     active: develop
-  data:
-    mongodb:
-      database: post-develop
-
   security:
     user:
       name: user
       password: 123456
+  mongodb:
+    host: localhost
+    port: 27017
+    database: post-develop
+
+DATABASE:
+  HOST: localhost
+  PORT: 27017
+  NAME: post-develop
+
+server:
+  port: 9002
 
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
-
-# example
-#
-# spring:
-#   data:
-#     mongodb:
-#       database: 1
-#       database: 2
-#       username: 3
-#       password: 4
