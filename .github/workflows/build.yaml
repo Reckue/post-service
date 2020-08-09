@@ -22,4 +22,4 @@ jobs:
           mongodb-version: 4.2
 
       - name: Gradle build
-        run: gradle build
+        run: gradle build --info

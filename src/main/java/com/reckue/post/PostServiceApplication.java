@@ -27,9 +27,7 @@ package com.reckue.post;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
-import org.springframework.data.mongodb.config.EnableMongoAuditing;
 
 /**
  * Service for publications, tutorials and articles.
@@ -43,8 +41,7 @@ import org.springframework.data.mongodb.config.EnableMongoAuditing;
  * @author Artur Magomedov
  * @author Marina Buinevich
  */
-@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
-@EnableMongoAuditing
+@SpringBootApplication
 @EnableEurekaClient
 public class PostServiceApplication {
 
