@@ -1,7 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  creationTimestamp: null
   labels:
     app: post
   name: post
@@ -13,20 +12,21 @@ spec:
   strategy: {}
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app: post
     spec:
       containers:
       - image: reckue/post:latest
         name: post
-        resources: {}
-status: {}
+        resources:
+          requests:
+            memory: 100Mi
+          limits:
+            memory: 256Mi
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  creationTimestamp: null
   labels:
     app: post
   name: post
@@ -39,5 +39,3 @@ spec:
   selector:
     app: post
   type: ClusterIP
-status:
-  loadBalancer: {}
