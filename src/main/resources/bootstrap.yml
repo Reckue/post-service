@@ -3,7 +3,7 @@ spring:
     name: post-api
 
 server:
-  port: 8081
+  port: 8080
 
 --- # cloud # ---
 spring:
