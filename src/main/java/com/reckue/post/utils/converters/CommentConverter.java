@@ -28,7 +28,7 @@ public class CommentConverter {
                 .text(commentRequest.getText())
                 .userId(commentRequest.getUserId())
                 .postId(commentRequest.getPostId())
-                .comments(commentRequest.getComments())
+                .commentId(commentRequest.getCommentId())
                 .build();
     }
 
@@ -47,11 +47,11 @@ public class CommentConverter {
                 .text(comment.getText())
                 .userId(comment.getUserId())
                 .postId(comment.getPostId())
+                .commentId(comment.getCommentId())
                 .createdDate(comment.getCreatedDate()
                         .atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
                 .modificationDate(comment.getModificationDate()
                         .atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
-                .comments(comment.getComments())
                 .build();
     }
 }

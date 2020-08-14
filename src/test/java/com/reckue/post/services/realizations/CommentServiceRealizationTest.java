@@ -6,6 +6,7 @@ import com.reckue.post.exceptions.models.comment.CommentAlreadyExistsException;
 import com.reckue.post.exceptions.models.comment.CommentNotFoundException;
 import com.reckue.post.models.Comment;
 import com.reckue.post.repositories.CommentRepository;
+import com.reckue.post.repositories.PostRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,6 +35,9 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
 
     @Mock
     private CommentRepository commentRepository;
+
+    @Mock
+    private PostRepository postRepository;
 
     @InjectMocks
     private CommentServiceRealization commentService;
@@ -68,6 +72,7 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
     @Test
     public void create() {
         when(commentRepository.save(comment)).thenReturn(comment);
+        doReturn(true).when(postRepository).existsById(Mockito.anyString());
 
         assertEquals(comment, commentService.create(comment));
     }
@@ -79,7 +84,6 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
                 .text("newText")
                 .userId("2")
                 .postId("3")
-                .comments(Collections.singletonList(comment))
                 .build();
 
         Comment comment = Comment.builder()
@@ -96,8 +100,7 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
         Assertions.assertAll(
                 () -> assertEquals(commentRequest.getText(), comment.getText()),
                 () -> assertEquals(commentRequest.getUserId(), comment.getUserId()),
-                () -> assertEquals(commentRequest.getPostId(), comment.getPostId()),
-                () -> assertEquals(commentRequest.getComments(), comment.getComments())
+                () -> assertEquals(commentRequest.getPostId(), comment.getPostId())
         );
     }
 

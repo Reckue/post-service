@@ -32,12 +32,12 @@ public class CommentResponse {
     @ApiModelProperty(notes = "Post id")
     private String postId;
 
+    @ApiModelProperty(notes = "Сomment id that is being addressed")
+    private String commentId;
+
     @ApiModelProperty(notes = "Created date")
     private long createdDate;
 
     @ApiModelProperty(notes = "Modification date")
     private long modificationDate;
-
-    @ApiModelProperty(notes = "List of comments in the current comment")
-    private List<Comment> comments;
 }
