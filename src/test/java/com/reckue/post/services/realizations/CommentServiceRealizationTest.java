@@ -73,6 +73,7 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
     public void create() {
         when(commentRepository.save(comment)).thenReturn(comment);
         doReturn(true).when(postRepository).existsById(Mockito.anyString());
+        doReturn(true).when(commentRepository).existsById(Mockito.isNull());
 
         assertEquals(comment, commentService.create(comment));
     }
