@@ -4,7 +4,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reckue.post.PostServiceApplicationTests;
 import com.reckue.post.models.Comment;
+import com.reckue.post.models.Post;
 import com.reckue.post.repositories.CommentRepository;
+import com.reckue.post.repositories.PostRepository;
 import com.reckue.post.transfers.CommentRequest;
 import com.reckue.post.transfers.CommentResponse;
 import com.reckue.post.utils.converters.CommentConverter;
@@ -43,6 +45,9 @@ public class CommentControllerIntTest extends PostServiceApplicationTests {
 
     @Autowired
     private CommentRepository commentRepository;
+
+    @Autowired
+    private PostRepository postRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -311,11 +316,15 @@ public class CommentControllerIntTest extends PostServiceApplicationTests {
 
     @Test
     void save() throws Exception {
+        List<Post> posts = postRepository.findAll();
+        if (posts.size() == 0)
+            return;
+        Post post = posts.get(0);
+
         String json = objectMapper.writeValueAsString(CommentRequest.builder()
                 .text("oda")
                 .userId("23")
-                .postId("2020")
-                .comments(null)
+                .postId(post.getId())
                 .build());
 
         MockHttpServletRequestBuilder builder = post("/comments")
@@ -335,7 +344,6 @@ public class CommentControllerIntTest extends PostServiceApplicationTests {
                 .text("oda")
                 .userId("23")
                 .postId("2020")
-                .comments(null)
                 .build();
 
         Assertions.assertAll(
@@ -343,8 +351,7 @@ public class CommentControllerIntTest extends PostServiceApplicationTests {
                 () -> assertEquals(expected.getText(), actual.getText()),
                 () -> assertEquals(expected.getUserId(), actual.getUserId()),
                 () -> assertEquals(expected.getPostId(), actual.getPostId()),
-                () -> assertEquals(actual.getModificationDate(), actual.getCreatedDate()),
-                () -> assertEquals(expected.getComments(), actual.getComments()));
+                () -> assertEquals(actual.getModificationDate(), actual.getCreatedDate()));
     }
 
     @Test

@@ -30,7 +30,7 @@ public class Comment {
     private String text;
     private String userId;
     private String postId;
-    private List<Comment> comments;
+    private String commentId;
 
     @CreatedDate
     private LocalDateTime createdDate;

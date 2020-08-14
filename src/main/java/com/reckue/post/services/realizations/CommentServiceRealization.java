@@ -3,8 +3,11 @@ package com.reckue.post.services.realizations;
 
 import com.reckue.post.exceptions.ReckueIllegalArgumentException;
 import com.reckue.post.exceptions.models.comment.CommentNotFoundException;
+import com.reckue.post.exceptions.models.post.PostNotFoundException;
 import com.reckue.post.models.Comment;
+import com.reckue.post.models.Rating;
 import com.reckue.post.repositories.CommentRepository;
+import com.reckue.post.repositories.PostRepository;
 import com.reckue.post.services.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,6 +29,8 @@ public class CommentServiceRealization implements CommentService {
 
     private final CommentRepository commentRepository;
 
+    private final PostRepository postRepository;
+
     /**
      * This method is used to create an object of class Comment.
      *
@@ -34,7 +39,24 @@ public class CommentServiceRealization implements CommentService {
      */
     @Override
     public Comment create(Comment comment) {
+        validateCreatingComment(comment);
         return commentRepository.save(comment);
+    }
+
+    /**
+     * This method is used to check comment validation.
+     * Throws {@link PostNotFoundException} in case if such post isn't contained in database.
+     * Throws {@link CommentNotFoundException} in case if such comment isn't contained in database.
+     *
+     * @param comment object of class Comment
+     */
+    public void validateCreatingComment(Comment comment) {
+        if (!postRepository.existsById(comment.getPostId())) {
+            throw new PostNotFoundException(comment.getPostId());
+        }
+        if (!commentRepository.existsById(comment.getCommentId())) {
+            throw new CommentNotFoundException(comment.getCommentId());
+        }
     }
 
     /**
@@ -58,7 +80,7 @@ public class CommentServiceRealization implements CommentService {
         savedComment.setText(comment.getText());
         savedComment.setPostId(comment.getPostId());
         savedComment.setUserId(comment.getUserId());
-        savedComment.setComments(comment.getComments());
+        savedComment.setCommentId(comment.getCommentId());
 
         return commentRepository.save(savedComment);
     }
