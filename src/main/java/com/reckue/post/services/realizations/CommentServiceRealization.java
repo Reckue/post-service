@@ -31,7 +31,6 @@ public class CommentServiceRealization implements CommentService {
 
     private final PostRepository postRepository;
 
-
     /**
      * This method is used to create an object of class Comment.
      *
@@ -40,17 +39,18 @@ public class CommentServiceRealization implements CommentService {
      */
     @Override
     public Comment create(Comment comment) {
-        validateCreatingRating(comment);
+        validateCreatingComment(comment);
         return commentRepository.save(comment);
     }
 
     /**
-     * This method is used to check rating validation.
-     * Throws {@link PostNotFoundException} in case if such object isn't contained in database.
+     * This method is used to check comment validation.
+     * Throws {@link PostNotFoundException} in case if such post isn't contained in database.
+     * Throws {@link CommentNotFoundException} in case if such comment isn't contained in database.
      *
      * @param comment object of class Comment
      */
-    public void validateCreatingRating(Comment comment) {
+    public void validateCreatingComment(Comment comment) {
         if (!postRepository.existsById(comment.getPostId())) {
             throw new PostNotFoundException(comment.getPostId());
         }
