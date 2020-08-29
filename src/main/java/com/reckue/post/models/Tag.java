@@ -21,6 +21,5 @@ public class Tag {
 
     @Id
     private String id;
-
     private String name;
 }

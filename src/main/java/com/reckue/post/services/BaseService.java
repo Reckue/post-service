@@ -1,6 +1,10 @@
 package com.reckue.post.services;
 
+import com.reckue.post.models.Filters;
+import com.reckue.post.utils.filters.FiltersUtil;
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Interface BaseService represents a common base service with CRUD operations for all services.
@@ -35,13 +39,31 @@ public interface BaseService<T> {
     /**
      * This method is used to get all objects of desired class by parameters.
      *
-     * @param limit  quantity of objects
-     * @param offset quantity to skip
-     * @param sort   parameter for sorting
-     * @param desc   sorting descending
+     * @param filters compilation of limit, offset, sort and desc params
+     * limit - quantity of objects
+     * offset  - quantity to skip
+     * sort - parameter for sorting
+     * desc - sorting descending
+     *
      * @return list of objects of desired class
      */
-    List<T> findAll(Integer limit, Integer offset, String sort, Boolean desc);
+    default List<T> findAll(Filters filters) {
+        final Filters validFilters = FiltersUtil.validateFilters(filters);
+        return findAllByTypeAndDesc(validFilters.getSort(), validFilters.getDesc()).stream()
+                .limit(validFilters.getLimit())
+                .skip(validFilters.getOffset())
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * This method is used to sort objects in descending order by type.
+     *
+     * @param sort parameter for sorting
+     * @param desc sorting descending
+     * @return list of objects of class Post sorted by the selected parameter for sorting
+     * in descending order
+     */
+    List<T> findAllByTypeAndDesc(String sort, boolean desc);
 
     /**
      * This method is used to get an object by id.

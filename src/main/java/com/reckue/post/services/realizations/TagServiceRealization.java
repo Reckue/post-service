@@ -2,9 +2,11 @@ package com.reckue.post.services.realizations;
 
 import com.reckue.post.exceptions.ReckueIllegalArgumentException;
 import com.reckue.post.exceptions.models.tag.TagNotFoundException;
+import com.reckue.post.models.Filters;
 import com.reckue.post.models.Tag;
 import com.reckue.post.repositories.TagRepository;
 import com.reckue.post.services.TagService;
+import com.reckue.post.utils.filters.FiltersUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -66,31 +68,6 @@ public class TagServiceRealization implements TagService {
     @Override
     public List<Tag> findAll() {
         return tagRepository.findAll();
-    }
-
-    /**
-     * This method is used to get all objects of class Tag by parameters.
-     *
-     * @param limit  quantity of objects
-     * @param offset quantity to skip
-     * @param sort   parameter for sorting
-     * @param desc   sorting descending
-     * @return list of objects of class Tag
-     */
-    @Override
-    public List<Tag> findAll(Integer limit, Integer offset, String sort, Boolean desc) {
-        if (limit == null) limit = 10;
-        if (offset == null) offset = 0;
-        if (StringUtils.isEmpty(sort)) sort = "id";
-        if (desc == null) desc = false;
-
-        if (limit < 0 || offset < 0) {
-            throw new ReckueIllegalArgumentException("Limit or offset is incorrect");
-        }
-        return findAllByTypeAndDesc(sort, desc).stream()
-                .limit(limit)
-                .skip(offset)
-                .collect(Collectors.toList());
     }
 
     /**

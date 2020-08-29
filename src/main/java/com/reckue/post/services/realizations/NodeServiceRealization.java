@@ -73,32 +73,6 @@ public class NodeServiceRealization implements NodeService {
     }
 
     /**
-     * This method is used to get all objects of class Node by parameters.
-     *
-     * @param limit  quantity of objects
-     * @param offset quantity to skip
-     * @param sort   parameter for sorting
-     * @param desc   sorting descending
-     * @return list of given quantity of objects of class Node with a given offset
-     * sorted by the selected parameter for sorting in descending order
-     */
-    @Override
-    public List<Node> findAll(Integer limit, Integer offset, String sort, Boolean desc) {
-        if (limit == null) limit = 10;
-        if (offset == null) offset = 0;
-        if (StringUtils.isEmpty(sort)) sort = "id";
-        if (desc == null) desc = false;
-
-        if (limit < 0 || offset < 0) {
-            throw new ReckueIllegalArgumentException("Limit or offset is incorrect");
-        }
-        return findAllByTypeAndDesc(sort, desc).stream()
-                .limit(limit)
-                .skip(offset)
-                .collect(Collectors.toList());
-    }
-
-    /**
      * This method is used to sort objects in descending order by type.
      *
      * @param sort parameter for sorting

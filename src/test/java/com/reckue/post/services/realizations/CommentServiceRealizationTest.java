@@ -7,6 +7,7 @@ import com.reckue.post.exceptions.models.comment.CommentNotFoundException;
 import com.reckue.post.models.Comment;
 import com.reckue.post.repositories.CommentRepository;
 import com.reckue.post.repositories.PostRepository;
+import com.reckue.post.utils.filters.FiltersUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -303,11 +304,11 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
                 .skip(1)
                 .collect(Collectors.toList());
 
-        assertEquals(test1, commentService.findAll(2, 1, "id", false));
-        assertEquals(test2, commentService.findAll(3, 0, "text", true));
-        assertEquals(test3, commentService.findAll(1, 2, "userId", false));
-        assertEquals(test4, commentService.findAll(2, 1, "postId", false));
-        assertEquals(test5, commentService.findAll(2, 1, "createdDate", true));
+        assertEquals(test1, commentService.findAll(FiltersUtil.buildFiltersObject(2, 1, "id", false)));
+        assertEquals(test2, commentService.findAll(FiltersUtil.buildFiltersObject(3, 0, "text", true)));
+        assertEquals(test3, commentService.findAll(FiltersUtil.buildFiltersObject(1, 2, "userId", false)));
+        assertEquals(test4, commentService.findAll(FiltersUtil.buildFiltersObject(2, 1, "postId", false)));
+        assertEquals(test5, commentService.findAll(FiltersUtil.buildFiltersObject(2, 1, "createdDate", true)));
     }
 
     @Test

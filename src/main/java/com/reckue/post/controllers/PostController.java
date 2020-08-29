@@ -6,6 +6,7 @@ import com.reckue.post.services.PostService;
 import com.reckue.post.transfers.PostRequest;
 import com.reckue.post.transfers.PostResponse;
 import com.reckue.post.utils.converters.PostConverter;
+import com.reckue.post.utils.filters.FiltersUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -93,7 +94,7 @@ public class PostController implements PostApi {
                                       @RequestParam(required = false) String sort,
                                       @RequestParam(required = false) Boolean desc) {
 
-        return postService.findAll(limit, offset, sort, desc).stream()
+        return postService.findAll(FiltersUtil.buildFiltersObject(limit, offset, sort, desc)).stream()
                 .map(PostConverter::convert)
                 .collect(Collectors.toList());
     }

@@ -9,6 +9,7 @@ import com.reckue.post.transfers.RatingRequest;
 import com.reckue.post.transfers.RatingResponse;
 import com.reckue.post.utils.converters.PostConverter;
 import com.reckue.post.utils.converters.RatingConverter;
+import com.reckue.post.utils.filters.FiltersUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -71,7 +72,7 @@ public class RatingController implements RatingApi {
                                         @RequestParam(required = false) Integer offset,
                                         @RequestParam(required = false) String sort,
                                         @RequestParam(required = false) Boolean desc) {
-        return ratingService.findAll(limit, offset, sort, desc).stream()
+        return ratingService.findAll(FiltersUtil.buildFiltersObject(limit, offset, sort, desc)).stream()
                 .map(RatingConverter::convert)
                 .collect(Collectors.toList());
     }

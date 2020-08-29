@@ -7,6 +7,7 @@ import com.reckue.post.exceptions.models.tag.TagAlreadyExistsException;
 import com.reckue.post.exceptions.models.tag.TagNotFoundException;
 import com.reckue.post.models.Tag;
 import com.reckue.post.repositories.TagRepository;
+import com.reckue.post.utils.filters.FiltersUtil;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -231,11 +232,11 @@ public class TagServiceRealizationUnitTest extends PostServiceApplicationTests {
                 .skip(1)
                 .collect(Collectors.toList());
 
-        assertEquals(test1, tagService.findAll(2, 1, "name", false));
-        assertEquals(test2, tagService.findAll(3, 0, "name", true));
-        assertEquals(test3, tagService.findAll(1, 2, "id", false));
-        assertEquals(test4, tagService.findAll(2, 1, "id", false));
-        assertEquals(test5, tagService.findAll(2, 1, "id", true));
+        assertEquals(test1, tagService.findAll(FiltersUtil.buildFiltersObject(2, 1, "name", false)));
+        assertEquals(test2, tagService.findAll(FiltersUtil.buildFiltersObject(3, 0, "name", true)));
+        assertEquals(test3, tagService.findAll(FiltersUtil.buildFiltersObject(1, 2, "id", false)));
+        assertEquals(test4, tagService.findAll(FiltersUtil.buildFiltersObject(2, 1, "id", false)));
+        assertEquals(test5, tagService.findAll(FiltersUtil.buildFiltersObject(2, 1, "id", true)));
     }
 
     @Test

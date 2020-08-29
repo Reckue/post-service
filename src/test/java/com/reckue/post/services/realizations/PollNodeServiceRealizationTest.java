@@ -6,6 +6,7 @@ import com.reckue.post.exceptions.models.nodes.pollnode.PollNodeAlreadyExistsExc
 import com.reckue.post.exceptions.models.nodes.pollnode.PollNodeNotFoundException;
 import com.reckue.post.models.nodes.PollNode;
 import com.reckue.post.repositories.PollNodeRepository;
+import com.reckue.post.utils.filters.FiltersUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -234,11 +235,11 @@ public class PollNodeServiceRealizationTest extends PostServiceApplicationTests 
                 .skip(1)
                 .collect(Collectors.toList());
 
-        assertEquals(test1, pollNodeService.findAll(2, 1, "title", false));
-        assertEquals(test2, pollNodeService.findAll(3, 0, "title", true));
-        assertEquals(test3, pollNodeService.findAll(1, 2, "id", false));
-        assertEquals(test4, pollNodeService.findAll(2, 1, "id", false));
-        assertEquals(test5, pollNodeService.findAll(2, 1, "id", true));
+        assertEquals(test1, pollNodeService.findAll(FiltersUtil.buildFiltersObject(2, 1, "title", false)));
+        assertEquals(test2, pollNodeService.findAll(FiltersUtil.buildFiltersObject(3, 0, "title", true)));
+        assertEquals(test3, pollNodeService.findAll(FiltersUtil.buildFiltersObject(1, 2, "id", false)));
+        assertEquals(test4, pollNodeService.findAll(FiltersUtil.buildFiltersObject(2, 1, "id", false)));
+        assertEquals(test5, pollNodeService.findAll(FiltersUtil.buildFiltersObject(2, 1, "id", true)));
     }
 
     @Test

@@ -6,6 +6,7 @@ import com.reckue.post.services.NodeService;
 import com.reckue.post.transfers.NodeRequest;
 import com.reckue.post.transfers.NodeResponse;
 import com.reckue.post.utils.converters.NodeConverter;
+import com.reckue.post.utils.filters.FiltersUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -73,7 +74,7 @@ public class NodeController implements NodeApi {
                                          @RequestParam(required = false) String sort,
                                          @RequestParam(required = false) Boolean desc) {
 
-        return nodeService.findAll(limit, offset, sort, desc).stream()
+        return nodeService.findAll(FiltersUtil.buildFiltersObject(limit, offset, sort, desc)).stream()
                 .map(NodeConverter::convert)
                 .collect(Collectors.toList());
     }

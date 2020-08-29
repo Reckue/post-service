@@ -70,31 +70,6 @@ public class PollNodeServiceRealization implements PollNodeService {
     }
 
     /**
-     * This method is used to get all objects of class PollNode by parameters.
-     *
-     * @param limit  quantity of objects
-     * @param offset quantity to skip
-     * @param sort   parameter for sorting
-     * @param desc   sorting descending
-     * @return list of objects of class PollNode
-     */
-    @Override
-    public List<PollNode> findAll(Integer limit, Integer offset, String sort, Boolean desc) {
-        if (limit == null) limit = 10;
-        if (offset == null) offset = 0;
-        if (StringUtils.isEmpty(sort)) sort = "id";
-        if (desc == null) desc = false;
-
-        if (limit < 0 || offset < 0) {
-            throw new ReckueIllegalArgumentException("Limit or offset is incorrect");
-        }
-        return findAllByTypeAndDesc(sort, desc).stream()
-                .limit(limit)
-                .skip(offset)
-                .collect(Collectors.toList());
-    }
-
-    /**
      * This method is used to sort objects in descending order by type.
      *
      * @param sort parameter for sorting

@@ -6,6 +6,7 @@ import com.reckue.post.services.TagService;
 import com.reckue.post.transfers.TagRequest;
 import com.reckue.post.transfers.TagResponse;
 import com.reckue.post.utils.converters.TagConverter;
+import com.reckue.post.utils.filters.FiltersUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -70,7 +71,7 @@ public class TagController implements TagApi {
                                      @RequestParam(required = false) String sort,
                                      @RequestParam(required = false) Boolean desc) {
 
-        return tagService.findAll(limit, offset, sort, desc).stream()
+        return tagService.findAll(FiltersUtil.buildFiltersObject(limit, offset, sort, desc)).stream()
                 .map(TagConverter::convert)
                 .collect(Collectors.toList());
     }

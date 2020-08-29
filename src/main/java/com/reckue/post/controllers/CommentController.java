@@ -6,6 +6,7 @@ import com.reckue.post.services.CommentService;
 import com.reckue.post.transfers.CommentRequest;
 import com.reckue.post.transfers.CommentResponse;
 import com.reckue.post.utils.converters.CommentConverter;
+import com.reckue.post.utils.filters.FiltersUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -70,7 +71,7 @@ public class CommentController implements CommentApi {
                                          @RequestParam(required = false) String sort,
                                          @RequestParam(required = false) Boolean desc) {
 
-        return commentService.findAll(limit, offset, sort, desc).stream()
+        return commentService.findAll(FiltersUtil.buildFiltersObject(limit, offset, sort, desc)).stream()
                 .map(CommentConverter::convert)
                 .collect(Collectors.toList());
     }

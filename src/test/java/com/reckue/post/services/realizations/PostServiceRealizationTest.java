@@ -10,6 +10,7 @@ import com.reckue.post.models.Tag;
 import com.reckue.post.models.types.PostStatusType;
 import com.reckue.post.models.types.StatusType;
 import com.reckue.post.repositories.PostRepository;
+import com.reckue.post.utils.filters.FiltersUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -294,19 +295,19 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
                 .collect(Collectors.toList());
         System.out.println(expected);
 
-        assertEquals(expected, postService.findAll(3, 1, "userId", true));
+        assertEquals(expected, postService.findAll(FiltersUtil.buildFiltersObject(3, 1, "userId", true)));
     }
 
     @Test
     public void findAllWithIllegalArgLimit() {
         assertThrows(ReckueIllegalArgumentException.class,
-                () -> postService.findAll(-1, 1, "name", true));
+                () -> postService.findAll(FiltersUtil.buildFiltersObject(-1, 1, "name", true)));
     }
 
     @Test
     public void findAllWithIllegalArgOffset() {
         assertThrows(ReckueIllegalArgumentException.class,
-                () -> postService.findAll(1, -1, "name", true));
+                () -> postService.findAll(FiltersUtil.buildFiltersObject(1, -1, "name", true)));
     }
 
     @Test
