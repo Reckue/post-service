@@ -10,6 +10,7 @@ import lombok.Getter;
  * @author Artur Magomedov
  */
 @Getter
+@SuppressWarnings("unused")
 public class TagNotFoundException extends ModelNotFoundException {
 
     private final String message;

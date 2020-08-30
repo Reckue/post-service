@@ -10,6 +10,7 @@ import lombok.Getter;
  * @author Artur Magomedov
  */
 @Getter
+@SuppressWarnings("unused")
 public class PollNodeAlreadyExistsException extends ModelAlreadyExistsException {
 
     private final String message;

@@ -8,6 +8,7 @@ import com.reckue.post.exceptions.ModelNotFoundException;
  *
  * @author Artur Magomedov
  */
+@SuppressWarnings("unused")
 public class UserNotFoundException extends ModelNotFoundException {
 
     private final String message;
