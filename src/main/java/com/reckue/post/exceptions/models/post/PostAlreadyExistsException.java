@@ -10,6 +10,7 @@ import lombok.Getter;
  * @author Artur Magomedov
  */
 @Getter
+@SuppressWarnings("unused")
 public class PostAlreadyExistsException extends ModelAlreadyExistsException {
 
     private final String message;

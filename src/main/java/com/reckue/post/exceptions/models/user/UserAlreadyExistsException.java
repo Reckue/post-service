@@ -8,6 +8,7 @@ import com.reckue.post.exceptions.ModelAlreadyExistsException;
  *
  * @author Artur Magomedov
  */
+@SuppressWarnings("unused")
 public class UserAlreadyExistsException extends ModelAlreadyExistsException {
 
     private final String message;
