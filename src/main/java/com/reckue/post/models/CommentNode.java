@@ -1,5 +1,7 @@
 package com.reckue.post.models;
 
+import com.reckue.post.models.commentNodes.CommentParent;
+import com.reckue.post.models.types.CommentNodeType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,30 +12,32 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
- * Class Comment is responsible for model that works with comments.
+ * Class Node is responsible for displaying all types of nodes.
  *
- * @author Artur Magomedov
+ * @author Iveri Narozashvili
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Document
-public class Comment {
+public class CommentNode {
 
     @Id
     private String id;
 
-    private String userId;
-    private String postId;
+    // required fields
+    private CommentNodeType type;
+    private CommentParent node;
     private String commentId;
-    private List<CommentNode> commentNodes;
 
-    @CreatedDate
-    private LocalDateTime createdDate;
+    // standard types
+    private String source;
+
     @LastModifiedDate
     private LocalDateTime modificationDate;
+    @CreatedDate
+    private LocalDateTime createdDate;
 }
