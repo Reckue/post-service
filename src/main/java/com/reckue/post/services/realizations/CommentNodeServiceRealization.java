@@ -56,6 +56,7 @@ public class CommentNodeServiceRealization implements CommentNodeService {
                 .orElseThrow(() -> new NodeNotFoundException(node.getId()));
         savedNode.setType(node.getType());
         savedNode.setSource(node.getSource());
+        savedNode.setCommentId(node.getCommentId());
 
         return nodeRepository.save(savedNode);
     }

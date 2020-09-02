@@ -7,7 +7,6 @@ import com.reckue.post.models.Node;
 import com.reckue.post.transfers.CommentNodeResponse;
 import com.reckue.post.transfers.CommentRequest;
 import com.reckue.post.transfers.CommentResponse;
-import com.reckue.post.transfers.NodeResponse;
 
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -31,12 +30,14 @@ public class CommentConverter {
         if (commentRequest == null) {
             throw new ReckueIllegalArgumentException("Null parameters are not allowed");
         }
+
         List<CommentNode> nodes = new ArrayList<>();
         if (commentRequest.getNodes() != null) {
             nodes = commentRequest.getNodes().stream()
                     .map(CommentNodeConverter::convert)
                     .collect(Collectors.toList());
         }
+
         return Comment.builder()
                 .userId(commentRequest.getUserId())
                 .postId(commentRequest.getPostId())

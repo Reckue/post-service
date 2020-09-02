@@ -78,6 +78,7 @@ public class CommentNodeConverter {
                 .id(node.getId())
                 .type(node.getType())
                 .source(node.getSource())
+                .commentId(node.getCommentId())
                 .createdDate(node.getCreatedDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
                 .modificationDate(node.getModificationDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
                 .node((CommentNodeParentResponse) Converter.convert(node.getNode(), targetClass))
