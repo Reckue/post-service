@@ -1,14 +1,5 @@
 package com.reckue.post.models.types;
 
-import com.reckue.post.models.nodes.*;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static java.util.Map.entry;
-
 /**
  * Enum NodeType represents enumeration of types of content that are associated with node.
  *

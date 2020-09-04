@@ -30,6 +30,7 @@ public class PostConverter {
         if (postRequest == null) {
             throw new ReckueIllegalArgumentException("Null parameters are not allowed");
         }
+
         List<Node> nodes = new ArrayList<>();
         if (postRequest.getNodes() != null) {
             nodes = postRequest.getNodes().stream()

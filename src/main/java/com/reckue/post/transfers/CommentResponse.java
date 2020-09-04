@@ -1,6 +1,5 @@
 package com.reckue.post.transfers;
 
-import com.reckue.post.models.Comment;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
@@ -21,10 +20,6 @@ public class CommentResponse {
     private String id;
 
     @NotNull
-    @ApiModelProperty(notes = "Text of comment")
-    private String text;
-
-    @NotNull
     @ApiModelProperty(notes = "User id")
     private String userId;
 
@@ -40,4 +35,7 @@ public class CommentResponse {
 
     @ApiModelProperty(notes = "Modification date")
     private long modificationDate;
+
+    @ApiModelProperty(notes = "List of nodes the comment consists of")
+    private List<CommentNodeResponse> nodes;
 }

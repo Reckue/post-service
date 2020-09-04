@@ -5,12 +5,13 @@ import com.reckue.post.exceptions.ReckueIllegalArgumentException;
 import com.reckue.post.exceptions.models.comment.CommentNotFoundException;
 import com.reckue.post.exceptions.models.post.PostNotFoundException;
 import com.reckue.post.models.Comment;
-import com.reckue.post.models.Rating;
 import com.reckue.post.repositories.CommentRepository;
 import com.reckue.post.repositories.PostRepository;
+import com.reckue.post.services.CommentNodeService;
 import com.reckue.post.services.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.Collections;
@@ -31,6 +32,8 @@ public class CommentServiceRealization implements CommentService {
 
     private final PostRepository postRepository;
 
+    private final CommentNodeService commentNodeService;
+
     /**
      * This method is used to create an object of class Comment.
      *
@@ -38,8 +41,15 @@ public class CommentServiceRealization implements CommentService {
      * @return comment object of class Comment
      */
     @Override
+    @Transactional
     public Comment create(Comment comment) {
+        if (comment == null) {
+            throw new RuntimeException("Comment is null");
+        }
         validateCreatingComment(comment);
+        if (comment.getCommentNodes() != null && !comment.getCommentNodes().isEmpty()) {
+            comment.getCommentNodes().forEach(commentNodeService::create);
+        }
         return commentRepository.save(comment);
     }
 
@@ -54,7 +64,7 @@ public class CommentServiceRealization implements CommentService {
         if (!postRepository.existsById(comment.getPostId())) {
             throw new PostNotFoundException(comment.getPostId());
         }
-        if (!commentRepository.existsById(comment.getCommentId())) {
+        if (comment.getCommentId() != null && !commentRepository.existsById(comment.getCommentId())) {
             throw new CommentNotFoundException(comment.getCommentId());
         }
     }
@@ -77,10 +87,10 @@ public class CommentServiceRealization implements CommentService {
         Comment savedComment = commentRepository
                 .findById(comment.getId())
                 .orElseThrow(() -> new CommentNotFoundException(comment.getId()));
-        savedComment.setText(comment.getText());
         savedComment.setPostId(comment.getPostId());
         savedComment.setUserId(comment.getUserId());
         savedComment.setCommentId(comment.getCommentId());
+        savedComment.setCommentNodes(comment.getCommentNodes());
 
         return commentRepository.save(savedComment);
     }
@@ -147,8 +157,6 @@ public class CommentServiceRealization implements CommentService {
         switch (sort) {
             case "id":
                 return findAllAndSortById();
-            case "text":
-                return findAllAndSortByText();
             case "userId":
                 return findAllAndSortByUserId();
             case "postId":
@@ -180,17 +188,6 @@ public class CommentServiceRealization implements CommentService {
     public List<Comment> findAllAndSortById() {
         return findAll().stream()
                 .sorted(Comparator.comparing(Comment::getId))
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * This method is used to sort objects by text.
-     *
-     * @return list of objects of class Comment sorted by text
-     */
-    public List<Comment> findAllAndSortByText() {
-        return findAll().stream()
-                .sorted(Comparator.comparing(Comment::getText))
                 .collect(Collectors.toList());
     }
 

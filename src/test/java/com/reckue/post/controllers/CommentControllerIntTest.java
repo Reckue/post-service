@@ -57,17 +57,14 @@ public class CommentControllerIntTest extends PostServiceApplicationTests {
         commentRepository.deleteAll();
 
         commentRepository.save(Comment.builder()
-                .text("comment1")
                 .userId("anton")
                 .postId("planets")
                 .build());
         commentRepository.save(Comment.builder()
-                .text("comment5")
                 .userId("vlad cepesh")
                 .postId("books")
                 .build());
         commentRepository.save(Comment.builder()
-                .text("comment10")
                 .userId("semen")
                 .postId("cows")
                 .build());
@@ -107,44 +104,6 @@ public class CommentControllerIntTest extends PostServiceApplicationTests {
 
         List<CommentResponse> actual = objectMapper
                 .readValue(this.mockMvc.perform(get("/comments?desc=true&limit=2&offset=0&sort=id"))
-                        .andDo(print())
-                        .andExpect(status().isOk())
-                        .andReturn()
-                        .getResponse().getContentAsString(), new TypeReference<>() {
-                });
-
-        Assertions.assertEquals(expected, actual);
-    }
-
-    @Test
-    public void findAllSortedByTextAsc() throws Exception {
-        List<CommentResponse> expected = commentRepository.findAll().stream()
-                .map(CommentConverter::convert)
-                .sorted(Comparator.comparing(CommentResponse::getText))
-                .limit(2)
-                .collect(Collectors.toList());
-
-        List<CommentResponse> actual = objectMapper
-                .readValue(this.mockMvc.perform(get("/comments?desc=false&limit=2&offset=0&sort=text"))
-                        .andDo(print())
-                        .andExpect(status().isOk())
-                        .andReturn()
-                        .getResponse().getContentAsString(), new TypeReference<>() {
-                });
-
-        Assertions.assertEquals(expected, actual);
-    }
-
-    @Test
-    public void findAllSortedByTextDesc() throws Exception {
-        List<CommentResponse> expected = commentRepository.findAll().stream()
-                .map(CommentConverter::convert)
-                .sorted(Comparator.comparing(CommentResponse::getText).reversed())
-                .limit(2)
-                .collect(Collectors.toList());
-
-        List<CommentResponse> actual = objectMapper
-                .readValue(this.mockMvc.perform(get("/comments?desc=true&limit=2&offset=0&sort=text"))
                         .andDo(print())
                         .andExpect(status().isOk())
                         .andReturn()
@@ -284,13 +243,11 @@ public class CommentControllerIntTest extends PostServiceApplicationTests {
     @Test
     void update() throws Exception {
         CommentResponse expected = CommentResponse.builder()
-                .text("eleven")
                 .userId("best id ever")
                 .postId("simple")
                 .build();
 
         String json = objectMapper.writeValueAsString(CommentRequest.builder()
-                .text("eleven")
                 .userId("best id ever")
                 .postId("simple")
                 .build());
@@ -308,7 +265,6 @@ public class CommentControllerIntTest extends PostServiceApplicationTests {
                 .getResponse().getContentAsString(), CommentResponse.class);
 
         Assertions.assertAll(
-                () -> assertEquals(expected.getText(), actual.getText()),
                 () -> assertEquals(expected.getUserId(), actual.getUserId()),
                 () -> assertEquals(expected.getPostId(), actual.getPostId())
         );
@@ -322,7 +278,6 @@ public class CommentControllerIntTest extends PostServiceApplicationTests {
         Post post = posts.get(0);
 
         String json = objectMapper.writeValueAsString(CommentRequest.builder()
-                .text("oda")
                 .userId("23")
                 .postId(post.getId())
                 .build());
@@ -341,14 +296,12 @@ public class CommentControllerIntTest extends PostServiceApplicationTests {
 
         CommentResponse expected = CommentResponse.builder()
                 .id(actual.getId())
-                .text("oda")
                 .userId("23")
                 .postId("2020")
                 .build();
 
         Assertions.assertAll(
                 () -> assertEquals(expected.getId(), actual.getId()),
-                () -> assertEquals(expected.getText(), actual.getText()),
                 () -> assertEquals(expected.getUserId(), actual.getUserId()),
                 () -> assertEquals(expected.getPostId(), actual.getPostId()),
                 () -> assertEquals(actual.getModificationDate(), actual.getCreatedDate()));
