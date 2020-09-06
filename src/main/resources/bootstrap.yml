@@ -2,6 +2,10 @@ spring:
   application:
     name: post-api
 
+security:
+  token:
+    secret-key: "KuHLb3w7YE2WF@o39ds3hDSdsdfdKhs5kdsdsKH@fD"
+
 --- # cloud # ---
 server:
   port: 8080

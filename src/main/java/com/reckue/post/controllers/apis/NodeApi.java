@@ -2,10 +2,8 @@ package com.reckue.post.controllers.apis;
 
 import com.reckue.post.transfers.NodeRequest;
 import com.reckue.post.transfers.NodeResponse;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 
