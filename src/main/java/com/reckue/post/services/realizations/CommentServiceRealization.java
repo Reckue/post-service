@@ -7,7 +7,6 @@ import com.reckue.post.exceptions.models.post.PostNotFoundException;
 import com.reckue.post.models.Comment;
 import com.reckue.post.repositories.CommentRepository;
 import com.reckue.post.repositories.PostRepository;
-import com.reckue.post.services.CommentNodeService;
 import com.reckue.post.services.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,8 +31,6 @@ public class CommentServiceRealization implements CommentService {
 
     private final PostRepository postRepository;
 
-    private final CommentNodeService commentNodeService;
-
     /**
      * This method is used to create an object of class Comment.
      *
@@ -43,13 +40,7 @@ public class CommentServiceRealization implements CommentService {
     @Override
     @Transactional
     public Comment create(Comment comment) {
-        if (comment == null) {
-            throw new RuntimeException("Comment is null");
-        }
         validateCreatingComment(comment);
-        if (comment.getCommentNodes() != null && !comment.getCommentNodes().isEmpty()) {
-            comment.getCommentNodes().forEach(commentNodeService::create);
-        }
         return commentRepository.save(comment);
     }
 
@@ -90,7 +81,7 @@ public class CommentServiceRealization implements CommentService {
         savedComment.setPostId(comment.getPostId());
         savedComment.setUserId(comment.getUserId());
         savedComment.setCommentId(comment.getCommentId());
-        savedComment.setCommentNodes(comment.getCommentNodes());
+        savedComment.setNodes(comment.getNodes());
 
         return commentRepository.save(savedComment);
     }

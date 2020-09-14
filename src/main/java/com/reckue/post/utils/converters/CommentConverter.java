@@ -4,9 +4,9 @@ import com.reckue.post.exceptions.ReckueIllegalArgumentException;
 import com.reckue.post.models.Comment;
 import com.reckue.post.models.CommentNode;
 import com.reckue.post.models.Node;
-import com.reckue.post.transfers.CommentNodeResponse;
 import com.reckue.post.transfers.CommentRequest;
 import com.reckue.post.transfers.CommentResponse;
+import com.reckue.post.transfers.NodeResponse;
 
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -31,10 +31,10 @@ public class CommentConverter {
             throw new ReckueIllegalArgumentException("Null parameters are not allowed");
         }
 
-        List<CommentNode> nodes = new ArrayList<>();
+        List<Node> nodes = new ArrayList<>();
         if (commentRequest.getNodes() != null) {
             nodes = commentRequest.getNodes().stream()
-                    .map(CommentNodeConverter::convert)
+                    .map(NodeConverter::convert)
                     .collect(Collectors.toList());
         }
 
@@ -42,7 +42,7 @@ public class CommentConverter {
                 .userId(commentRequest.getUserId())
                 .postId(commentRequest.getPostId())
                 .commentId(commentRequest.getCommentId())
-                .commentNodes(nodes)
+                .nodes(nodes)
                 .build();
     }
 
@@ -56,10 +56,10 @@ public class CommentConverter {
         if (comment == null) {
             throw new ReckueIllegalArgumentException("Null parameters are not allowed");
         }
-        List<CommentNodeResponse> nodes = new ArrayList<>();
-        if (comment.getCommentNodes() != null) {
-            nodes = comment.getCommentNodes().stream()
-                    .map(CommentNodeConverter::convert)
+        List<NodeResponse> nodes = new ArrayList<>();
+        if (comment.getNodes() != null) {
+            nodes = comment.getNodes().stream()
+                    .map(NodeConverter::convert)
                     .collect(Collectors.toList());
         }
         return CommentResponse.builder()

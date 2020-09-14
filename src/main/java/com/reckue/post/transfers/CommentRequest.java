@@ -30,5 +30,5 @@ public class CommentRequest {
 
     @ApiModelProperty(notes = "List of nodes the comment consists of")
     @Valid
-    private List<CommentNodeRequest> nodes;
+    private List<NodeRequest> nodes;
 }
