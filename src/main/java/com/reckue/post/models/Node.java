@@ -2,6 +2,7 @@ package com.reckue.post.models;
 
 import com.reckue.post.models.nodes.Parent;
 import com.reckue.post.models.types.NodeType;
+import com.reckue.post.models.types.ParentType;
 import com.reckue.post.models.types.StatusType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,7 +32,8 @@ public class Node {
     // required fields
     private NodeType type;
     private Parent node;
-    private String postId;
+    private String parentId;
+    private ParentType parentType;
 
     // standard types
     private String source;

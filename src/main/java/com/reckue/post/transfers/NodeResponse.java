@@ -28,9 +28,9 @@ public class NodeResponse {
     @ApiModelProperty(notes = "Sub node")
     private NodeParentResponse node;
 
-    @ApiModelProperty(notes = "Identifier of the post")
+    @ApiModelProperty(notes = "Identifier of the parent")
     @NotNull
-    private String postId;
+    private String parentId;
 
     @Size(max = 128)
     @ApiModelProperty(notes = "The source used to write the node")

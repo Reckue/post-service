@@ -24,9 +24,9 @@ public class NodeRequest {
     @ApiModelProperty(notes = "Sub node")
     private NodeParentRequest node;
 
-    @ApiModelProperty(notes = "Identifier of the post")
+    @ApiModelProperty(notes = "Identifier of the parent")
     @NotNull
-    private String postId;
+    private String parentId;
 
     @ApiModelProperty(notes = "The source used to write the node")
     private String source;

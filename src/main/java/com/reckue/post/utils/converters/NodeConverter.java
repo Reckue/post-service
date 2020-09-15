@@ -49,7 +49,7 @@ public class NodeConverter {
 
         return Node.builder()
                 .type(nodeRequest.getType())
-                .postId(nodeRequest.getPostId())
+                .parentId(nodeRequest.getParentId())
                 .userId(nodeRequest.getUserId())
                 .source(nodeRequest.getSource())
                 .node((Parent) Converter.convert(nodeRequest.getNode(), targetClass))
@@ -81,7 +81,7 @@ public class NodeConverter {
         return NodeResponse.builder()
                 .id(node.getId())
                 .type(node.getType())
-                .postId(node.getPostId())
+                .parentId(node.getParentId())
                 .source(node.getSource())
                 .userId(node.getUserId())
                 .createdDate(node.getCreatedDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
