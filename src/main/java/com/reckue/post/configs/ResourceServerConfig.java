@@ -67,7 +67,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests().antMatchers(AUTH_SWAGGER).permitAll()
-                .antMatchers("/users").authenticated()
+                .antMatchers("/user**").authenticated()
                 .and().exceptionHandling()
                 .authenticationEntryPoint(
                         (httpServletRequest, httpServletResponse, authExc) ->

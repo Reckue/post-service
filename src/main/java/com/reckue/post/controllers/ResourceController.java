@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,10 +15,10 @@ import java.util.Map;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 /**
- * Класс ResourceController
+ * Class ResourceController represents REST-controller to get info about user by token.
  *
  * @author Kamila Meshcheryakova
- * created 11.08.2020
+ * created 11.09.2020
  */
 
 @RestController
@@ -25,10 +26,11 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 public class ResourceController {
 
     private final TokenService tokenService;
+    private final TokenStore tokenStore;
 
     @GetMapping("/user/id")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
-    @ApiOperation(value = "User id",
+    @ApiOperation(value = "Get user id",
             authorizations = {@Authorization(value = "Bearer token")})
     public String userId(HttpServletRequest request) {
         String token = request.getHeader(AUTHORIZATION).substring(7);
@@ -37,10 +39,19 @@ public class ResourceController {
 
     @GetMapping("/user/info")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
-    @ApiOperation(value = "Info about users",
+    @ApiOperation(value = "All user info",
             authorizations = {@Authorization(value = "Bearer token")})
     public Map<String, Object> userInfo(HttpServletRequest request) {
         String token = request.getHeader(AUTHORIZATION).substring(7);
         return tokenService.extractExtraInfo(token);
+    }
+
+    @GetMapping("/user/getInfo")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+    @ApiOperation(value = "Info about users",
+            authorizations = {@Authorization(value = "Bearer token")})
+    public Map<String, Object> getInfo(HttpServletRequest request) {
+        String token = request.getHeader(AUTHORIZATION).substring(7);
+        return tokenStore.readAccessToken(token).getAdditionalInformation();
     }
 }
