@@ -1,10 +1,12 @@
 package com.reckue.post.transfers;
 
 import com.reckue.post.models.types.NodeType;
+import com.reckue.post.models.types.ParentType;
 import com.reckue.post.transfers.nodes.NodeParentRequest;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.constraints.NotNull;
 
@@ -23,6 +25,10 @@ public class NodeRequest {
 
     @ApiModelProperty(notes = "Sub node")
     private NodeParentRequest node;
+
+    @ApiModelProperty(notes = "Type of parent entity")
+    @NotNull
+    private ParentType parentType;
 
     @ApiModelProperty(notes = "Identifier of the parent")
     @NotNull

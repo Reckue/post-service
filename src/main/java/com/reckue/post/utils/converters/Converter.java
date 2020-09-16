@@ -46,8 +46,7 @@ public class Converter {
         if (list == null) {
             throw new ReckueIllegalArgumentException("Null parameters are not allowed");
         }
-        return list
-                .stream()
+        return list.stream()
                 .map(element -> mapper.map(element, dest))
                 .collect(Collectors.toList());
     }
