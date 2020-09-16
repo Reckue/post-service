@@ -8,6 +8,7 @@ import com.reckue.post.models.Comment;
 import com.reckue.post.repositories.CommentRepository;
 import com.reckue.post.repositories.PostRepository;
 import com.reckue.post.services.CommentService;
+import com.reckue.post.services.NodeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +32,8 @@ public class CommentServiceRealization implements CommentService {
 
     private final PostRepository postRepository;
 
+    private final NodeService nodeService;
+
     /**
      * This method is used to create an object of class Comment.
      *
@@ -41,6 +44,9 @@ public class CommentServiceRealization implements CommentService {
     @Transactional
     public Comment create(Comment comment) {
         validateCreatingComment(comment);
+        if (!comment.getNodes().isEmpty()) {
+            comment.getNodes().forEach(nodeService::create);
+        }
         return commentRepository.save(comment);
     }
 
