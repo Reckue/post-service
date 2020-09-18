@@ -1,6 +1,7 @@
 package com.reckue.post.transfers;
 
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiParam;
 import lombok.Builder;
 import lombok.Data;
 
@@ -25,7 +26,7 @@ public class CommentRequest {
     @ApiModelProperty(notes = "Post id")
     private String postId;
 
-    @ApiModelProperty(notes = "Сomment id that is being addressed")
+    @ApiModelProperty(notes = "Comment id that is being addressed")
     private String commentId;
 
     @ApiModelProperty(notes = "List of nodes the comment consists of")

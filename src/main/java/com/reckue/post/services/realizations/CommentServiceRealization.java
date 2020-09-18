@@ -47,7 +47,7 @@ public class CommentServiceRealization implements CommentService {
             throw new RuntimeException("Comment is null");
         }
         validateCreatingComment(comment);
-        if (!comment.getNodes().isEmpty()) {
+        if (comment.getNodes() != null && !comment.getNodes().isEmpty()) {
             comment.getNodes().forEach(nodeService::create);
         }
         return commentRepository.save(comment);
