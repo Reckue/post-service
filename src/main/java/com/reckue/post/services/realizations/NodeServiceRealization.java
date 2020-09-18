@@ -56,6 +56,7 @@ public class NodeServiceRealization implements NodeService {
                 .orElseThrow(() -> new NodeNotFoundException(node.getId()));
         savedNode.setUserId(node.getUserId());
         savedNode.setType(node.getType());
+        savedNode.setParentType(node.getParentType());
         savedNode.setSource(node.getSource());
         savedNode.setStatus(node.getStatus());
 
