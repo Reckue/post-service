@@ -49,19 +49,19 @@ public class NodeConverter {
         );
         Class<?> nodeClass = nodeTypeClassMap.get(nodeRequest.getType());
 
-        Map<ParentType, Class<?>> parentTypeClassMap = Map.of(
-                ParentType.POST, Post.class,
-                ParentType.COMMENT, Comment.class
-        );
-        Class<?> parentClass = parentTypeClassMap.get(nodeRequest.getParentType());
+//        Map<ParentType, Class<?>> parentTypeClassMap = Map.of(
+//                ParentType.POST, Post.class,
+//                ParentType.COMMENT, Comment.class
+//        );
+//        Class<?> parentClass = parentTypeClassMap.get(nodeRequest.getParentType());
 
         return Node.builder()
                 .type(nodeRequest.getType())
                 .parentId(nodeRequest.getParentId())
                 .userId(nodeRequest.getUserId())
                 .source(nodeRequest.getSource())
+                .parentType(nodeRequest.getParentType())
                 .node((Parent) Converter.convert(nodeRequest.getNode(), nodeClass))
-                .parentType((ParentType) Converter.convert(nodeRequest.getParentType(), parentClass))
                 .build();
     }
 
@@ -87,11 +87,13 @@ public class NodeConverter {
         );
         Class<?> nodeClass = nodeTypeClassMap.get(node.getType());
 
-        Map<ParentType, Class<?>> parentTypeClassMap = Map.of(
-                ParentType.POST, Post.class,
-                ParentType.COMMENT, Comment.class
-        );
-        Class<?> parentClass = parentTypeClassMap.get(node.getParentType());
+//        if (node.getParentType() != null) {
+//            Map<ParentType, Class<?>> parentTypeClassMap = Map.of(
+//                    ParentType.POST, Post.class,
+//                    ParentType.COMMENT, Comment.class
+//            );
+//            Class<?> parentClass = parentTypeClassMap.get(node.getParentType());
+//        }
 
         return NodeResponse.builder()
                 .id(node.getId())
@@ -99,10 +101,10 @@ public class NodeConverter {
                 .parentId(node.getParentId())
                 .source(node.getSource())
                 .userId(node.getUserId())
+                .parentType(node.getParentType())
                 .createdDate(node.getCreatedDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
                 .modificationDate(node.getModificationDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
                 .node((NodeParentResponse) Converter.convert(node.getNode(), nodeClass))
-                .parentType((ParentType) Converter.convert(node.getParentType(), parentClass))
                 .status(node.getStatus())
                 .build();
     }

@@ -6,7 +6,6 @@ import com.reckue.post.transfers.nodes.NodeParentRequest;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.constraints.NotNull;
 
