@@ -1,7 +1,6 @@
 package com.reckue.post.models;
 
 import com.reckue.post.models.types.PostStatusType;
-import com.reckue.post.models.types.StatusType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

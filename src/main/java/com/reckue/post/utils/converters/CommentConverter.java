@@ -2,7 +2,6 @@ package com.reckue.post.utils.converters;
 
 import com.reckue.post.exceptions.ReckueIllegalArgumentException;
 import com.reckue.post.models.Comment;
-import com.reckue.post.models.CommentNode;
 import com.reckue.post.models.Node;
 import com.reckue.post.transfers.CommentRequest;
 import com.reckue.post.transfers.CommentResponse;
