@@ -102,6 +102,10 @@ paths:
 
   # TODO: add findById, update endpoints for post here
 
+  # TODO: add /nodes endpoint
+  # TODO: add /tags endpoint
+  # TODO: add /comments endpoint
+
 # Components
 components:
   responses:
