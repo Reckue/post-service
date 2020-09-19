@@ -1,9 +1,14 @@
 package com.reckue.post.services.realizations;
 
 import com.reckue.post.exceptions.ReckueIllegalArgumentException;
+import com.reckue.post.exceptions.models.comment.CommentNotFoundException;
 import com.reckue.post.exceptions.models.nodes.NodeNotFoundException;
+import com.reckue.post.exceptions.models.post.PostNotFoundException;
 import com.reckue.post.models.Node;
+import com.reckue.post.models.types.ParentType;
+import com.reckue.post.repositories.CommentRepository;
 import com.reckue.post.repositories.NodeRepository;
+import com.reckue.post.repositories.PostRepository;
 import com.reckue.post.services.NodeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,6 +30,10 @@ public class NodeServiceRealization implements NodeService {
 
     private final NodeRepository nodeRepository;
 
+    private final PostRepository postRepository;
+
+    private final CommentRepository commentRepository;
+
     /**
      * This method is used to create an object of class Node.
      *
@@ -33,7 +42,34 @@ public class NodeServiceRealization implements NodeService {
      */
     @Override
     public Node create(Node node) {
+        if (node == null) {
+            throw new RuntimeException("Node is null");
+        }
+        validateCreatingNode(node);
         return nodeRepository.save(node);
+    }
+
+    /**
+     * This method is used to check node validation.
+     * Throws {@link PostNotFoundException} in case if such post isn't contained in database.
+     * Throws {@link CommentNotFoundException} in case if such comment isn't contained in database.
+     *
+     * @param node object of class Node
+     */
+    public void validateCreatingNode(Node node) {
+        ParentType parentType = node.getParentType();
+        switch (parentType) {
+            case POST:
+                if (!postRepository.existsById(node.getParentId())) {
+                    throw new PostNotFoundException(node.getParentId());
+                }
+                break;
+            case COMMENT:
+                if (!commentRepository.existsById(node.getParentId())) {
+                    throw new CommentNotFoundException(node.getParentId());
+                }
+                break;
+        }
     }
 
     /**

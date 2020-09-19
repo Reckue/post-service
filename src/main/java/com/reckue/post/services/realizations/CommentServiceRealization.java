@@ -5,6 +5,8 @@ import com.reckue.post.exceptions.ReckueIllegalArgumentException;
 import com.reckue.post.exceptions.models.comment.CommentNotFoundException;
 import com.reckue.post.exceptions.models.post.PostNotFoundException;
 import com.reckue.post.models.Comment;
+import com.reckue.post.models.Node;
+import com.reckue.post.models.types.ParentType;
 import com.reckue.post.repositories.CommentRepository;
 import com.reckue.post.repositories.PostRepository;
 import com.reckue.post.services.CommentService;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -47,10 +50,24 @@ public class CommentServiceRealization implements CommentService {
             throw new RuntimeException("Comment is null");
         }
         validateCreatingComment(comment);
-        if (comment.getNodes() != null && !comment.getNodes().isEmpty()) {
-            comment.getNodes().forEach(nodeService::create);
+
+        List<Node> nodeList = new ArrayList<>();
+        Comment storedComment = new Comment();
+
+        if (comment.getNodes() != null) {
+            nodeList = comment.getNodes();
+            comment.setNodes(null);
+            storedComment = commentRepository.save(comment);
+            final String commentId = storedComment.getId();
+
+            nodeList.forEach(node -> {
+                node.setParentId(commentId);
+                node.setParentType(ParentType.COMMENT);
+                nodeService.create(node);
+            });
         }
-        return commentRepository.save(comment);
+        storedComment.setNodes(nodeList);
+        return storedComment;
     }
 
     /**
