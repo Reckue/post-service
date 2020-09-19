@@ -78,6 +78,7 @@ dependencies {
 // ----------[ checkstyle ]----------
 checkstyle {
     toolVersion = "7.2"
+    checkstyleMain.exclude '**/com/reckue/post/generated/**'
 }
 
 // ----------[ openapi code generation ]----------
