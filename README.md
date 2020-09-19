@@ -7,26 +7,22 @@ Service for publications, tutorials and articles.
 
 ## Stack
 - Open JDK 11
-- Gradle (Groovy)
-- Spring Boot
-- Spring Data
-- Spring Security
-- Spring Cloud
-- Netflix Eureka
-- Netflix Zuul
-- Ribbon
-- MongoDB
-- Lombok
-- Model Mapper
-- Mongobee
-- Swagger
+- Gradle 5.2.1
+- Spring Boot 2.2.2
+- Spring Data 2.2.2
+- Spring Security 2.2.2
+- Spring Cloud 2.2.2
+- Netflix Eureka 2.2.4
+- Netflix Zuul 2.2.4
+- MongoDB 4.2
+- Lombok 1.18.12
+- Model Mapper 2.3.7
+- Mongobee 0.13
+- Swagger 2.9.2
 - Junit 5
-- Mockito
-- DevTools
-- GitHub Workflow
-- Checkstyle
-- Openshift CLI
-
+- Checkstyle 7.2
+- Openshift CLI 4
+- GitHub Workflow CI
 
 ## Run with terminal
 To run your application without first building an archive use the bootRun task:
