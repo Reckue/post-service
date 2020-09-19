@@ -91,7 +91,7 @@ paths:
               ]
             }
       responses:
-        200:
+        201:
           $ref: "#/components/responses/PostResponse"
         400:
           $ref: "#/components/responses/BadRequestError"
@@ -100,7 +100,7 @@ paths:
         500:
           $ref: "#/components/responses/InternalServerError"
 
-  # TODO: add findById, create, update endpoints for post here
+  # TODO: add findById, update endpoints for post here
 
 # Components
 components:
