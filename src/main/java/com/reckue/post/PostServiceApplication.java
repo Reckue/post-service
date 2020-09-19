@@ -25,6 +25,7 @@
  */
 package com.reckue.post;
 
+import com.reckue.post.generated.models.InternalServerError;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
@@ -46,6 +47,7 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 public class PostServiceApplication {
 
     public static void main(String[] args) {
+        InternalServerError e = new InternalServerError();
         SpringApplication.run(PostServiceApplication.class, args);
     }
 }

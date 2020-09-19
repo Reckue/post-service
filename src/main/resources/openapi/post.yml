@@ -1,0 +1,217 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.2
+  title: Post Service
+  description: Service for posting articles about different programming languages.
+  contact:
+    name: Daria Smirnova
+    email: smirnova@reckue.com
+    url: https://github.com/daria80
+servers:
+  - url: https://reckue.com/api/v1
+
+# Paths
+paths:
+  /posts:
+    get:
+      summary: List all posts.
+      operationId: findAll
+      tags:
+        - Posts
+      parameters:
+        - name: limit
+          in: query
+          description: Limit of posts on page. By default, 10.
+          required: false
+          example: 10
+          schema:
+            type: integer
+            format: int32
+        - name: offset
+          in: query
+          description: Offset posts on page. By default, 0.
+          required: false
+          example: 0
+          schema:
+            type: integer
+            format: int32
+        - name: sort
+          in: query
+          description: Sorting posts by parameter. By default, sorts by id.
+          required: false
+          example: id
+          schema:
+            type: string
+        - name: desc
+          in: query
+          description: Flag to sorting posts by descending. By default, false.
+          required: false
+          example: false
+          schema:
+            type: boolean
+      responses:
+        200:
+          $ref: "#/components/responses/PostsResponse"
+        400:
+          $ref: "#/components/responses/BadRequestError"
+        404:
+          $ref: "#/components/responses/PostNotFoundError"
+        500:
+          $ref: "#/components/responses/InternalServerError"
+  # TODO: add findById, create, update endpoints for post here
+
+# Components
+components:
+  responses:
+    # Responses :: Errors
+    InternalServerError:
+      description: Internal Server Error.
+      content:
+        'application/json':
+          schema:
+            $ref: "#/components/schemas/InternalServerError"
+    BadRequestError:
+      description: Bad Request.
+      content:
+        'application/json':
+          schema:
+            $ref: "#/components/schemas/BadRequestError"
+    PostNotFoundError:
+      description: Not Found.
+      content:
+        'application/json':
+          schema:
+            $ref: "#/components/schemas/PostNotFoundError"
+    PostsResponse:
+      description: List of posts.
+      content:
+        'application/json':
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/PostResponse"
+
+  schemas:
+    # Schemas :: Errors :: Default
+    InternalServerError:
+      type: object
+      properties:
+        title:
+          type: string
+          description: A title of error response.
+          example: Internal Server Error
+        code:
+          type: string
+          description: A code of error response.
+          example: RP-1000
+        message:
+          type: string
+          description: A message of error response.
+          example: Internal Server Error
+    BadRequestError:
+      type: object
+      properties:
+        title:
+          type: string
+          description: A title of error response.
+          example: Bad Request
+        code:
+          type: string
+          description: A code of error response.
+          example: RP-1001
+        message:
+          type: string
+          description: A message of error response.
+          example: The message cannot be read.
+
+    # Schemas :: Errors :: Post
+    PostNotFoundError:
+      type: object
+      properties:
+        title:
+          type: string
+          description: A title of error response.
+          example: Post Not Found Error
+        code:
+          type: string
+          description: A code of error response.
+          example: RP-1002
+        message:
+          type: string
+          description: A message of error response.
+          example: The post by id '5f3193eee810fe1a026e7f84' is not found.
+
+    # Schemas :: Responses :: Post
+    PostResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Post identifier.
+          example: 3579626af2a44ee983a299fc65f7238f
+        title:
+          type: string
+          description: Post title.
+          example: My first post
+        nodes:
+          type: array
+          items:
+            $ref: "#/components/schemas/NodeResponse"
+          description: Node list of the post.
+        source:
+          type: string
+          description: Post source.
+          example: Wikipedia
+        userId:
+          type: string
+          description: User identifier of the post.
+          example: 5f66514e27efbb73c2996c17
+        tags:
+          type: array
+          items:
+            $ref: "#/components/schemas/TagResponse"
+          description: Tag list of the post.
+        status:
+          type: string
+          enum: [DRAFT, PUBLISHED, PENDING, MODERATED, DELETED, BANNED]
+          description: Current post status.
+          example: DRAFT
+        createdDate:
+          type: integer
+          description: Created date of the post.
+          example: 1600541486196
+        modificationDate:
+          type: integer
+          description: Modification date of the post.
+          example: 1600541486196
+
+    # Schemas :: Responses :: Node
+    NodeResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Post identifier.
+          example: 3579626af2a44ee983a299fc65f7238f
+        # TODO: add all properties of node here
+
+    # Schemas :: Responses :: Tag
+    TagResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Post identifier.
+          example: 3579626af2a44ee983a299fc65f7238f
+        # TODO: add all properties of tag here
+
+    # Schemas :: Enums
+    PostStatusType:
+      type: string
+      enum:
+        - DRAFT
+        - PUBLISHED
+        - PENDING
+        - MODERATED
+        - DELETED
+        - BANNED
