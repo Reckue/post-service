@@ -1,12 +1,12 @@
 # post-api
-**v.1.0.2.RELEASE**
+**v.1.0.2**
 
 Service for publications, tutorials and articles.
 
 ![deploy](https://github.com/Reckue/post-api/workflows/deploy/badge.svg)
 
-## Stacks
-- OpenJDK 11
+## Stack
+- Open JDK 11
 - Gradle (Groovy)
 - Spring Boot
 - Spring Data
@@ -42,9 +42,8 @@ gradle build
 #### 2. Run the application
 To create a jar file write following command and put enter:
 ```
-java -jar ./build/libs/RELEASE-1.0.1.jar
+java -jar ./build/libs/post-api-1.0.2.jar
 ```
-
 
 ## Run with docker
 You need an installed docker program on your computer, or download it, such as:

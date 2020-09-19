@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'com.reckue'
-version = '1.0.2.RELEASE'
+version = '1.0.2'
 
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
@@ -69,10 +69,10 @@ dependencies {
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
 
     /* other */
-    compile group: 'org.apache.commons', name: 'commons-text', version: '1.8'
+    implementation group: 'org.apache.commons', name: 'commons-text', version: '1.8'
     implementation 'javax.xml.bind:jaxb-api:2.3.0' // for binding xml
 
-    compile "org.openapitools:jackson-databind-nullable:0.2.1"
+    implementation "org.openapitools:jackson-databind-nullable:0.2.1"
 }
 
 // ----------[ checkstyle ]----------
