@@ -58,6 +58,48 @@ paths:
           $ref: "#/components/responses/PostNotFoundError"
         500:
           $ref: "#/components/responses/InternalServerError"
+    post:
+      summary: Create a new post.
+      operationId: create
+      tags:
+        - Posts
+      requestBody:
+        description: Body of post request to create a new post.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostRequest'
+            example: {
+              "title": "My first post",
+              "status": "DRAFT",
+              "source": "Wikipedia",
+              "userId": "5f66514e27efbb73c2996c17",
+              "nodes": [
+                {
+                  "id": "3579626af2a44ee983a299fc65f7238f",
+                  "type": "TEXT",
+                  "entry": {
+                    "text": "Hello, World!"
+                  }
+                }
+              ],
+              "tags": [
+                {
+                  "name": "Beginner"
+                }
+              ]
+            }
+      responses:
+        200:
+          $ref: "#/components/responses/PostResponse"
+        400:
+          $ref: "#/components/responses/BadRequestError"
+        404:
+          $ref: "#/components/responses/PostNotFoundError"
+        500:
+          $ref: "#/components/responses/InternalServerError"
+
   # TODO: add findById, create, update endpoints for post here
 
 # Components
@@ -82,6 +124,12 @@ components:
         'application/json':
           schema:
             $ref: "#/components/schemas/PostNotFoundError"
+    PostResponse:
+      description: List of posts.
+      content:
+        'application/json':
+          schema:
+            $ref: "#/components/schemas/PostResponse"
     PostsResponse:
       description: List of posts.
       content:
@@ -141,6 +189,44 @@ components:
           description: A message of error response.
           example: The post by id '5f3193eee810fe1a026e7f84' is not found.
 
+    # Schemas :: Requests
+    # Schemas :: Requests :: Post
+    PostRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Post identifier.
+          example: 3579626af2a44ee983a299fc65f7238f
+        title:
+          type: string
+          description: Post title.
+          example: My first post
+        status:
+          type: string
+          enum: [DRAFT, PUBLISHED, PENDING, MODERATED, DELETED, BANNED]
+          description: Current post status.
+          example: DRAFT
+        source:
+          type: string
+          description: Post source.
+          example: Wikipedia
+        userId:
+          type: string
+          description: User identifier of the post.
+          example: 5f66514e27efbb73c2996c17
+        nodes:
+          type: array
+          items:
+            $ref: "#/components/schemas/NodeResponse"
+          description: Node list of the post.
+        tags:
+          type: array
+          items:
+            $ref: "#/components/schemas/TagResponse"
+          description: Tag list of the post.
+
+    # Schemas :: Responses
     # Schemas :: Responses :: Post
     PostResponse:
       type: object
@@ -153,11 +239,11 @@ components:
           type: string
           description: Post title.
           example: My first post
-        nodes:
-          type: array
-          items:
-            $ref: "#/components/schemas/NodeResponse"
-          description: Node list of the post.
+        status:
+          type: string
+          enum: [DRAFT, PUBLISHED, PENDING, MODERATED, DELETED, BANNED]
+          description: Current post status.
+          example: DRAFT
         source:
           type: string
           description: Post source.
@@ -166,16 +252,16 @@ components:
           type: string
           description: User identifier of the post.
           example: 5f66514e27efbb73c2996c17
+        nodes:
+          type: array
+          items:
+            $ref: "#/components/schemas/NodeResponse"
+          description: Node list of the post.
         tags:
           type: array
           items:
             $ref: "#/components/schemas/TagResponse"
           description: Tag list of the post.
-        status:
-          type: string
-          enum: [DRAFT, PUBLISHED, PENDING, MODERATED, DELETED, BANNED]
-          description: Current post status.
-          example: DRAFT
         createdDate:
           type: integer
           description: Created date of the post.

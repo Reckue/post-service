@@ -19,6 +19,7 @@ Service for publications, tutorials and articles.
 - Model Mapper 2.3.7
 - Mongobee 0.13
 - Swagger 2.9.2
+- Open API 3.0.0
 - Junit 5
 - Checkstyle 7.2
 - Openshift CLI 4
