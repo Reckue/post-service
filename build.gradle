@@ -88,9 +88,9 @@ openApiGenerate {
     outputDir = "${rootProject.buildDir}/generated"
     typeMappings = [OffsetDateTime: "java.time.Instant"]
     configOptions = [
-            interfaceOnly          : true,
-            apiPackage             : "com.reckue.post.generated.controllers",
-            modelPackage           : "com.reckue.post.generated.models"
+            interfaceOnly : true,
+            apiPackage    : "com.reckue.post.generated.controllers",
+            modelPackage  : "com.reckue.post.generated.models"
     ]
     enablePostProcessFile = false
 }
