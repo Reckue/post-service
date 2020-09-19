@@ -44,6 +44,7 @@ public class PostServiceRealization implements PostService {
         if (post == null) {
             throw new RuntimeException("Post is null");
         }
+        validateOnCreatePost(post);
         validateOnCreateStatus(post);
         
         List<Node> nodeList = new ArrayList<>();
@@ -63,6 +64,12 @@ public class PostServiceRealization implements PostService {
         }
         storedPost.setNodes(nodeList);
         return storedPost;
+    }
+
+    private void validateOnCreatePost(Post post) {
+        if (post.getTitle() == null || post.getTitle().isEmpty()) {
+            throw new RuntimeException("Title cannot be empty");
+        }
     }
 
     private void validateOnCreateStatus(Post post) {
