@@ -92,6 +92,30 @@ paths:
         500:
           $ref: '#/components/responses/InternalServerError'
 
+  /posts/{id}:
+    get:
+      summary: List all posts.
+      operationId: findById
+      tags:
+        - Posts
+      parameters:
+        - name: id
+          in: path
+          description: Post identifier.
+          required: true
+          example: 5f66a68227efbb73c2996c1a
+          schema:
+            type: string
+      responses:
+        200:
+          $ref: '#/components/responses/PostResponse'
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        404:
+          $ref: '#/components/responses/PostNotFoundError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
   # TODO: add findById, update endpoints for post here
 
   # TODO: add /nodes endpoint
@@ -199,7 +223,7 @@ components:
         id:
           type: string
           description: Post identifier.
-          example: 3579626af2a44ee983a299fc65f7238f
+          example: 5f66a68227efbb73c2996c1a
         title:
           type: string
           description: Post title.
@@ -236,7 +260,7 @@ components:
         id:
           type: string
           description: Post identifier.
-          example: 3579626af2a44ee983a299fc65f7238f
+          example: 5f66a68227efbb73c2996c1a
         title:
           type: string
           description: Post title.
