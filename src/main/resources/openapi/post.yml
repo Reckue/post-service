@@ -55,6 +55,8 @@ paths:
           $ref: '#/components/responses/PostsResponse'
         400:
           $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
         404:
           $ref: '#/components/responses/PostNotFoundError'
         500:
@@ -88,6 +90,8 @@ paths:
           $ref: '#/components/responses/PostResponse'
         400:
           $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
         404:
           $ref: '#/components/responses/PostNotFoundError'
         500:
@@ -130,6 +134,8 @@ paths:
           $ref: '#/components/responses/PostResponse'
         400:
           $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
         404:
           $ref: '#/components/responses/PostNotFoundError'
         500:
@@ -152,6 +158,32 @@ paths:
           $ref: '#/components/responses/PostResponse'
         400:
           $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
+          $ref: '#/components/responses/PostNotFoundError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      summary: Delete the post by id.
+      operationId: deletePostById
+      tags:
+        - Posts
+      parameters:
+        - name: id
+          in: path
+          description: Post id.
+          required: true
+          example: 5f66a68227efbb73c2996c1a
+          schema:
+            type: string
+      responses:
+        200:
+          description: 200 OK
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
         404:
           $ref: '#/components/responses/PostNotFoundError'
         500:
@@ -200,6 +232,8 @@ paths:
           $ref: '#/components/responses/NodesResponse'
         400:
           $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
         404:
           $ref: '#/components/responses/PostNotFoundError'
         500:
@@ -221,6 +255,8 @@ paths:
           $ref: '#/components/responses/PostResponse'
         400:
           $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
         404:
           $ref: '#/components/responses/PostNotFoundError'
         500:
@@ -251,6 +287,8 @@ paths:
           $ref: '#/components/responses/NodeResponse'
         400:
           $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
         404:
           $ref: '#/components/responses/PostNotFoundError'
         500:
@@ -273,6 +311,32 @@ paths:
           $ref: '#/components/responses/NodeResponse'
         400:
           $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
+          $ref: '#/components/responses/PostNotFoundError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      summary: Delete the node by id.
+      operationId: deleteNodeById
+      tags:
+        - Nodes
+      parameters:
+        - name: id
+          in: path
+          description: Node id.
+          required: true
+          example: 5f66a68227efbb73c2996c1a
+          schema:
+            type: string
+      responses:
+        200:
+          description: 200 OK
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
         404:
           $ref: '#/components/responses/PostNotFoundError'
         500:
@@ -302,7 +366,7 @@ components:
             $ref: '#/components/schemas/NodeRequest'
 
   responses:
-    # Responses :: Errors
+    # Responses :: Default
     InternalServerError:
       description: Internal Server Error.
       content:
@@ -315,6 +379,12 @@ components:
         'application/json':
           schema:
             $ref: '#/components/schemas/BadRequestError'
+    UnauthorizedError:
+      description: Unauthorized.
+      content:
+        'application/json':
+          schema:
+            $ref: '#/components/schemas/UnauthorizedError'
 
     # Responses :: Errors :: Posts
     PostNotFoundError:
@@ -386,6 +456,21 @@ components:
           type: string
           description: A message of error response.
           example: The message cannot be read.
+    UnauthorizedError:
+      type: object
+      properties:
+        title:
+          type: string
+          description: A title of error response.
+          example: Unauthorized
+        code:
+          type: string
+          description: A code of error response.
+          example: RP-1006
+        message:
+          type: string
+          description: A message of error response.
+          example: Unauthorized.
     PostNotFoundError:
       type: object
       properties:
@@ -416,7 +501,8 @@ components:
           example: My first post
         status:
           type: string
-          enum: [DRAFT, PUBLISHED, PENDING, MODERATED, DELETED, BANNED]
+          allOf:
+            - $ref: '#/components/schemas/StatusType'
           description: Current post status.
           example: DRAFT
         source:
@@ -435,20 +521,72 @@ components:
         tags:
           type: array
           items:
-            $ref: '#/components/schemas/TagResponse'
+            $ref: '#/componaents/schemas/TagResponse'
           description: Tag list of the post.
+
+    NodeParentRequest:
+      type: object
+      description: Node parent request.
+      allOf:
+        - $ref: '#/components/schemas/TextNode'
+        - $ref: '#/components/schemas/ImageNode'
+        - $ref: '#/components/schemas/VideoNode'
+        - $ref: '#/components/schemas/AudioNode'
+        - $ref: '#/components/schemas/PollNode'
+        - $ref: '#/components/schemas/ListNode'
+        - $ref: '#/components/schemas/CodeNode'
+      discriminator:
+        propertyName: entry
 
     NodeRequest:
       type: object
       properties:
         id:
           type: string
-          description: Post id.
-          example: 5f66a68227efbb73c2996c1a
-        title:
+          description: Node id.
+          example: 3579626af2a44ee983a299fc65f7238f
+        type:
           type: string
-          description: Post title.
-          example: My first post
+          allOf:
+            - $ref: '#/components/schemas/NodeType'
+          description: Parent type.
+          example: TEXT
+        entry:
+          $ref: '#/components/schemas/NodeParentRequest'
+        parentId:
+          type: string
+          description: Parent id.
+          example: 3579626af2a44ee983a299fc65f7238f
+        parentType:
+          type: string
+          allOf:
+            - $ref: '#/components/schemas/ParentType'
+          description: Parent type.
+          example: POST
+        source:
+          type: string
+          description: Node source.
+          example: Wikipedia
+        userId:
+          type: string
+          description: User id.
+          example: 3579626af2a44ee983a299fc65f7238f
+        status:
+          type: string
+          allOf:
+            - $ref: '#/components/schemas/StatusType'
+          description: Current node status.
+          example: ACTIVE
+    #      discriminator:
+    #        propertyName: entry
+    #        mapping:
+    #          TEXT: '#/components/schemas/TextNode'
+    #          IMAGE: '#/components/schemas/ImageNode'
+    #          VIDEO: '#/components/schemas/VideoNode'
+    #          AUDIO: '#/components/schemas/AudioNode'
+    #          POLL: '#/components/schemas/PollNode'
+    #          LIST: '#/components/schemas/ListNode'
+    #          CODE: '#/components/schemas/CodeNode'
 
     # Schemas :: Responses
     PostResponse:
@@ -464,7 +602,8 @@ components:
           example: My first post
         status:
           type: string
-          enum: [DRAFT, PUBLISHED, PENDING, MODERATED, DELETED, BANNED]
+          allOf:
+            - $ref: '#/components/schemas/PostStatusType'
           description: Current post status.
           example: DRAFT
         source:
@@ -503,11 +642,12 @@ components:
           example: 3579626af2a44ee983a299fc65f7238f
         type:
           type: string
-          enum: [TEXT, AUDIO, VIDEO, CODE]
+          allOf:
+            - $ref: '#/components/schemas/NodeType'
           description: Parent type.
           example: TEXT
         entry:
-          anyOf:
+          allOf:
             - $ref: '#/components/schemas/TextNode'
             - $ref: '#/components/schemas/ImageNode'
             - $ref: '#/components/schemas/VideoNode'
@@ -521,7 +661,8 @@ components:
           example: 3579626af2a44ee983a299fc65f7238f
         parentType:
           type: string
-          enum: [POST, COMMENT]
+          allOf:
+            - $ref: '#/components/schemas/ParentType'
           description: Parent type.
           example: POST
         source:
@@ -534,7 +675,8 @@ components:
           example: 3579626af2a44ee983a299fc65f7238f
         status:
           type: string
-          enum: [ACTIVE, DELETED, BANNED, MODERATED]
+          allOf:
+            - $ref: '#/components/schemas/StatusType'
           description: Current node status.
           example: ACTIVE
         createdDate:
@@ -610,7 +752,8 @@ components:
       properties:
         langType:
           type: string
-          enum: [NONE, JAVA, PYTHON, JAVASCRIPT, C, KOTLIN, BASH, BAT]
+          allOf:
+            - $ref: '#/components/schemas/LanguageType'
           description: Code node language type.
           example: JAVA
         content:
@@ -635,3 +778,29 @@ components:
         - MODERATED
         - DELETED
         - BANNED
+    NodeType:
+      type: string
+      enum:
+        - TEXT
+        - IMAGE
+        - VIDEO
+        - CODE
+        - LIST
+        - AUDIO
+        - POLL
+    ParentType:
+      type: string
+      enum:
+        - POST
+        - COMMENT
+    LanguageType:
+      type: string
+      enum:
+        - NONE
+        - JAVA
+        - PYTHON
+        - JAVASCRIPT
+        - C
+        - KOTLIN
+        - BASH
+        - BAT
