@@ -205,8 +205,8 @@ components:
           description: Post title.
           example: My first post
         status:
-          enum:
-            - $ref: '#/components/schemas/PostStatusType'
+          type: string
+          enum: [DRAFT, PUBLISHED, PENDING, MODERATED, DELETED, BANNED]
           description: Current post status.
           example: DRAFT
         source:
