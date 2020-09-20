@@ -51,8 +51,8 @@ public class CommentServiceRealization implements CommentService {
         }
         validateCreatingComment(comment);
 
-        List<Node> nodeList = new ArrayList<>();
-        Comment storedComment = new Comment();
+        Comment storedComment = comment.clone();
+        List<Node> nodeList = null;
 
         if (comment.getNodes() != null) {
             nodeList = comment.getNodes();

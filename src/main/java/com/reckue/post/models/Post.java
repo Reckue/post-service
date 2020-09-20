@@ -23,7 +23,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document
-public class Post {
+public class Post implements Cloneable {
 
     @Id
     private String id;
@@ -39,4 +39,13 @@ public class Post {
     private LocalDateTime modificationDate;
     @CreatedDate
     private LocalDateTime createdDate;
+
+    @Override
+    public Post clone() {
+        try {
+            return (Post) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 }

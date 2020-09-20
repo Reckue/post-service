@@ -22,7 +22,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document
-public class Comment {
+public class Comment implements Cloneable {
 
     @Id
     private String id;
@@ -36,4 +36,13 @@ public class Comment {
     private LocalDateTime createdDate;
     @LastModifiedDate
     private LocalDateTime modificationDate;
+
+    @Override
+    public Comment clone() {
+        try {
+            return (Comment) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 }

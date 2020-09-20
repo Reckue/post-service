@@ -47,8 +47,8 @@ public class PostServiceRealization implements PostService {
         validateOnCreatePost(post);
         validateOnCreateStatus(post);
         
-        List<Node> nodeList = new ArrayList<>();
-        Post storedPost = new Post();
+        Post storedPost = post.clone();
+        List<Node> nodeList = null;
 
         if (post.getNodes() != null) {
             nodeList = post.getNodes();
