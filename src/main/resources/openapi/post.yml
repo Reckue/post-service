@@ -521,22 +521,22 @@ components:
         tags:
           type: array
           items:
-            $ref: '#/componaents/schemas/TagResponse'
+            $ref: '#/components/schemas/TagResponse'
           description: Tag list of the post.
 
-    NodeParentRequest:
+    NodeEntry:
       type: object
       description: Node parent request.
-      allOf:
-        - $ref: '#/components/schemas/TextNode'
-        - $ref: '#/components/schemas/ImageNode'
-        - $ref: '#/components/schemas/VideoNode'
-        - $ref: '#/components/schemas/AudioNode'
-        - $ref: '#/components/schemas/PollNode'
-        - $ref: '#/components/schemas/ListNode'
-        - $ref: '#/components/schemas/CodeNode'
       discriminator:
-        propertyName: entry
+        propertyName: type
+        mapping:
+          TEXT: '#/components/schemas/TextNode'
+          IMAGE: '#/components/schemas/ImageNode'
+          VIDEO: '#/components/schemas/VideoNode'
+          AUDIO: '#/components/schemas/AudioNode'
+          POLL: '#/components/schemas/PollNode'
+          LIST: '#/components/schemas/ListNode'
+          CODE: '#/components/schemas/CodeNode'
 
     NodeRequest:
       type: object
@@ -552,7 +552,7 @@ components:
           description: Parent type.
           example: TEXT
         entry:
-          $ref: '#/components/schemas/NodeParentRequest'
+          $ref: '#/components/schemas/NodeEntry'
         parentId:
           type: string
           description: Parent id.
@@ -577,16 +577,6 @@ components:
             - $ref: '#/components/schemas/StatusType'
           description: Current node status.
           example: ACTIVE
-    #      discriminator:
-    #        propertyName: entry
-    #        mapping:
-    #          TEXT: '#/components/schemas/TextNode'
-    #          IMAGE: '#/components/schemas/ImageNode'
-    #          VIDEO: '#/components/schemas/VideoNode'
-    #          AUDIO: '#/components/schemas/AudioNode'
-    #          POLL: '#/components/schemas/PollNode'
-    #          LIST: '#/components/schemas/ListNode'
-    #          CODE: '#/components/schemas/CodeNode'
 
     # Schemas :: Responses
     PostResponse:
@@ -647,14 +637,7 @@ components:
           description: Parent type.
           example: TEXT
         entry:
-          allOf:
-            - $ref: '#/components/schemas/TextNode'
-            - $ref: '#/components/schemas/ImageNode'
-            - $ref: '#/components/schemas/VideoNode'
-            - $ref: '#/components/schemas/AudioNode'
-            - $ref: '#/components/schemas/PollNode'
-            - $ref: '#/components/schemas/ListNode'
-            - $ref: '#/components/schemas/CodeNode'
+          $ref: '#/components/schemas/NodeEntry'
         parentId:
           type: string
           description: Parent id.
@@ -693,9 +676,12 @@ components:
       properties:
         id:
           type: string
-          description: Post id.
+          description: Tag id.
           example: 3579626af2a44ee983a299fc65f7238f
-        # TODO: add all properties of tag here
+        name:
+          type: string
+          description: Tag name.
+          example: java
 
     TextNode:
       type: object
