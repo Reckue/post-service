@@ -25,10 +25,10 @@ public class CommentRequest {
     @ApiModelProperty(notes = "Post id")
     private String postId;
 
-    @ApiModelProperty(notes = "Сomment id that is being addressed")
+    @ApiModelProperty(notes = "Comment id that is being addressed")
     private String commentId;
 
     @ApiModelProperty(notes = "List of nodes the comment consists of")
     @Valid
-    private List<CommentNodeRequest> nodes;
+    private List<NodeRequest> nodes;
 }

@@ -1,9 +1,12 @@
 package com.reckue.post.utils.converters;
 
 import com.reckue.post.exceptions.ReckueIllegalArgumentException;
+import com.reckue.post.models.Comment;
 import com.reckue.post.models.Node;
+import com.reckue.post.models.Post;
 import com.reckue.post.models.nodes.*;
 import com.reckue.post.models.types.NodeType;
+import com.reckue.post.models.types.ParentType;
 import com.reckue.post.transfers.NodeRequest;
 import com.reckue.post.transfers.NodeResponse;
 import com.reckue.post.transfers.nodes.NodeParentResponse;
@@ -35,7 +38,7 @@ public class NodeConverter {
         if (nodeRequest == null) {
             throw new ReckueIllegalArgumentException("Null parameters are not allowed");
         }
-        Map<NodeType, Class<?>> map = Map.of(
+        Map<NodeType, Class<?>> nodeTypeClassMap = Map.of(
                 NodeType.TEXT, TextNode.class,
                 NodeType.IMAGE, ImageNode.class,
                 NodeType.VIDEO, VideoNode.class,
@@ -44,15 +47,21 @@ public class NodeConverter {
                 NodeType.AUDIO, AudioNode.class,
                 NodeType.POLL, PollNode.class
         );
+        Class<?> nodeClass = nodeTypeClassMap.get(nodeRequest.getType());
 
-        Class<?> targetClass = map.get(nodeRequest.getType());
+//        Map<ParentType, Class<?>> parentTypeClassMap = Map.of(
+//                ParentType.POST, Post.class,
+//                ParentType.COMMENT, Comment.class
+//        );
+//        Class<?> parentClass = parentTypeClassMap.get(nodeRequest.getParentType());
 
         return Node.builder()
                 .type(nodeRequest.getType())
-                .postId(nodeRequest.getPostId())
+                .parentId(nodeRequest.getParentId())
                 .userId(nodeRequest.getUserId())
                 .source(nodeRequest.getSource())
-                .node((Parent) Converter.convert(nodeRequest.getNode(), targetClass))
+                .parentType(nodeRequest.getParentType())
+                .node((Parent) Converter.convert(nodeRequest.getNode(), nodeClass))
                 .build();
     }
 
@@ -67,7 +76,7 @@ public class NodeConverter {
             throw new ReckueIllegalArgumentException("Null parameters are not allowed");
         }
 
-        Map<NodeType, Class<?>> map = Map.of(
+        Map<NodeType, Class<?>> nodeTypeClassMap = Map.of(
                 NodeType.TEXT, TextNodeResponse.class,
                 NodeType.IMAGE, ImageNodeResponse.class,
                 NodeType.VIDEO, VideoNodeResponse.class,
@@ -75,18 +84,27 @@ public class NodeConverter {
                 NodeType.LIST, ListNodeResponse.class,
                 NodeType.AUDIO, AudioNodeResponse.class,
                 NodeType.POLL, PollNodeResponse.class
-                );
-        Class<?> targetClass = map.get(node.getType());
+        );
+        Class<?> nodeClass = nodeTypeClassMap.get(node.getType());
+
+//        if (node.getParentType() != null) {
+//            Map<ParentType, Class<?>> parentTypeClassMap = Map.of(
+//                    ParentType.POST, Post.class,
+//                    ParentType.COMMENT, Comment.class
+//            );
+//            Class<?> parentClass = parentTypeClassMap.get(node.getParentType());
+//        }
 
         return NodeResponse.builder()
                 .id(node.getId())
                 .type(node.getType())
-                .postId(node.getPostId())
+                .parentId(node.getParentId())
                 .source(node.getSource())
                 .userId(node.getUserId())
+                .parentType(node.getParentType())
                 .createdDate(node.getCreatedDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
                 .modificationDate(node.getModificationDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
-                .node((NodeParentResponse) Converter.convert(node.getNode(), targetClass))
+                .node((NodeParentResponse) Converter.convert(node.getNode(), nodeClass))
                 .status(node.getStatus())
                 .build();
     }
