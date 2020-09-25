@@ -1,6 +1,5 @@
 package com.reckue.post.controllers;
 
-import com.reckue.post.services.TokenService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +24,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @RequiredArgsConstructor
 public class ResourceController {
 
-    private final TokenService tokenService;
+    //private final TokenService tokenService;
     private final TokenStore tokenStore;
 
     @GetMapping("/user/id")
@@ -34,7 +33,8 @@ public class ResourceController {
             authorizations = {@Authorization(value = "Bearer token")})
     public String userId(HttpServletRequest request) {
         String token = request.getHeader(AUTHORIZATION).substring(7);
-        return (String) tokenService.extractExtraInfo(token).get("userId");
+        return (String) tokenStore.readAccessToken(token)
+                .getAdditionalInformation().get("userId");
     }
 
     @GetMapping("/user/info")
@@ -42,15 +42,6 @@ public class ResourceController {
     @ApiOperation(value = "All user info",
             authorizations = {@Authorization(value = "Bearer token")})
     public Map<String, Object> userInfo(HttpServletRequest request) {
-        String token = request.getHeader(AUTHORIZATION).substring(7);
-        return tokenService.extractExtraInfo(token);
-    }
-
-    @GetMapping("/user/getInfo")
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
-    @ApiOperation(value = "Info about users",
-            authorizations = {@Authorization(value = "Bearer token")})
-    public Map<String, Object> getInfo(HttpServletRequest request) {
         String token = request.getHeader(AUTHORIZATION).substring(7);
         return tokenStore.readAccessToken(token).getAdditionalInformation();
     }
