@@ -1,32 +1,29 @@
 # post-api
-**v.1.0.2.RELEASE**
+**v.1.0.2**
 
 Service for publications, tutorials and articles.
 
 ![deploy](https://github.com/Reckue/post-api/workflows/deploy/badge.svg)
 
-## Stacks
-- OpenJDK 11
-- Gradle (Groovy)
-- Spring Boot
-- Spring Data
-- Spring Security
-- Spring Cloud
-- Netflix Eureka
-- Netflix Zuul
-- Ribbon
-- MongoDB
-- Lombok
-- Model Mapper
-- Mongobee
-- Swagger
+## Stack
+- Open JDK 11
+- Gradle 5.2.1
+- Spring Boot 2.2.2
+- Spring Data 2.2.2
+- Spring Security 2.2.2
+- Spring Cloud 2.2.2
+- Netflix Eureka 2.2.4
+- Netflix Zuul 2.2.4
+- MongoDB 4.2
+- Lombok 1.18.12
+- Model Mapper 2.3.7
+- Mongobee 0.13
+- Swagger 2.9.2
+- Open API 3.0.0
 - Junit 5
-- Mockito
-- DevTools
-- GitHub Workflow
-- Checkstyle
-- Openshift CLI
-
+- Checkstyle 7.2
+- Openshift CLI 4
+- GitHub Workflow CI
 
 ## Run with terminal
 To run your application without first building an archive use the bootRun task:
@@ -42,9 +39,8 @@ gradle build
 #### 2. Run the application
 To create a jar file write following command and put enter:
 ```
-java -jar ./build/libs/RELEASE-1.0.1.jar
+java -jar ./build/libs/post-api-1.0.2.jar
 ```
-
 
 ## Run with docker
 You need an installed docker program on your computer, or download it, such as:

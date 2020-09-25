@@ -1,0 +1,792 @@
+openapi: 3.0.0
+info:
+  version: 1.0.2
+  title: Post Service
+  description: Service for posting articles about different programming languages.
+  contact:
+    name: Daria Smirnova
+    email: smirnova@reckue.com
+    url: https://github.com/daria80
+servers:
+  - url: https://reckue.com/api/v1
+
+# Paths
+paths:
+  # Paths :: Post
+  /posts:
+    get:
+      summary: List all posts.
+      operationId: getPosts
+      tags:
+        - Posts
+      parameters:
+        - name: limit
+          in: query
+          description: Limit of posts on page. By default, 10.
+          required: false
+          example: 10
+          schema:
+            type: integer
+            format: int32
+        - name: offset
+          in: query
+          description: Offset posts on page. By default, 0.
+          required: false
+          example: 0
+          schema:
+            type: integer
+            format: int32
+        - name: sort
+          in: query
+          description: Sorting posts by parameter. By default, sorts by id.
+          required: false
+          example: id
+          schema:
+            type: string
+        - name: desc
+          in: query
+          description: Flag to sorting posts by descending. By default, false.
+          required: false
+          example: false
+          schema:
+            type: boolean
+      responses:
+        200:
+          $ref: '#/components/responses/PostsResponse'
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
+          $ref: '#/components/responses/PostNotFoundError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      summary: Create a new post.
+      operationId: createPost
+      tags:
+        - Posts
+      requestBody:
+        description: Body of post request to create a new post.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostRequest'
+            example:
+              title: My first post
+              status: DRAFT
+              source: Wikipedia
+              userId: 5f66514e27efbb73c2996c17
+              nodes:
+                - id: 3579626af2a44ee983a299fc65f7238f
+                  type: TEXT
+                  entry:
+                    text: Hello World!
+              tags:
+                - name: Beginner
+      responses:
+        201:
+          $ref: '#/components/responses/PostResponse'
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
+          $ref: '#/components/responses/PostNotFoundError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+  /posts/{id}:
+    put:
+      summary: Update the post by id.
+      operationId: updatePost
+      tags:
+        - Posts
+      parameters:
+        - name: id
+          in: path
+          description: Post id.
+          required: true
+          example: 5f66a68227efbb73c2996c1a
+          schema:
+            type: string
+      requestBody:
+        description: Body of post request to update the post by id.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostRequest'
+            example:
+              title: My first post
+              status: DRAFT
+              source: Wikipedia
+              userId: 5f66514e27efbb73c2996c17
+              nodes:
+                - id: 3579626af2a44ee983a299fc65f7238f
+                  type: TEXT
+                  entry:
+                    text: Hello, World!
+              tags:
+                - name: Beginner
+      responses:
+        201:
+          $ref: '#/components/responses/PostResponse'
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
+          $ref: '#/components/responses/PostNotFoundError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+    get:
+      summary: Get the post by id.
+      operationId: getPostById
+      tags:
+        - Posts
+      parameters:
+        - name: id
+          in: path
+          description: Post id.
+          required: true
+          example: 5f66a68227efbb73c2996c1a
+          schema:
+            type: string
+      responses:
+        200:
+          $ref: '#/components/responses/PostResponse'
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
+          $ref: '#/components/responses/PostNotFoundError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      summary: Delete the post by id.
+      operationId: deletePostById
+      tags:
+        - Posts
+      parameters:
+        - name: id
+          in: path
+          description: Post id.
+          required: true
+          example: 5f66a68227efbb73c2996c1a
+          schema:
+            type: string
+      responses:
+        200:
+          description: 200 OK
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
+          $ref: '#/components/responses/PostNotFoundError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+  # Paths :: Nodes
+  /nodes:
+    get:
+      summary: List all nodes.
+      operationId: getNodes
+      tags:
+        - Nodes
+      parameters:
+        - name: limit
+          in: query
+          description: Limit of nodes on page. By default, 10.
+          required: false
+          example: 10
+          schema:
+            type: integer
+            format: int32
+        - name: offset
+          in: query
+          description: Offset nodes on page. By default, 0.
+          required: false
+          example: 0
+          schema:
+            type: integer
+            format: int32
+        - name: sort
+          in: query
+          description: Sorting nodes by parameter. By default, sorts by id.
+          required: false
+          example: id
+          schema:
+            type: string
+        - name: desc
+          in: query
+          description: Flag to sorting nodes by descending. By default, false.
+          required: false
+          example: false
+          schema:
+            type: boolean
+      responses:
+        200:
+          $ref: '#/components/responses/NodesResponse'
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
+          $ref: '#/components/responses/PostNotFoundError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      summary: Create a new node.
+      operationId: createNode
+      tags:
+        - Nodes
+      requestBody:
+        description: Body of post request to create a new node.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NodeRequest'
+      responses:
+        201:
+          $ref: '#/components/responses/PostResponse'
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
+          $ref: '#/components/responses/PostNotFoundError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+  /nodes/{id}:
+    put:
+      summary: Update the node by id.
+      operationId: updateNode
+      tags:
+        - Nodes
+      parameters:
+        - name: id
+          in: path
+          description: Node id.
+          required: true
+          example: 5f66a68227efbb73c2996c1a
+          schema:
+            type: string
+      requestBody:
+        description: Body of post request to update the node by id.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NodeRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/NodeResponse'
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
+          $ref: '#/components/responses/PostNotFoundError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+    get:
+      summary: Get the node by id.
+      operationId: getNodeById
+      tags:
+        - Nodes
+      parameters:
+        - name: id
+          in: path
+          description: Node id.
+          required: true
+          example: 5f66a68227efbb73c2996c1a
+          schema:
+            type: string
+      responses:
+        200:
+          $ref: '#/components/responses/NodeResponse'
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
+          $ref: '#/components/responses/PostNotFoundError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      summary: Delete the node by id.
+      operationId: deleteNodeById
+      tags:
+        - Nodes
+      parameters:
+        - name: id
+          in: path
+          description: Node id.
+          required: true
+          example: 5f66a68227efbb73c2996c1a
+          schema:
+            type: string
+      responses:
+        200:
+          description: 200 OK
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
+          $ref: '#/components/responses/PostNotFoundError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+  # Paths :: Tags
+  # Paths :: Comments
+
+  # TODO: add /nodes endpoint
+  # TODO: add /tags endpoint
+  # TODO: add /comments endpoint
+
+# Components
+components:
+  requestBodies:
+    PostRequest:
+      description: Post request.
+      content:
+        'application/json':
+          schema:
+            $ref: '#/components/schemas/PostRequest'
+    NodeRequest:
+      description: Node request.
+      content:
+        'application/json':
+          schema:
+            $ref: '#/components/schemas/NodeRequest'
+
+  responses:
+    # Responses :: Default
+    InternalServerError:
+      description: Internal Server Error.
+      content:
+        'application/json':
+          schema:
+            $ref: '#/components/schemas/InternalServerError'
+    BadRequestError:
+      description: Bad Request.
+      content:
+        'application/json':
+          schema:
+            $ref: '#/components/schemas/BadRequestError'
+    UnauthorizedError:
+      description: Unauthorized.
+      content:
+        'application/json':
+          schema:
+            $ref: '#/components/schemas/UnauthorizedError'
+
+    # Responses :: Errors :: Posts
+    PostNotFoundError:
+      description: Not Found.
+      content:
+        'application/json':
+          schema:
+            $ref: '#/components/schemas/PostNotFoundError'
+
+    # Responses :: Posts
+    PostResponse:
+      description: List of posts.
+      content:
+        'application/json':
+          schema:
+            $ref: '#/components/schemas/PostResponse'
+    PostsResponse:
+      description: List of posts.
+      content:
+        'application/json':
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/PostResponse'
+    NodeResponse:
+      description: Node response.
+      content:
+        'application/json':
+          schema:
+            $ref: '#/components/schemas/NodeResponse'
+    NodesResponse:
+      description: List of nodes.
+      content:
+        'application/json':
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/NodeResponse'
+
+  schemas:
+    # Schemas :: Errors
+    InternalServerError:
+      type: object
+      properties:
+        title:
+          type: string
+          description: A title of error response.
+          example: Internal Server Error
+        code:
+          type: string
+          description: A code of error response.
+          example: RP-1000
+        message:
+          type: string
+          description: A message of error response.
+          example: Internal Server Error
+    BadRequestError:
+      type: object
+      properties:
+        title:
+          type: string
+          description: A title of error response.
+          example: Bad Request
+        code:
+          type: string
+          description: A code of error response.
+          example: RP-1001
+        message:
+          type: string
+          description: A message of error response.
+          example: The message cannot be read.
+    UnauthorizedError:
+      type: object
+      properties:
+        title:
+          type: string
+          description: A title of error response.
+          example: Unauthorized
+        code:
+          type: string
+          description: A code of error response.
+          example: RP-1006
+        message:
+          type: string
+          description: A message of error response.
+          example: Unauthorized.
+    PostNotFoundError:
+      type: object
+      properties:
+        title:
+          type: string
+          description: A title of error response.
+          example: Post Not Found Error
+        code:
+          type: string
+          description: A code of error response.
+          example: RP-1002
+        message:
+          type: string
+          description: A message of error response.
+          example: The post by id '5f3193eee810fe1a026e7f84' is not found.
+
+    # Schemas :: Requests
+    PostRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Post id.
+          example: 5f66a68227efbb73c2996c1a
+        title:
+          type: string
+          description: Post title.
+          example: My first post
+        status:
+          type: string
+          allOf:
+            - $ref: '#/components/schemas/StatusType'
+          description: Current post status.
+          example: DRAFT
+        source:
+          type: string
+          description: Post source.
+          example: Wikipedia
+        userId:
+          type: string
+          description: User id of the post.
+          example: 5f66514e27efbb73c2996c17
+        nodes:
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeResponse'
+          description: Node list of the post.
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/TagResponse'
+          description: Tag list of the post.
+
+    NodeEntry:
+      type: object
+      description: Node parent request.
+      discriminator:
+        propertyName: type
+        mapping:
+          TEXT: '#/components/schemas/TextNode'
+          IMAGE: '#/components/schemas/ImageNode'
+          VIDEO: '#/components/schemas/VideoNode'
+          AUDIO: '#/components/schemas/AudioNode'
+          POLL: '#/components/schemas/PollNode'
+          LIST: '#/components/schemas/ListNode'
+          CODE: '#/components/schemas/CodeNode'
+
+    NodeRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Node id.
+          example: 3579626af2a44ee983a299fc65f7238f
+        type:
+          type: string
+          allOf:
+            - $ref: '#/components/schemas/NodeType'
+          description: Parent type.
+          example: TEXT
+        entry:
+          $ref: '#/components/schemas/NodeEntry'
+        parentId:
+          type: string
+          description: Parent id.
+          example: 3579626af2a44ee983a299fc65f7238f
+        parentType:
+          type: string
+          allOf:
+            - $ref: '#/components/schemas/ParentType'
+          description: Parent type.
+          example: POST
+        source:
+          type: string
+          description: Node source.
+          example: Wikipedia
+        userId:
+          type: string
+          description: User id.
+          example: 3579626af2a44ee983a299fc65f7238f
+        status:
+          type: string
+          allOf:
+            - $ref: '#/components/schemas/StatusType'
+          description: Current node status.
+          example: ACTIVE
+
+    # Schemas :: Responses
+    PostResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Post id.
+          example: 5f66a68227efbb73c2996c1a
+        title:
+          type: string
+          description: Post title.
+          example: My first post
+        status:
+          type: string
+          allOf:
+            - $ref: '#/components/schemas/PostStatusType'
+          description: Current post status.
+          example: DRAFT
+        source:
+          type: string
+          description: Post source.
+          example: Wikipedia
+        userId:
+          type: string
+          description: User id of the post.
+          example: 5f66514e27efbb73c2996c17
+        nodes:
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeResponse'
+          description: Node list of the post.
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/TagResponse'
+          description: Tag list of the post.
+        createdDate:
+          type: integer
+          description: Created date of the post.
+          example: 1600541486196
+        modificationDate:
+          type: integer
+          description: Modification date of the post.
+          example: 1600541486196
+
+    NodeResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Node id.
+          example: 3579626af2a44ee983a299fc65f7238f
+        type:
+          type: string
+          allOf:
+            - $ref: '#/components/schemas/NodeType'
+          description: Parent type.
+          example: TEXT
+        entry:
+          $ref: '#/components/schemas/NodeEntry'
+        parentId:
+          type: string
+          description: Parent id.
+          example: 3579626af2a44ee983a299fc65f7238f
+        parentType:
+          type: string
+          allOf:
+            - $ref: '#/components/schemas/ParentType'
+          description: Parent type.
+          example: POST
+        source:
+          type: string
+          description: Node source.
+          example: Wikipedia
+        userId:
+          type: string
+          description: User id.
+          example: 3579626af2a44ee983a299fc65f7238f
+        status:
+          type: string
+          allOf:
+            - $ref: '#/components/schemas/StatusType'
+          description: Current node status.
+          example: ACTIVE
+        createdDate:
+          type: integer
+          description: Created date of the post.
+          example: 1600541486196
+        modificationDate:
+          type: integer
+          description: Modification date of the post.
+          example: 1600541486196
+
+    TagResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Tag id.
+          example: 3579626af2a44ee983a299fc65f7238f
+        name:
+          type: string
+          description: Tag name.
+          example: java
+
+    TextNode:
+      type: object
+      properties:
+        content:
+          type: string
+          description: Text node content.
+          example: My text node
+    ImageNode:
+      type: object
+      properties:
+        imageUrl:
+          type: string
+          description: Image node url.
+          example: http://reckue.com/files/3579626af2a44ee983a299fc65f7238f.png
+    VideoNode:
+      type: object
+      properties:
+        imageUrl:
+          type: string
+          description: Video node url.
+          example: http://reckue.com/files/3579626af2a44ee983a299fc65f7238f.mp4
+    AudioNode:
+      type: object
+      properties:
+        imageUrl:
+          type: string
+          description: Audio node url.
+          example: http://reckue.com/files/3579626af2a44ee983a299fc65f7238f.mp3
+    PollNode:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Poll node title.
+          example: My first poll
+        items:
+          type: array
+          items:
+            type: string
+          description: Poll node items.
+          example: [Aswer 1, Answer 2, Answer 3]
+    ListNode:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: string
+          description: List of items.
+          example: [Item 1, Item 2, Item 3]
+    CodeNode:
+      type: object
+      properties:
+        langType:
+          type: string
+          allOf:
+            - $ref: '#/components/schemas/LanguageType'
+          description: Code node language type.
+          example: JAVA
+        content:
+          type: string
+          description: Code node content.
+          example: 'class Main {\npublic static void main(String[] args) {\nSystem.out.println("example");}\n}\n'
+
+    # Schemas :: Enums
+    StatusType:
+      type: string
+      enum:
+        - ACTIVE
+        - DELETED
+        - BANNED
+        - MODERATED
+    PostStatusType:
+      type: string
+      enum:
+        - DRAFT
+        - PUBLISHED
+        - PENDING
+        - MODERATED
+        - DELETED
+        - BANNED
+    NodeType:
+      type: string
+      enum:
+        - TEXT
+        - IMAGE
+        - VIDEO
+        - CODE
+        - LIST
+        - AUDIO
+        - POLL
+    ParentType:
+      type: string
+      enum:
+        - POST
+        - COMMENT
+    LanguageType:
+      type: string
+      enum:
+        - NONE
+        - JAVA
+        - PYTHON
+        - JAVASCRIPT
+        - C
+        - KOTLIN
+        - BASH
+        - BAT

@@ -22,7 +22,7 @@ jobs:
           mongodb-version: 4.2
 
       - name: Gradle build
-        run: gradle build --info
+        run: ./gradlew build --info
 
       - name: Create a docker image
         run: bash ./config/docker/create_image.sh
