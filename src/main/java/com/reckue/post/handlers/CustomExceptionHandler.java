@@ -16,7 +16,6 @@ import static com.reckue.post.exceptions.HttpStatusErrorDistributor.httpStatuses
  * @author Artur Magomedov
  */
 @RestControllerAdvice
-@SuppressWarnings("unused")
 public class CustomExceptionHandler {
 
     @ExceptionHandler(ReckueException.class)
