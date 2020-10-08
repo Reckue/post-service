@@ -12,12 +12,11 @@ import com.reckue.post.repositories.PostRepository;
 import com.reckue.post.services.CommentService;
 import com.reckue.post.services.NodeService;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.SerializationUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -52,7 +51,7 @@ public class CommentServiceRealization implements CommentService {
         }
         validateCreatingComment(comment);
 
-        Comment storedComment = (Comment) ObjectUtils.clone(comment);
+        Comment storedComment = (Comment) SerializationUtils.clone(comment);
         List<Node> nodeList = null;
 
         if (comment.getNodes() != null) {
