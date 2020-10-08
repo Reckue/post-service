@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 public class PostServiceRealization implements PostService {
 
     private final PostRepository postRepository;
+
     private final NodeRepository nodeRepository;
 
     private final NodeService nodeService;
@@ -352,9 +353,6 @@ public class PostServiceRealization implements PostService {
 
         post.ifPresent(p -> p.setNodes(nodes));
         return post.get();
-
-//        return this.postRepository.findById(id).orElseThrow(
-//                () -> new PostNotFoundException(id));
     }
 
     /**

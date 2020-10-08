@@ -8,6 +8,7 @@ import com.reckue.post.models.Comment;
 import com.reckue.post.models.Node;
 import com.reckue.post.models.types.ParentType;
 import com.reckue.post.repositories.CommentRepository;
+import com.reckue.post.repositories.NodeRepository;
 import com.reckue.post.repositories.PostRepository;
 import com.reckue.post.services.CommentService;
 import com.reckue.post.services.NodeService;
@@ -16,9 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -31,6 +30,8 @@ import java.util.stream.Collectors;
 public class CommentServiceRealization implements CommentService {
 
     private final CommentRepository commentRepository;
+
+    private final NodeRepository nodeRepository;
 
     private final PostRepository postRepository;
 
@@ -118,7 +119,19 @@ public class CommentServiceRealization implements CommentService {
      */
     @Override
     public List<Comment> findAll() {
-        return commentRepository.findAll();
+        List<Comment> comments = commentRepository.findAll();
+        List<Comment> result = new ArrayList<>();
+
+        for (Comment comment : comments) {
+            Optional<Comment> optionalPost = commentRepository.findById(comment.getId());
+            List<Node> nodes = nodeRepository.findAllByParentId(comment.getId());
+            if (optionalPost.isEmpty())
+                throw new CommentNotFoundException(comment.getId());
+
+            optionalPost.ifPresent(com -> com.setNodes(nodes));
+            result.add(optionalPost.get());
+        }
+        return result;
     }
 
     /**
@@ -249,8 +262,13 @@ public class CommentServiceRealization implements CommentService {
      */
     @Override
     public Comment findById(String id) {
-        return commentRepository.findById(id).orElseThrow(
-                () -> new CommentNotFoundException(id));
+        Optional<Comment> comment = commentRepository.findById(id);
+        List<Node> nodes = nodeRepository.findAllByParentId(id);
+        if (comment.isEmpty())
+            throw new CommentNotFoundException(id);
+
+        comment.ifPresent(p -> p.setNodes(nodes));
+        return comment.get();
     }
 
     /**
