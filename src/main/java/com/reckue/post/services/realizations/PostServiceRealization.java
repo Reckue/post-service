@@ -146,7 +146,6 @@ public class PostServiceRealization implements PostService {
         }
         if (post.getStatus() == PostStatusType.DELETED) {
             postRepository.findById(post.getId()).ifPresent(p -> p.setStatus(PostStatusType.DELETED));
-
             return;
         }
         if (post.getStatus() == PostStatusType.BANNED) {
@@ -156,6 +155,9 @@ public class PostServiceRealization implements PostService {
             throw new RuntimeException("Nodes are null");
         }
         if (post.getStatus() == PostStatusType.PENDING) {
+            if (postRepository.findById(post.getId()).isEmpty()) {
+                throw new RuntimeException();
+            }
             Post currentPost = postRepository.findById(post.getId()).get();
             if (currentPost.getStatus() == PostStatusType.PUBLISHED) {
                 currentPost.setStatus(PostStatusType.PENDING);
