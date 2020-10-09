@@ -37,5 +37,5 @@ public class CommentResponse {
     private long modificationDate;
 
     @ApiModelProperty(notes = "List of nodes the comment consists of")
-    private List<CommentNodeResponse> nodes;
+    private List<NodeResponse> nodes;
 }

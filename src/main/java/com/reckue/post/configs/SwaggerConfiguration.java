@@ -13,10 +13,13 @@ import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.builders.ResponseMessageBuilder;
 import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.ApiKey;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import java.util.Collections;
 
 import static com.google.common.collect.Lists.newArrayList;
 
@@ -47,6 +50,7 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
     @Bean
     public Docket api(TypeResolver typeResolver) {
         return new Docket(DocumentationType.SWAGGER_2)
+                .securitySchemes(Collections.singletonList(apiKey()))
                 .apiInfo(apiInfo())
                 .groupName("API for post service")
                 .select()
@@ -81,6 +85,10 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
                 .additionalModels(typeResolver.resolve(ErrorResponse.class))
                 .globalResponseMessage(RequestMethod.GET, newArrayList(new ResponseMessageBuilder().code(400)
                                 .message("BAD_REQUEST")
+                                .responseModel(new ModelRef("ErrorResponse"))
+                                .build(),
+                        new ResponseMessageBuilder().code(401)
+                                .message("UNAUTHORIZED")
                                 .responseModel(new ModelRef("ErrorResponse"))
                                 .build(),
                         new ResponseMessageBuilder().code(404)
@@ -135,10 +143,19 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
      */
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("Post service API")
+                .title("Post Service")
                 .description("Service for posting articles about different programming languages.")
-                .version("v.1.0.2.RELEASE")
+                .version("v.1.0.2")
                 .contact(new Contact("Reckue", "www.reckue.com", "support@reckue.com"))
                 .build();
+    }
+
+    /**
+     * This method allows to add authorize button to swagger configuration.
+     *
+     * @return apiKey with given parameters
+     */
+    private ApiKey apiKey() {
+        return new ApiKey("Bearer token", "Authorization", "header");
     }
 }

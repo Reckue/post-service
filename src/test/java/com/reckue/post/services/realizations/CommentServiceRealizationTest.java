@@ -6,7 +6,6 @@ import com.reckue.post.exceptions.models.comment.CommentNotFoundException;
 import com.reckue.post.models.Comment;
 import com.reckue.post.repositories.CommentRepository;
 import com.reckue.post.repositories.PostRepository;
-import com.reckue.post.services.CommentNodeService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

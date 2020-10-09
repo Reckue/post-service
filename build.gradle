@@ -3,18 +3,24 @@ plugins {
     id 'checkstyle'
     id 'org.springframework.boot' version '2.2.2.RELEASE'
     id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'org.openapi.generator' version '4.1.1'
 }
 
 group = 'com.reckue'
-version = '1.0.2.RELEASE'
+version = '1.0.2'
 
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
 
+// ----------[ definitions ]----------
+def profile = "develop"
+
+// ----------[ repositories ]----------
 repositories {
     mavenCentral()
 }
 
+// ----------[ dependencies ]----------
 dependencies {
     /* properties */
     implementation 'org.springframework.boot:spring-boot-configuration-processor'
@@ -23,8 +29,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
     /* security */
-    // implementation 'org.springframework.boot:spring-boot-starter-security:2.3.1.RELEASE'
-    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+    implementation 'org.springframework.security.oauth:spring-security-oauth2:2.3.5.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+    implementation 'org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.1.8.RELEASE'
+    implementation 'org.springframework.security:spring-security-jwt:1.1.1.RELEASE'
 
     /* database */
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
@@ -36,6 +44,9 @@ dependencies {
     /* swagger */
     implementation 'io.springfox:springfox-swagger2:2.9.2'
     implementation 'io.springfox:springfox-swagger-ui:2.9.2'
+
+    /* open api */
+    implementation 'org.openapitools:openapi-generator-gradle-plugin:4.2.2'
 
     /* migrations */
     implementation 'org.javassist:javassist:3.18.2-GA'
@@ -51,7 +62,7 @@ dependencies {
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
-    
+
     /* lombok */
     compileOnly 'org.projectlombok:lombok:1.18.12'
     annotationProcessor 'org.projectlombok:lombok:1.18.12'
@@ -60,20 +71,45 @@ dependencies {
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
 
     /* other */
-    compile group: 'org.apache.commons', name: 'commons-text', version: '1.8'
+    implementation group: 'org.apache.commons', name: 'commons-text', version: '1.8'
     implementation 'javax.xml.bind:jaxb-api:2.3.0' // for binding xml
+
+    implementation "org.openapitools:jackson-databind-nullable:0.2.1"
 }
 
+// ----------[ checkstyle ]----------
 checkstyle {
     toolVersion = "7.2"
+    checkstyleMain.exclude '**/com/reckue/post/generated/**'
 }
 
+// ----------[ openapi code generation ]----------
+openApiGenerate {
+    generatorName = "spring"
+    inputSpec = "$rootDir/src/main/resources/openapi/post.yml"
+    outputDir = "${rootProject.buildDir}/generated"
+    typeMappings = [OffsetDateTime: "java.time.Instant"]
+    configOptions = [
+            interfaceOnly : true,
+            apiPackage    : "com.reckue.post.generated.controllers",
+            modelPackage  : "com.reckue.post.generated.models"
+    ]
+    enablePostProcessFile = false
+}
+
+sourceSets.main.java.srcDir "${buildDir}/generated/src/main/java"
+
+// ----------[ tasks ]----------
+tasks {
+    compileJava.dependsOn('openApiGenerate')
+}
+
+// ----------[ test ]----------
 test {
     useJUnitPlatform()
 }
 
-def profile = "develop"
-
+// ----------[ bootRun ]----------
 bootRun {
     args = ["--spring.profiles.active=" + profile]
 }

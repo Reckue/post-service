@@ -2,7 +2,9 @@ package com.reckue.post.services.realizations;
 
 import com.reckue.post.exceptions.ReckueIllegalArgumentException;
 import com.reckue.post.exceptions.models.post.PostNotFoundException;
+import com.reckue.post.models.Node;
 import com.reckue.post.models.Post;
+import com.reckue.post.models.types.ParentType;
 import com.reckue.post.models.types.PostStatusType;
 import com.reckue.post.repositories.PostRepository;
 import com.reckue.post.services.NodeService;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -41,11 +44,32 @@ public class PostServiceRealization implements PostService {
         if (post == null) {
             throw new RuntimeException("Post is null");
         }
+        validateOnCreatePost(post);
         validateOnCreateStatus(post);
-        if (!post.getNodes().isEmpty()) {
-            post.getNodes().forEach(nodeService::create);
+        
+        Post storedPost = post.clone();
+        List<Node> nodeList = null;
+
+        if (post.getNodes() != null) {
+            nodeList = post.getNodes();
+            post.setNodes(null);
+            storedPost = postRepository.save(post);
+            final String postId = storedPost.getId();
+
+            nodeList.forEach(node -> {
+                node.setParentId(postId);
+                node.setParentType(ParentType.POST);
+                nodeService.create(node);
+            });
         }
-        return postRepository.save(post);
+        storedPost.setNodes(nodeList);
+        return storedPost;
+    }
+
+    private void validateOnCreatePost(Post post) {
+        if (post.getTitle() == null || post.getTitle().isEmpty()) {
+            throw new RuntimeException("Title cannot be empty");
+        }
     }
 
     private void validateOnCreateStatus(Post post) {

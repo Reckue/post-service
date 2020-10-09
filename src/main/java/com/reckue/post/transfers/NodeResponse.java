@@ -1,6 +1,7 @@
 package com.reckue.post.transfers;
 
 import com.reckue.post.models.types.NodeType;
+import com.reckue.post.models.types.ParentType;
 import com.reckue.post.models.types.StatusType;
 import com.reckue.post.transfers.nodes.NodeParentResponse;
 import io.swagger.annotations.ApiModelProperty;
@@ -28,9 +29,13 @@ public class NodeResponse {
     @ApiModelProperty(notes = "Sub node")
     private NodeParentResponse node;
 
-    @ApiModelProperty(notes = "Identifier of the post")
+    @ApiModelProperty(notes = "Type of parent entity")
     @NotNull
-    private String postId;
+    private ParentType parentType;
+
+    @ApiModelProperty(notes = "Identifier of the parent")
+    @NotNull
+    private String parentId;
 
     @Size(max = 128)
     @ApiModelProperty(notes = "The source used to write the node")

@@ -5,15 +5,18 @@ import com.reckue.post.exceptions.ReckueIllegalArgumentException;
 import com.reckue.post.exceptions.models.comment.CommentNotFoundException;
 import com.reckue.post.exceptions.models.post.PostNotFoundException;
 import com.reckue.post.models.Comment;
+import com.reckue.post.models.Node;
+import com.reckue.post.models.types.ParentType;
 import com.reckue.post.repositories.CommentRepository;
 import com.reckue.post.repositories.PostRepository;
-import com.reckue.post.services.CommentNodeService;
 import com.reckue.post.services.CommentService;
+import com.reckue.post.services.NodeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -32,7 +35,7 @@ public class CommentServiceRealization implements CommentService {
 
     private final PostRepository postRepository;
 
-    private final CommentNodeService commentNodeService;
+    private final NodeService nodeService;
 
     /**
      * This method is used to create an object of class Comment.
@@ -47,10 +50,24 @@ public class CommentServiceRealization implements CommentService {
             throw new RuntimeException("Comment is null");
         }
         validateCreatingComment(comment);
-        if (comment.getCommentNodes() != null && !comment.getCommentNodes().isEmpty()) {
-            comment.getCommentNodes().forEach(commentNodeService::create);
+
+        Comment storedComment = comment.clone();
+        List<Node> nodeList = null;
+
+        if (comment.getNodes() != null) {
+            nodeList = comment.getNodes();
+            comment.setNodes(null);
+            storedComment = commentRepository.save(comment);
+            final String commentId = storedComment.getId();
+
+            nodeList.forEach(node -> {
+                node.setParentId(commentId);
+                node.setParentType(ParentType.COMMENT);
+                nodeService.create(node);
+            });
         }
-        return commentRepository.save(comment);
+        storedComment.setNodes(nodeList);
+        return storedComment;
     }
 
     /**
@@ -90,7 +107,7 @@ public class CommentServiceRealization implements CommentService {
         savedComment.setPostId(comment.getPostId());
         savedComment.setUserId(comment.getUserId());
         savedComment.setCommentId(comment.getCommentId());
-        savedComment.setCommentNodes(comment.getCommentNodes());
+        savedComment.setNodes(comment.getNodes());
 
         return commentRepository.save(savedComment);
     }
