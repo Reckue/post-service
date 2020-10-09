@@ -343,7 +343,314 @@ paths:
           $ref: '#/components/responses/InternalServerError'
 
   # Paths :: Tags
+  /tags:
+    get:
+      summary: List all tags.
+      operationId: getTags
+      tags:
+        - Tags
+      parameters:
+        - name: limit
+          in: query
+          description: Limit of tags on page. By default, 10.
+          required: false
+          example: 10
+          schema:
+            type: integer
+            format: int32
+        - name: offset
+          in: query
+          description: Offset tags on page. By default, 0.
+          required: false
+          example: 0
+          schema:
+            type: integer
+            format: int32
+        - name: sort
+          in: query
+          description: Sorting tags by parameter. By default, sorts by id.
+          required: false
+          example: id
+          schema:
+            type: string
+        - name: desc
+          in: query
+          description: Flag to sorting tags by descending. By default, false.
+          required: false
+          example: false
+          schema:
+            type: boolean
+      responses:
+        200:
+          $ref: '#/components/responses/TagResponse'
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
+          $ref: '#/components/responses/TagNotFoundError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      summary: Create a new tag.
+      operationId: createTag
+      tags:
+        - Tags
+      requestBody:
+        description: Body of tag request to create a new tag.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagRequest'
+            example:
+              name: My tag
+      responses:
+        201:
+          $ref: '#/components/responses/TagResponse'
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
+          $ref: '#/components/responses/TagNotFoundError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+  /tags/{id}:
+    put:
+      summary: Update the tag by id.
+      operationId: updateTag
+      tags:
+        - Tags
+      parameters:
+        - name: id
+          in: path
+          description: Tag id.
+          required: true
+          example: 5f66a68227efbb73c2996c1a
+          schema:
+            type: string
+      requestBody:
+        description: Body of tag request to update the tag by id.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagRequest'
+            example:
+              nmae: My tag
+      responses:
+        201:
+          $ref: '#/components/responses/TagResponse'
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
+          $ref: '#/components/responses/TagNotFoundError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+    get:
+      summary: Get the tag by id.
+      operationId: getTagById
+      tags:
+        - Tags
+      parameters:
+        - name: id
+          in: path
+          description: Tag id.
+          required: true
+          example: 5f66a68227efbb73c2996c1a
+          schema:
+            type: string
+      responses:
+        200:
+          $ref: '#/components/responses/TagResponse'
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
+          $ref: '#/components/responses/TagNotFoundError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      summary: Delete the tag by id.
+      operationId: deleteTagById
+      tags:
+        - Tags
+      parameters:
+        - name: id
+          in: path
+          description: Tag id.
+          required: true
+          example: 5f66a68227efbb73c2996c1a
+          schema:
+            type: string
+      responses:
+        200:
+          description: 200 OK
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
+          $ref: '#/components/responses/TagNotFoundError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
   # Paths :: Comments
+  /comments:
+    get:
+      summary: List all comments.
+      operationId: getComments
+      tags:
+        - Comments
+      parameters:
+        - name: limit
+          in: query
+          description: Limit of comments on page. By default, 10.
+          required: false
+          example: 10
+          schema:
+            type: integer
+            format: int32
+        - name: offset
+          in: query
+          description: Offset comments on page. By default, 0.
+          required: false
+          example: 0
+          schema:
+            type: integer
+            format: int32
+        - name: sort
+          in: query
+          description: Sorting comments by parameter. By default, sorts by id.
+          required: false
+          example: id
+          schema:
+            type: string
+        - name: desc
+          in: query
+          description: Flag to sorting comments by descending. By default, false.
+          required: false
+          example: false
+          schema:
+            type: boolean
+      responses:
+        200:
+          $ref: '#/components/responses/CommentResponse'
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
+          $ref: '#/components/responses/CommentNotFoundError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      summary: Create a new comment.
+      operationId: createComment
+      tags:
+        - Comment
+      requestBody:
+        description: Body of comment request to create a new comment.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentRequest'
+      responses:
+        201:
+          $ref: '#/components/responses/CommentResponse'
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
+          $ref: '#/components/responses/CommentNotFoundError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+  /comments/{id}:
+    put:
+      summary: Update the comment by id.
+      operationId: updateComment
+      tags:
+        - Comments
+      parameters:
+        - name: id
+          in: path
+          description: Comment id.
+          required: true
+          example: 5f66a68227efbb73c2996c1a
+          schema:
+            type: string
+      requestBody:
+        description: Body of comment request to update the comment by id.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/CommentResponse'
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
+          $ref: '#/components/responses/CommentNotFoundError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+    get:
+      summary: Get the comment by id.
+      operationId: getCommentById
+      tags:
+        - Comments
+      parameters:
+        - name: id
+          in: path
+          description: Comment id.
+          required: true
+          example: 5f66a68227efbb73c2996c1a
+          schema:
+            type: string
+      responses:
+        200:
+          $ref: '#/components/responses/CommentResponse'
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
+          $ref: '#/components/responses/CommentNotFoundError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      summary: Delete the comment by id.
+      operationId: deleteCommentById
+      tags:
+        - Comment
+      parameters:
+        - name: id
+          in: path
+          description: Comment id.
+          required: true
+          example: 5f66a68227efbb73c2996c1a
+          schema:
+            type: string
+      responses:
+        200:
+          description: 200 OK
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
+          $ref: '#/components/responses/CommentNotFoundError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
 
   # TODO: add /nodes endpoint
   # TODO: add /tags endpoint
@@ -523,6 +830,39 @@ components:
           items:
             $ref: '#/components/schemas/TagResponse'
           description: Tag list of the post.
+
+    TagRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Tag id.
+          example: 5f66a68227efbb73c2996c1a
+        name:
+          type: string
+          description: Tag name.
+          example: My first tag
+
+    CommentRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: User id.
+          example: 5f66a68227efbb73c2996c1a
+        postId:
+          type: string
+          description: Post id.
+          example: 5f66a68227efbb73c2996c1a
+        commentId:
+          type: string
+          description: Comment id.
+          example: 5f66a68227efbb73c2996c1a
+        nodes:
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeResponse'
+          description: Node list of the comment.
 
     NodeEntry:
       type: object
