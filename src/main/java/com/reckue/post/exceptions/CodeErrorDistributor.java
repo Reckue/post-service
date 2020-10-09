@@ -42,5 +42,9 @@ public class CodeErrorDistributor {
         codeErrors.put(PollNodeAlreadyExistsException.class, "RPE-1006");
 
         codeErrors.put(ReckueIllegalArgumentException.class, "RPE-1500");
+
+        codeErrors.put(ReckueUnauthorizedException.class, "RPE-1600");
+
+        codeErrors.put(ReckueAccessDeniedException.class, "RPE-1700");
     }
 }
