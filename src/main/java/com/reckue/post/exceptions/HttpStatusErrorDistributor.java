@@ -41,5 +41,10 @@ public class HttpStatusErrorDistributor {
         httpStatuses.put(PollNodeAlreadyExistsException.class, HttpStatus.CONFLICT);
 
         httpStatuses.put(ReckueIllegalArgumentException.class, HttpStatus.BAD_REQUEST);
+
+        httpStatuses.put(ReckueUnauthorizedException.class, HttpStatus.UNAUTHORIZED);
+
+        httpStatuses.put(ReckueAccessDeniedException.class, HttpStatus.FORBIDDEN);
+
     }
 }
