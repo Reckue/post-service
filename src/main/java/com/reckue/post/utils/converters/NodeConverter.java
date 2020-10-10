@@ -1,25 +1,12 @@
 package com.reckue.post.utils.converters;
 
 import com.reckue.post.exceptions.ReckueIllegalArgumentException;
-import com.reckue.post.models.Comment;
 import com.reckue.post.models.Node;
-import com.reckue.post.models.Post;
-import com.reckue.post.models.nodes.*;
-import com.reckue.post.models.types.NodeType;
-import com.reckue.post.models.types.ParentType;
 import com.reckue.post.transfers.NodeRequest;
 import com.reckue.post.transfers.NodeResponse;
 import com.reckue.post.transfers.nodes.NodeParentResponse;
-import com.reckue.post.transfers.nodes.audio.AudioNodeResponse;
-import com.reckue.post.transfers.nodes.code.CodeNodeResponse;
-import com.reckue.post.transfers.nodes.image.ImageNodeResponse;
-import com.reckue.post.transfers.nodes.list.ListNodeResponse;
-import com.reckue.post.transfers.nodes.poll.PollNodeResponse;
-import com.reckue.post.transfers.nodes.text.TextNodeResponse;
-import com.reckue.post.transfers.nodes.video.VideoNodeResponse;
 
 import java.time.ZoneId;
-import java.util.Map;
 
 /**
  * Class for converting NodeRequest object to Node and Node object to NodeResponse.
@@ -38,22 +25,6 @@ public class NodeConverter {
         if (nodeRequest == null) {
             throw new ReckueIllegalArgumentException("Null parameters are not allowed");
         }
-        Map<NodeType, Class<?>> nodeTypeClassMap = Map.of(
-                NodeType.TEXT, TextNode.class,
-                NodeType.IMAGE, ImageNode.class,
-                NodeType.VIDEO, VideoNode.class,
-                NodeType.CODE, CodeNode.class,
-                NodeType.LIST, ListNode.class,
-                NodeType.AUDIO, AudioNode.class,
-                NodeType.POLL, PollNode.class
-        );
-        Class<?> nodeClass = nodeTypeClassMap.get(nodeRequest.getType());
-
-//        Map<ParentType, Class<?>> parentTypeClassMap = Map.of(
-//                ParentType.POST, Post.class,
-//                ParentType.COMMENT, Comment.class
-//        );
-//        Class<?> parentClass = parentTypeClassMap.get(nodeRequest.getParentType());
 
         return Node.builder()
                 .type(nodeRequest.getType())
@@ -61,7 +32,7 @@ public class NodeConverter {
                 .userId(nodeRequest.getUserId())
                 .source(nodeRequest.getSource())
                 .parentType(nodeRequest.getParentType())
-                .node((Parent) Converter.convert(nodeRequest.getNode(), nodeClass))
+                .node(Converter.convert(nodeRequest.getNode(), nodeRequest.getType().nodeClass))
                 .build();
     }
 
@@ -76,25 +47,6 @@ public class NodeConverter {
             throw new ReckueIllegalArgumentException("Null parameters are not allowed");
         }
 
-        Map<NodeType, Class<?>> nodeTypeClassMap = Map.of(
-                NodeType.TEXT, TextNodeResponse.class,
-                NodeType.IMAGE, ImageNodeResponse.class,
-                NodeType.VIDEO, VideoNodeResponse.class,
-                NodeType.CODE, CodeNodeResponse.class,
-                NodeType.LIST, ListNodeResponse.class,
-                NodeType.AUDIO, AudioNodeResponse.class,
-                NodeType.POLL, PollNodeResponse.class
-        );
-        Class<?> nodeClass = nodeTypeClassMap.get(node.getType());
-
-//        if (node.getParentType() != null) {
-//            Map<ParentType, Class<?>> parentTypeClassMap = Map.of(
-//                    ParentType.POST, Post.class,
-//                    ParentType.COMMENT, Comment.class
-//            );
-//            Class<?> parentClass = parentTypeClassMap.get(node.getParentType());
-//        }
-
         return NodeResponse.builder()
                 .id(node.getId())
                 .type(node.getType())
@@ -104,7 +56,7 @@ public class NodeConverter {
                 .parentType(node.getParentType())
                 .createdDate(node.getCreatedDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
                 .modificationDate(node.getModificationDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
-                .node((NodeParentResponse) Converter.convert(node.getNode(), nodeClass))
+                .node((NodeParentResponse) Converter.convert(node.getNode(), node.getType().nodeClass))
                 .status(node.getStatus())
                 .build();
     }
