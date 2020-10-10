@@ -8,7 +8,6 @@ import com.reckue.post.models.nodes.*;
  * @author Iveri Narozashvili
  * @author Dmitrii Lebedev
  */
-
 public enum NodeType {
 
     TEXT(TextNode.class),
