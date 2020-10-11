@@ -12,6 +12,7 @@ import java.time.ZoneId;
  * Class for converting NodeRequest object to Node and Node object to NodeResponse.
  *
  * @author Viktor Grigoriev
+ * @author Dmitrii Lebedev
  */
 public class NodeConverter {
 
