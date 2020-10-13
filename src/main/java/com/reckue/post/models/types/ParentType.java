@@ -1,6 +1,7 @@
 package com.reckue.post.models.types;
 
-import com.reckue.post.models.nodes.AudioNode;
+import com.reckue.post.models.Comment;
+import com.reckue.post.models.Post;
 import com.reckue.post.models.nodes.PollNode;
 
 /**
@@ -11,8 +12,8 @@ import com.reckue.post.models.nodes.PollNode;
  */
 public enum ParentType {
 
-    COMMENT(AudioNode.class),
-    POST(PollNode.class);
+    COMMENT(Comment.class),
+    POST(Post.class);
 
     public Class<?> parentClass;
 
