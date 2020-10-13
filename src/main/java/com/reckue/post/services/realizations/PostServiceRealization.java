@@ -177,18 +177,11 @@ public class PostServiceRealization implements PostService {
     @Override
     public List<Post> findAll() {
         List<Post> posts = postRepository.findAll();
-        List<Post> result = new ArrayList<>();
-
         for (Post post : posts) {
-            Optional<Post> optionalPost = postRepository.findById(post.getId());
             List<Node> nodes = nodeRepository.findAllByParentId(post.getId());
-            if (optionalPost.isEmpty())
-                throw new PostNotFoundException(post.getId());
-
-            optionalPost.ifPresent(p -> p.setNodes(nodes));
-            result.add(optionalPost.get());
+            post.setNodes(nodes);
         }
-        return result;
+        return posts;
     }
 
     /**

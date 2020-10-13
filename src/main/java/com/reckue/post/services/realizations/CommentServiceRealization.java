@@ -120,18 +120,12 @@ public class CommentServiceRealization implements CommentService {
     @Override
     public List<Comment> findAll() {
         List<Comment> comments = commentRepository.findAll();
-        List<Comment> result = new ArrayList<>();
 
         for (Comment comment : comments) {
-            Optional<Comment> optionalPost = commentRepository.findById(comment.getId());
             List<Node> nodes = nodeRepository.findAllByParentId(comment.getId());
-            if (optionalPost.isEmpty())
-                throw new CommentNotFoundException(comment.getId());
-
-            optionalPost.ifPresent(com -> com.setNodes(nodes));
-            result.add(optionalPost.get());
+            comment.setNodes(nodes);
         }
-        return result;
+        return comments;
     }
 
     /**
