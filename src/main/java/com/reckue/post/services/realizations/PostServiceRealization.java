@@ -11,6 +11,7 @@ import com.reckue.post.repositories.PostRepository;
 import com.reckue.post.services.NodeService;
 import com.reckue.post.services.PostService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang.SerializationUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -48,7 +49,8 @@ public class PostServiceRealization implements PostService {
         validateOnCreatePost(post);
         validateOnCreateStatus(post);
 
-        Post storedPost = post.clone();
+        Post storedPost = (Post) SerializationUtils.clone(post);
+
         List<Node> nodeList = null;
 
         if (post.getNodes() != null) {

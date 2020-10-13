@@ -1,18 +1,23 @@
 package com.reckue.post.models.types;
 
+import com.reckue.post.models.Comment;
+import com.reckue.post.models.Post;
+import com.reckue.post.models.nodes.PollNode;
+
 /**
  * Enum ParentType represents enumeration of the entity types to which the nodes belong.
  *
  * @author Artur Magomedov
+ * @author Dmitrii Lebedev
  */
 public enum ParentType {
 
-    COMMENT("comment"),
-    POST("post");
+    COMMENT(Comment.class),
+    POST(Post.class);
 
-    public String name;
+    public Class<?> parentClass;
 
-    ParentType(String name) {
-        this.name = name;
+    ParentType(Class<?> parentClass) {
+        this.parentClass = parentClass;
     }
 }

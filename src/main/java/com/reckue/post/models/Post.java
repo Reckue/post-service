@@ -10,6 +10,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -23,7 +24,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document
-public class Post implements Cloneable {
+public class Post implements Serializable {
 
     @Id
     private String id;
@@ -39,13 +40,4 @@ public class Post implements Cloneable {
     private LocalDateTime modificationDate;
     @CreatedDate
     private LocalDateTime createdDate;
-
-    @Override
-    public Post clone() {
-        try {
-            return (Post) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e.getMessage());
-        }
-    }
 }
