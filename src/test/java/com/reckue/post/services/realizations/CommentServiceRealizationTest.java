@@ -5,6 +5,7 @@ import com.reckue.post.exceptions.ReckueIllegalArgumentException;
 import com.reckue.post.exceptions.models.comment.CommentNotFoundException;
 import com.reckue.post.models.Comment;
 import com.reckue.post.repositories.CommentRepository;
+import com.reckue.post.repositories.NodeRepository;
 import com.reckue.post.repositories.PostRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,6 +38,9 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
 
     @Mock
     private PostRepository postRepository;
+
+    @Mock
+    private NodeRepository nodeRepository;
 
     @InjectMocks
     private CommentServiceRealization commentService;
@@ -133,6 +137,9 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
     public void findAll() {
         List<Comment> comments = Stream.of(comment, comment2).collect(Collectors.toList());
 
+        when(commentRepository.findById(comment.getId())).thenReturn(Optional.ofNullable(comment));
+        when(commentRepository.findById(comment2.getId())).thenReturn(Optional.ofNullable(comment2));
+
         when(commentRepository.findAll()).thenReturn(comments);
         assertEquals(comments, commentService.findAll());
     }
@@ -145,6 +152,10 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
         List<Comment> expected = comments.stream()
                 .sorted(Comparator.comparing(Comment::getId))
                 .collect(Collectors.toList());
+
+        for (Comment comment : comments) {
+            doReturn(Optional.of(comment)).when(commentRepository).findById(comment.getId());
+        }
 
         assertNotEquals(comments, commentService.findAllAndSortById());
         assertEquals(expected, commentService.findAllAndSortById());
@@ -159,6 +170,10 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
                 .sorted(Comparator.comparing(Comment::getUserId))
                 .collect(Collectors.toList());
 
+        for (Comment comment : comments) {
+            doReturn(Optional.of(comment)).when(commentRepository).findById(comment.getId());
+        }
+
         assertEquals(expected, commentService.findAllAndSortByUserId());
     }
 
@@ -171,6 +186,10 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
                 .sorted(Comparator.comparing(Comment::getPostId))
                 .collect(Collectors.toList());
 
+        for (Comment comment : comments) {
+            doReturn(Optional.of(comment)).when(commentRepository).findById(comment.getId());
+        }
+
         assertEquals(expected, commentService.findAllAndSortByPostId());
     }
 
@@ -182,6 +201,10 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
         List<Comment> expected = comments.stream()
                 .sorted(Comparator.comparing(Comment::getCreatedDate))
                 .collect(Collectors.toList());
+
+        for (Comment comment : comments) {
+            doReturn(Optional.of(comment)).when(commentRepository).findById(comment.getId());
+        }
 
         assertEquals(expected, commentService.findAllAndSortByCreatedDate());
     }
@@ -206,6 +229,10 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
         List<Comment> sortedByPublishedExpected = comments.stream()
                 .sorted(Comparator.comparing(Comment::getCreatedDate))
                 .collect(Collectors.toList());
+
+        for (Comment comment : comments) {
+            doReturn(Optional.of(comment)).when(commentRepository).findById(comment.getId());
+        }
 
         assertEquals(sortedByIdExpected, commentService.findAllBySortType("id"));
         assertEquals(sortedByUserIdExpected, commentService.findAllBySortType("userId"));
@@ -233,6 +260,10 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
         List<Comment> sortByPublishedAndDescExpected = comments.stream()
                 .sorted(Comparator.comparing(Comment::getCreatedDate).reversed())
                 .collect(Collectors.toList());
+
+        for (Comment comment : comments) {
+            doReturn(Optional.of(comment)).when(commentRepository).findById(comment.getId());
+        }
 
         assertEquals(sortByIdAndDescExpected, commentService.findAllByTypeAndDesc("id", true));
         assertEquals(sortByUserIdAndDescExpected, commentService.findAllByTypeAndDesc("userId", true));
@@ -268,6 +299,10 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
                 .limit(2)
                 .skip(1)
                 .collect(Collectors.toList());
+
+        for (Comment comment : comments) {
+            doReturn(Optional.of(comment)).when(commentRepository).findById(comment.getId());
+        }
 
         assertEquals(test1, commentService.findAll(2, 1, "id", false));
         assertEquals(test3, commentService.findAll(1, 2, "userId", false));

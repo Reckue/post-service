@@ -6,6 +6,7 @@ import com.reckue.post.models.Node;
 import com.reckue.post.models.Post;
 import com.reckue.post.models.types.ParentType;
 import com.reckue.post.models.types.PostStatusType;
+import com.reckue.post.repositories.NodeRepository;
 import com.reckue.post.repositories.PostRepository;
 import com.reckue.post.services.NodeService;
 import com.reckue.post.services.PostService;
@@ -15,9 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -30,6 +29,9 @@ import java.util.stream.Collectors;
 public class PostServiceRealization implements PostService {
 
     private final PostRepository postRepository;
+
+    private final NodeRepository nodeRepository;
+
     private final NodeService nodeService;
 
     /**
@@ -48,6 +50,7 @@ public class PostServiceRealization implements PostService {
         validateOnCreateStatus(post);
 
         Post storedPost = (Post) SerializationUtils.clone(post);
+
         List<Node> nodeList = null;
 
         if (post.getNodes() != null) {
@@ -137,15 +140,15 @@ public class PostServiceRealization implements PostService {
             return;
         }
         if (post.getStatus() == PostStatusType.DRAFT) {
-            postRepository.findById(post.getId()).get().setStatus(PostStatusType.DRAFT);
+            postRepository.findById(post.getId()).ifPresent(p -> p.setStatus(PostStatusType.DRAFT));
             return;
         }
         if (post.getStatus() == PostStatusType.PUBLISHED) {
-            postRepository.findById(post.getId()).get().setStatus(PostStatusType.PUBLISHED);
+            postRepository.findById(post.getId()).ifPresent(p -> p.setStatus(PostStatusType.PUBLISHED));
             return;
         }
         if (post.getStatus() == PostStatusType.DELETED) {
-            postRepository.findById(post.getId()).get().setStatus(PostStatusType.DELETED);
+            postRepository.findById(post.getId()).ifPresent(p -> p.setStatus(PostStatusType.DELETED));
             return;
         }
         if (post.getStatus() == PostStatusType.BANNED) {
@@ -155,6 +158,9 @@ public class PostServiceRealization implements PostService {
             throw new RuntimeException("Nodes are null");
         }
         if (post.getStatus() == PostStatusType.PENDING) {
+            if (postRepository.findById(post.getId()).isEmpty()) {
+                throw new RuntimeException();
+            }
             Post currentPost = postRepository.findById(post.getId()).get();
             if (currentPost.getStatus() == PostStatusType.PUBLISHED) {
                 currentPost.setStatus(PostStatusType.PENDING);
@@ -172,7 +178,12 @@ public class PostServiceRealization implements PostService {
      */
     @Override
     public List<Post> findAll() {
-        return postRepository.findAll();
+        List<Post> posts = postRepository.findAll();
+        for (Post post : posts) {
+            List<Node> nodes = nodeRepository.findAllByParentId(post.getId());
+            post.setNodes(nodes);
+        }
+        return posts;
     }
 
     /**
@@ -330,8 +341,13 @@ public class PostServiceRealization implements PostService {
      */
     @Override
     public Post findById(String id) {
-        return postRepository.findById(id).orElseThrow(
-                () -> new PostNotFoundException(id));
+        Optional<Post> post = postRepository.findById(id);
+        List<Node> nodes = nodeRepository.findAllByParentId(id);
+        if (post.isEmpty())
+            throw new PostNotFoundException(id);
+
+        post.ifPresent(p -> p.setNodes(nodes));
+        return post.get();
     }
 
     /**

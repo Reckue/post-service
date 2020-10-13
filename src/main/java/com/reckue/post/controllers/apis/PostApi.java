@@ -15,7 +15,6 @@ import java.util.List;
  * @author Kamila Meshcheryakova
  */
 @Api(tags = {"/posts"})
-@SuppressWarnings("unused")
 public interface PostApi {
 
     @ApiOperation(value = "Add a post")
@@ -39,6 +38,7 @@ public interface PostApi {
             @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")})
     PostResponse findById(String id);
 
+    @SuppressWarnings("unused")
     @ApiOperation(value = "Get the posts by title", response = PostResponse.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "The posts successfully found"),

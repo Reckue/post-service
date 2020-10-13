@@ -4,11 +4,13 @@ import com.reckue.post.PostServiceApplicationTests;
 import com.reckue.post.exceptions.ReckueIllegalArgumentException;
 import com.reckue.post.exceptions.models.post.PostAlreadyExistsException;
 import com.reckue.post.exceptions.models.post.PostNotFoundException;
+import com.reckue.post.models.Comment;
 import com.reckue.post.models.Node;
 import com.reckue.post.models.Post;
 import com.reckue.post.models.Tag;
 import com.reckue.post.models.types.PostStatusType;
 import com.reckue.post.models.types.StatusType;
+import com.reckue.post.repositories.NodeRepository;
 import com.reckue.post.repositories.PostRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -33,6 +35,9 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
 
     @Mock
     private PostRepository postRepository;
+
+    @Mock
+    private NodeRepository nodeRepository;
 
     @InjectMocks
     private PostServiceRealization postService;
@@ -136,6 +141,10 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
         List<Post> posts = List.of(postOne, postTwo);
         when(postRepository.findAll()).thenReturn(posts);
 
+        for (Post post : posts) {
+            doReturn(Optional.of(post)).when(postRepository).findById(post.getId());
+        }
+
         assertEquals(posts, postService.findAll());
     }
 
@@ -145,6 +154,10 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
         Post postTwo = Post.builder().id("2").build();
         Post postThree = Post.builder().id("3").build();
         List<Post> posts = List.of(postOne, postTwo, postThree);
+
+        for (Post post : posts) {
+            doReturn(Optional.of(post)).when(postRepository).findById(post.getId());
+        }
 
         when(postRepository.findAll()).thenReturn(posts);
 
@@ -157,12 +170,16 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
 
     @Test
     public void findAllSortByTitle() {
-        Post postOne = Post.builder().title("postOne").build();
-        Post postTwo = Post.builder().title("postTwo").build();
-        Post postThree = Post.builder().title("postThree").build();
+        Post postOne = Post.builder().title("postOne").nodes(Collections.emptyList()).build();
+        Post postTwo = Post.builder().title("postTwo").nodes(Collections.emptyList()).build();
+        Post postThree = Post.builder().title("postThree").nodes(Collections.emptyList()).build();
         List<Post> posts = List.of(postOne, postTwo, postThree);
 
         when(postRepository.findAll()).thenReturn(posts);
+
+//        for (Post post : posts) {
+//            doReturn(Optional.of(post)).when(postRepository).findById(post.getId());
+//        }
 
         List<Post> expected = posts.stream()
                 .sorted(Comparator.comparing(Post::getTitle))
@@ -184,6 +201,10 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
                 .sorted(Comparator.comparing(Post::getSource))
                 .collect(Collectors.toList());
 
+        for (Post post : posts) {
+            doReturn(Optional.of(post)).when(postRepository).findById(post.getId());
+        }
+
         assertEquals(expected, postService.findAllAndSortBySource());
     }
 
@@ -199,6 +220,10 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
         List<Post> expected = posts.stream()
                 .sorted(Comparator.comparing(Post::getUserId))
                 .collect(Collectors.toList());
+
+        for (Post post : posts) {
+            doReturn(Optional.of(post)).when(postRepository).findById(post.getId());
+        }
 
         assertEquals(expected, postService.findAllAndSortByUserId());
     }
@@ -222,6 +247,10 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
                 .sorted(Comparator.comparing(Post::getCreatedDate))
                 .collect(Collectors.toList());
 
+        for (Post post : posts) {
+            doReturn(Optional.of(post)).when(postRepository).findById(post.getId());
+        }
+
         assertEquals(expected, postService.findAllAndSortByCreatedDate());
     }
 
@@ -237,6 +266,10 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
                 .modificationDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(3), TimeZone.getDefault().toZoneId()))
                 .build();
         List<Post> posts = List.of(postOne, postTwo, postThree);
+
+        for (Post post : posts) {
+            doReturn(Optional.of(post)).when(postRepository).findById(post.getId());
+        }
 
         when(postRepository.findAll()).thenReturn(posts);
 
@@ -260,6 +293,10 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
                 .sorted(Comparator.comparing(Post::getStatus))
                 .collect(Collectors.toList());
 
+        for (Post post : posts) {
+            doReturn(Optional.of(post)).when(postRepository).findById(post.getId());
+        }
+
         assertEquals(expected, postService.findAllAndSortByStatus());
     }
 
@@ -274,6 +311,10 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
         List<Post> expected = posts.stream()
                 .sorted(Comparator.comparing(Post::getUserId).reversed())
                 .collect(Collectors.toList());
+
+        for (Post post : posts) {
+            doReturn(Optional.of(post)).when(postRepository).findById(post.getId());
+        }
 
         assertEquals(expected, postService.findAllByTypeAndDesc("userId", true));
     }
@@ -292,7 +333,10 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
                 .limit(3)
                 .skip(1)
                 .collect(Collectors.toList());
-        System.out.println(expected);
+
+        for (Post post : posts) {
+            doReturn(Optional.of(post)).when(postRepository).findById(post.getId());
+        }
 
         assertEquals(expected, postService.findAll(3, 1, "userId", true));
     }
