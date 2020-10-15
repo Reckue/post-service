@@ -1,6 +1,7 @@
 package com.reckue.post.controllers;
 
 import com.reckue.post.controllers.apis.DebugApi;
+import com.reckue.post.services.CommentService;
 import com.reckue.post.services.NodeService;
 import com.reckue.post.services.PostService;
 import com.reckue.post.services.RatingService;
@@ -24,6 +25,7 @@ public class DebugController implements DebugApi {
     private final NodeService nodeService;
     private final PostService postService;
     private final RatingService ratingService;
+    private final CommentService commentService;
 
     /**
      * This method is used to delete all nodes.
@@ -51,6 +53,17 @@ public class DebugController implements DebugApi {
     @Deprecated
     @GetMapping("/deleteAllRatings")
     @Override
-    public void deleteAllRatings() { ratingService.deleteAll();
+    public void deleteAllRatings() {
+        ratingService.deleteAll();
+    }
+
+    /**
+     * This method is used to delete all comments.
+     */
+    @Deprecated
+    @GetMapping("/deleteAllComments")
+    @Override
+    public void deleteAllComments() {
+        commentService.deleteAll();
     }
 }

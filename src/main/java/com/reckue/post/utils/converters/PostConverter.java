@@ -40,7 +40,6 @@ public class PostConverter {
 
         return Post.builder()
                 .title(postRequest.getTitle())
-                .userId(postRequest.getUserId())
                 .nodes(nodes)
                 .source(postRequest.getSource())
                 .tags(postRequest.getTags())

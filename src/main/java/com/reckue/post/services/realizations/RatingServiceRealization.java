@@ -1,5 +1,6 @@
 package com.reckue.post.services.realizations;
 
+import com.reckue.post.exceptions.ReckueAccessDeniedException;
 import com.reckue.post.exceptions.ReckueIllegalArgumentException;
 import com.reckue.post.exceptions.models.post.PostNotFoundException;
 import com.reckue.post.exceptions.models.rating.RatingNotFoundException;
@@ -11,12 +12,10 @@ import com.reckue.post.repositories.RatingRepository;
 import com.reckue.post.services.RatingService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -30,15 +29,20 @@ public class RatingServiceRealization implements RatingService {
 
     private final RatingRepository ratingRepository;
     private final PostRepository postRepository;
+    private final TokenStore tokenStore;
 
     /**
      * This method is used to create an object of class Rating using rating validation.
      *
      * @param rating object of class Rating
+     * @param token  user token
      * @return rating object of class Rating
      */
     @Override
-    public Rating create(Rating rating) {
+    public Rating create(Rating rating, String token) {
+        String userId = (String) tokenStore.readAccessToken(token)
+                .getAdditionalInformation().get("userId");
+        rating.setUserId(userId);
         validateCreatingRating(rating);
 
         if (ratingRepository.existsByUserIdAndPostId(rating.getUserId(), rating.getPostId())) {
@@ -53,6 +57,8 @@ public class RatingServiceRealization implements RatingService {
     /**
      * This method is used to check rating validation.
      * Throws {@link PostNotFoundException} in case if such object isn't contained in database.
+     * Throws {@link ReckueAccessDeniedException} in case if the user isn't a rating owner or
+     * hasn't admin authorities.
      *
      * @param rating object of class Rating
      */
@@ -70,10 +76,11 @@ public class RatingServiceRealization implements RatingService {
      * if parameter equals null.
      *
      * @param rating object of class Rating
+     * @param token  user token
      * @return rating object of class Rating
      */
     @Override
-    public Rating update(Rating rating) {
+    public Rating update(Rating rating, String token) {
         if (rating.getId() == null) {
             throw new ReckueIllegalArgumentException("The parameter is null");
         }
@@ -82,6 +89,11 @@ public class RatingServiceRealization implements RatingService {
                 .orElseThrow(() -> new RatingNotFoundException(rating.getId()));
         savedRating.setUserId(savedRating.getUserId());
         savedRating.setPostId(savedRating.getPostId());
+        Map<String, Object> tokenInfo = tokenStore.readAccessToken(token).getAdditionalInformation();
+        if (!tokenInfo.get("userId").equals(savedRating.getUserId())
+                && !tokenInfo.get("authorities").equals("ROLE_ADMIN")) {
+            throw new ReckueAccessDeniedException("The operation is forbidden");
+        }
         return ratingRepository.save(savedRating);
     }
 
@@ -192,15 +204,26 @@ public class RatingServiceRealization implements RatingService {
     /**
      * This method is used to delete an object by id.
      * Throws {@link RatingNotFoundException} in case if such object isn't contained in database.
+     * Throws {@link ReckueAccessDeniedException} in case if the user isn't a rating owner or
+     * hasn't admin authorities.
      *
-     * @param id object
+     * @param id    object
+     * @param token user token
      */
     @Override
-    public void deleteById(String id) {
-        if (ratingRepository.existsById(id)) {
-            ratingRepository.deleteById(id);
-        } else {
+    public void deleteById(String id, String token) {
+        if (!ratingRepository.existsById(id)) {
             throw new RatingNotFoundException(id);
+        }
+        Map<String, Object> tokenInfo = tokenStore.readAccessToken(token).getAdditionalInformation();
+        Optional<Rating> rating = ratingRepository.findById(id);
+        if (rating.isPresent()) {
+            String ratingUser = rating.get().getUserId();
+            if (tokenInfo.get("userId").equals(ratingUser) || tokenInfo.get("authorities").equals("ROLE_ADMIN")) {
+                ratingRepository.deleteById(id);
+            } else {
+                throw new ReckueAccessDeniedException("The operation is forbidden");
+            }
         }
     }
 
@@ -254,6 +277,22 @@ public class RatingServiceRealization implements RatingService {
         return posts.stream()
                 .limit(limit)
                 .skip(offset)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * This method is used to get all ratings by user id.
+     *
+     * @param userId the user identifier
+     * @return list of objects of class Rating
+     */
+    @Override
+    // FIXME: correct the realization of this method
+    public List<Rating> findAllByUserId(String userId) {
+        return ratingRepository.findAllByUserId(userId)
+                .stream()
+                .limit(10)
+                .skip(0)
                 .collect(Collectors.toList());
     }
 

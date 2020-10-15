@@ -1,6 +1,7 @@
 package com.reckue.post.services.realizations;
 
 
+import com.reckue.post.exceptions.ReckueAccessDeniedException;
 import com.reckue.post.exceptions.ReckueIllegalArgumentException;
 import com.reckue.post.exceptions.models.comment.CommentNotFoundException;
 import com.reckue.post.exceptions.models.post.PostNotFoundException;
@@ -14,6 +15,7 @@ import com.reckue.post.services.CommentService;
 import com.reckue.post.services.NodeService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.SerializationUtils;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -31,24 +33,30 @@ import java.util.stream.Collectors;
 public class CommentServiceRealization implements CommentService {
 
     private final CommentRepository commentRepository;
-
     private final NodeRepository nodeRepository;
-
     private final PostRepository postRepository;
-
     private final NodeService nodeService;
+    private final TokenStore tokenStore;
 
     /**
      * This method is used to create an object of class Comment.
      *
      * @param comment object of class Comment
+     * @param token   user token
      * @return comment object of class Comment
      */
     @Override
     @Transactional
-    public Comment create(Comment comment) {
+    public Comment create(Comment comment, String token) {
         if (comment == null) {
             throw new RuntimeException("Comment is null");
+        }
+        String userId = (String) tokenStore.readAccessToken(token)
+                .getAdditionalInformation().get("userId");
+        comment.setUserId(userId);
+        // to set default value as null
+        if (comment.getCommentId().length() < 7) {
+            comment.setCommentId(null);
         }
         validateCreatingComment(comment);
 
@@ -64,7 +72,7 @@ public class CommentServiceRealization implements CommentService {
             nodeList.forEach(node -> {
                 node.setParentId(commentId);
                 node.setParentType(ParentType.COMMENT);
-                nodeService.create(node);
+                nodeService.create(node, token);
             });
         }
         storedComment.setNodes(nodeList);
@@ -93,22 +101,37 @@ public class CommentServiceRealization implements CommentService {
      * if such object isn't contained in database.
      * Throws {@link ReckueIllegalArgumentException} in case
      * if such parameter is null.
+     * Throws {@link ReckueAccessDeniedException} in case if the user isn't an comment owner or
+     * hasn't admin authorities.
      *
      * @param comment object of class Comment
+     * @param token   user token
      * @return comment object of class Comment
      */
     @Override
-    public Comment update(Comment comment) {
+    public Comment update(Comment comment, String token) {
         if (comment.getId() == null) {
             throw new ReckueIllegalArgumentException("The parameter is null");
         }
+
+        if (!comment.getNodes().isEmpty()) {
+            comment.getNodes().forEach(node -> {
+                node.setParentId(comment.getId());
+                nodeService.create(node, token);
+            });
+        }
+
         Comment savedComment = commentRepository
                 .findById(comment.getId())
                 .orElseThrow(() -> new CommentNotFoundException(comment.getId()));
-        savedComment.setPostId(comment.getPostId());
-        savedComment.setUserId(comment.getUserId());
-        savedComment.setCommentId(comment.getCommentId());
+        savedComment.setCommentId(comment.getCommentId().length() > 7 ? comment.getCommentId() : null);
         savedComment.setNodes(comment.getNodes());
+
+        Map<String, Object> tokenInfo = tokenStore.readAccessToken(token).getAdditionalInformation();
+        if (!tokenInfo.get("userId").equals(savedComment.getUserId())
+                && !tokenInfo.get("authorities").equals("ROLE_ADMIN")) {
+            throw new ReckueAccessDeniedException("The operation is forbidden");
+        }
 
         return commentRepository.save(savedComment);
     }
@@ -267,18 +290,53 @@ public class CommentServiceRealization implements CommentService {
     }
 
     /**
+     * This method is used to get a list of comments by user id.
+     *
+     * @param userId user identificator
+     * @return list of objects of class Comment
+     */
+    @Override
+    // FIXME: correct the realization of this method
+    public List<Comment> findAllByUserId(String userId) {
+        return commentRepository.findAllByUserId(userId)
+                .stream()
+                .limit(10)
+                .skip(0)
+                .collect(Collectors.toList());
+    }
+
+    /**
      * This method is used to delete an object by id.
      * Throws {@link CommentNotFoundException} in case
      * if such object isn't contained in database.
+     * Throws {@link ReckueAccessDeniedException} in case if the user isn't an post owner or
+     * hasn't admin authorities.
      *
-     * @param id object
+     * @param id    object
+     * @param token user token
      */
     @Override
-    public void deleteById(String id) {
-        if (commentRepository.existsById(id)) {
-            commentRepository.deleteById(id);
-        } else {
+    public void deleteById(String id, String token) {
+        if (!commentRepository.existsById(id)) {
             throw new CommentNotFoundException(id);
         }
+        Map<String, Object> tokenInfo = tokenStore.readAccessToken(token).getAdditionalInformation();
+        Optional<Comment> comment = commentRepository.findById(id);
+        if (comment.isPresent()) {
+            String commentUser = comment.get().getUserId();
+            if (tokenInfo.get("userId").equals(commentUser) || tokenInfo.get("authorities").equals("ROLE_ADMIN")) {
+                commentRepository.deleteById(id);
+            } else {
+                throw new ReckueAccessDeniedException("The operation is forbidden");
+            }
+        }
+    }
+
+    /**
+     * This method is used to delete all comments.
+     */
+    @Override
+    public void deleteAll() {
+        commentRepository.deleteAll();
     }
 }

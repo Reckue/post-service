@@ -6,11 +6,11 @@ import com.reckue.post.models.Rating;
 import java.util.List;
 
 /**
- * Interface RatingService extends base interface with CRUD-operations and add own methods.
+ * Interface RatingService extends base auth interface with CRUD-operations and add own methods.
  *
  * @author Kamila Meshcheryakova
  */
-public interface RatingService extends BaseService<Rating> {
+public interface RatingService extends AuthService<Rating> {
 
     /**
      * {@inheritDoc}
@@ -40,10 +40,4 @@ public interface RatingService extends BaseService<Rating> {
      * @return list of objects of class Post
      */
     List<Post> findAllPostsWithRatingsByUserId(String userId, Integer limit, Integer offset);
-
-    /**
-     * This method is used to delete all ratings.
-     */
-    @Deprecated
-    void deleteAll();
 }

@@ -32,10 +32,6 @@ public class PostRequest {
     @ApiModelProperty(notes = "The source used to write the post")
     private String source;
 
-    @NotNull
-    @ApiModelProperty(notes = "Post author id")
-    private String userId;
-
     @ApiModelProperty(notes = "List of keywords used in the post")
     private List<Tag> tags;
 

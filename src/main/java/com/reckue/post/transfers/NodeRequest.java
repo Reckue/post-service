@@ -36,6 +36,4 @@ public class NodeRequest {
     @ApiModelProperty(notes = "The source used to write the node")
     private String source;
 
-    @ApiModelProperty(notes = "Node author identifier")
-    private String userId;
 }

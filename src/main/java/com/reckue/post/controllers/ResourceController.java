@@ -24,7 +24,6 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @RequiredArgsConstructor
 public class ResourceController {
 
-    //private final TokenService tokenService;
     private final TokenStore tokenStore;
 
     @GetMapping("/user/id")

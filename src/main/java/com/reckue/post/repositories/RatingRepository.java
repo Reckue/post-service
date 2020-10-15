@@ -63,4 +63,12 @@ public interface RatingRepository extends MongoRepository<Rating, String> {
      * @return true or false
      */
     boolean existsByUserId(String userId);
+
+    /**
+     * This method is used to get all ratings by user id.
+     *
+     * @param userId the user identifier
+     * @return list of objects of class Rating
+     */
+    List<Rating> findAllByUserId(String userId);
 }

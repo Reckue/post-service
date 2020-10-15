@@ -1,5 +1,6 @@
 package com.reckue.post.services.realizations;
 
+import com.reckue.post.exceptions.ReckueAccessDeniedException;
 import com.reckue.post.exceptions.ReckueIllegalArgumentException;
 import com.reckue.post.exceptions.models.post.PostNotFoundException;
 import com.reckue.post.models.Node;
@@ -12,6 +13,7 @@ import com.reckue.post.services.NodeService;
 import com.reckue.post.services.PostService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.SerializationUtils;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -29,23 +31,27 @@ import java.util.stream.Collectors;
 public class PostServiceRealization implements PostService {
 
     private final PostRepository postRepository;
-
     private final NodeRepository nodeRepository;
-
     private final NodeService nodeService;
+    private final TokenStore tokenStore;
 
     /**
      * This method is used to create an object of class Post.
      *
-     * @param post object of class Post
+     * @param post  object of class Post
+     * @param token user token
      * @return post object of class Post
      */
     @Override
     @Transactional
-    public Post create(Post post) {
+    public Post create(Post post, String token) {
         if (post == null) {
             throw new RuntimeException("Post is null");
         }
+        String userId = (String) tokenStore.readAccessToken(token)
+                .getAdditionalInformation().get("userId");
+        post.setUserId(userId);
+
         validateOnCreatePost(post);
         validateOnCreateStatus(post);
 
@@ -62,7 +68,7 @@ public class PostServiceRealization implements PostService {
             nodeList.forEach(node -> {
                 node.setParentId(postId);
                 node.setParentType(ParentType.POST);
-                nodeService.create(node);
+                nodeService.create(node, token);
             });
         }
         storedPost.setNodes(nodeList);
@@ -106,31 +112,43 @@ public class PostServiceRealization implements PostService {
      * if such object isn't contained in database.
      * Throws {@link ReckueIllegalArgumentException} in case
      * if parameter equals null.
+     * Throws {@link ReckueAccessDeniedException} in case if the user isn't an post owner or
+     * hasn't admin authorities.
      *
-     * @param post object of class Post
+     * @param post  object of class Post
+     * @param token user token
      * @return post object of class Post
      */
     @Override
     @Transactional
-    public Post update(Post post) {
+    public Post update(Post post, String token) {
         if (post == null) {
             throw new RuntimeException("Post is null");
         }
         if (post.getId() == null) {
             throw new ReckueIllegalArgumentException("The parameter is null");
         }
+
         if (!post.getNodes().isEmpty()) {
-            post.getNodes().forEach(nodeService::create);
+            post.getNodes().forEach(node -> {
+                node.setParentId(post.getId());
+                nodeService.create(node, token);
+            });
         }
         validateOnUpdateStatus(post);
         Post savedPost = postRepository
                 .findById(post.getId())
                 .orElseThrow(() -> new PostNotFoundException(post.getId()));
-        savedPost.setUserId(post.getUserId());
         savedPost.setTitle(post.getTitle());
         savedPost.setNodes(post.getNodes());
         savedPost.setSource(post.getSource());
         savedPost.setTags(post.getTags());
+
+        Map<String, Object> tokenInfo = tokenStore.readAccessToken(token).getAdditionalInformation();
+        if (!tokenInfo.get("userId").equals(savedPost.getUserId())
+                && !tokenInfo.get("authorities").equals("ROLE_ADMIN")) {
+            throw new ReckueAccessDeniedException("The operation is forbidden");
+        }
 
         return postRepository.save(savedPost);
     }
@@ -351,17 +369,44 @@ public class PostServiceRealization implements PostService {
     }
 
     /**
-     * This method is used to delete an object by id.
-     * Throws {@link PostNotFoundException} in case if such object isn't contained in database.
+     * This method is used to get a list of objects by user id.
      *
-     * @param id object
+     * @param userId user identificator
+     * @return list of objects of class Post
      */
     @Override
-    public void deleteById(String id) {
-        if (postRepository.existsById(id)) {
-            postRepository.deleteById(id);
-        } else {
+    // FIXME: correct the realization of this method
+    public List<Post> findAllByUserId(String userId) {
+        return postRepository.findAllByUserId(userId)
+                .stream()
+                .limit(10)
+                .skip(0)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * This method is used to delete an object by id.
+     * Throws {@link PostNotFoundException} in case if such object isn't contained in database.
+     * Throws {@link ReckueAccessDeniedException} in case if the user isn't an post owner or
+     * hasn't admin authorities.
+     *
+     * @param id    object
+     * @param token user token
+     */
+    @Override
+    public void deleteById(String id, String token) {
+        if (!postRepository.existsById(id)) {
             throw new PostNotFoundException(id);
+        }
+        Map<String, Object> tokenInfo = tokenStore.readAccessToken(token).getAdditionalInformation();
+        Optional<Post> post = postRepository.findById(id);
+        if (post.isPresent()) {
+            String postUser = post.get().getUserId();
+            if (tokenInfo.get("userId").equals(postUser) || tokenInfo.get("authorities").equals("ROLE_ADMIN")) {
+                postRepository.deleteById(id);
+            } else {
+                throw new ReckueAccessDeniedException("The operation is forbidden");
+            }
         }
     }
 

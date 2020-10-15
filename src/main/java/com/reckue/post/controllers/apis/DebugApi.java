@@ -36,4 +36,12 @@ public interface DebugApi {
             @ApiResponse(code = 404, message = "The resource you were trying to delete is not found"),
             @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")})
     void deleteAllRatings();
+
+    @Deprecated
+    @ApiOperation(value = "Delete all comments")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "The comments successfully deleted"),
+            @ApiResponse(code = 404, message = "The resource you were trying to delete is not found"),
+            @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")})
+    void deleteAllComments();
 }

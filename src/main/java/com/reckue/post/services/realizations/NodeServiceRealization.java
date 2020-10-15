@@ -1,5 +1,6 @@
 package com.reckue.post.services.realizations;
 
+import com.reckue.post.exceptions.ReckueAccessDeniedException;
 import com.reckue.post.exceptions.ReckueIllegalArgumentException;
 import com.reckue.post.exceptions.models.comment.CommentNotFoundException;
 import com.reckue.post.exceptions.models.nodes.NodeNotFoundException;
@@ -11,12 +12,11 @@ import com.reckue.post.repositories.NodeRepository;
 import com.reckue.post.repositories.PostRepository;
 import com.reckue.post.services.NodeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -29,23 +29,28 @@ import java.util.stream.Collectors;
 public class NodeServiceRealization implements NodeService {
 
     private final NodeRepository nodeRepository;
-
     private final PostRepository postRepository;
-
     private final CommentRepository commentRepository;
+    private final TokenStore tokenStore;
 
     /**
      * This method is used to create an object of class Node.
      *
-     * @param node object of class Node
+     * @param node  object of class Node
+     * @param token user token
      * @return node object of class Node
      */
     @Override
-    public Node create(Node node) {
+    public Node create(Node node, String token) {
         if (node == null) {
             throw new RuntimeException("Node is null");
         }
+        String userId = (String) tokenStore.readAccessToken(token)
+                .getAdditionalInformation().get("userId");
+        node.setUserId(userId);
+
         validateCreatingNode(node);
+        // todo: add status validation
         return nodeRepository.save(node);
     }
 
@@ -78,23 +83,34 @@ public class NodeServiceRealization implements NodeService {
      * if such object isn't contained in database.
      * Throws {@link ReckueIllegalArgumentException} in case
      * if parameter equals null.
+     * Throws {@link ReckueAccessDeniedException} in case if the user isn't an node owner or
+     * hasn't admin authorities.
      *
-     * @param node object of class Node
+     * @param node  object of class Node
+     * @param token user token
      * @return node object of class Node
      */
     @Override
-    public Node update(Node node) {
+    public Node update(Node node, String token) {
         if (node.getId() == null) {
             throw new ReckueIllegalArgumentException("The parameter is null");
         }
+
         Node savedNode = nodeRepository
                 .findById(node.getId())
                 .orElseThrow(() -> new NodeNotFoundException(node.getId()));
-        savedNode.setUserId(node.getUserId());
         savedNode.setType(node.getType());
+        //FIXME we don't change content of concrete node - for TEXT node it's "content" - must be correct!
+        // now content of savedNode is the same how it was, it can't save the content of node
         savedNode.setParentType(node.getParentType());
         savedNode.setSource(node.getSource());
         savedNode.setStatus(node.getStatus());
+
+        Map<String, Object> tokenInfo = tokenStore.readAccessToken(token).getAdditionalInformation();
+        if (!tokenInfo.get("userId").equals(savedNode.getUserId())
+                && !tokenInfo.get("authorities").equals("ROLE_ADMIN")) {
+            throw new ReckueAccessDeniedException("The operation is forbidden");
+        }
 
         return nodeRepository.save(savedNode);
     }
@@ -269,18 +285,46 @@ public class NodeServiceRealization implements NodeService {
     }
 
     /**
-     * This method is used to delete an object by id.
-     * Throws {@link NodeNotFoundException} in case if such object isn't contained in database.
+     * This method is used to get a list of nodes by user id.
      *
-     * @param id object
+     * @param userId user identificator
+     * @return list of objects of class Node
      */
     @Override
-    public void deleteById(String id) {
-        if (nodeRepository.existsById(id)) {
-            nodeRepository.deleteById(id);
-        } else {
+    // FIXME: correct the realization of this method
+    public List<Node> findAllByUserId(String userId) {
+        return nodeRepository.findAllByUserId(userId)
+                .stream()
+                .limit(10)
+                .skip(0)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * This method is used to delete an object by id.
+     * Throws {@link NodeNotFoundException} in case if such object isn't contained in database.
+     * Throws {@link ReckueAccessDeniedException} in case if the user isn't an node owner or
+     * hasn't admin authorities.
+     *
+     * @param id    object
+     * @param token user token
+     */
+    @Override
+    public void deleteById(String id, String token) {
+        if (!nodeRepository.existsById(id)) {
             throw new NodeNotFoundException(id);
         }
+        Map<String, Object> tokenInfo = tokenStore.readAccessToken(token).getAdditionalInformation();
+        Optional<Node> node = nodeRepository.findById(id);
+        if (node.isPresent()) {
+            String nodeUser = node.get().getUserId();
+            if (tokenInfo.get("userId").equals(nodeUser) || tokenInfo.get("authorities").equals("ROLE_ADMIN")) {
+                nodeRepository.deleteById(id);
+            } else {
+                throw new ReckueAccessDeniedException("The operation is forbidden");
+            }
+        }
+
     }
 
     /**

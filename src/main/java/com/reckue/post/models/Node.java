@@ -13,7 +13,9 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
+
 /**
  * Class Node is responsible for displaying all types of nodes.
  *
@@ -24,7 +26,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document
-public class Node {
+public class Node implements Serializable {
 
     @Id
     private String id;

@@ -7,11 +7,5 @@ import com.reckue.post.models.Node;
  *
  * @author Kamila Meshcheryakova
  */
-public interface NodeService extends BaseService<Node> {
-
-    /**
-     * This method is used to delete all nodes.
-     */
-    @Deprecated
-    void deleteAll();
+public interface NodeService extends AuthService<Node> {
 }
