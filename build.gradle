@@ -86,13 +86,17 @@ checkstyle {
 // ----------[ openapi code generation ]----------
 openApiGenerate {
     generatorName = "spring"
-    inputSpec = "$rootDir/src/main/resources/openapi/post.yml"
+    inputSpec = "${rootDir}/src/main/resources/openapi/post.yml"
     outputDir = "${rootProject.buildDir}/generated"
-    typeMappings = [OffsetDateTime: "java.time.Instant"]
+    templateDir = "${rootDir}/src/main/resources/openapi/templates"
+    typeMappings = [
+            OffsetDateTime: "java.time.Instant",
+    ]
     configOptions = [
             interfaceOnly : true,
             apiPackage    : "com.reckue.post.generated.controllers",
-            modelPackage  : "com.reckue.post.generated.models"
+            modelPackage  : "com.reckue.post.generated.models",
+            useLombok: true
     ]
     enablePostProcessFile = false
 }
