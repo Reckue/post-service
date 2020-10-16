@@ -539,7 +539,7 @@ paths:
             type: boolean
       responses:
         200:
-          $ref: '#/components/responses/CommentResponse'
+          $ref: '#/components/responses/TagResponse'
         400:
           $ref: '#/components/responses/BadRequestError'
         401:
@@ -652,10 +652,6 @@ paths:
         500:
           $ref: '#/components/responses/InternalServerError'
 
-  # TODO: add /nodes endpoint
-  # TODO: add /tags endpoint
-  # TODO: add /comments endpoint
-
 # Components
 components:
   requestBodies:
@@ -672,8 +668,8 @@ components:
           schema:
             $ref: '#/components/schemas/NodeRequest'
 
+  # Components -> Responses
   responses:
-    # Responses :: Default
     InternalServerError:
       description: Internal Server Error.
       content:
@@ -692,16 +688,12 @@ components:
         'application/json':
           schema:
             $ref: '#/components/schemas/UnauthorizedError'
-
-    # Responses :: Errors :: Posts
     PostNotFoundError:
       description: Not Found.
       content:
         'application/json':
           schema:
             $ref: '#/components/schemas/PostNotFoundError'
-
-    # Responses :: Posts
     PostResponse:
       description: List of posts.
       content:
@@ -730,7 +722,32 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/NodeResponse'
+    TagResponse:
+      description: Tag response.
+      content:
+        'application/json':
+          schema:
+            $ref: '#/components/schemas/TagResponse'
+    TagNotFoundError:
+      description: Tag not found error.
+      content:
+        'application/json':
+          schema:
+            $ref: '#/components/schemas/TagNotFoundError'
+    CommentResponse:
+      description: Comment response.
+      content:
+        'application/json':
+          schema:
+            $ref: '#/components/schemas/CommentResponse'
+    CommentNotFoundError:
+      description: Comment not found error.
+      content:
+        'application/json':
+          schema:
+            $ref: '#/components/schemas/CommentNotFoundError'
 
+  # Components -> Schemas
   schemas:
     # Schemas :: Errors
     InternalServerError:
@@ -793,6 +810,36 @@ components:
           type: string
           description: A message of error response.
           example: The post by id '5f3193eee810fe1a026e7f84' is not found.
+    TagNotFoundError:
+      type: object
+      properties:
+        title:
+          type: string
+          description: A title of error response.
+          example: Tag Not Found Error
+        code:
+          type: string
+          description: A code of error response.
+          example: RP-1003 # FIXME: Please, fix it.
+        message:
+          type: string
+          description: A message of error response.
+          example: The tag by id '5f3193eee810fe1a026e7f84' is not found.
+    CommentNotFoundError:
+      type: object
+      properties:
+        title:
+          type: string
+          description: A title of error response.
+          example: Comment Not Found Error
+        code:
+          type: string
+          description: A code of error response.
+          example: RP-1003 # FIXME: Please, fix it.
+        message:
+          type: string
+          description: A message of error response.
+          example: The Comment by id '5f3193eee810fe1a026e7f84' is not found.
 
     # Schemas :: Requests
     PostRequest:
@@ -1011,18 +1058,6 @@ components:
           description: Modification date of the post.
           example: 1600541486196
 
-    TagResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Tag id.
-          example: 3579626af2a44ee983a299fc65f7238f
-        name:
-          type: string
-          description: Tag name.
-          example: java
-
     TextNode:
       type: object
       properties:
@@ -1086,6 +1121,43 @@ components:
           type: string
           description: Code node content.
           example: 'class Main {\npublic static void main(String[] args) {\nSystem.out.println("example");}\n}\n'
+
+    CommentResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Comment id.
+          example: 3579626af2a44ee983a299fc65f7238f
+        userId:
+          type: string
+          description: User id.
+          example: 5f66a68227efbb73c2996c1a
+        postId:
+          type: string
+          description: Post id.
+          example: 5f66a68227efbb73c2996c1a
+        commentId:
+          type: string
+          description: Comment id.
+          example: 5f66a68227efbb73c2996c1a
+        nodes:
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeResponse'
+          description: Node list of the comment.
+
+    TagResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Tag id.
+          example: 3579626af2a44ee983a299fc65f7238f
+        name:
+          type: string
+          description: Tag name.
+          example: java
 
     # Schemas :: Enums
     StatusType:
