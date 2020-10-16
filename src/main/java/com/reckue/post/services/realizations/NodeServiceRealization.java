@@ -127,6 +127,8 @@ public class NodeServiceRealization implements NodeService {
 
     /**
      * This method is used to get all objects of class Node by parameters.
+     * Throws {@link ReckueIllegalArgumentException} in case
+     * if limit or offset is incorrect.
      *
      * @param limit  quantity of objects
      * @param offset quantity to skip
@@ -286,17 +288,25 @@ public class NodeServiceRealization implements NodeService {
 
     /**
      * This method is used to get a list of nodes by user id.
+     * Throws {@link ReckueIllegalArgumentException} in case
+     * if limit or offset is incorrect.
      *
      * @param userId user identificator
+     * @param limit  quantity of objects
+     * @param offset quantity to skip
      * @return list of objects of class Node
      */
     @Override
-    // FIXME: correct the realization of this method
-    public List<Node> findAllByUserId(String userId) {
+    public List<Node> findAllByUserId(String userId, Integer limit, Integer offset) {
+        if (limit == null) limit = 10;
+        if (offset == null) offset = 0;
+        if (limit < 0 || offset < 0) {
+            throw new ReckueIllegalArgumentException("Limit or offset is incorrect");
+        }
         return nodeRepository.findAllByUserId(userId)
                 .stream()
-                .limit(10)
-                .skip(0)
+                .limit(limit)
+                .skip(offset)
                 .collect(Collectors.toList());
     }
 

@@ -58,9 +58,11 @@ public interface AuthService<T> {
      * This method is used to get a list of objects by user id.
      *
      * @param userId user identificator
+     * @param limit  quantity of objects
+     * @param offset quantity to skip
      * @return list of objects of desired class
      */
-    List<T> findAllByUserId(String userId);
+    List<T> findAllByUserId(String userId, Integer limit, Integer offset);
 
     /**
      * This method is used to delete an object by id.

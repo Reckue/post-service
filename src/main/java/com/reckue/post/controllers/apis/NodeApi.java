@@ -50,7 +50,7 @@ public interface NodeApi {
             @ApiResponse(code = 400, message = "You need to change the parameters of your request"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found"),
             @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")})
-    List<NodeResponse> findAllByUserId(String userId);
+    List<NodeResponse> findAllByUserId(String userId, Integer limit, Integer offset);
 
     @ApiOperation(value = "Delete a node", authorizations = {@Authorization(value = "Bearer token")})
     @ApiResponses(value = {

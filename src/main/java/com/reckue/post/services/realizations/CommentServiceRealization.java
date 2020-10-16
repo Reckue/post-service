@@ -154,6 +154,8 @@ public class CommentServiceRealization implements CommentService {
 
     /**
      * This method is used to get all objects of class Comment by parameters.
+     * Throws {@link ReckueIllegalArgumentException} in case
+     * if limit or offset is incorrect.
      *
      * @param limit  quantity of objects
      * @param offset quantity to skip
@@ -291,17 +293,26 @@ public class CommentServiceRealization implements CommentService {
 
     /**
      * This method is used to get a list of comments by user id.
+     * Throws {@link ReckueIllegalArgumentException} in case
+     * if limit or offset is incorrect.
      *
      * @param userId user identificator
+     * @param limit  quantity of objects
+     * @param offset quantity to skip
      * @return list of objects of class Comment
      */
     @Override
     // FIXME: correct the realization of this method
-    public List<Comment> findAllByUserId(String userId) {
+    public List<Comment> findAllByUserId(String userId, Integer limit, Integer offset) {
+        if (limit == null) limit = 10;
+        if (offset == null) offset = 0;
+        if (limit < 0 || offset < 0) {
+            throw new ReckueIllegalArgumentException("Limit or offset is incorrect");
+        }
         return commentRepository.findAllByUserId(userId)
                 .stream()
-                .limit(10)
-                .skip(0)
+                .limit(limit)
+                .skip(offset)
                 .collect(Collectors.toList());
     }
 

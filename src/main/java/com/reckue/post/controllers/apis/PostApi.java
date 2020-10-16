@@ -57,7 +57,7 @@ public interface PostApi {
             @ApiResponse(code = 200, message = "The posts successfully found"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found"),
             @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")})
-    List<PostResponse> findAllByUserId(String userId);
+    List<PostResponse> findAllByUserId(String userId, Integer limit, Integer offset);
 
     @ApiOperation(value = "Delete a post", authorizations = {@Authorization(value = "Bearer token")})
     @ApiResponses(value = {

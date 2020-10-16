@@ -370,17 +370,25 @@ public class PostServiceRealization implements PostService {
 
     /**
      * This method is used to get a list of objects by user id.
+     * Throws {@link ReckueIllegalArgumentException} in case
+     * if limit or offset is incorrect.
      *
      * @param userId user identificator
+     * @param limit  quantity of objects
+     * @param offset quantity to skip
      * @return list of objects of class Post
      */
     @Override
-    // FIXME: correct the realization of this method
-    public List<Post> findAllByUserId(String userId) {
+    public List<Post> findAllByUserId(String userId, Integer limit, Integer offset) {
+        if (limit == null) limit = 10;
+        if (offset == null) offset = 0;
+        if (limit < 0 || offset < 0) {
+            throw new ReckueIllegalArgumentException("Limit or offset is incorrect");
+        }
         return postRepository.findAllByUserId(userId)
                 .stream()
-                .limit(10)
-                .skip(0)
+                .limit(limit)
+                .skip(offset)
                 .collect(Collectors.toList());
     }
 

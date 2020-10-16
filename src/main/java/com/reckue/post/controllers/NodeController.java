@@ -103,11 +103,15 @@ public class NodeController implements NodeApi {
      * This type of request allows to get all the objects by user id, process it using the converter.
      *
      * @param userId user identifier
+     * @param limit  quantity of objects
+     * @param offset quantity to skip
      * @return list of objects of class NodeResponse
      */
     @GetMapping("/userId/{userId}")
-    public List<NodeResponse> findAllByUserId(@PathVariable String userId) {
-        return nodeService.findAllByUserId(userId).stream()
+    public List<NodeResponse> findAllByUserId(@PathVariable String userId,
+                                              @RequestParam(required = false) Integer limit,
+                                              @RequestParam(required = false) Integer offset) {
+        return nodeService.findAllByUserId(userId, limit, offset).stream()
                 .map(NodeConverter::convert)
                 .collect(Collectors.toList());
     }

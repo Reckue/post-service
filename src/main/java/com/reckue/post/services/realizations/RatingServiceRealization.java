@@ -109,6 +109,8 @@ public class RatingServiceRealization implements RatingService {
 
     /**
      * This method is used to get all objects of class Rating by parameters.
+     * Throws {@link ReckueIllegalArgumentException} in case
+     * if limit or offset is incorrect.
      *
      * @param limit  quantity of objects
      * @param offset quantity to skip
@@ -282,17 +284,26 @@ public class RatingServiceRealization implements RatingService {
 
     /**
      * This method is used to get all ratings by user id.
+     * Throws {@link ReckueIllegalArgumentException} in case
+     * if limit or offset is incorrect.
      *
      * @param userId the user identifier
+     * @param limit  quantity of objects
+     * @param offset quantity to skip
      * @return list of objects of class Rating
      */
     @Override
     // FIXME: correct the realization of this method
-    public List<Rating> findAllByUserId(String userId) {
+    public List<Rating> findAllByUserId(String userId, Integer limit, Integer offset) {
+        if (limit == null) limit = 10;
+        if (offset == null) offset = 0;
+        if (limit < 0 || offset < 0) {
+            throw new ReckueIllegalArgumentException("Limit or offset is incorrect");
+        }
         return ratingRepository.findAllByUserId(userId)
                 .stream()
-                .limit(10)
-                .skip(0)
+                .limit(limit)
+                .skip(offset)
                 .collect(Collectors.toList());
     }
 

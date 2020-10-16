@@ -102,11 +102,15 @@ public class RatingController implements RatingApi {
      * This type of request allows to get all the objects by user id, process it using the converter.
      *
      * @param userId user identifier
+     * @param limit  quantity of objects
+     * @param offset quantity to skip
      * @return list of objects of class RatingResponse
      */
     @GetMapping("/userId/{userId}")
-    public List<RatingResponse> findAllByUserId(@PathVariable String userId) {
-        return ratingService.findAllByUserId(userId).stream()
+    public List<RatingResponse> findAllByUserId(@PathVariable String userId,
+                                                @RequestParam(required = false) Integer limit,
+                                                @RequestParam(required = false) Integer offset) {
+        return ratingService.findAllByUserId(userId, limit, offset).stream()
                 .map(RatingConverter::convert)
                 .collect(Collectors.toList());
     }

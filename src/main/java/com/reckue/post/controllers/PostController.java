@@ -100,11 +100,15 @@ public class PostController implements PostApi {
      * This type of request allows to get all the objects by user id, process it using the converter.
      *
      * @param userId user identifier
+     * @param limit  quantity of objects
+     * @param offset quantity to skip
      * @return list of objects of class PostResponse
      */
     @GetMapping("/userId/{userId}")
-    public List<PostResponse> findAllByUserId(@PathVariable String userId) {
-        return postService.findAllByUserId(userId).stream()
+    public List<PostResponse> findAllByUserId(@PathVariable String userId,
+                                              @RequestParam(required = false) Integer limit,
+                                              @RequestParam(required = false) Integer offset) {
+        return postService.findAllByUserId(userId, limit, offset).stream()
                 .map(PostConverter::convert)
                 .collect(Collectors.toList());
     }
