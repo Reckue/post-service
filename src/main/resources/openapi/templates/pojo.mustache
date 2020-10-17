@@ -1,0 +1,41 @@
+@Getter
+@Setter
+{{^parent}}@Builder(toBuilder = true)
+@NoArgsConstructor{{/parent}}
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
+public class {{classname}} {{#parent}}extends {{{parent}}}{{/parent}}{{^parent}}{{#hateoas}}extends ResourceSupport {{/hateoas}}{{/parent}}{{#serializableModel}}implements Serializable{{/serializableModel}}{
+{{#serializableModel}}
+    private static final long serialVersionUID = 1L;
+
+{{/serializableModel}}
+{{#vars}}
+
+{{#isEnum}}
+{{^isContainer}}
+    {{>enumClass}}
+{{/isContainer}}
+{{#isContainer}}
+    {{#mostInnerItems}}
+    {{>enumClass}}
+    {{/mostInnerItems}}
+{{/isContainer}}
+{{/isEnum}}
+{{#jackson}}
+    @JsonProperty("{{baseName}}"){{#withXml}}
+    @JacksonXmlProperty({{#isXmlAttribute}}isAttribute = true, {{/isXmlAttribute}}{{#xmlNamespace}}namespace="{{xmlNamespace}}", {{/xmlNamespace}}localName = "{{#xmlName}}{{xmlName}}{{/xmlName}}{{^xmlName}}{{baseName}}{{/xmlName}}"){{/withXml}}
+{{/jackson}}
+{{#gson}}
+    @SerializedName("{{baseName}}")
+{{/gson}}
+{{#isContainer}}
+    @Builder.Default
+    {{#useBeanValidation}}@Valid{{/useBeanValidation}}
+    private {{>nullableDataType}} {{name}} = {{#isNullable}}JsonNullable.undefined(){{/isNullable}}{{^isNullable}}{{#required}}{{{defaultValue}}}{{/required}}{{^required}}null{{/required}}{{/isNullable}};
+{{/isContainer}}
+{{^isContainer}}
+    private {{>nullableDataType}} {{name}}{{#isNullable}} = JsonNullable.undefined(){{/isNullable}}{{^isNullable}}{{#defaultValue}} = {{{.}}}{{/defaultValue}}{{/isNullable}};
+{{/isContainer}}
+{{/vars}}
+}

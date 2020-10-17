@@ -42,7 +42,7 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
  * @author Marina Buinevich
  */
 @SpringBootApplication
-@EnableEurekaClient
+// @EnableEurekaClient
 public class PostServiceApplication {
 
     public static void main(String[] args) {

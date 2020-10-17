@@ -4,6 +4,7 @@ plugins {
     id 'org.springframework.boot' version '2.2.2.RELEASE'
     id 'io.spring.dependency-management' version '1.0.8.RELEASE'
     id 'org.openapi.generator' version '4.1.1'
+    id 'edu.sc.seis.launch4j' version '2.4.8'
 }
 
 group = 'com.reckue'
@@ -75,6 +76,7 @@ dependencies {
     implementation 'javax.xml.bind:jaxb-api:2.3.0' // for binding xml
 
     implementation "org.openapitools:jackson-databind-nullable:0.2.1"
+    implementation "com.thoughtworks.xstream:xstream:1.4.13"
 }
 
 // ----------[ checkstyle ]----------
@@ -115,5 +117,5 @@ test {
 
 // ----------[ bootRun ]----------
 bootRun {
-    args = ["--spring.profiles.active=" + profile]
+    args = ["--spring.profiles.active=" + profile + " --illegal-access=warn"]
 }

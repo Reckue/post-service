@@ -1,10 +1,10 @@
 package com.reckue.post.controllers;
 
 import com.reckue.post.controllers.apis.TagApi;
+import com.reckue.post.generated.models.TagRequest;
+import com.reckue.post.generated.models.TagResponse;
 import com.reckue.post.models.Tag;
 import com.reckue.post.services.TagService;
-import com.reckue.post.transfers.TagRequest;
-import com.reckue.post.transfers.TagResponse;
 import com.reckue.post.utils.converters.TagConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
