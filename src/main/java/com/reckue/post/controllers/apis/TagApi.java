@@ -1,7 +1,7 @@
 package com.reckue.post.controllers.apis;
 
-import com.reckue.post.transfers.TagRequest;
-import com.reckue.post.transfers.TagResponse;
+import com.reckue.post.generated.models.TagRequest;
+import com.reckue.post.generated.models.TagResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;

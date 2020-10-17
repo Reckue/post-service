@@ -1,9 +1,9 @@
 package com.reckue.post.utils.converters;
 
 import com.reckue.post.exceptions.ReckueIllegalArgumentException;
+import com.reckue.post.generated.models.TagRequest;
+import com.reckue.post.generated.models.TagResponse;
 import com.reckue.post.models.Tag;
-import com.reckue.post.transfers.TagRequest;
-import com.reckue.post.transfers.TagResponse;
 
 /**
  * Class for converting TagRequest object to Tag and Tag object to TagResponse.
