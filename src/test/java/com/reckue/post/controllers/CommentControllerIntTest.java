@@ -10,9 +10,9 @@ import com.reckue.post.repositories.PostRepository;
 import com.reckue.post.transfers.CommentRequest;
 import com.reckue.post.transfers.CommentResponse;
 import com.reckue.post.utils.converters.CommentConverter;
-import org.junit.Ignore;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -241,7 +241,7 @@ public class CommentControllerIntTest extends PostServiceApplicationTests {
         Assertions.assertEquals(expected, actual);
     }
 
-    @Ignore
+    @Disabled
     void update() throws Exception {
         CommentResponse expected = CommentResponse.builder()
                 .userId("best id ever")
@@ -270,7 +270,7 @@ public class CommentControllerIntTest extends PostServiceApplicationTests {
         );
     }
 
-    @Ignore
+    @Disabled
     void save() throws Exception {
         List<Post> posts = postRepository.findAll();
         if (posts.size() == 0)
@@ -306,7 +306,7 @@ public class CommentControllerIntTest extends PostServiceApplicationTests {
                 () -> assertEquals(actual.getModificationDate(), actual.getCreatedDate()));
     }
 
-    @Ignore
+    @Disabled
     void deleteById() throws Exception {
         String id = commentRepository.findAll().get(0).getId();
         this.mockMvc.perform(delete("/comments/" + id))

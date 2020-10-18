@@ -115,7 +115,7 @@ public class CommentController implements CommentApi {
      * @param offset quantity to skip
      * @return list of objects of class CommentResponse
      */
-    @GetMapping("/userId/{userId}")
+    @GetMapping("/user/{userId}")
     public List<CommentResponse> findAllByUserId(@PathVariable String userId,
                                                  @RequestParam(required = false) Integer limit,
                                                  @RequestParam(required = false) Integer offset) {

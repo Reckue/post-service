@@ -106,7 +106,7 @@ public class RatingController implements RatingApi {
      * @param offset quantity to skip
      * @return list of objects of class RatingResponse
      */
-    @GetMapping("/userId/{userId}")
+    @GetMapping("/user/{userId}")
     public List<RatingResponse> findAllByUserId(@PathVariable String userId,
                                                 @RequestParam(required = false) Integer limit,
                                                 @RequestParam(required = false) Integer offset) {
@@ -152,7 +152,7 @@ public class RatingController implements RatingApi {
      * @param offset quantity to skip
      * @return list of given quantity of objects of class RatingResponse with a given offset
      */
-    @GetMapping("/user/{userId}")
+    @GetMapping("/post/{userId}")
     public List<PostResponse> findAllPostsByUser(@PathVariable String userId,
                                                  @RequestParam(required = false) Integer limit,
                                                  @RequestParam(required = false) Integer offset) {

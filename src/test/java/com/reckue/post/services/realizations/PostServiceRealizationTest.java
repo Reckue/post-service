@@ -9,8 +9,8 @@ import com.reckue.post.models.Tag;
 import com.reckue.post.models.types.PostStatusType;
 import com.reckue.post.repositories.NodeRepository;
 import com.reckue.post.repositories.PostRepository;
-import org.junit.Ignore;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -41,7 +41,7 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
     @InjectMocks
     private PostServiceRealization postService;
 
-    @Ignore
+    @Disabled
     public void create() {
         Post post = Post.builder()
                 .id("1")
@@ -52,7 +52,7 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
         assertEquals(post, postService.create(post, "token"));
     }
 
-    @Ignore
+    @Disabled
     public void update() {
         Node node = mock(Node.class);
         Tag tag = mock(Tag.class);
@@ -353,7 +353,7 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
                 () -> postService.findAll(1, -1, "name", true));
     }
 
-    @Ignore
+    @Disabled
     public void deleteById() {
         Post postOne = Post.builder()
                 .id("1")

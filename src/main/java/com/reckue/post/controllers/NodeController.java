@@ -107,7 +107,7 @@ public class NodeController implements NodeApi {
      * @param offset quantity to skip
      * @return list of objects of class NodeResponse
      */
-    @GetMapping("/userId/{userId}")
+    @GetMapping("/user/{userId}")
     public List<NodeResponse> findAllByUserId(@PathVariable String userId,
                                               @RequestParam(required = false) Integer limit,
                                               @RequestParam(required = false) Integer offset) {

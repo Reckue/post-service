@@ -104,7 +104,7 @@ public class PostController implements PostApi {
      * @param offset quantity to skip
      * @return list of objects of class PostResponse
      */
-    @GetMapping("/userId/{userId}")
+    @GetMapping("/user/{userId}")
     public List<PostResponse> findAllByUserId(@PathVariable String userId,
                                               @RequestParam(required = false) Integer limit,
                                               @RequestParam(required = false) Integer offset) {

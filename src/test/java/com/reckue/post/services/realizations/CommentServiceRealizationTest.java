@@ -7,9 +7,9 @@ import com.reckue.post.models.Comment;
 import com.reckue.post.repositories.CommentRepository;
 import com.reckue.post.repositories.NodeRepository;
 import com.reckue.post.repositories.PostRepository;
-import org.junit.Ignore;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -74,7 +74,7 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
                         build();
     }
 
-    @Ignore
+    @Disabled
     public void create() {
         when(commentRepository.save(comment)).thenReturn(comment);
         doReturn(true).when(postRepository).existsById(Mockito.anyString());
@@ -83,7 +83,7 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
         assertEquals(comment, commentService.create(comment, "token"));
     }
 
-    @Ignore
+    @Disabled
     public void update() {
         Comment commentRequest = Comment.builder()
                 .id("1")

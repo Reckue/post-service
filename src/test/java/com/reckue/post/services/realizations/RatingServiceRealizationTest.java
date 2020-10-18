@@ -8,9 +8,9 @@ import com.reckue.post.models.Post;
 import com.reckue.post.models.Rating;
 import com.reckue.post.repositories.PostRepository;
 import com.reckue.post.repositories.RatingRepository;
-import org.junit.Ignore;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -72,7 +72,7 @@ public class RatingServiceRealizationTest extends PostServiceApplicationTests {
         assertEquals(nodes, ratingService.findAll());
     }
 
-    @Ignore
+    @Disabled
     public void create() {
         Post post = Post.builder()
                 .id("2rs5")
@@ -90,7 +90,7 @@ public class RatingServiceRealizationTest extends PostServiceApplicationTests {
         assertEquals(rating, ratingService.create(rating, "token"));
     }
 
-    @Ignore
+    @Disabled
     public void createIfNotFound() {
         when(ratingRepository.existsById(rating1.getId())).thenReturn(false);
         doReturn(false).when(postRepository).existsById(rating1.getPostId());
@@ -101,7 +101,7 @@ public class RatingServiceRealizationTest extends PostServiceApplicationTests {
         assertEquals("Post by id '" + rating1.getPostId() + "' is not found", exception.getMessage());
     }
 
-    @Ignore
+    @Disabled
     public void update() {
         Rating ratingRequest = Rating.builder()
                 .id("1")
@@ -140,7 +140,7 @@ public class RatingServiceRealizationTest extends PostServiceApplicationTests {
         assertThrows(RatingNotFoundException.class, () -> ratingService.update(rating1, "token"));
     }
 
-    @Ignore
+    @Disabled
     public void deleteById() {
         List<Rating> ratings = new ArrayList<>();
         ratings.add(rating1);

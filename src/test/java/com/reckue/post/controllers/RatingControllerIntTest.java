@@ -10,9 +10,9 @@ import com.reckue.post.repositories.RatingRepository;
 import com.reckue.post.transfers.RatingRequest;
 import com.reckue.post.transfers.RatingResponse;
 import com.reckue.post.utils.converters.RatingConverter;
-import org.junit.Ignore;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -165,7 +165,7 @@ public class RatingControllerIntTest extends PostServiceApplicationTests {
         Assertions.assertEquals(expected, actual);
     }
 
-    @Ignore
+    @Disabled
     void update() throws Exception {
         String json = objectMapper.writeValueAsString(RatingRequest.builder()
                 .postId(ratingRepository.findAll().get(0).getPostId())
@@ -195,7 +195,7 @@ public class RatingControllerIntTest extends PostServiceApplicationTests {
                 () -> assertEquals(expected.getPostId(), actual.getPostId()));
     }
 
-    @Ignore
+    @Disabled
     void save() throws Exception {
         Post post = Post.builder()
                 .id("2020")
@@ -229,7 +229,7 @@ public class RatingControllerIntTest extends PostServiceApplicationTests {
                 () -> assertEquals(expected.getPostId(), actual.getPostId()));
     }
 
-    @Ignore
+    @Disabled
     void notSaveNotFoundPost() throws Exception {
 
         String json = objectMapper.writeValueAsString(RatingRequest.builder()
@@ -254,7 +254,7 @@ public class RatingControllerIntTest extends PostServiceApplicationTests {
         Assertions.assertEquals(expected, actual);
     }
 
-    @Ignore
+    @Disabled
     void deleteById() throws Exception {
         String id = ratingRepository.findAll().get(0).getId();
         this.mockMvc.perform(delete("/rating/" + id))
