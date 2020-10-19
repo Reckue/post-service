@@ -3,28 +3,30 @@ package com.reckue.post.services;
 import java.util.List;
 
 /**
- * Interface BaseService represents a common base service with CRUD operations for services
- * without authorization.
+ * Interface AuthService represents a common base service with CRUD operations for services
+ * with authorization.
  *
  * @author Kamila Meshcheryakova
+ * created 14.10.2020
  */
-public interface BaseService<T> {
-
+public interface AuthService<T> {
     /**
      * This method is used to create an object of desired class.
      *
      * @param object of desired class
+     * @param token  user token
      * @return object of desired class
      */
-    T create(T object);
+    T create(T object, String token);
 
     /**
      * This method is used to update data in an object of desired class.
      *
      * @param object of desired class
+     * @param token  user token
      * @return object of desired class
      */
-    T update(T object);
+    T update(T object, String token);
 
     /**
      * This method is used to get all objects of desired class.
@@ -53,9 +55,26 @@ public interface BaseService<T> {
     T findById(String id);
 
     /**
+     * This method is used to get a list of objects by user id.
+     *
+     * @param userId user identificator
+     * @param limit  quantity of objects
+     * @param offset quantity to skip
+     * @return list of objects of desired class
+     */
+    List<T> findAllByUserId(String userId, Integer limit, Integer offset);
+
+    /**
      * This method is used to delete an object by id.
      *
-     * @param id object
+     * @param id    object
+     * @param token user token
      */
-    void deleteById(String id);
+    void deleteById(String id, String token);
+
+    /**
+     * This method is used to delete all objects.
+     */
+    @Deprecated
+    void deleteAll();
 }

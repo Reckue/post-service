@@ -2,17 +2,15 @@ package com.reckue.post.services.realizations;
 
 import com.reckue.post.PostServiceApplicationTests;
 import com.reckue.post.exceptions.ReckueIllegalArgumentException;
-import com.reckue.post.exceptions.models.post.PostAlreadyExistsException;
 import com.reckue.post.exceptions.models.post.PostNotFoundException;
-import com.reckue.post.models.Comment;
 import com.reckue.post.models.Node;
 import com.reckue.post.models.Post;
 import com.reckue.post.models.Tag;
 import com.reckue.post.models.types.PostStatusType;
-import com.reckue.post.models.types.StatusType;
 import com.reckue.post.repositories.NodeRepository;
 import com.reckue.post.repositories.PostRepository;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -31,6 +29,7 @@ import static org.mockito.Mockito.*;
  *
  * @author Viktor Grigoriev
  */
+@SuppressWarnings("unused")
 class PostServiceRealizationTest extends PostServiceApplicationTests {
 
     @Mock
@@ -42,48 +41,48 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
     @InjectMocks
     private PostServiceRealization postService;
 
-//    @Test
-//    public void create() {
-//        Post post = Post.builder()
-//                .id("1")
-//                .title("post")
-//                .build();
-//        when(postRepository.save(post)).thenReturn(post);
-//
-//        assertEquals(post, postService.create(post));
-//    }
+    @Disabled
+    public void create() {
+        Post post = Post.builder()
+                .id("1")
+                .title("post")
+                .build();
+        when(postRepository.save(post)).thenReturn(post);
 
-//    @Test
-//    public void update() {
-//        Node node = mock(Node.class);
-//        Tag tag = mock(Tag.class);
-//        Post postRequest = Post.builder()
-//                .id("1")
-//                .title("newTitle")
-//                .nodes(Collections.singletonList(node))
-//                .source("newSource")
-//                .userId("1")
-//                .status(PostStatusType.DRAFT)
-//                .tags(Collections.singletonList(tag))
-//                .build();
-//        Post postOne = Post.builder()
-//                .id("1")
-//                .title("postOne")
-//                .build();
-//        when(postRepository.findById(postRequest.getId())).thenReturn(Optional.of(postOne));
-//        when(postRepository.save(postOne)).thenReturn(postOne);
-//
-//        postService.update(postRequest);
-//
-//        Assertions.assertAll(
-//                () -> assertEquals(postRequest.getTitle(), postOne.getTitle()),
-//                () -> assertEquals(postRequest.getNodes(), postOne.getNodes()),
-//                () -> assertEquals(postRequest.getSource(), postOne.getSource()),
-//                () -> assertEquals(postRequest.getUserId(), postOne.getUserId()),
-//                () -> assertEquals(postRequest.getStatus(), postOne.getStatus()),
-//                () -> assertEquals(postRequest.getTags(), postOne.getTags())
-//        );
-//    }
+        assertEquals(post, postService.create(post, "token"));
+    }
+
+    @Disabled
+    public void update() {
+        Node node = mock(Node.class);
+        Tag tag = mock(Tag.class);
+        Post postRequest = Post.builder()
+                .id("1")
+                .title("newTitle")
+                .nodes(Collections.singletonList(node))
+                .source("newSource")
+                .userId("1")
+                .status(PostStatusType.DRAFT)
+                .tags(Collections.singletonList(tag))
+                .build();
+        Post postOne = Post.builder()
+                .id("1")
+                .title("postOne")
+                .build();
+        when(postRepository.findById(postRequest.getId())).thenReturn(Optional.of(postOne));
+        when(postRepository.save(postOne)).thenReturn(postOne);
+
+        postService.update(postRequest, "token");
+
+        Assertions.assertAll(
+                () -> assertEquals(postRequest.getTitle(), postOne.getTitle()),
+                () -> assertEquals(postRequest.getNodes(), postOne.getNodes()),
+                () -> assertEquals(postRequest.getSource(), postOne.getSource()),
+                () -> assertEquals(postRequest.getUserId(), postOne.getUserId()),
+                () -> assertEquals(postRequest.getStatus(), postOne.getStatus()),
+                () -> assertEquals(postRequest.getTags(), postOne.getTags())
+        );
+    }
 
     @Test
     public void updateWithNullId() {
@@ -91,20 +90,21 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
                 .title("postOne")
                 .build();
 
-        assertThrows(ReckueIllegalArgumentException.class, () -> postService.update(postOne));
+        assertThrows(ReckueIllegalArgumentException.class, () -> postService.update(postOne, "token"));
     }
 
-//    @Test
-//    public void updateWithExistId() {
-//        Post postOne = Post.builder()
-//                .id("1")
-//                .title("postOne")
-//                .build();
-//        when(postRepository.existsById(postOne.getId())).thenReturn(false);
-//        when(postRepository.save(postOne)).thenReturn(postOne);
-//
-//        assertThrows(PostNotFoundException.class, () -> postService.update(postOne));
-//    }
+    @Test
+    public void updateWithExistId() {
+        Post postOne = Post.builder()
+                .id("1")
+                .title("postOne")
+                .nodes(new ArrayList<>())
+                .build();
+        when(postRepository.existsById(postOne.getId())).thenReturn(false);
+        when(postRepository.save(postOne)).thenReturn(postOne);
+
+        assertThrows(PostNotFoundException.class, () -> postService.update(postOne, "token"));
+    }
 
     @Test
     public void findById() {
@@ -353,7 +353,7 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
                 () -> postService.findAll(1, -1, "name", true));
     }
 
-    @Test
+    @Disabled
     public void deleteById() {
         Post postOne = Post.builder()
                 .id("1")
@@ -366,7 +366,7 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
             posts.remove(postOne);
             return null;
         }).when(postRepository).deleteById(postOne.getId());
-        postService.deleteById(postOne.getId());
+        postService.deleteById(postOne.getId(), "token");
 
         assertEquals(0, posts.size());
     }
@@ -379,6 +379,6 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
                 .build();
         when(postRepository.existsById(postOne.getId())).thenReturn(false);
 
-        assertThrows(PostNotFoundException.class, () -> postService.deleteById(postOne.getId()));
+        assertThrows(PostNotFoundException.class, () -> postService.deleteById(postOne.getId(), "token"));
     }
 }

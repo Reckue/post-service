@@ -18,10 +18,6 @@ import java.util.List;
 public class CommentRequest {
 
     @NotNull
-    @ApiModelProperty(notes = "User id")
-    private String userId;
-
-    @NotNull
     @ApiModelProperty(notes = "Post id")
     private String postId;
 

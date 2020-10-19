@@ -21,4 +21,12 @@ public interface PostRepository extends MongoRepository<Post, String> {
      * @return list of objects of class Post
      */
     List<Post> findAllByTitle(String title);
+
+    /**
+     * This method is used to get a list of objects by user id.
+     *
+     * @param userId user identificator
+     * @return list of objects of class Post
+     */
+    List<Post> findAllByUserId(String userId);
 }

@@ -12,6 +12,8 @@ import lombok.Data;
 @Data
 @Builder
 public class RatingRequest {
+
+    // todo delete userId when it will have another field except postId
     @ApiModelProperty(notes = "User Id")
     private String userId;
 

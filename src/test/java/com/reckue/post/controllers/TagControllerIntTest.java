@@ -3,10 +3,10 @@ package com.reckue.post.controllers;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reckue.post.PostServiceApplicationTests;
+import com.reckue.post.generated.models.TagRequest;
+import com.reckue.post.generated.models.TagResponse;
 import com.reckue.post.models.Tag;
 import com.reckue.post.repositories.TagRepository;
-import com.reckue.post.transfers.TagRequest;
-import com.reckue.post.transfers.TagResponse;
 import com.reckue.post.utils.converters.TagConverter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -123,7 +124,7 @@ public class TagControllerIntTest extends PostServiceApplicationTests {
                         .getResponse().getContentAsString(), new TypeReference<>() {
                 });
 
-        Assertions.assertEquals(expected, actual);
+        Assertions.assertTrue(Arrays.deepEquals(expected.toArray(), actual.toArray()));
     }
 
     @Test

@@ -9,6 +9,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -21,16 +22,16 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Document
-public class Rating {
+public class Rating implements Serializable {
 
-   @Id
+    @Id
     private String id;
 
     private String userId;
     private String postId;
 
- @LastModifiedDate
- private LocalDateTime modificationDate;
- @CreatedDate
- private LocalDateTime createdDate;
+    @LastModifiedDate
+    private LocalDateTime modificationDate;
+    @CreatedDate
+    private LocalDateTime createdDate;
 }

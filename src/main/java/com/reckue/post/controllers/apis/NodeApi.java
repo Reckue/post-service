@@ -3,8 +3,8 @@ package com.reckue.post.controllers.apis;
 import com.reckue.post.transfers.NodeRequest;
 import com.reckue.post.transfers.NodeResponse;
 import io.swagger.annotations.*;
-import org.springframework.security.access.prepost.PreAuthorize;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -15,19 +15,19 @@ import java.util.List;
 @Api(tags = {"/nodes"})
 public interface NodeApi {
 
-    @ApiOperation(value = "Add a node")
+    @ApiOperation(value = "Add a node", authorizations = {@Authorization(value = "Bearer token")})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "The node successfully added"),
             @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")})
-    NodeResponse create(NodeRequest nodeRequest);
+    NodeResponse create(NodeRequest nodeRequest, HttpServletRequest request);
 
-    @ApiOperation(value = "Update a node")
+    @ApiOperation(value = "Update a node", authorizations = {@Authorization(value = "Bearer token")})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "The node successfully updated"),
             @ApiResponse(code = 400, message = "You need to fill in the fields of your request"),
             @ApiResponse(code = 404, message = "The resource you were trying to change is not found"),
             @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")})
-    NodeResponse update(String id, NodeRequest nodeRequest);
+    NodeResponse update(String id, NodeRequest nodeRequest, HttpServletRequest request);
 
     @ApiOperation(value = "View a list of available nodes", response = NodeResponse.class)
     @ApiResponses(value = {
@@ -44,10 +44,18 @@ public interface NodeApi {
             @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")})
     NodeResponse findById(String id);
 
-    @ApiOperation(value = "Delete a node")
+    @ApiOperation(value = "Get a list of nodes by user id", response = NodeResponse.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "List of nodes successfully retrieved"),
+            @ApiResponse(code = 400, message = "You need to change the parameters of your request"),
+            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found"),
+            @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")})
+    List<NodeResponse> findAllByUserId(String userId, Integer limit, Integer offset);
+
+    @ApiOperation(value = "Delete a node", authorizations = {@Authorization(value = "Bearer token")})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "The node successfully deleted"),
             @ApiResponse(code = 404, message = "The resource you were trying to delete is not found"),
             @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")})
-    void deleteById(String id);
+    void deleteById(String id, HttpServletRequest request);
 }

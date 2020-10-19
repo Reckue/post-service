@@ -38,7 +38,6 @@ public class CommentConverter {
         }
 
         return Comment.builder()
-                .userId(commentRequest.getUserId())
                 .postId(commentRequest.getPostId())
                 .commentId(commentRequest.getCommentId())
                 .nodes(nodes)

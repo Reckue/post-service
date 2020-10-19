@@ -12,6 +12,7 @@ import com.reckue.post.transfers.RatingResponse;
 import com.reckue.post.utils.converters.RatingConverter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -164,10 +165,9 @@ public class RatingControllerIntTest extends PostServiceApplicationTests {
         Assertions.assertEquals(expected, actual);
     }
 
-    @Test
+    @Disabled
     void update() throws Exception {
         String json = objectMapper.writeValueAsString(RatingRequest.builder()
-                .userId(ratingRepository.findAll().get(0).getUserId())
                 .postId(ratingRepository.findAll().get(0).getPostId())
                 .build());
 
@@ -195,14 +195,13 @@ public class RatingControllerIntTest extends PostServiceApplicationTests {
                 () -> assertEquals(expected.getPostId(), actual.getPostId()));
     }
 
-    @Test
+    @Disabled
     void save() throws Exception {
         Post post = Post.builder()
                 .id("2020")
                 .build();
         postRepository.save(post);
         String json = objectMapper.writeValueAsString(RatingRequest.builder()
-                .userId("23")
                 .postId(post.getId())
                 .build());
 
@@ -230,32 +229,32 @@ public class RatingControllerIntTest extends PostServiceApplicationTests {
                 () -> assertEquals(expected.getPostId(), actual.getPostId()));
     }
 
-//    @Test
-//    void notSaveNotFoundPost() throws Exception {
-//
-//       String json = objectMapper.writeValueAsString(RatingRequest.builder()
-//               .userId("23")
-//               .postId("2020")
-//                .build());
-//
-//       MockHttpServletRequestBuilder builder = post("/rating")
-//                .contentType(MediaType.APPLICATION_JSON_VALUE)
-//                .accept(MediaType.APPLICATION_JSON)
-//                .characterEncoding("UTF-8")
-//                .content(json);
-//
-//       RatingResponse actual = objectMapper.readValue(this.mockMvc.perform(builder)
-//               .andDo(print())
-//                .andExpect(status().isNotFound())
-//                .andReturn()
-//                .getResponse().getContentAsString(), RatingResponse.class);
-//
-//        RatingResponse expected = RatingResponse.builder().build();
-//
-//        Assertions.assertEquals(expected, actual);
-//    }
+    @Disabled
+    void notSaveNotFoundPost() throws Exception {
 
-    @Test
+        String json = objectMapper.writeValueAsString(RatingRequest.builder()
+                .userId("23")
+                .postId("2020")
+                .build());
+
+        MockHttpServletRequestBuilder builder = post("/rating")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8")
+                .content(json);
+
+        RatingResponse actual = objectMapper.readValue(this.mockMvc.perform(builder)
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andReturn()
+                .getResponse().getContentAsString(), RatingResponse.class);
+
+        RatingResponse expected = RatingResponse.builder().build();
+
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Disabled
     void deleteById() throws Exception {
         String id = ratingRepository.findAll().get(0).getId();
         this.mockMvc.perform(delete("/rating/" + id))
