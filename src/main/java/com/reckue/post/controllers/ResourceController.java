@@ -1,5 +1,6 @@
 package com.reckue.post.controllers;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
  * @author Kamila Meshcheryakova
  * created 11.09.2020
  */
-
+@Api(tags = {"/resource"})
 @RestController
 @RequestMapping(value = "/resource")
 @RequiredArgsConstructor
