@@ -3,17 +3,29 @@ package com.reckue.post.services.realizations;
 import com.reckue.post.PostServiceApplicationTests;
 import com.reckue.post.exceptions.ReckueIllegalArgumentException;
 import com.reckue.post.exceptions.models.post.PostNotFoundException;
+import com.reckue.post.models.Comment;
 import com.reckue.post.models.Node;
 import com.reckue.post.models.Post;
 import com.reckue.post.models.Tag;
+import com.reckue.post.models.types.NodeType;
+import com.reckue.post.models.types.ParentType;
 import com.reckue.post.models.types.PostStatusType;
 import com.reckue.post.repositories.NodeRepository;
 import com.reckue.post.repositories.PostRepository;
+import com.reckue.post.services.NodeService;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
+import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
+import org.xmlunit.util.Nodes;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -32,24 +44,89 @@ import static org.mockito.Mockito.*;
 @SuppressWarnings("unused")
 class PostServiceRealizationTest extends PostServiceApplicationTests {
 
+    private Post newPost;
+    private Post postWithId;
+    private Post savedPost;
+    private Post updatedPost;
+
+    private Node newNode;
+    private Node savedNode;
+
     @Mock
     private PostRepository postRepository;
 
     @Mock
+    private NodeService nodeService;
+
+    @Mock
     private NodeRepository nodeRepository;
+
+    @Mock
+    private TokenStore tokenStore;
+
+    @Mock
+    private OAuth2AccessToken accessToken;
 
     @InjectMocks
     private PostServiceRealization postService;
 
-    @Disabled
-    public void create() {
-        Post post = Post.builder()
-                .id("1")
-                .title("post")
-                .build();
-        when(postRepository.save(post)).thenReturn(post);
+    @BeforeEach
+    void initTest() {
+        when(tokenStore.readAccessToken("token"))
+                .thenReturn(accessToken);
+        when(accessToken.getAdditionalInformation())
+                .thenReturn(new HashMap<>() {{ put("userId", "1"); }});
 
-        assertEquals(post, postService.create(post, "token"));
+        newNode = Node.builder()
+                .type(NodeType.TEXT)
+                .build();
+        List<Node> nodes = new ArrayList<>();
+        nodes.add(newNode);
+
+        savedNode = Node.builder()
+                .id("nodeId")
+                .parentId("postId")
+                .parentType(ParentType.POST)
+                .type(NodeType.TEXT)
+                .build();
+        List<Node> savedNodes = new ArrayList<>();
+        savedNodes.add(savedNode);
+
+        List<Node> updatedNodes = new ArrayList<>();
+        updatedNodes.add(Node.builder()
+                .id("updatedId")
+                .parentId("postId")
+                .parentType(ParentType.POST)
+                .type(NodeType.CODE)
+                .build());
+
+        when(nodeService.create(newNode, "token"))
+                .thenReturn(savedNode);
+
+        newPost = Post.builder()
+                .title("Title")
+                .nodes(nodes)
+                .build();
+
+        postWithId = Post.builder()
+                .id("postId")
+                .userId("1")
+                .title("Title")
+                .nodes(nodes)
+                .build();
+
+        savedPost = Post.builder()
+                .id("postId")
+                .userId("1")
+                .title("Title")
+                .nodes(savedNodes)
+                .build();
+    }
+
+    @Test
+    public void create() {
+        when(postRepository.save(newPost)).thenReturn(postWithId);
+        assertEquals(savedPost, postService.create(newPost, "token"));
     }
 
     @Disabled

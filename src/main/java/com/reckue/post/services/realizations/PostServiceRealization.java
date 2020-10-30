@@ -12,7 +12,6 @@ import com.reckue.post.repositories.PostRepository;
 import com.reckue.post.services.NodeService;
 import com.reckue.post.services.PostService;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang.SerializationUtils;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +24,7 @@ import java.util.stream.Collectors;
  * Class PostServiceRealization represents realization of PostService.
  *
  * @author Kamila Meshcheryakova
+ * @author Dmitrii Lebedev
  */
 @Service
 @RequiredArgsConstructor
@@ -55,24 +55,21 @@ public class PostServiceRealization implements PostService {
         validateOnCreatePost(post);
         validateOnCreateStatus(post);
 
-        Post storedPost = (Post) SerializationUtils.clone(post);
+        List<Node> nodeList = post.getNodes();
+        List<Node> savedNodeList = new ArrayList<>();
+        post.setNodes(null); //нужно ли? Сохраняем ли мы пост, если он не содержит нодов?
+        Post savedPost = postRepository.save(post);
 
-        List<Node> nodeList = null;
-
-        if (post.getNodes() != null) {
-            nodeList = post.getNodes();
-            post.setNodes(null);
-            storedPost = postRepository.save(post);
-            final String postId = storedPost.getId();
-
+        if (nodeList != null) {
             nodeList.forEach(node -> {
-                node.setParentId(postId);
+                node.setParentId(savedPost.getId());
                 node.setParentType(ParentType.POST);
-                nodeService.create(node, token);
+                savedNodeList.add(nodeService.create(node, token));
             });
         }
-        storedPost.setNodes(nodeList);
-        return storedPost;
+
+        savedPost.setNodes(savedNodeList);
+        return savedPost;
     }
 
     private void validateOnCreatePost(Post post) {
@@ -129,28 +126,41 @@ public class PostServiceRealization implements PostService {
             throw new ReckueIllegalArgumentException("The parameter is null");
         }
 
-        if (!post.getNodes().isEmpty()) {
-            post.getNodes().forEach(node -> {
-                node.setParentId(post.getId());
-                nodeService.create(node, token);
-            });
-        }
-        validateOnUpdateStatus(post);
-        Post savedPost = postRepository
+        Post oldPost = postRepository
                 .findById(post.getId())
                 .orElseThrow(() -> new PostNotFoundException(post.getId()));
-        savedPost.setTitle(post.getTitle());
-        savedPost.setNodes(post.getNodes());
-        savedPost.setSource(post.getSource());
-        savedPost.setTags(post.getTags());
 
         Map<String, Object> tokenInfo = tokenStore.readAccessToken(token).getAdditionalInformation();
-        if (!tokenInfo.get("userId").equals(savedPost.getUserId())
+        if (!tokenInfo.get("userId").equals(oldPost.getUserId())
                 && !tokenInfo.get("authorities").equals("ROLE_ADMIN")) {
             throw new ReckueAccessDeniedException("The operation is forbidden");
         }
 
-        return postRepository.save(savedPost);
+        List<Node> allByParentId = nodeRepository.findAllByParentId(post.getId());
+        nodeRepository.deleteAll(allByParentId);
+
+        List<Node> nodeList = post.getNodes();
+        List<Node> savedNodeList = new ArrayList<>();
+
+        if (nodeList != null) {
+            nodeList.forEach(node -> {
+                node.setParentId(oldPost.getId());
+                node.setParentType(ParentType.POST);
+                savedNodeList.add(nodeService.create(node, token));
+            });
+        }
+
+        validateOnUpdateStatus(post);
+
+        oldPost.setTitle(post.getTitle());
+        oldPost.setStatus(post.getStatus());
+        oldPost.setSource(post.getSource());
+        oldPost.setTags(post.getTags());
+
+        Post savedPost = postRepository.save(oldPost);
+        savedPost.setNodes(savedNodeList);
+
+        return savedPost;
     }
 
     private void validateOnUpdateStatus(Post post) {
@@ -359,13 +369,13 @@ public class PostServiceRealization implements PostService {
      */
     @Override
     public Post findById(String id) {
-        Optional<Post> post = postRepository.findById(id);
-        List<Node> nodes = nodeRepository.findAllByParentId(id);
-        if (post.isEmpty())
-            throw new PostNotFoundException(id);
+        Post post = postRepository
+                .findById(id)
+                .orElseThrow(() -> new PostNotFoundException(id));
 
-        post.ifPresent(p -> p.setNodes(nodes));
-        return post.get();
+        List<Node> nodes = nodeRepository.findAllByParentId(id);
+        post.setNodes(nodes);
+        return post;
     }
 
     /**
@@ -403,18 +413,15 @@ public class PostServiceRealization implements PostService {
      */
     @Override
     public void deleteById(String id, String token) {
-        if (!postRepository.existsById(id)) {
-            throw new PostNotFoundException(id);
-        }
+        Post post = postRepository
+                .findById(id)
+                .orElseThrow(() -> new PostNotFoundException(id));
+
         Map<String, Object> tokenInfo = tokenStore.readAccessToken(token).getAdditionalInformation();
-        Optional<Post> post = postRepository.findById(id);
-        if (post.isPresent()) {
-            String postUser = post.get().getUserId();
-            if (tokenInfo.get("userId").equals(postUser) || tokenInfo.get("authorities").equals("ROLE_ADMIN")) {
-                postRepository.deleteById(id);
-            } else {
-                throw new ReckueAccessDeniedException("The operation is forbidden");
-            }
+        if (tokenInfo.get("userId").equals(post.getUserId()) || tokenInfo.get("authorities").equals("ROLE_ADMIN")) {
+            postRepository.deleteById(id);
+        } else {
+            throw new ReckueAccessDeniedException("The operation is forbidden");
         }
     }
 
@@ -435,6 +442,10 @@ public class PostServiceRealization implements PostService {
     @Deprecated
     @Override
     public void deleteAll() {
+        List<Post> posts = postRepository.findAll();
+        for (Post post : posts) {
+            nodeRepository.deleteAll(nodeRepository.findAllByParentId(post.getId()));
+        }
         postRepository.deleteAll();
     }
 }
