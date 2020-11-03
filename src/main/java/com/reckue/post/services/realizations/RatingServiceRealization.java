@@ -12,7 +12,6 @@ import com.reckue.post.repositories.RatingRepository;
 import com.reckue.post.services.RatingService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -29,19 +28,17 @@ public class RatingServiceRealization implements RatingService {
 
     private final RatingRepository ratingRepository;
     private final PostRepository postRepository;
-    private final TokenStore tokenStore;
 
     /**
      * This method is used to create an object of class Rating using rating validation.
      *
-     * @param rating object of class Rating
-     * @param token  user token
+     * @param rating    object of class Rating
+     * @param tokenInfo user token info
      * @return rating object of class Rating
      */
     @Override
-    public Rating create(Rating rating, String token) {
-        String userId = (String) tokenStore.readAccessToken(token)
-                .getAdditionalInformation().get("userId");
+    public Rating create(Rating rating, Map<String, Object> tokenInfo) {
+        String userId = (String) tokenInfo.get("userId");
         rating.setUserId(userId);
         validateCreatingRating(rating);
 
@@ -75,12 +72,12 @@ public class RatingServiceRealization implements RatingService {
      * Throws {@link ReckueIllegalArgumentException} in case
      * if parameter equals null.
      *
-     * @param rating object of class Rating
-     * @param token  user token
+     * @param rating    object of class Rating
+     * @param tokenInfo user token info
      * @return rating object of class Rating
      */
     @Override
-    public Rating update(Rating rating, String token) {
+    public Rating update(Rating rating, Map<String, Object> tokenInfo) {
         if (rating.getId() == null) {
             throw new ReckueIllegalArgumentException("The parameter is null");
         }
@@ -89,7 +86,6 @@ public class RatingServiceRealization implements RatingService {
                 .orElseThrow(() -> new RatingNotFoundException(rating.getId()));
         savedRating.setUserId(savedRating.getUserId());
         savedRating.setPostId(savedRating.getPostId());
-        Map<String, Object> tokenInfo = tokenStore.readAccessToken(token).getAdditionalInformation();
         if (!tokenInfo.get("userId").equals(savedRating.getUserId())
                 && !tokenInfo.get("authorities").equals("ROLE_ADMIN")) {
             throw new ReckueAccessDeniedException("The operation is forbidden");
@@ -209,15 +205,14 @@ public class RatingServiceRealization implements RatingService {
      * Throws {@link ReckueAccessDeniedException} in case if the user isn't a rating owner or
      * hasn't admin authorities.
      *
-     * @param id    object
-     * @param token user token
+     * @param id        object
+     * @param tokenInfo user token info
      */
     @Override
-    public void deleteById(String id, String token) {
+    public void deleteById(String id, Map<String, Object> tokenInfo) {
         if (!ratingRepository.existsById(id)) {
             throw new RatingNotFoundException(id);
         }
-        Map<String, Object> tokenInfo = tokenStore.readAccessToken(token).getAdditionalInformation();
         Optional<Rating> rating = ratingRepository.findById(id);
         if (rating.isPresent()) {
             String ratingUser = rating.get().getUserId();

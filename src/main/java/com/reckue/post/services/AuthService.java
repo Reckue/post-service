@@ -1,6 +1,7 @@
 package com.reckue.post.services;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Interface AuthService represents a common base service with CRUD operations for services
@@ -13,20 +14,20 @@ public interface AuthService<T> {
     /**
      * This method is used to create an object of desired class.
      *
-     * @param object of desired class
-     * @param token  user token
+     * @param object    of desired class
+     * @param tokenInfo user token info
      * @return object of desired class
      */
-    T create(T object, String token);
+    T create(T object, Map<String, Object> tokenInfo);
 
     /**
      * This method is used to update data in an object of desired class.
      *
-     * @param object of desired class
-     * @param token  user token
+     * @param object    of desired class
+     * @param tokenInfo user token info
      * @return object of desired class
      */
-    T update(T object, String token);
+    T update(T object, Map<String, Object> tokenInfo);
 
     /**
      * This method is used to get all objects of desired class.
@@ -67,10 +68,10 @@ public interface AuthService<T> {
     /**
      * This method is used to delete an object by id.
      *
-     * @param id    object
-     * @param token user token
+     * @param id        object
+     * @param tokenInfo user token info
      */
-    void deleteById(String id, String token);
+    void deleteById(String id, Map<String, Object> tokenInfo);
 
     /**
      * This method is used to delete all objects.

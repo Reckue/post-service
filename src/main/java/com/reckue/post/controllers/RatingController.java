@@ -4,6 +4,7 @@ import com.reckue.post.controllers.apis.RatingApi;
 import com.reckue.post.exceptions.ReckueUnauthorizedException;
 import com.reckue.post.models.Rating;
 import com.reckue.post.services.RatingService;
+import com.reckue.post.services.SecurityService;
 import com.reckue.post.transfers.PostRatingResponse;
 import com.reckue.post.transfers.PostResponse;
 import com.reckue.post.transfers.RatingRequest;
@@ -19,7 +20,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.reckue.post.utils.converters.RatingConverter.convert;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 /**
  * Class RatingController is responsible for processing incoming requests.
@@ -33,25 +33,21 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 public class RatingController implements RatingApi {
 
     private final RatingService ratingService;
+    private final SecurityService securityService;
 
     /**
      * This type of request allows to create and process it using the converter.
      * Throws {@link ReckueUnauthorizedException} in case if token is absent.
      *
      * @param ratingRequest the object of class RatingRequest
+     * @param request       information for HTTP servlets
      * @return the object of class RatingResponse
      */
     // TODO: add postId as PathVariable and delete it from request (you don't need to enter a postId in update method)
     @PostMapping
     public RatingResponse create(@RequestBody @Valid RatingRequest ratingRequest,
                                  HttpServletRequest request) {
-        String token;
-        try {
-            token = request.getHeader(AUTHORIZATION).substring(7);
-        } catch (NullPointerException e) {
-            throw new ReckueUnauthorizedException("Token missing");
-        }
-        return convert(ratingService.create(convert(ratingRequest), token));
+        return convert(ratingService.create(convert(ratingRequest), securityService.checkAndGetInfo(request)));
     }
 
     /**
@@ -60,21 +56,16 @@ public class RatingController implements RatingApi {
      *
      * @param id            the object identifier
      * @param ratingRequest the object of class RatingRequest
+     * @param request       information for HTTP servlets
      * @return the object of class RatingResponse
      */
     @PutMapping("/{id}")
     public RatingResponse update(@PathVariable String id,
                                  @RequestBody @Valid RatingRequest ratingRequest,
                                  HttpServletRequest request) {
-        String token;
-        try {
-            token = request.getHeader(AUTHORIZATION).substring(7);
-        } catch (NullPointerException e) {
-            throw new ReckueUnauthorizedException("Token missing");
-        }
         Rating rating = convert(ratingRequest);
         rating.setId(id);
-        return convert(ratingService.update(rating, token));
+        return convert(ratingService.update(rating, securityService.checkAndGetInfo(request)));
     }
 
     /**
@@ -119,17 +110,12 @@ public class RatingController implements RatingApi {
      * This type of request allows to delete the object by id.
      * Throws {@link ReckueUnauthorizedException} in case if token is absent.
      *
-     * @param id the object identifier
+     * @param id      the object identifier
+     * @param request information for HTTP servlets
      */
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable String id, HttpServletRequest request) {
-        String token;
-        try {
-            token = request.getHeader(AUTHORIZATION).substring(7);
-        } catch (NullPointerException e) {
-            throw new ReckueUnauthorizedException("Token missing");
-        }
-        ratingService.deleteById(id, token);
+        ratingService.deleteById(id, securityService.checkAndGetInfo(request));
     }
 
     /**

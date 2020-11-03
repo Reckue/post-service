@@ -4,6 +4,7 @@ import com.reckue.post.controllers.apis.CommentApi;
 import com.reckue.post.exceptions.ReckueUnauthorizedException;
 import com.reckue.post.models.Comment;
 import com.reckue.post.services.CommentService;
+import com.reckue.post.services.SecurityService;
 import com.reckue.post.transfers.CommentRequest;
 import com.reckue.post.transfers.CommentResponse;
 import com.reckue.post.utils.converters.CommentConverter;
@@ -16,7 +17,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.reckue.post.utils.converters.CommentConverter.convert;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 /**
  * Class CommentController is responsible for processing incoming requests.
@@ -30,25 +30,21 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 public class CommentController implements CommentApi {
 
     private final CommentService commentService;
+    private final SecurityService securityService;
 
     /**
      * This type of request allows to create and process it using the converter.
      * Throws {@link ReckueUnauthorizedException} in case if token is absent.
      *
      * @param commentRequest the object of class CommentRequest
+     * @param request        information for HTTP servlets
      * @return the object of class CommentResponse
      */
     @PostMapping
     // TODO: add postId as PathVariable and delete it from request (you don't need to enter a postId in update method)
     public CommentResponse create(@RequestBody @Valid CommentRequest commentRequest,
                                   HttpServletRequest request) {
-        String token;
-        try {
-            token = request.getHeader(AUTHORIZATION).substring(7);
-        } catch (NullPointerException e) {
-            throw new ReckueUnauthorizedException("Token missing");
-        }
-        return convert(commentService.create(convert(commentRequest), token));
+        return convert(commentService.create(convert(commentRequest), securityService.checkAndGetInfo(request)));
     }
 
     /**
@@ -57,21 +53,16 @@ public class CommentController implements CommentApi {
      *
      * @param id             the object identifier
      * @param commentRequest the object of class CommentRequest
+     * @param request        information for HTTP servlets
      * @return the object of class CommentResponse
      */
     @PutMapping("/{id}")
     public CommentResponse update(@PathVariable String id,
                                   @RequestBody @Valid CommentRequest commentRequest,
                                   HttpServletRequest request) {
-        String token;
-        try {
-            token = request.getHeader(AUTHORIZATION).substring(7);
-        } catch (NullPointerException e) {
-            throw new ReckueUnauthorizedException("Token missing");
-        }
         Comment comment = convert(commentRequest);
         comment.setId(id);
-        return convert(commentService.update(comment, token));
+        return convert(commentService.update(comment, securityService.checkAndGetInfo(request)));
     }
 
     /**
@@ -128,16 +119,11 @@ public class CommentController implements CommentApi {
      * This type of request allows to delete the object by id.
      * Throws {@link ReckueUnauthorizedException} in case if token is absent.
      *
-     * @param id the object identifier
+     * @param id      the object identifier
+     * @param request information for HTTP servlets
      */
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable String id, HttpServletRequest request) {
-        String token;
-        try {
-            token = request.getHeader(AUTHORIZATION).substring(7);
-        } catch (NullPointerException e) {
-            throw new ReckueUnauthorizedException("Token missing");
-        }
-        commentService.deleteById(id, token);
+        commentService.deleteById(id, securityService.checkAndGetInfo(request));
     }
 }

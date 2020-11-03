@@ -80,7 +80,7 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
         doReturn(true).when(postRepository).existsById(Mockito.anyString());
         doReturn(true).when(commentRepository).existsById(Mockito.isNull());
 
-        assertEquals(comment, commentService.create(comment, "token"));
+        assertEquals(comment, commentService.create(comment, new HashMap<>()));
     }
 
     @Disabled
@@ -99,7 +99,7 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
         when(commentRepository.findById(commentRequest.getId())).thenReturn(Optional.of(comment));
         when(commentRepository.save(comment)).thenReturn(comment);
 
-        commentService.update(commentRequest, "token");
+        commentService.update(commentRequest, new HashMap<>());
 
         Assertions.assertAll(
                 () -> assertEquals(commentRequest.getUserId(), comment.getUserId()),
@@ -112,7 +112,7 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
         Comment nullableComm = Comment.builder().build();
 
         Exception exception = assertThrows(ReckueIllegalArgumentException.class,
-                () -> commentService.update(nullableComm, "token"));
+                () -> commentService.update(nullableComm, new HashMap<>()));
         assertEquals("The parameter is null", exception.getMessage());
     }
 
@@ -121,7 +121,7 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
         when(commentRepository.existsById(comment.getId())).thenReturn(false);
 
         Exception exception = assertThrows(CommentNotFoundException.class,
-                () -> commentService.update(comment, "token"));
+                () -> commentService.update(comment, new HashMap<>()));
         assertEquals("Comment by id '" + comment.getId() + "' is not found", exception.getMessage());
     }
 
@@ -334,7 +334,7 @@ public class CommentServiceRealizationTest extends PostServiceApplicationTests {
     @Test
     public void deleteByIdWithException() {
         Exception exception = assertThrows(CommentNotFoundException.class,
-                () -> commentService.deleteById(comment.getId(), "token"));
+                () -> commentService.deleteById(comment.getId(), new HashMap<>()));
         assertEquals("Comment by id '" + comment.getId() + "' is not found", exception.getMessage());
     }
 }
