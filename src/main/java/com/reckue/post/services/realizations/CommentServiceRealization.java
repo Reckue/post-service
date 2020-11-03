@@ -15,7 +15,6 @@ import com.reckue.post.services.CommentService;
 import com.reckue.post.services.NodeService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.SerializationUtils;
-import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -36,23 +35,21 @@ public class CommentServiceRealization implements CommentService {
     private final NodeRepository nodeRepository;
     private final PostRepository postRepository;
     private final NodeService nodeService;
-    private final TokenStore tokenStore;
 
     /**
      * This method is used to create an object of class Comment.
      *
-     * @param comment object of class Comment
-     * @param token   user token
+     * @param comment   object of class Comment
+     * @param tokenInfo user token info
      * @return comment object of class Comment
      */
     @Override
     @Transactional
-    public Comment create(Comment comment, String token) {
+    public Comment create(Comment comment, Map<String, Object> tokenInfo) {
         if (comment == null) {
             throw new RuntimeException("Comment is null");
         }
-        String userId = (String) tokenStore.readAccessToken(token)
-                .getAdditionalInformation().get("userId");
+        String userId = (String) tokenInfo.get("userId");
         comment.setUserId(userId);
         // to set default value as null
         if (comment.getCommentId().length() < 7) {
@@ -72,7 +69,7 @@ public class CommentServiceRealization implements CommentService {
             nodeList.forEach(node -> {
                 node.setParentId(commentId);
                 node.setParentType(ParentType.COMMENT);
-                nodeService.create(node, token);
+                nodeService.create(node, tokenInfo);
             });
         }
         storedComment.setNodes(nodeList);
@@ -104,12 +101,12 @@ public class CommentServiceRealization implements CommentService {
      * Throws {@link ReckueAccessDeniedException} in case if the user isn't an comment owner or
      * hasn't admin authorities.
      *
-     * @param comment object of class Comment
-     * @param token   user token
+     * @param comment   object of class Comment
+     * @param tokenInfo user token info
      * @return comment object of class Comment
      */
     @Override
-    public Comment update(Comment comment, String token) {
+    public Comment update(Comment comment, Map<String, Object> tokenInfo) {
         if (comment.getId() == null) {
             throw new ReckueIllegalArgumentException("The parameter is null");
         }
@@ -117,7 +114,7 @@ public class CommentServiceRealization implements CommentService {
         if (!comment.getNodes().isEmpty()) {
             comment.getNodes().forEach(node -> {
                 node.setParentId(comment.getId());
-                nodeService.create(node, token);
+                nodeService.create(node, tokenInfo);
             });
         }
 
@@ -127,7 +124,6 @@ public class CommentServiceRealization implements CommentService {
         savedComment.setCommentId(comment.getCommentId().length() > 7 ? comment.getCommentId() : null);
         savedComment.setNodes(comment.getNodes());
 
-        Map<String, Object> tokenInfo = tokenStore.readAccessToken(token).getAdditionalInformation();
         if (!tokenInfo.get("userId").equals(savedComment.getUserId())
                 && !tokenInfo.get("authorities").equals("ROLE_ADMIN")) {
             throw new ReckueAccessDeniedException("The operation is forbidden");
@@ -323,15 +319,14 @@ public class CommentServiceRealization implements CommentService {
      * Throws {@link ReckueAccessDeniedException} in case if the user isn't an post owner or
      * hasn't admin authorities.
      *
-     * @param id    object
-     * @param token user token
+     * @param id        object
+     * @param tokenInfo user token info
      */
     @Override
-    public void deleteById(String id, String token) {
+    public void deleteById(String id, Map<String, Object> tokenInfo) {
         if (!commentRepository.existsById(id)) {
             throw new CommentNotFoundException(id);
         }
-        Map<String, Object> tokenInfo = tokenStore.readAccessToken(token).getAdditionalInformation();
         Optional<Comment> comment = commentRepository.findById(id);
         if (comment.isPresent()) {
             String commentUser = comment.get().getUserId();

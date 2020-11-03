@@ -12,7 +12,6 @@ import com.reckue.post.repositories.NodeRepository;
 import com.reckue.post.repositories.PostRepository;
 import com.reckue.post.services.NodeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -31,22 +30,20 @@ public class NodeServiceRealization implements NodeService {
     private final NodeRepository nodeRepository;
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
-    private final TokenStore tokenStore;
 
     /**
      * This method is used to create an object of class Node.
      *
-     * @param node  object of class Node
-     * @param token user token
+     * @param node      object of class Node
+     * @param tokenInfo user token info
      * @return node object of class Node
      */
     @Override
-    public Node create(Node node, String token) {
+    public Node create(Node node, Map<String, Object> tokenInfo) {
         if (node == null) {
             throw new RuntimeException("Node is null");
         }
-        String userId = (String) tokenStore.readAccessToken(token)
-                .getAdditionalInformation().get("userId");
+        String userId = (String) tokenInfo.get("userId");
         node.setUserId(userId);
 
         validateCreatingNode(node);
@@ -86,12 +83,12 @@ public class NodeServiceRealization implements NodeService {
      * Throws {@link ReckueAccessDeniedException} in case if the user isn't an node owner or
      * hasn't admin authorities.
      *
-     * @param node  object of class Node
-     * @param token user token
+     * @param node      object of class Node
+     * @param tokenInfo user token info
      * @return node object of class Node
      */
     @Override
-    public Node update(Node node, String token) {
+    public Node update(Node node, Map<String, Object> tokenInfo) {
         if (node.getId() == null) {
             throw new ReckueIllegalArgumentException("The parameter is null");
         }
@@ -106,7 +103,6 @@ public class NodeServiceRealization implements NodeService {
         savedNode.setSource(node.getSource());
         savedNode.setStatus(node.getStatus());
 
-        Map<String, Object> tokenInfo = tokenStore.readAccessToken(token).getAdditionalInformation();
         if (!tokenInfo.get("userId").equals(savedNode.getUserId())
                 && !tokenInfo.get("authorities").equals("ROLE_ADMIN")) {
             throw new ReckueAccessDeniedException("The operation is forbidden");
@@ -316,15 +312,14 @@ public class NodeServiceRealization implements NodeService {
      * Throws {@link ReckueAccessDeniedException} in case if the user isn't an node owner or
      * hasn't admin authorities.
      *
-     * @param id    object
-     * @param token user token
+     * @param id        object
+     * @param tokenInfo user token info
      */
     @Override
-    public void deleteById(String id, String token) {
+    public void deleteById(String id, Map<String, Object> tokenInfo) {
         if (!nodeRepository.existsById(id)) {
             throw new NodeNotFoundException(id);
         }
-        Map<String, Object> tokenInfo = tokenStore.readAccessToken(token).getAdditionalInformation();
         Optional<Node> node = nodeRepository.findById(id);
         if (node.isPresent()) {
             String nodeUser = node.get().getUserId();

@@ -13,7 +13,6 @@ import com.reckue.post.services.NodeService;
 import com.reckue.post.services.PostService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.SerializationUtils;
-import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -33,23 +32,21 @@ public class PostServiceRealization implements PostService {
     private final PostRepository postRepository;
     private final NodeRepository nodeRepository;
     private final NodeService nodeService;
-    private final TokenStore tokenStore;
 
     /**
      * This method is used to create an object of class Post.
      *
-     * @param post  object of class Post
-     * @param token user token
+     * @param post      object of class Post
+     * @param tokenInfo user token info
      * @return post object of class Post
      */
     @Override
     @Transactional
-    public Post create(Post post, String token) {
+    public Post create(Post post, Map<String, Object> tokenInfo) {
         if (post == null) {
             throw new RuntimeException("Post is null");
         }
-        String userId = (String) tokenStore.readAccessToken(token)
-                .getAdditionalInformation().get("userId");
+        String userId = (String) tokenInfo.get("userId");
         post.setUserId(userId);
 
         validateOnCreatePost(post);
@@ -68,7 +65,7 @@ public class PostServiceRealization implements PostService {
             nodeList.forEach(node -> {
                 node.setParentId(postId);
                 node.setParentType(ParentType.POST);
-                nodeService.create(node, token);
+                nodeService.create(node, tokenInfo);
             });
         }
         storedPost.setNodes(nodeList);
@@ -115,13 +112,13 @@ public class PostServiceRealization implements PostService {
      * Throws {@link ReckueAccessDeniedException} in case if the user isn't an post owner or
      * hasn't admin authorities.
      *
-     * @param post  object of class Post
-     * @param token user token
+     * @param post      object of class Post
+     * @param tokenInfo user token info
      * @return post object of class Post
      */
     @Override
     @Transactional
-    public Post update(Post post, String token) {
+    public Post update(Post post, Map<String, Object> tokenInfo) {
         if (post == null) {
             throw new RuntimeException("Post is null");
         }
@@ -132,7 +129,7 @@ public class PostServiceRealization implements PostService {
         if (!post.getNodes().isEmpty()) {
             post.getNodes().forEach(node -> {
                 node.setParentId(post.getId());
-                nodeService.create(node, token);
+                nodeService.create(node, tokenInfo);
             });
         }
         validateOnUpdateStatus(post);
@@ -144,7 +141,6 @@ public class PostServiceRealization implements PostService {
         savedPost.setSource(post.getSource());
         savedPost.setTags(post.getTags());
 
-        Map<String, Object> tokenInfo = tokenStore.readAccessToken(token).getAdditionalInformation();
         if (!tokenInfo.get("userId").equals(savedPost.getUserId())
                 && !tokenInfo.get("authorities").equals("ROLE_ADMIN")) {
             throw new ReckueAccessDeniedException("The operation is forbidden");
@@ -398,15 +394,14 @@ public class PostServiceRealization implements PostService {
      * Throws {@link ReckueAccessDeniedException} in case if the user isn't an post owner or
      * hasn't admin authorities.
      *
-     * @param id    object
-     * @param token user token
+     * @param id        object
+     * @param tokenInfo user token info
      */
     @Override
-    public void deleteById(String id, String token) {
+    public void deleteById(String id, Map<String, Object> tokenInfo) {
         if (!postRepository.existsById(id)) {
             throw new PostNotFoundException(id);
         }
-        Map<String, Object> tokenInfo = tokenStore.readAccessToken(token).getAdditionalInformation();
         Optional<Post> post = postRepository.findById(id);
         if (post.isPresent()) {
             String postUser = post.get().getUserId();

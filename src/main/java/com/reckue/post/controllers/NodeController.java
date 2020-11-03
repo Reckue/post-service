@@ -4,6 +4,7 @@ import com.reckue.post.controllers.apis.NodeApi;
 import com.reckue.post.exceptions.ReckueUnauthorizedException;
 import com.reckue.post.models.Node;
 import com.reckue.post.services.NodeService;
+import com.reckue.post.services.SecurityService;
 import com.reckue.post.transfers.NodeRequest;
 import com.reckue.post.transfers.NodeResponse;
 import com.reckue.post.utils.converters.NodeConverter;
@@ -17,7 +18,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.reckue.post.utils.converters.NodeConverter.convert;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 /**
  * Class NodeController is responsible for processing incoming requests.
@@ -32,12 +32,14 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 public class NodeController implements NodeApi {
 
     private final NodeService nodeService;
+    private final SecurityService securityService;
 
     /**
      * This type of request allows to create and process it using the converter.
      * Throws {@link ReckueUnauthorizedException} in case if token is absent.
      *
      * @param nodeRequest the object of class NodeRequest
+     * @param request     information for HTTP servlets
      * @return the object of class NodeResponse
      */
     @PostMapping
@@ -45,13 +47,7 @@ public class NodeController implements NodeApi {
     //  (you don't need to enter a parentId in update method)
     public NodeResponse create(@RequestBody @Valid NodeRequest nodeRequest, HttpServletRequest request) {
         log.info("{}", nodeRequest);
-        String token;
-        try {
-            token = request.getHeader(AUTHORIZATION).substring(7);
-        } catch (NullPointerException e) {
-            throw new ReckueUnauthorizedException("Token missing");
-        }
-        return convert(nodeService.create(convert(nodeRequest), token));
+        return convert(nodeService.create(convert(nodeRequest), securityService.checkAndGetInfo(request)));
     }
 
     /**
@@ -60,21 +56,16 @@ public class NodeController implements NodeApi {
      *
      * @param id          the object identifier
      * @param nodeRequest the object of class NodeRequest
+     * @param request     information for HTTP servlets
      * @return the object of class NodeResponse
      */
     @PutMapping("/{id}")
     public NodeResponse update(@PathVariable String id,
                                @RequestBody @Valid NodeRequest nodeRequest,
                                HttpServletRequest request) {
-        String token;
-        try {
-            token = request.getHeader(AUTHORIZATION).substring(7);
-        } catch (NullPointerException e) {
-            throw new ReckueUnauthorizedException("Token missing");
-        }
         Node node = convert(nodeRequest);
         node.setId(id);
-        return convert(nodeService.update(node, token));
+        return convert(nodeService.update(node, securityService.checkAndGetInfo(request)));
     }
 
     /**
@@ -131,16 +122,11 @@ public class NodeController implements NodeApi {
      * This type of request allows to delete the object by id.
      * Throws {@link ReckueUnauthorizedException} in case if token is absent.
      *
-     * @param id the object identifier
+     * @param id      the object identifier
+     * @param request information for HTTP servlets
      */
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable String id, HttpServletRequest request) {
-        String token;
-        try {
-            token = request.getHeader(AUTHORIZATION).substring(7);
-        } catch (NullPointerException e) {
-            throw new ReckueUnauthorizedException("Token missing");
-        }
-        nodeService.deleteById(id, token);
+        nodeService.deleteById(id, securityService.checkAndGetInfo(request));
     }
 }

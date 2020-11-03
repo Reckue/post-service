@@ -16,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -87,7 +88,7 @@ public class RatingServiceRealizationTest extends PostServiceApplicationTests {
         when(ratingRepository.save(rating)).thenReturn(rating);
         doReturn(true).when(postRepository).existsById(post.getId());
 
-        assertEquals(rating, ratingService.create(rating, "token"));
+        assertEquals(rating, ratingService.create(rating, new HashMap<>()));
     }
 
     @Disabled
@@ -96,7 +97,7 @@ public class RatingServiceRealizationTest extends PostServiceApplicationTests {
         doReturn(false).when(postRepository).existsById(rating1.getPostId());
 
         Exception exception = assertThrows(PostNotFoundException.class,
-                () -> ratingService.create(rating1, "token"));
+                () -> ratingService.create(rating1, new HashMap<>()));
 
         assertEquals("Post by id '" + rating1.getPostId() + "' is not found", exception.getMessage());
     }
@@ -116,7 +117,7 @@ public class RatingServiceRealizationTest extends PostServiceApplicationTests {
         when(ratingRepository.findById(ratingRequest.getId())).thenReturn(Optional.of(ratingOne));
         when(ratingRepository.save(ratingOne)).thenReturn(ratingOne);
 
-        ratingService.update(ratingRequest, "token");
+        ratingService.update(ratingRequest, new HashMap<>());
 
         Assertions.assertAll(
                 () -> assertEquals(ratingOne.getUserId(), ratingOne.getUserId()),
@@ -129,7 +130,7 @@ public class RatingServiceRealizationTest extends PostServiceApplicationTests {
         Rating ratingOne = Rating.builder()
                 .build();
 
-        assertThrows(ReckueIllegalArgumentException.class, () -> ratingService.update(ratingOne, "token"));
+        assertThrows(ReckueIllegalArgumentException.class, () -> ratingService.update(ratingOne, new HashMap<>()));
     }
 
     @Test
@@ -137,7 +138,7 @@ public class RatingServiceRealizationTest extends PostServiceApplicationTests {
         when(ratingRepository.existsById(rating1.getId())).thenReturn(false);
         when(ratingRepository.save(rating1)).thenReturn(rating1);
 
-        assertThrows(RatingNotFoundException.class, () -> ratingService.update(rating1, "token"));
+        assertThrows(RatingNotFoundException.class, () -> ratingService.update(rating1, new HashMap<>()));
     }
 
     @Disabled
@@ -149,7 +150,7 @@ public class RatingServiceRealizationTest extends PostServiceApplicationTests {
             ratings.remove(rating1);
             return null;
         }).when(ratingRepository).deleteById(rating1.getId());
-        ratingService.deleteById(rating1.getId(), "token");
+        ratingService.deleteById(rating1.getId(), new HashMap<>());
 
         assertEquals(0, ratings.size());
     }
@@ -157,7 +158,7 @@ public class RatingServiceRealizationTest extends PostServiceApplicationTests {
     @Test
     public void deleteByIdWithException() {
         Exception exception = assertThrows(RatingNotFoundException.class,
-                () -> ratingService.deleteById(rating1.getId(), "token"));
+                () -> ratingService.deleteById(rating1.getId(), new HashMap<>()));
         assertEquals("Rating by id '" + rating1.getId() + "' is not found", exception.getMessage());
     }
 }

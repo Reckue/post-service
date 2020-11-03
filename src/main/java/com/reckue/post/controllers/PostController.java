@@ -4,6 +4,7 @@ import com.reckue.post.controllers.apis.PostApi;
 import com.reckue.post.exceptions.ReckueUnauthorizedException;
 import com.reckue.post.models.Post;
 import com.reckue.post.services.PostService;
+import com.reckue.post.services.SecurityService;
 import com.reckue.post.transfers.PostRequest;
 import com.reckue.post.transfers.PostResponse;
 import com.reckue.post.utils.converters.PostConverter;
@@ -16,7 +17,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.reckue.post.utils.converters.PostConverter.convert;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 /**
  * Class PostController represents simple REST-Controller.
@@ -30,23 +30,19 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 public class PostController implements PostApi {
 
     private final PostService postService;
+    private final SecurityService securityService;
 
     /**
      * This type of request allows to create, process it using the converter and save.
      * Throws {@link ReckueUnauthorizedException} in case if token is absent.
      *
      * @param postRequest the object of class PostRequest
+     * @param request     information for HTTP servlets
      * @return the object of class PostResponse
      */
     @PostMapping
     public PostResponse create(@RequestBody @Valid PostRequest postRequest, HttpServletRequest request) {
-        String token;
-        try {
-            token = request.getHeader(AUTHORIZATION).substring(7);
-        } catch (NullPointerException e) {
-            throw new ReckueUnauthorizedException("Token missing");
-        }
-        return convert(postService.create(convert(postRequest), token));
+        return convert(postService.create(convert(postRequest), securityService.checkAndGetInfo(request)));
     }
 
     /**
@@ -55,21 +51,16 @@ public class PostController implements PostApi {
      *
      * @param id          the object identifier
      * @param postRequest the object of class PostRequest
+     * @param request     information for HTTP servlets
      * @return the object of class PostResponse
      */
     @PutMapping("/{id}")
     public PostResponse update(@PathVariable String id,
                                @RequestBody @Valid PostRequest postRequest,
                                HttpServletRequest request) {
-        String token;
-        try {
-            token = request.getHeader(AUTHORIZATION).substring(7);
-        } catch (NullPointerException e) {
-            throw new ReckueUnauthorizedException("Token missing");
-        }
         Post post = convert(postRequest);
         post.setId(id);
-        return convert(postService.update(post, token));
+        return convert(postService.update(post, securityService.checkAndGetInfo(request)));
     }
 
     /**
@@ -138,16 +129,11 @@ public class PostController implements PostApi {
      * This type of request allows to delete the object by id.
      * Throws {@link ReckueUnauthorizedException} in case if token is absent.
      *
-     * @param id the object identifier
+     * @param id      the object identifier
+     * @param request information for HTTP servlets
      */
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable String id, HttpServletRequest request) {
-        String token;
-        try {
-            token = request.getHeader(AUTHORIZATION).substring(7);
-        } catch (NullPointerException e) {
-            throw new ReckueUnauthorizedException("Token missing");
-        }
-        postService.deleteById(id, token);
+        postService.deleteById(id, securityService.checkAndGetInfo(request));
     }
 }

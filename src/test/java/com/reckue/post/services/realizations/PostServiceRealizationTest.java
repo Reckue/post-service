@@ -49,7 +49,7 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
                 .build();
         when(postRepository.save(post)).thenReturn(post);
 
-        assertEquals(post, postService.create(post, "token"));
+        assertEquals(post, postService.create(post, new HashMap<>()));
     }
 
     @Disabled
@@ -72,7 +72,7 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
         when(postRepository.findById(postRequest.getId())).thenReturn(Optional.of(postOne));
         when(postRepository.save(postOne)).thenReturn(postOne);
 
-        postService.update(postRequest, "token");
+        postService.update(postRequest, new HashMap<>());
 
         Assertions.assertAll(
                 () -> assertEquals(postRequest.getTitle(), postOne.getTitle()),
@@ -90,7 +90,7 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
                 .title("postOne")
                 .build();
 
-        assertThrows(ReckueIllegalArgumentException.class, () -> postService.update(postOne, "token"));
+        assertThrows(ReckueIllegalArgumentException.class, () -> postService.update(postOne, new HashMap<>()));
     }
 
     @Test
@@ -103,7 +103,7 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
         when(postRepository.existsById(postOne.getId())).thenReturn(false);
         when(postRepository.save(postOne)).thenReturn(postOne);
 
-        assertThrows(PostNotFoundException.class, () -> postService.update(postOne, "token"));
+        assertThrows(PostNotFoundException.class, () -> postService.update(postOne, new HashMap<>()));
     }
 
     @Test
@@ -366,7 +366,7 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
             posts.remove(postOne);
             return null;
         }).when(postRepository).deleteById(postOne.getId());
-        postService.deleteById(postOne.getId(), "token");
+        postService.deleteById(postOne.getId(), new HashMap<>());
 
         assertEquals(0, posts.size());
     }
@@ -379,6 +379,6 @@ class PostServiceRealizationTest extends PostServiceApplicationTests {
                 .build();
         when(postRepository.existsById(postOne.getId())).thenReturn(false);
 
-        assertThrows(PostNotFoundException.class, () -> postService.deleteById(postOne.getId(), "token"));
+        assertThrows(PostNotFoundException.class, () -> postService.deleteById(postOne.getId(), new HashMap<>()));
     }
 }
