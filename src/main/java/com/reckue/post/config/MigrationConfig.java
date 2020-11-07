@@ -8,14 +8,14 @@ import org.springframework.data.mongodb.config.EnableMongoAuditing;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 /**
- * Class MongobeeConfig sets up the settings for mongobee.
+ * Class MigrationConfig sets up the settings for mongobee.
  *
  * @author Kamila Meshcheryakova
  */
 @EnableMongoAuditing
 @EnableMongoRepositories("com.reckue.post.repository")
 @Configuration
-public class MigrationConfiguration {
+public class MigrationConfig {
 
     /**
      * This method creates an instance of the Mongobee object and tells about the package to scan for changes.

@@ -30,7 +30,7 @@ import static com.google.common.collect.Lists.newArrayList;
  */
 @Configuration
 @EnableSwagger2
-public class SwaggerConfiguration implements WebMvcConfigurer {
+public class SwaggerConfig implements WebMvcConfigurer {
 
     /**
      * Redirects users from home page to the Swagger UI page.
