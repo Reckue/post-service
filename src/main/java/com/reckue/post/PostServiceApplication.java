@@ -22,7 +22,7 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
 
- */
+*/
 package com.reckue.post;
 
 import org.springframework.boot.SpringApplication;
