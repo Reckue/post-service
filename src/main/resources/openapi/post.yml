@@ -19,6 +19,8 @@ paths:
       operationId: getPosts
       tags:
         - Posts
+      security:
+        - bearerAuth: []
       parameters:
         - name: limit
           in: query
@@ -66,6 +68,8 @@ paths:
       operationId: createPost
       tags:
         - Posts
+      security:
+        - bearerAuth: []
       requestBody:
         description: Body of post request to create a new post.
         required: true
@@ -102,6 +106,8 @@ paths:
       operationId: updatePost
       tags:
         - Posts
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -145,6 +151,8 @@ paths:
       operationId: getPostById
       tags:
         - Posts
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -169,6 +177,8 @@ paths:
       operationId: deletePostById
       tags:
         - Posts
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -196,6 +206,8 @@ paths:
       operationId: getNodes
       tags:
         - Nodes
+      security:
+        - bearerAuth: []
       parameters:
         - name: limit
           in: query
@@ -243,6 +255,8 @@ paths:
       operationId: createNode
       tags:
         - Nodes
+      security:
+        - bearerAuth: []
       requestBody:
         description: Body of post request to create a new node.
         required: true
@@ -267,6 +281,8 @@ paths:
       operationId: updateNode
       tags:
         - Nodes
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -298,6 +314,8 @@ paths:
       operationId: getNodeById
       tags:
         - Nodes
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -322,6 +340,8 @@ paths:
       operationId: deleteNodeById
       tags:
         - Nodes
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -349,6 +369,8 @@ paths:
       operationId: getTags
       tags:
         - Tags
+      security:
+        - bearerAuth: []
       parameters:
         - name: limit
           in: query
@@ -396,6 +418,8 @@ paths:
       operationId: createTag
       tags:
         - Tags
+      security:
+        - bearerAuth: []
       requestBody:
         description: Body of tag request to create a new tag.
         required: true
@@ -422,6 +446,8 @@ paths:
       operationId: updateTag
       tags:
         - Tags
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -455,6 +481,8 @@ paths:
       operationId: getTagById
       tags:
         - Tags
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -479,6 +507,8 @@ paths:
       operationId: deleteTagById
       tags:
         - Tags
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -506,6 +536,8 @@ paths:
       operationId: getComments
       tags:
         - Comments
+      security:
+        - bearerAuth: []
       parameters:
         - name: limit
           in: query
@@ -553,6 +585,8 @@ paths:
       operationId: createComment
       tags:
         - Comment
+      security:
+        - bearerAuth: []
       requestBody:
         description: Body of comment request to create a new comment.
         required: true
@@ -577,6 +611,8 @@ paths:
       operationId: updateComment
       tags:
         - Comments
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -608,6 +644,8 @@ paths:
       operationId: getCommentById
       tags:
         - Comments
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -632,6 +670,8 @@ paths:
       operationId: deleteCommentById
       tags:
         - Comment
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -654,6 +694,12 @@ paths:
 
 # Components
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
   requestBodies:
     PostRequest:
       description: Post request.
