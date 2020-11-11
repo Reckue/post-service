@@ -19,8 +19,6 @@ paths:
       operationId: getPosts
       tags:
         - Posts
-      security:
-        - bearerAuth: []
       parameters:
         - name: limit
           in: query
@@ -151,8 +149,6 @@ paths:
       operationId: getPostById
       tags:
         - Posts
-      security:
-        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -206,8 +202,6 @@ paths:
       operationId: getNodes
       tags:
         - Nodes
-      security:
-        - bearerAuth: []
       parameters:
         - name: limit
           in: query
@@ -314,8 +308,6 @@ paths:
       operationId: getNodeById
       tags:
         - Nodes
-      security:
-        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -369,8 +361,6 @@ paths:
       operationId: getTags
       tags:
         - Tags
-      security:
-        - bearerAuth: []
       parameters:
         - name: limit
           in: query
@@ -481,8 +471,6 @@ paths:
       operationId: getTagById
       tags:
         - Tags
-      security:
-        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -536,8 +524,6 @@ paths:
       operationId: getComments
       tags:
         - Comments
-      security:
-        - bearerAuth: []
       parameters:
         - name: limit
           in: query
@@ -644,8 +630,6 @@ paths:
       operationId: getCommentById
       tags:
         - Comments
-      security:
-        - bearerAuth: []
       parameters:
         - name: id
           in: path
@@ -1237,7 +1221,7 @@ components:
       enum:
         - POST
         - COMMENT
-    LanguageType:
+    Languaype:
       type: string
       enum:
         - NONE
