@@ -584,7 +584,7 @@ paths:
       summary: Create a new comment.
       operationId: createComment
       tags:
-        - Comment
+        - Comments
       security:
         - bearerAuth: []
       requestBody:
@@ -669,7 +669,7 @@ paths:
       summary: Delete the comment by id.
       operationId: deleteCommentById
       tags:
-        - Comment
+        - Comments
       security:
         - bearerAuth: []
       parameters:
