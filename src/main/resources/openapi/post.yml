@@ -1221,7 +1221,7 @@ components:
       enum:
         - POST
         - COMMENT
-    Languaype:
+    LanguageType:
       type: string
       enum:
         - NONE
