@@ -1,5 +1,5 @@
 # post-api
-**v.1.0.2**
+**v.1.0.4**
 
 Service for publications, tutorials and articles.
 
