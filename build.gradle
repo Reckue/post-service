@@ -1,27 +1,24 @@
 plugins {
-    id 'java'
-    id 'checkstyle'
     id 'org.springframework.boot' version '2.2.2.RELEASE'
     id 'io.spring.dependency-management' version '1.0.8.RELEASE'
     id 'org.openapi.generator' version '4.1.1'
     id 'edu.sc.seis.launch4j' version '2.4.8'
+    id 'checkstyle'
+    id 'java'
 }
 
 group = 'com.reckue'
-version = '1.0.2'
+version = '1.0.5'
 
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
 
-// ----------[ definitions ]----------
 def profile = "develop"
 
-// ----------[ repositories ]----------
 repositories {
     mavenCentral()
 }
 
-// ----------[ dependencies ]----------
 dependencies {
     /* properties */
     implementation 'org.springframework.boot:spring-boot-configuration-processor'
@@ -80,13 +77,15 @@ dependencies {
     implementation "com.thoughtworks.xstream:xstream:1.4.13"
 }
 
-// ----------[ checkstyle ]----------
+
+/* ----------[ checkstyle ]---------- */
 checkstyle {
     toolVersion = "7.2"
     checkstyleMain.exclude '**/com/reckue/post/generated/**'
 }
 
-// ----------[ openapi code generation ]----------
+
+/* ----------[ openapi code generation ]---------- */
 openApiGenerate {
     generatorName = "spring"
     inputSpec = "${rootDir}/src/main/resources/openapi/post.yml"
@@ -106,17 +105,31 @@ openApiGenerate {
 
 sourceSets.main.java.srcDir "${buildDir}/generated/src/main/java"
 
-// ----------[ tasks ]----------
+
+/* ----------[ tasks ]---------- */
 tasks {
     compileJava.dependsOn('openApiGenerate')
 }
 
-// ----------[ test ]----------
+
+/* ----------[ test ]---------- */
 test {
     useJUnitPlatform()
+    exclude 'com/reckue/post/sandbox'
 }
 
-// ----------[ bootRun ]----------
+task sandbox(type: Test) {
+    useJUnitPlatform()
+    include 'com/reckue/post/sandbox/Sandbox.class'
+}
+
+configure(sandbox) {
+    group 'sandbox'
+    // Watch package com.reckue.post in test/java dir.
+    description = 'Execute Sandbox test class ';
+}
+
+/* ----------[ bootRun ]---------- */
 bootRun {
     args = ["--spring.profiles.active=" + profile + " --illegal-access=warn"]
 }
