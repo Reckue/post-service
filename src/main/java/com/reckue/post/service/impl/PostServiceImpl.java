@@ -7,6 +7,7 @@ import com.reckue.post.model.Node;
 import com.reckue.post.model.Post;
 import com.reckue.post.model.type.ParentType;
 import com.reckue.post.model.type.PostStatusType;
+import com.reckue.post.processors.annotations.NotNullableParams;
 import com.reckue.post.repository.NodeRepository;
 import com.reckue.post.repository.PostRepository;
 import com.reckue.post.service.NodeService;
@@ -42,10 +43,8 @@ public class PostServiceImpl implements PostService {
      */
     @Override
     @Transactional
+    @NotNullableParams
     public Post create(Post post, Map<String, Object> tokenInfo) {
-        if (post == null) {
-            throw new RuntimeException("Post is null");
-        }
         String userId = (String) tokenInfo.get("userId");
         post.setUserId(userId);
 
