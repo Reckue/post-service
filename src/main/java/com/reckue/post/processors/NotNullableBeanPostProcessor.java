@@ -43,14 +43,17 @@ public class NotNullableBeanPostProcessor implements BeanPostProcessor {
         Class<?> beanClass = bean.getClass();
         Map<Method, String[]> methodsMetaInfo = annotatedMethodsMetaInfoMap.get(beanName);
         if (methodsMetaInfo != null) {
-            return Proxy.newProxyInstance(beanClass.getClassLoader(), beanClass.getInterfaces(), (proxy, method, args) -> {
-                methodsMetaInfo.forEach((annotatedMethod, paramNames)-> {
-                    String annotatedMethodName = annotatedMethod.getName();
-                    String currentMethodName = method.getName();
-                    if (currentMethodName.equals(annotatedMethodName)) {
-                        checkAnnotatedParam(annotatedMethod, args, paramNames);
-                    }
-                });
+            return Proxy.newProxyInstance(
+                    beanClass.getClassLoader(),
+                    beanClass.getInterfaces(),
+                    (proxy, method, args) -> {
+                        methodsMetaInfo.forEach((annotatedMethod, paramNames)-> {
+                            String annotatedMethodName = annotatedMethod.getName();
+                            String currentMethodName = method.getName();
+                            if (currentMethodName.equals(annotatedMethodName)) {
+                                checkAnnotatedParam(annotatedMethod, args, paramNames);
+                            }
+                        });
                 return method.invoke(bean, args);
             });
         }
