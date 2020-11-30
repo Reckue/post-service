@@ -117,10 +117,8 @@ public class PostServiceImpl implements PostService {
      */
     @Override
     @Transactional
+    @NotNullableParams
     public Post update(Post post, Map<String, Object> tokenInfo) {
-        if (post == null) {
-            throw new RuntimeException("Post is null");
-        }
         if (post.getId() == null) {
             throw new ReckueIllegalArgumentException("The parameter is null");
         }
