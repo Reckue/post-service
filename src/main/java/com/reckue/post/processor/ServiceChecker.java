@@ -1,4 +1,4 @@
-package com.reckue.post.processors;
+package com.reckue.post.processor;
 
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;

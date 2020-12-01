@@ -1,4 +1,4 @@
-package com.reckue.post.processors.annotations;
+package com.reckue.post.processor.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

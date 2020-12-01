@@ -1,4 +1,4 @@
-package com.reckue.post.processors;
+package com.reckue.post.processor;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;

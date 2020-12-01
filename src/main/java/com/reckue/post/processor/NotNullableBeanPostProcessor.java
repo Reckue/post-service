@@ -1,4 +1,4 @@
-package com.reckue.post.processors;
+package com.reckue.post.processor;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;

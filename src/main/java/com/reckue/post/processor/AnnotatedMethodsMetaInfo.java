@@ -1,6 +1,6 @@
-package com.reckue.post.processors;
+package com.reckue.post.processor;
 
-import com.reckue.post.processors.annotations.NotNullableArgs;
+import com.reckue.post.processor.annotation.NotNullableArgs;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
