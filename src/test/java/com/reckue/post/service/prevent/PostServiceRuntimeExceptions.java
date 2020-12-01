@@ -20,7 +20,6 @@ public class PostServiceRuntimeExceptions {
         Exception exception = assertThrows(RuntimeException.class, () -> {
             postService.create(null, null);
         });
-
         assertEquals( "Post is null", exception.getMessage());
     }
 
@@ -29,7 +28,30 @@ public class PostServiceRuntimeExceptions {
         Exception exception = assertThrows(RuntimeException.class, () -> {
             postService.create(new Post(), null);
         });
-
         assertEquals( "TokenInfo is null", exception.getMessage());
+    }
+
+    @Test
+    public void findAllPostByTitleButRuntimeExceptionCauseNullTitleString() {
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            postService.findAllByTitle(null);
+        });
+        assertEquals( "Title is null", exception.getMessage());
+    }
+
+    @Test
+    public void deletePostByIdButRuntimeExceptionCauseNullIdString() {
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            postService.deleteById(null, null);
+        });
+        assertEquals( "Id is null", exception.getMessage());
+    }
+
+    @Test
+    public void findPostByIdButRuntimeExceptionCauseNullIdString() {
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            postService.findById(null);
+        });
+        assertEquals( "Id is null", exception.getMessage());
     }
 }
