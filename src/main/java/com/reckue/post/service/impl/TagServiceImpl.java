@@ -3,6 +3,7 @@ package com.reckue.post.service.impl;
 import com.reckue.post.exception.ReckueIllegalArgumentException;
 import com.reckue.post.exception.model.tag.TagNotFoundException;
 import com.reckue.post.model.Tag;
+import com.reckue.post.processor.annotation.NotNullableArgs;
 import com.reckue.post.repository.TagRepository;
 import com.reckue.post.service.TagService;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,7 @@ public class TagServiceImpl implements TagService {
      * @return tag object of class Tag
      */
     @Override
+    @NotNullableArgs
     public Tag create(Tag tag) {
         return tagRepository.save(tag);
     }
