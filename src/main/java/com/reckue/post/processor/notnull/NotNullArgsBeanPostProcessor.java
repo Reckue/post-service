@@ -1,5 +1,6 @@
-package com.reckue.post.processor;
+package com.reckue.post.processor.notnull;
 
+import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -9,15 +10,11 @@ import java.lang.reflect.Method;
 import java.util.*;
 
 @Component
+@RequiredArgsConstructor
 public class NotNullArgsBeanPostProcessor implements BeanPostProcessor {
 
     private final NotNullArgsProxyFactory notNullArgsProxyFactory;
-
-    private final AnnotatedMethodsMetaInfo annotatedMethodsMetaInfo = new AnnotatedMethodsMetaInfo();
-
-    public NotNullArgsBeanPostProcessor(NotNullArgsProxyFactory notNullArgsProxyFactory) {
-        this.notNullArgsProxyFactory = notNullArgsProxyFactory;
-    }
+    private final AnnotatedMethodsMetaInfo annotatedMethodsMetaInfo;
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, @NotNull String beanName) throws BeansException {

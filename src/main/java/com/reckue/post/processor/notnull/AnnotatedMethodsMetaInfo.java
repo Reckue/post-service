@@ -1,11 +1,12 @@
-package com.reckue.post.processor;
+package com.reckue.post.processor.notnull;
 
-import com.reckue.post.processor.annotation.NotNullArgs;
+import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 public class AnnotatedMethodsMetaInfo {
 
     private final Map<String, Map<Method, String[]>> annotatedMethodsMetaInfoMap = new HashMap<>();

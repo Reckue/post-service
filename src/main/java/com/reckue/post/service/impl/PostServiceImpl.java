@@ -7,7 +7,7 @@ import com.reckue.post.model.Node;
 import com.reckue.post.model.Post;
 import com.reckue.post.model.type.ParentType;
 import com.reckue.post.model.type.PostStatusType;
-import com.reckue.post.processor.annotation.NotNullArgs;
+import com.reckue.post.processor.notnull.NotNullArgs;
 import com.reckue.post.repository.NodeRepository;
 import com.reckue.post.repository.PostRepository;
 import com.reckue.post.service.NodeService;

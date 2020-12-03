@@ -3,7 +3,7 @@ package com.reckue.post.service.impl;
 import com.reckue.post.exception.ReckueIllegalArgumentException;
 import com.reckue.post.exception.model.tag.TagNotFoundException;
 import com.reckue.post.model.Tag;
-import com.reckue.post.processor.annotation.NotNullArgs;
+import com.reckue.post.processor.notnull.NotNullArgs;
 import com.reckue.post.repository.TagRepository;
 import com.reckue.post.service.TagService;
 import lombok.RequiredArgsConstructor;
