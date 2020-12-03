@@ -1,6 +1,6 @@
 package com.reckue.post.processor;
 
-import com.reckue.post.processor.annotation.NotNullableArgs;
+import com.reckue.post.processor.annotation.NotNullArgs;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -21,8 +21,8 @@ public class AnnotatedMethodsMetaInfo {
     private Map<Method, String[]> extractAnnotatedMethods(Method[] methods) {
         Map<Method, String[]> methodsMetaInfo = new HashMap<>();
         for (Method method: methods) {
-            if (method.isAnnotationPresent(NotNullableArgs.class)) {
-                String[] params = method.getAnnotation(NotNullableArgs.class).value();
+            if (method.isAnnotationPresent(NotNullArgs.class)) {
+                String[] params = method.getAnnotation(NotNullArgs.class).value();
                 methodsMetaInfo.put(method, params);
             }
         }

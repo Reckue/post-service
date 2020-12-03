@@ -8,7 +8,7 @@ import com.reckue.post.exception.model.post.PostNotFoundException;
 import com.reckue.post.model.Comment;
 import com.reckue.post.model.Node;
 import com.reckue.post.model.type.ParentType;
-import com.reckue.post.processor.annotation.NotNullableArgs;
+import com.reckue.post.processor.annotation.NotNullArgs;
 import com.reckue.post.repository.CommentRepository;
 import com.reckue.post.repository.NodeRepository;
 import com.reckue.post.repository.PostRepository;
@@ -46,7 +46,7 @@ public class CommentServiceImpl implements CommentService {
      */
     @Override
     @Transactional
-    @NotNullableArgs
+    @NotNullArgs
     public Comment create(Comment comment, Map<String, Object> tokenInfo) {
         String userId = (String) tokenInfo.get("userId");
         comment.setUserId(userId);

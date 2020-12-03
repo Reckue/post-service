@@ -3,7 +3,7 @@ package com.reckue.post.service.impl;
 import com.reckue.post.exception.ReckueIllegalArgumentException;
 import com.reckue.post.exception.model.node.pollnode.PollNodeNotFoundException;
 import com.reckue.post.model.node.PollNode;
-import com.reckue.post.processor.annotation.NotNullableArgs;
+import com.reckue.post.processor.annotation.NotNullArgs;
 import com.reckue.post.repository.PollNodeRepository;
 import com.reckue.post.service.PollNodeService;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +33,7 @@ public class PollNodeServiceImpl implements PollNodeService {
      * @return node object of class PollNode
      */
     @Override
-    @NotNullableArgs
+    @NotNullArgs
     public PollNode create(PollNode node) {
         return pollNodeRepository.save(node);
     }
