@@ -7,7 +7,7 @@ import com.reckue.post.exception.model.rating.RatingNotFoundException;
 import com.reckue.post.exception.model.user.UserNotFoundException;
 import com.reckue.post.model.Post;
 import com.reckue.post.model.Rating;
-import com.reckue.post.processor.annotation.NotNullableArgs;
+import com.reckue.post.processor.notnull.NotNullArgs;
 import com.reckue.post.repository.PostRepository;
 import com.reckue.post.repository.RatingRepository;
 import com.reckue.post.service.RatingService;
@@ -38,7 +38,7 @@ public class RatingServiceImpl implements RatingService {
      * @return rating object of class Rating
      */
     @Override
-    @NotNullableArgs
+    @NotNullArgs
     public Rating create(Rating rating, Map<String, Object> tokenInfo) {
         String userId = (String) tokenInfo.get("userId");
         rating.setUserId(userId);

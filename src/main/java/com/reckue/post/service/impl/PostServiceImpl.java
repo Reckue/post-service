@@ -7,7 +7,7 @@ import com.reckue.post.model.Node;
 import com.reckue.post.model.Post;
 import com.reckue.post.model.type.ParentType;
 import com.reckue.post.model.type.PostStatusType;
-import com.reckue.post.processor.annotation.NotNullableArgs;
+import com.reckue.post.processor.notnull.NotNullArgs;
 import com.reckue.post.repository.NodeRepository;
 import com.reckue.post.repository.PostRepository;
 import com.reckue.post.service.NodeService;
@@ -43,7 +43,7 @@ public class PostServiceImpl implements PostService {
      */
     @Override
     @Transactional
-    @NotNullableArgs
+    @NotNullArgs
     public Post create(Post post, Map<String, Object> tokenInfo) {
         String userId = (String) tokenInfo.get("userId");
         post.setUserId(userId);
@@ -117,7 +117,7 @@ public class PostServiceImpl implements PostService {
      */
     @Override
     @Transactional
-    @NotNullableArgs
+    @NotNullArgs
     public Post update(Post post, Map<String, Object> tokenInfo) {
         if (post.getId() == null) {
             throw new ReckueIllegalArgumentException("The parameter is null");
@@ -145,7 +145,7 @@ public class PostServiceImpl implements PostService {
         return postRepository.save(savedPost);
     }
 
-    @NotNullableArgs
+    @NotNullArgs
     private void validateOnUpdateStatus(Post post) {
         if (post.getStatus() == null) {
             return;
@@ -351,7 +351,7 @@ public class PostServiceImpl implements PostService {
      * @return post object of class Post
      */
     @Override
-    @NotNullableArgs
+    @NotNullArgs
     public Post findById(String id) {
         Optional<Post> post = postRepository.findById(id);
         List<Node> nodes = nodeRepository.findAllByParentId(id);
@@ -396,7 +396,7 @@ public class PostServiceImpl implements PostService {
      * @param tokenInfo user token info
      */
     @Override
-    @NotNullableArgs
+    @NotNullArgs
     public void deleteById(String id, Map<String, Object> tokenInfo) {
         if (!postRepository.existsById(id)) {
             throw new PostNotFoundException(id);
@@ -419,7 +419,7 @@ public class PostServiceImpl implements PostService {
      * @return list of objects of class Post
      */
     @Override
-    @NotNullableArgs
+    @NotNullArgs
     public List<Post> findAllByTitle(String title) {
         return postRepository.findAllByTitle(title);
     }

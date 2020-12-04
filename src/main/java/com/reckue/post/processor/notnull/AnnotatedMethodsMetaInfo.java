@@ -1,11 +1,12 @@
-package com.reckue.post.processor;
+package com.reckue.post.processor.notnull;
 
-import com.reckue.post.processor.annotation.NotNullableArgs;
+import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 public class AnnotatedMethodsMetaInfo {
 
     private final Map<String, Map<Method, String[]>> annotatedMethodsMetaInfoMap = new HashMap<>();
@@ -21,8 +22,8 @@ public class AnnotatedMethodsMetaInfo {
     private Map<Method, String[]> extractAnnotatedMethods(Method[] methods) {
         Map<Method, String[]> methodsMetaInfo = new HashMap<>();
         for (Method method: methods) {
-            if (method.isAnnotationPresent(NotNullableArgs.class)) {
-                String[] params = method.getAnnotation(NotNullableArgs.class).value();
+            if (method.isAnnotationPresent(NotNullArgs.class)) {
+                String[] params = method.getAnnotation(NotNullArgs.class).value();
                 methodsMetaInfo.put(method, params);
             }
         }
