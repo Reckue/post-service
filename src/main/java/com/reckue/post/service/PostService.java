@@ -9,13 +9,19 @@ import java.util.List;
  *
  * @author Kamila Meshcheryakova
  */
-public interface PostService extends AuthService<Post> {
+public interface PostService extends BaseService<Post> {
 
     /**
-     * This method is used to get the objects by title.
+     * This method is used to get the posts by title.
      *
      * @param title object
      * @return list of objects of class Post
      */
     List<Post> findAllByTitle(String title);
+
+    /**
+     * This method is used to delete all objects.
+     */
+    @Deprecated
+    void deleteAll();
 }

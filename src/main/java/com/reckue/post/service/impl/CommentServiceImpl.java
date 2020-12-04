@@ -20,7 +20,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -40,16 +43,13 @@ public class CommentServiceImpl implements CommentService {
     /**
      * This method is used to create an object of class Comment.
      *
-     * @param comment   object of class Comment
-     * @param tokenInfo user token info
+     * @param comment object of class Comment
      * @return comment object of class Comment
      */
     @Override
     @Transactional
     @NotNullArgs
-    public Comment create(Comment comment, Map<String, Object> tokenInfo) {
-        String userId = (String) tokenInfo.get("userId");
-        comment.setUserId(userId);
+    public Comment create(Comment comment) {
         // to set default value as null
         if (comment.getCommentId().length() < 7) {
             comment.setCommentId(null);
@@ -68,7 +68,8 @@ public class CommentServiceImpl implements CommentService {
             nodeList.forEach(node -> {
                 node.setParentId(commentId);
                 node.setParentType(ParentType.COMMENT);
-                nodeService.create(node, tokenInfo);
+                node.setUserId(comment.getUserId());
+                nodeService.create(node);
             });
         }
         storedComment.setNodes(nodeList);
@@ -97,15 +98,13 @@ public class CommentServiceImpl implements CommentService {
      * if such object isn't contained in database.
      * Throws {@link ReckueIllegalArgumentException} in case
      * if such parameter is null.
-     * Throws {@link ReckueAccessDeniedException} in case if the user isn't an comment owner or
-     * hasn't admin authorities.
+     * Throws {@link ReckueAccessDeniedException} in case if the user isn't a comment owner.
      *
-     * @param comment   object of class Comment
-     * @param tokenInfo user token info
+     * @param comment object of class Comment
      * @return comment object of class Comment
      */
     @Override
-    public Comment update(Comment comment, Map<String, Object> tokenInfo) {
+    public Comment update(Comment comment) {
         if (comment.getId() == null) {
             throw new ReckueIllegalArgumentException("The parameter is null");
         }
@@ -113,7 +112,8 @@ public class CommentServiceImpl implements CommentService {
         if (!comment.getNodes().isEmpty()) {
             comment.getNodes().forEach(node -> {
                 node.setParentId(comment.getId());
-                nodeService.create(node, tokenInfo);
+                node.setUserId(comment.getUserId());
+                nodeService.create(node);
             });
         }
 
@@ -123,8 +123,7 @@ public class CommentServiceImpl implements CommentService {
         savedComment.setCommentId(comment.getCommentId().length() > 7 ? comment.getCommentId() : null);
         savedComment.setNodes(comment.getNodes());
 
-        if (!tokenInfo.get("userId").equals(savedComment.getUserId())
-                && !tokenInfo.get("authorities").equals("ROLE_ADMIN")) {
+        if (!comment.getUserId().equals(savedComment.getUserId())) {
             throw new ReckueAccessDeniedException("The operation is forbidden");
         }
 
@@ -313,28 +312,12 @@ public class CommentServiceImpl implements CommentService {
 
     /**
      * This method is used to delete an object by id.
-     * Throws {@link CommentNotFoundException} in case
-     * if such object isn't contained in database.
-     * Throws {@link ReckueAccessDeniedException} in case if the user isn't an post owner or
-     * hasn't admin authorities.
      *
-     * @param id        object
-     * @param tokenInfo user token info
+     * @param id object
      */
     @Override
-    public void deleteById(String id, Map<String, Object> tokenInfo) {
-        if (!commentRepository.existsById(id)) {
-            throw new CommentNotFoundException(id);
-        }
-        Optional<Comment> comment = commentRepository.findById(id);
-        if (comment.isPresent()) {
-            String commentUser = comment.get().getUserId();
-            if (tokenInfo.get("userId").equals(commentUser) || tokenInfo.get("authorities").equals("ROLE_ADMIN")) {
-                commentRepository.deleteById(id);
-            } else {
-                throw new ReckueAccessDeniedException("The operation is forbidden");
-            }
-        }
+    public void deleteById(String id) {
+        commentRepository.deleteById(id);
     }
 
     /**

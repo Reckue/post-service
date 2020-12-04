@@ -1,9 +1,6 @@
 package com.reckue.post.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -18,20 +15,28 @@ import java.time.LocalDateTime;
  * @author Iveri Narozashvili
  */
 @Data
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Document
-public class Rating implements Serializable {
+@SuppressWarnings("unused")
+public class Rating extends BaseModel implements Serializable {
 
     @Id
     private String id;
 
-    private String userId;
     private String postId;
 
     @LastModifiedDate
     private LocalDateTime modificationDate;
     @CreatedDate
     private LocalDateTime createdDate;
+
+    @Builder
+    public Rating(String userId, String id, String postId, LocalDateTime modificationDate, LocalDateTime createdDate) {
+        super(userId);
+        this.id = id;
+        this.postId = postId;
+        this.modificationDate = modificationDate;
+        this.createdDate = createdDate;
+    }
 }

@@ -4,7 +4,7 @@ import com.reckue.post.controller.api.NodeApi;
 import com.reckue.post.exception.ReckueUnauthorizedException;
 import com.reckue.post.model.Node;
 import com.reckue.post.service.NodeService;
-import com.reckue.post.service.SecurityService;
+import com.reckue.post.service.proxy.ProxyService;
 import com.reckue.post.transfer.NodeRequest;
 import com.reckue.post.transfer.NodeResponse;
 import com.reckue.post.util.converter.NodeConverter;
@@ -32,7 +32,7 @@ import static com.reckue.post.util.converter.NodeConverter.convert;
 public class NodeController implements NodeApi {
 
     private final NodeService nodeService;
-    private final SecurityService securityService;
+    private final ProxyService<Node> nodeProxyService;
 
     /**
      * This type of request allows to create and process it using the converter.
@@ -47,7 +47,7 @@ public class NodeController implements NodeApi {
     //  (you don't need to enter a parentId in update method)
     public NodeResponse create(@RequestBody @Valid NodeRequest nodeRequest, HttpServletRequest request) {
         log.info("{}", nodeRequest);
-        return convert(nodeService.create(convert(nodeRequest), securityService.checkAndGetInfo(request)));
+        return convert(nodeProxyService.create(convert(nodeRequest), request));
     }
 
     /**
@@ -65,7 +65,7 @@ public class NodeController implements NodeApi {
                                HttpServletRequest request) {
         Node node = convert(nodeRequest);
         node.setId(id);
-        return convert(nodeService.update(node, securityService.checkAndGetInfo(request)));
+        return convert(nodeProxyService.update(node, request));
     }
 
     /**
@@ -127,6 +127,6 @@ public class NodeController implements NodeApi {
      */
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable String id, HttpServletRequest request) {
-        nodeService.deleteById(id, securityService.checkAndGetInfo(request));
+        nodeProxyService.deleteById(id, request);
     }
 }

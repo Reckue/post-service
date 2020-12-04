@@ -4,7 +4,7 @@ import com.reckue.post.controller.api.PostApi;
 import com.reckue.post.exception.ReckueUnauthorizedException;
 import com.reckue.post.model.Post;
 import com.reckue.post.service.PostService;
-import com.reckue.post.service.SecurityService;
+import com.reckue.post.service.proxy.ProxyService;
 import com.reckue.post.transfer.PostRequest;
 import com.reckue.post.transfer.PostResponse;
 import com.reckue.post.util.converter.PostConverter;
@@ -30,7 +30,7 @@ import static com.reckue.post.util.converter.PostConverter.convert;
 public class PostController implements PostApi {
 
     private final PostService postService;
-    private final SecurityService securityService;
+    private final ProxyService<Post> postProxyService;
 
     /**
      * This type of request allows to create, process it using the converter and save.
@@ -42,7 +42,7 @@ public class PostController implements PostApi {
      */
     @PostMapping
     public PostResponse create(@RequestBody @Valid PostRequest postRequest, HttpServletRequest request) {
-        return convert(postService.create(convert(postRequest), securityService.checkAndGetInfo(request)));
+        return convert(postProxyService.create(convert(postRequest), request));
     }
 
     /**
@@ -60,7 +60,7 @@ public class PostController implements PostApi {
                                HttpServletRequest request) {
         Post post = convert(postRequest);
         post.setId(id);
-        return convert(postService.update(post, securityService.checkAndGetInfo(request)));
+        return convert(postProxyService.update(post, request));
     }
 
     /**
@@ -134,6 +134,6 @@ public class PostController implements PostApi {
      */
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable String id, HttpServletRequest request) {
-        postService.deleteById(id, securityService.checkAndGetInfo(request));
+        postProxyService.deleteById(id, request);
     }
 }

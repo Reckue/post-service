@@ -7,5 +7,11 @@ import com.reckue.post.model.Comment;
  *
  * @author Artur Magomedov
  */
-public interface CommentService extends AuthService<Comment> {
+public interface CommentService extends BaseService<Comment> {
+
+    /**
+     * This method is used to delete all objects.
+     */
+    @Deprecated
+    void deleteAll();
 }
