@@ -1,5 +1,7 @@
 package com.reckue.post.model.node;
 
+import org.bson.codecs.pojo.annotations.BsonDiscriminator;
+
 import java.io.Serializable;
 
 /**
@@ -7,5 +9,6 @@ import java.io.Serializable;
  *
  * @author Kamila Meshcheryakova
  */
+@BsonDiscriminator
 public interface Parent extends Serializable {
 }

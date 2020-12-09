@@ -11,6 +11,7 @@ import com.reckue.post.processor.notnull.NotNullArgs;
 import com.reckue.post.repository.CommentRepository;
 import com.reckue.post.repository.NodeRepository;
 import com.reckue.post.repository.PostRepository;
+import com.reckue.post.repository.dao.NodeDAO;
 import com.reckue.post.service.NodeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,7 @@ public class NodeServiceImpl implements NodeService {
     private final NodeRepository nodeRepository;
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
+    private final NodeDAO dao = new NodeDAO();
 
     /**
      * This method is used to create an object of class Node.
@@ -117,7 +119,7 @@ public class NodeServiceImpl implements NodeService {
      */
     @Override
     public List<Node> findAll() {
-        return nodeRepository.findAll();
+        return dao.findAll();
     }
 
     /**
@@ -142,145 +144,130 @@ public class NodeServiceImpl implements NodeService {
         if (limit < 0 || offset < 0) {
             throw new ReckueIllegalArgumentException("Limit or offset is incorrect");
         }
-        return findAllByTypeAndDesc(sort, desc).stream()
-                .limit(limit)
-                .skip(offset)
-                .collect(Collectors.toList());
+        return dao.findAll(limit, offset, sort, desc);
     }
 
-    /**
-     * This method is used to sort objects in descending order by type.
-     *
-     * @param sort parameter for sorting
-     * @param desc sorting descending
-     * @return list of objects of class Node sorted by the selected parameter for sorting
-     * in descending order
-     */
-    public List<Node> findAllByTypeAndDesc(String sort, boolean desc) {
-        if (desc) {
-            List<Node> nodes = findAllBySortType(sort);
-            Collections.reverse(nodes);
-            return nodes;
-        }
-        return findAllBySortType(sort);
-    }
-
-    /**
-     * This method is used to sort objects by type.
-     *
-     * @param sort type of sorting: type, status, source, createdDate, modificationDate, userId default - id
-     * @return list of objects of class Node sorted by the selected parameter for sorting
-     */
-    public List<Node> findAllBySortType(String sort) {
-        switch (sort) {
-            case "type":
-                return findAllAndSortByType();
-            case "status":
-                return findAllAndSortByStatus();
-            case "source":
-                return findAllAndSortBySource();
-            case "createdDate":
-                return findAllAndSortByCreatedDate();
-            case "modificationDate":
-                return findAllAndSortByModificationDate();
-            case "userId":
-                return findAllAndSortByUserId();
-            case "id":
-                return findAllAndSortById();
-        }
-        throw new ReckueIllegalArgumentException("Such field as " + sort + " doesn't exist");
-    }
-
-    /**
-     * This method is used to sort objects by modificationDate.
-     *
-     * @return list of objects of class Node sorted by modificationDate
-     */
-    private List<Node> findAllAndSortByModificationDate() {
-        return findAll().stream()
-                .sorted(Comparator.comparing(Node::getModificationDate))
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * This method is used to sort objects by id.
-     *
-     * @return list of objects of class Node sorted by id
-     */
-    public List<Node> findAllAndSortById() {
-        return findAll().stream()
-                .sorted(Comparator.comparing(Node::getId))
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * This method is used to sort objects by status.
-     *
-     * @return list of objects of class Node sorted by status
-     */
-    public List<Node> findAllAndSortByStatus() {
-        return findAll().stream()
-                .sorted(Comparator.comparing(Node::getStatus))
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * This method is used to sort objects by type.
-     *
-     * @return list of objects of class Node sorted by type
-     */
-    public List<Node> findAllAndSortByType() {
-        return findAll().stream()
-                .sorted(Comparator.comparing(Node::getType))
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * This method is used to sort objects by userId.
-     *
-     * @return list of objects of class Node sorted by userId
-     */
-    public List<Node> findAllAndSortByUserId() {
-        return findAll().stream()
-                .sorted(Comparator.comparing(Node::getUserId))
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * This method is used to sort objects by source.
-     *
-     * @return list of objects of class Node sorted by source
-     */
-    public List<Node> findAllAndSortBySource() {
-        return findAll().stream()
-                .sorted(Comparator.comparing(Node::getSource))
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * This method is used to sort objects by createdDate.
-     *
-     * @return list of objects of class Node sorted by createdDate
-     */
-    public List<Node> findAllAndSortByCreatedDate() {
-        return findAll().stream()
-                .sorted(Comparator.comparing(Node::getCreatedDate))
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * This method is used to get an object by id.
-     * Throws {@link NodeNotFoundException} in case if such object isn't contained in database.
-     *
-     * @param id object
-     * @return post object of class Node
-     */
-    @Override
-    public Node findById(String id) {
-        return nodeRepository.findById(id).orElseThrow(
-                () -> new NodeNotFoundException(id));
-    }
-
+//    /**
+//     * This method is used to sort objects in descending order by type.
+//     *
+//     * @param sort parameter for sorting
+//     * @param desc sorting descending
+//     * @return list of objects of class Node sorted by the selected parameter for sorting
+//     * in descending order
+//     */
+//    public List<Node> findAllByTypeAndDesc(String sort, boolean desc) {
+//        if (desc) {
+//            List<Node> nodes = findAllBySortType(sort);
+//            Collections.reverse(nodes);
+//            return nodes;
+//        }
+//        return findAllBySortType(sort);
+//    }
+//
+//    /**
+//     * This method is used to sort objects by type.
+//     *
+//     * @param sort type of sorting: type, status, source, createdDate, modificationDate, userId default - id
+//     * @return list of objects of class Node sorted by the selected parameter for sorting
+//     */
+//    public List<Node> findAllBySortType(String sort) {
+//        switch (sort) {
+//            case "type":
+//                return findAllAndSortByType();
+//            case "status":
+//                return findAllAndSortByStatus();
+//            case "source":
+//                return findAllAndSortBySource();
+//            case "createdDate":
+//                return findAllAndSortByCreatedDate();
+//            case "modificationDate":
+//                return findAllAndSortByModificationDate();
+//            case "userId":
+//                return findAllAndSortByUserId();
+//            case "id":
+//                return findAllAndSortById();
+//        }
+//        throw new ReckueIllegalArgumentException("Such field as " + sort + " doesn't exist");
+//    }
+//
+//    /**
+//     * This method is used to sort objects by modificationDate.
+//     *
+//     * @return list of objects of class Node sorted by modificationDate
+//     */
+//    private List<Node> findAllAndSortByModificationDate() {
+//        return findAll().stream()
+//                .sorted(Comparator.comparing(Node::getModificationDate))
+//                .collect(Collectors.toList());
+//    }
+//
+//    /**
+//     * This method is used to sort objects by id.
+//     *
+//     * @return list of objects of class Node sorted by id
+//     */
+//    public List<Node> findAllAndSortById() {
+//        return findAll().stream()
+//                .sorted(Comparator.comparing(Node::getId))
+//                .collect(Collectors.toList());
+//    }
+//
+//    /**
+//     * This method is used to sort objects by status.
+//     *
+//     * @return list of objects of class Node sorted by status
+//     */
+//    public List<Node> findAllAndSortByStatus() {
+//        return findAll().stream()
+//                .sorted(Comparator.comparing(Node::getStatus))
+//                .collect(Collectors.toList());
+//    }
+//
+//    /**
+//     * This method is used to sort objects by type.
+//     *
+//     * @return list of objects of class Node sorted by type
+//     */
+//    public List<Node> findAllAndSortByType() {
+//        return findAll().stream()
+//                .sorted(Comparator.comparing(Node::getType))
+//                .collect(Collectors.toList());
+//    }
+//
+//    /**
+//     * This method is used to sort objects by userId.
+//     *
+//     * @return list of objects of class Node sorted by userId
+//     */
+//    public List<Node> findAllAndSortByUserId() {
+//        return findAll().stream()
+//                .sorted(Comparator.comparing(Node::getUserId))
+//                .collect(Collectors.toList());
+//    }
+//
+//    /**
+//     * This method is used to sort objects by source.
+//     *
+//     * @return list of objects of class Node sorted by source
+//     */
+//    public List<Node> findAllAndSortBySource() {
+//        return findAll().stream()
+//                .sorted(Comparator.comparing(Node::getSource))
+//                .collect(Collectors.toList());
+//    }
+//
+//    /**
+//     * This method is used to sort objects by createdDate.
+//     *
+//     * @return list of objects of class Node sorted by createdDate
+//     */
+//    public List<Node> findAllAndSortByCreatedDate() {
+//        return findAll().stream()
+//                .sorted(Comparator.comparing(Node::getCreatedDate))
+//                .collect(Collectors.toList());
+//    }
+//
+//
     /**
      * This method is used to get a list of nodes by user id.
      * Throws {@link ReckueIllegalArgumentException} in case
@@ -303,6 +290,19 @@ public class NodeServiceImpl implements NodeService {
                 .limit(limit)
                 .skip(offset)
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * This method is used to get an object by id.
+     * Throws {@link NodeNotFoundException} in case if such object isn't contained in database.
+     *
+     * @param id object
+     * @return post object of class Node
+     */
+    @Override
+    public Node findById(String id) {
+        return nodeRepository.findById(id).orElseThrow(
+                () -> new NodeNotFoundException(id));
     }
 
     /**

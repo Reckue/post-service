@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -28,12 +29,16 @@ import java.time.LocalDateTime;
 @Document
 public class Node implements Serializable {
 
+    @BsonProperty("id")
     @Id
     private String id;
 
     // required fields
     private NodeType type;
+
+    @BsonProperty(useDiscriminator = true)
     private Parent node;
+
     private String parentId;
     private ParentType parentType;
 
