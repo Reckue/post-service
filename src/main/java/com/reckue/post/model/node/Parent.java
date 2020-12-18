@@ -9,6 +9,6 @@ import java.io.Serializable;
  *
  * @author Kamila Meshcheryakova
  */
-@BsonDiscriminator
+@BsonDiscriminator(key = "_class")
 public interface Parent extends Serializable {
 }

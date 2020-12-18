@@ -11,7 +11,7 @@ import com.reckue.post.processor.notnull.NotNullArgs;
 import com.reckue.post.repository.CommentRepository;
 import com.reckue.post.repository.NodeRepository;
 import com.reckue.post.repository.PostRepository;
-import com.reckue.post.repository.dao.NodeDAO;
+import com.reckue.post.repository.dao.NodeDao;
 import com.reckue.post.service.NodeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,7 +32,7 @@ public class NodeServiceImpl implements NodeService {
     private final NodeRepository nodeRepository;
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
-    private final NodeDAO dao = new NodeDAO();
+    private final NodeDao dao = new NodeDao();
 
     /**
      * This method is used to create an object of class Node.

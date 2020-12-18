@@ -20,7 +20,7 @@ import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NodeDAO {
+public class NodeDao {
     ClassModel<Parent> parent = ClassModel.builder(Parent.class).enableDiscriminator(true).build();
     ClassModel<AudioNode> audioModel = ClassModel.builder(AudioNode.class).enableDiscriminator(true).build();
     ClassModel<ListNode> listModel = ClassModel.builder(ListNode.class).enableDiscriminator(true).build();
@@ -29,7 +29,7 @@ public class NodeDAO {
     ClassModel<PollNode> pollModel = ClassModel.builder(PollNode.class).enableDiscriminator(true).build();
     ClassModel<TextNode> textModel = ClassModel.builder(TextNode.class).enableDiscriminator(true).build();
     ClassModel<VideoNode> videoModel = ClassModel.builder(VideoNode.class).enableDiscriminator(true).build();
-    ClassModel<Node> nodeModel = ClassModel.builder(Node.class).enableDiscriminator(true).build();
+    ClassModel<Node> nodeModel = ClassModel.builder(Node.class).build();
 
     CodecRegistry pojoCodecRegistry = fromRegistries(
             MongoClient.getDefaultCodecRegistry(),
