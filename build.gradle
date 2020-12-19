@@ -5,6 +5,8 @@ plugins {
     id 'edu.sc.seis.launch4j' version '2.4.8'
     id 'checkstyle'
     id 'java'
+    id 'maven-publish'
+    id 'maven'
 }
 
 group = 'com.reckue'
@@ -16,10 +18,22 @@ targetCompatibility = JavaVersion.VERSION_11
 def profile = "develop"
 
 repositories {
+    maven {
+        name = "Reckue exception libs"
+        url = uri("https://maven.pkg.github.com/Reckue/exception-libs")
+        credentials {
+            username = "Hardelele"
+            password = "66a2201aa996af6a7ad62e839b8ce489965e3159"
+        }
+    }
     mavenCentral()
 }
 
 dependencies {
+
+    /* Reckue Commons */
+    implementation 'com.reckue:exception-libs:1.0.3'
+
     /* properties */
     implementation 'org.springframework.boot:spring-boot-configuration-processor'
 

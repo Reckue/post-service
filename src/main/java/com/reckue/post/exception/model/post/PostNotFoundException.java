@@ -1,6 +1,6 @@
 package com.reckue.post.exception.model.post;
 
-import com.reckue.post.exception.ModelNotFoundException;
+import com.reckue.libs.exception.ReckueException;
 import lombok.Getter;
 
 /**
@@ -10,7 +10,7 @@ import lombok.Getter;
  * @author Artur Magomedov
  */
 @Getter
-public class PostNotFoundException extends ModelNotFoundException {
+public class PostNotFoundException extends ReckueException {
 
     private final String message;
 

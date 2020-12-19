@@ -1,7 +1,7 @@
 package com.reckue.post.service.impl;
 
+import com.reckue.libs.exception.ReckueIllegalArgumentException;
 import com.reckue.post.PostServiceApplicationTests;
-import com.reckue.post.exception.ReckueIllegalArgumentException;
 import com.reckue.post.exception.model.post.PostNotFoundException;
 import com.reckue.post.exception.model.rating.RatingNotFoundException;
 import com.reckue.post.model.Post;

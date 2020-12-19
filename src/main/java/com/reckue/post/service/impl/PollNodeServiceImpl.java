@@ -1,6 +1,6 @@
 package com.reckue.post.service.impl;
 
-import com.reckue.post.exception.ReckueIllegalArgumentException;
+import com.reckue.libs.exception.ReckueIllegalArgumentException;
 import com.reckue.post.exception.model.node.pollnode.PollNodeNotFoundException;
 import com.reckue.post.model.node.PollNode;
 import com.reckue.post.processor.notnull.NotNullArgs;

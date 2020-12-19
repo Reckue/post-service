@@ -1,6 +1,6 @@
 package com.reckue.post.util.converter;
 
-import com.reckue.post.exception.ReckueIllegalArgumentException;
+import com.reckue.libs.exception.ReckueIllegalArgumentException;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;

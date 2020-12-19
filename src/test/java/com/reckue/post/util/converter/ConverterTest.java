@@ -1,7 +1,7 @@
 package com.reckue.post.util.converter;
 
+import com.reckue.libs.exception.ReckueIllegalArgumentException;
 import com.reckue.post.PostServiceApplicationTests;
-import com.reckue.post.exception.ReckueIllegalArgumentException;
 import com.reckue.post.objects.Check;
 import com.reckue.post.objects.CheckResponse;
 import org.junit.jupiter.api.Test;

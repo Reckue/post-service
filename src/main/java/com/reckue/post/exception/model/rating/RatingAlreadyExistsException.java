@@ -1,6 +1,6 @@
 package com.reckue.post.exception.model.rating;
 
-import com.reckue.post.exception.ModelAlreadyExistsException;
+import com.reckue.libs.exception.ReckueException;
 import lombok.Getter;
 
 /**
@@ -11,7 +11,7 @@ import lombok.Getter;
  */
 @Getter
 @SuppressWarnings("unused")
-public class RatingAlreadyExistsException extends ModelAlreadyExistsException {
+public class RatingAlreadyExistsException extends ReckueException {
 
     private final String message;
 

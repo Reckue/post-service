@@ -1,6 +1,6 @@
 package com.reckue.post.service.impl;
 
-import com.reckue.post.exception.ReckueUnauthorizedException;
+import com.reckue.libs.exception.ReckueUnauthorizedException;
 import com.reckue.post.service.SecurityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.provider.token.TokenStore;

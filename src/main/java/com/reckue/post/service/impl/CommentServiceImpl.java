@@ -1,8 +1,8 @@
 package com.reckue.post.service.impl;
 
 
-import com.reckue.post.exception.ReckueAccessDeniedException;
-import com.reckue.post.exception.ReckueIllegalArgumentException;
+import com.reckue.libs.exception.ReckueAccessDeniedException;
+import com.reckue.libs.exception.ReckueIllegalArgumentException;
 import com.reckue.post.exception.model.comment.CommentNotFoundException;
 import com.reckue.post.exception.model.post.PostNotFoundException;
 import com.reckue.post.model.Comment;
