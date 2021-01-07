@@ -6,7 +6,7 @@ Service for publications, tutorials and articles.
 ![Deploy](https://github.com/Reckue/post-api/workflows/deploy/badge.svg)
 [![Slack](https://img.shields.io/badge/Slack-Join-green.svg?style=flat-circle&colorB=red)](https://reckue.slack.com)
 
-![Services](https://i.ibb.co/30PGV5W/image.png)
+![Architecture](https://i.ibb.co/F4STJXK/architecture.png)
 
 ## Stack
 - Open JDK 11
