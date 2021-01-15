@@ -7,6 +7,7 @@ import com.reckue.post.exception.model.comment.CommentNotFoundException;
 import com.reckue.post.exception.model.post.PostNotFoundException;
 import com.reckue.post.model.Comment;
 import com.reckue.post.model.Node;
+import com.reckue.post.model.Role;
 import com.reckue.post.model.type.ParentType;
 import com.reckue.post.processor.notnull.NotNullArgs;
 import com.reckue.post.repository.CommentRepository;
@@ -14,6 +15,7 @@ import com.reckue.post.repository.NodeRepository;
 import com.reckue.post.repository.PostRepository;
 import com.reckue.post.service.CommentService;
 import com.reckue.post.service.NodeService;
+import com.reckue.post.util.security.CurrentUser;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.SerializationUtils;
 import org.springframework.stereotype.Service;
@@ -37,19 +39,11 @@ public class CommentServiceImpl implements CommentService {
     private final PostRepository postRepository;
     private final NodeService nodeService;
 
-    /**
-     * This method is used to create an object of class Comment.
-     *
-     * @param comment   object of class Comment
-     * @param tokenInfo user token info
-     * @return comment object of class Comment
-     */
     @Override
     @Transactional
     @NotNullArgs
-    public Comment create(Comment comment, Map<String, Object> tokenInfo) {
-        String userId = (String) tokenInfo.get("userId");
-        comment.setUserId(userId);
+    public Comment create(Comment comment) {
+        comment.setUserId(CurrentUser.getId());
         // to set default value as null
         if (comment.getCommentId().length() < 7) {
             comment.setCommentId(null);
@@ -68,20 +62,13 @@ public class CommentServiceImpl implements CommentService {
             nodeList.forEach(node -> {
                 node.setParentId(commentId);
                 node.setParentType(ParentType.COMMENT);
-                nodeService.create(node, tokenInfo);
+                nodeService.create(node);
             });
         }
         storedComment.setNodes(nodeList);
         return storedComment;
     }
 
-    /**
-     * This method is used to check comment validation.
-     * Throws {@link PostNotFoundException} in case if such post isn't contained in database.
-     * Throws {@link CommentNotFoundException} in case if such comment isn't contained in database.
-     *
-     * @param comment object of class Comment
-     */
     public void validateCreatingComment(Comment comment) {
         if (!postRepository.existsById(comment.getPostId())) {
             throw new PostNotFoundException(comment.getPostId());
@@ -91,29 +78,19 @@ public class CommentServiceImpl implements CommentService {
         }
     }
 
-    /**
-     * This method is used to update data in an object of class Comment.
-     * Throws {@link CommentNotFoundException} in case
-     * if such object isn't contained in database.
-     * Throws {@link ReckueIllegalArgumentException} in case
-     * if such parameter is null.
-     * Throws {@link ReckueAccessDeniedException} in case if the user isn't an comment owner or
-     * hasn't admin authorities.
-     *
-     * @param comment   object of class Comment
-     * @param tokenInfo user token info
-     * @return comment object of class Comment
-     */
     @Override
-    public Comment update(Comment comment, Map<String, Object> tokenInfo) {
+    public Comment update(Comment comment) {
         if (comment.getId() == null) {
             throw new ReckueIllegalArgumentException("The parameter is null");
+        }
+        if (!CurrentUser.getId().equals(comment.getUserId()) && !CurrentUser.getRoles().contains(Role.ADMIN)) {
+            throw new ReckueAccessDeniedException("The operation is forbidden");
         }
 
         if (!comment.getNodes().isEmpty()) {
             comment.getNodes().forEach(node -> {
                 node.setParentId(comment.getId());
-                nodeService.create(node, tokenInfo);
+                nodeService.create(node);
             });
         }
 
@@ -123,19 +100,9 @@ public class CommentServiceImpl implements CommentService {
         savedComment.setCommentId(comment.getCommentId().length() > 7 ? comment.getCommentId() : null);
         savedComment.setNodes(comment.getNodes());
 
-        if (!tokenInfo.get("userId").equals(savedComment.getUserId())
-                && !tokenInfo.get("authorities").equals("ROLE_ADMIN")) {
-            throw new ReckueAccessDeniedException("The operation is forbidden");
-        }
-
         return commentRepository.save(savedComment);
     }
 
-    /**
-     * This method is used to get all objects of class Comment.
-     *
-     * @return list of objects of class Comment
-     */
     @Override
     public List<Comment> findAll() {
         List<Comment> comments = commentRepository.findAll();
@@ -147,17 +114,6 @@ public class CommentServiceImpl implements CommentService {
         return comments;
     }
 
-    /**
-     * This method is used to get all objects of class Comment by parameters.
-     * Throws {@link ReckueIllegalArgumentException} in case
-     * if limit or offset is incorrect.
-     *
-     * @param limit  quantity of objects
-     * @param offset quantity to skip
-     * @param sort   parameter for sorting
-     * @param desc   sorting descending
-     * @return list of objects of class Comment
-     */
     @Override
     public List<Comment> findAll(Integer limit, Integer offset, String sort, Boolean desc) {
         if (limit == null) limit = 10;
@@ -174,14 +130,6 @@ public class CommentServiceImpl implements CommentService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * This method is used to sort objects in descending order by type.
-     *
-     * @param sort parameter for sorting
-     * @param desc sorting descending
-     * @return list of objects of class Comment sorted by the selected parameter for sorting
-     * in descending order
-     */
     public List<Comment> findAllByTypeAndDesc(String sort, boolean desc) {
         if (desc) {
             List<Comment> comments = findAllBySortType(sort);
@@ -191,12 +139,6 @@ public class CommentServiceImpl implements CommentService {
         return findAllBySortType(sort);
     }
 
-    /**
-     * This method is used to sort objects by type.
-     *
-     * @param sort type of sorting: id, text, userId, postId, createdDate or modificationDate
-     * @return list of objects of class Comment sorted by the selected parameter for sorting
-     */
     public List<Comment> findAllBySortType(String sort) {
         switch (sort) {
             case "id":
@@ -213,68 +155,36 @@ public class CommentServiceImpl implements CommentService {
         throw new ReckueIllegalArgumentException("Such field as " + sort + " doesn't exist");
     }
 
-    /**
-     * This method is used to sort objects by modificationDate.
-     *
-     * @return list of objects of class Comment sorted by modificationDate
-     */
     private List<Comment> findAllAndSortByModificationDate() {
         return findAll().stream()
                 .sorted(Comparator.comparing(Comment::getModificationDate))
                 .collect(Collectors.toList());
     }
 
-    /**
-     * This method is used to sort objects by id.
-     *
-     * @return list of objects of class Comment sorted by id
-     */
     public List<Comment> findAllAndSortById() {
         return findAll().stream()
                 .sorted(Comparator.comparing(Comment::getId))
                 .collect(Collectors.toList());
     }
 
-    /**
-     * This method is used to sort objects by user id.
-     *
-     * @return list of objects of class Comment sorted by user id
-     */
     public List<Comment> findAllAndSortByUserId() {
         return findAll().stream()
                 .sorted(Comparator.comparing(Comment::getUserId))
                 .collect(Collectors.toList());
     }
 
-    /**
-     * This method is used to sort objects by post id.
-     *
-     * @return list of objects of class Comment sorted by post id
-     */
     public List<Comment> findAllAndSortByPostId() {
         return findAll().stream()
                 .sorted(Comparator.comparing(Comment::getPostId))
                 .collect(Collectors.toList());
     }
 
-    /**
-     * This method is used to sort objects by createdDate.
-     *
-     * @return list of objects of class Comment sorted by createdDate
-     */
     public List<Comment> findAllAndSortByCreatedDate() {
         return findAll().stream()
                 .sorted(Comparator.comparing(Comment::getCreatedDate))
                 .collect(Collectors.toList());
     }
 
-    /**
-     * This method is used to get an object by id.
-     * Throws {@link CommentNotFoundException} in case if such object isn't contained in database.
-     *
-     * @param id object
-     * @return object of class Comment
-     */
     @Override
     public Comment findById(String id) {
         Optional<Comment> comment = commentRepository.findById(id);
@@ -286,16 +196,6 @@ public class CommentServiceImpl implements CommentService {
         return comment.get();
     }
 
-    /**
-     * This method is used to get a list of comments by user id.
-     * Throws {@link ReckueIllegalArgumentException} in case
-     * if limit or offset is incorrect.
-     *
-     * @param userId user identificator
-     * @param limit  quantity of objects
-     * @param offset quantity to skip
-     * @return list of objects of class Comment
-     */
     @Override
     // FIXME: correct the realization of this method
     public List<Comment> findAllByUserId(String userId, Integer limit, Integer offset) {
@@ -311,25 +211,14 @@ public class CommentServiceImpl implements CommentService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * This method is used to delete an object by id.
-     * Throws {@link CommentNotFoundException} in case
-     * if such object isn't contained in database.
-     * Throws {@link ReckueAccessDeniedException} in case if the user isn't an post owner or
-     * hasn't admin authorities.
-     *
-     * @param id        object
-     * @param tokenInfo user token info
-     */
     @Override
-    public void deleteById(String id, Map<String, Object> tokenInfo) {
+    public void deleteById(String id) {
         if (!commentRepository.existsById(id)) {
             throw new CommentNotFoundException(id);
         }
         Optional<Comment> comment = commentRepository.findById(id);
         if (comment.isPresent()) {
-            String commentUser = comment.get().getUserId();
-            if (tokenInfo.get("userId").equals(commentUser) || tokenInfo.get("authorities").equals("ROLE_ADMIN")) {
+            if (CurrentUser.getId().equals(comment.get().getUserId()) || CurrentUser.getRoles().contains(Role.ADMIN)) {
                 commentRepository.deleteById(id);
             } else {
                 throw new ReckueAccessDeniedException("The operation is forbidden");
@@ -337,11 +226,4 @@ public class CommentServiceImpl implements CommentService {
         }
     }
 
-    /**
-     * This method is used to delete all comments.
-     */
-    @Override
-    public void deleteAll() {
-        commentRepository.deleteAll();
-    }
 }

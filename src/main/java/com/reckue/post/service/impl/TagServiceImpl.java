@@ -26,28 +26,12 @@ public class TagServiceImpl implements TagService {
 
     private final TagRepository tagRepository;
 
-    /**
-     * This method is used to create an object of class Tag.
-     *
-     * @param tag object of class Tag
-     * @return tag object of class Tag
-     */
     @Override
     @NotNullArgs
     public Tag create(Tag tag) {
         return tagRepository.save(tag);
     }
 
-    /**
-     * This method is used to update data in an object of class Tag.
-     * Throws {@link TagNotFoundException} in case
-     * if such object isn't contained in database.
-     * Throws {@link ReckueIllegalArgumentException} in case
-     * if such parameter is null.
-     *
-     * @param tag object of class Tag
-     * @return tag object of class Tag
-     */
     @Override
     public Tag update(Tag tag) {
         if (tag.getId() == null) {
@@ -60,25 +44,11 @@ public class TagServiceImpl implements TagService {
         return tagRepository.save(savedTag);
     }
 
-    /**
-     * This method is used to get all objects of class Tag.
-     *
-     * @return list of objects of class Tag
-     */
     @Override
     public List<Tag> findAll() {
         return tagRepository.findAll();
     }
 
-    /**
-     * This method is used to get all objects of class Tag by parameters.
-     *
-     * @param limit  quantity of objects
-     * @param offset quantity to skip
-     * @param sort   parameter for sorting
-     * @param desc   sorting descending
-     * @return list of objects of class Tag
-     */
     @Override
     public List<Tag> findAll(Integer limit, Integer offset, String sort, Boolean desc) {
         if (limit == null) limit = 10;
@@ -95,14 +65,6 @@ public class TagServiceImpl implements TagService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * This method is used to sort objects in descending order by type.
-     *
-     * @param sort parameter for sorting
-     * @param desc sorting descending
-     * @return list of objects of class Tag sorted by the selected parameter for sorting
-     * in descending order
-     */
     public List<Tag> findAllByTypeAndDesc(String sort, boolean desc) {
         if (desc) {
             List<Tag> tags = findAllBySortType(sort);
@@ -112,65 +74,35 @@ public class TagServiceImpl implements TagService {
         return findAllBySortType(sort);
     }
 
-    /**
-     * This method is used to sort objects by type.
-     *
-     * @param sort type of sorting: name, default - id
-     * @return list of objects of class Tag sorted by the selected parameter for sorting
-     */
     public List<Tag> findAllBySortType(String sort) {
-
         switch (sort) {
             case "name":
                 return findAllAndSortByName();
             case "id":
                 return findAllAndSortById();
+            default:
+                throw new ReckueIllegalArgumentException("Such field as " + sort + " doesn't exist");
         }
-        throw new ReckueIllegalArgumentException("Such field as " + sort + " doesn't exist");
     }
 
-    /**
-     * This method is used to sort objects by id.
-     *
-     * @return list of objects of class Tag sorted by id
-     */
     public List<Tag> findAllAndSortById() {
         return findAll().stream()
                 .sorted(Comparator.comparing(Tag::getId))
                 .collect(Collectors.toList());
     }
 
-    /**
-     * This method is used to sort objects by content.
-     *
-     * @return list of objects of class Tag sorted by content
-     */
     public List<Tag> findAllAndSortByName() {
         return findAll().stream()
                 .sorted(Comparator.comparing(Tag::getName))
                 .collect(Collectors.toList());
     }
 
-    /**
-     * This method is used to get an object by id.
-     * Throws {@link TagNotFoundException} in case if such object isn't contained in database.
-     *
-     * @param id object
-     * @return object of class Tag
-     */
     @Override
     public Tag findById(String id) {
         return tagRepository.findById(id).orElseThrow(
                 () -> new TagNotFoundException(id));
     }
 
-    /**
-     * This method is used to delete an object by id.
-     * Throws {@link TagNotFoundException} in case
-     * if such object isn't contained in database.
-     *
-     * @param id object
-     */
     @Override
     public void deleteById(String id) {
         if (tagRepository.existsById(id)) {

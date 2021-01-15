@@ -33,7 +33,7 @@ public class CommentConverter {
         List<Node> nodes = new ArrayList<>();
         if (commentRequest.getNodes() != null) {
             nodes = commentRequest.getNodes().stream()
-                    .map(NodeConverter::convert)
+                    .map(NodeConverter::convertToModel)
                     .collect(Collectors.toList());
         }
 
@@ -57,7 +57,7 @@ public class CommentConverter {
         List<NodeResponse> nodes = new ArrayList<>();
         if (comment.getNodes() != null) {
             nodes = comment.getNodes().stream()
-                    .map(NodeConverter::convert)
+                    .map(NodeConverter::convertToDto)
                     .collect(Collectors.toList());
         }
         return CommentResponse.builder()

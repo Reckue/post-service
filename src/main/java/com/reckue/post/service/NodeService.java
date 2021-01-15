@@ -7,5 +7,5 @@ import com.reckue.post.model.Node;
  *
  * @author Kamila Meshcheryakova
  */
-public interface NodeService extends AuthService<Node> {
+public interface NodeService extends BaseService<Node> {
 }

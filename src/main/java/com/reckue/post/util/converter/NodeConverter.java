@@ -31,7 +31,7 @@ public class NodeConverter {
      * @param nodeRequest the object of class NodeRequest
      * @return the object of class Node
      */
-    public static Node convert(NodeRequest nodeRequest) {
+    public static Node convertToModel(NodeRequest nodeRequest) {
         if (nodeRequest == null) {
             throw new ReckueIllegalArgumentException("Null parameters are not allowed");
         }
@@ -51,7 +51,7 @@ public class NodeConverter {
      * @param node the object of class Node
      * @return the object of class NodeResponse
      */
-    public static NodeResponse convert(Node node) {
+    public static NodeResponse convertToDto(Node node) {
         if (node == null) {
             throw new ReckueIllegalArgumentException("Null parameters are not allowed");
         }

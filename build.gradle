@@ -19,6 +19,12 @@ repositories {
     mavenCentral()
 }
 
+dependencyManagement {
+    imports {
+        mavenBom "org.keycloak.bom:keycloak-adapter-bom:9.0.2"
+    }
+}
+
 dependencies {
     /* properties */
     implementation 'org.springframework.boot:spring-boot-configuration-processor'
@@ -31,6 +37,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
     implementation 'org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.1.8.RELEASE'
     implementation 'org.springframework.security:spring-security-jwt:1.1.1.RELEASE'
+
+    /* keycloak */
+    implementation 'org.keycloak:keycloak-spring-boot-starter:9.0.2'
 
     /* database */
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
@@ -77,15 +86,11 @@ dependencies {
     implementation "com.thoughtworks.xstream:xstream:1.4.13"
 }
 
-
-/* ----------[ checkstyle ]---------- */
 checkstyle {
     toolVersion = "7.2"
     checkstyleMain.exclude '**/com/reckue/post/generated/**'
 }
 
-
-/* ----------[ openapi code generation ]---------- */
 openApiGenerate {
     generatorName = "spring"
     inputSpec = "${rootDir}/src/main/resources/openapi/post.yml"
@@ -105,14 +110,10 @@ openApiGenerate {
 
 sourceSets.main.java.srcDir "${buildDir}/generated/src/main/java"
 
-
-/* ----------[ tasks ]---------- */
 tasks {
     compileJava.dependsOn('openApiGenerate')
 }
 
-
-/* ----------[ test ]---------- */
 test {
     useJUnitPlatform()
     exclude 'com/reckue/post/sandbox'
@@ -126,10 +127,9 @@ task sandbox(type: Test) {
 configure(sandbox) {
     group 'sandbox'
     // Watch package com.reckue.post in test/java dir.
-    description = 'Execute Sandbox test class ';
+    description = 'Execute Sandbox test class '
 }
 
-/* ----------[ bootRun ]---------- */
 bootRun {
     args = ["--spring.profiles.active=" + profile + " --illegal-access=warn"]
 }

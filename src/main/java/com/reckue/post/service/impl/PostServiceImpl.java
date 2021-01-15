@@ -5,6 +5,7 @@ import com.reckue.post.exception.ReckueIllegalArgumentException;
 import com.reckue.post.exception.model.post.PostNotFoundException;
 import com.reckue.post.model.Node;
 import com.reckue.post.model.Post;
+import com.reckue.post.model.Role;
 import com.reckue.post.model.type.ParentType;
 import com.reckue.post.model.type.PostStatusType;
 import com.reckue.post.processor.notnull.NotNullArgs;
@@ -12,6 +13,7 @@ import com.reckue.post.repository.NodeRepository;
 import com.reckue.post.repository.PostRepository;
 import com.reckue.post.service.NodeService;
 import com.reckue.post.service.PostService;
+import com.reckue.post.util.security.CurrentUser;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.SerializationUtils;
 import org.springframework.stereotype.Service;
@@ -34,19 +36,11 @@ public class PostServiceImpl implements PostService {
     private final NodeRepository nodeRepository;
     private final NodeService nodeService;
 
-    /**
-     * This method is used to create an object of class Post.
-     *
-     * @param post      object of class Post
-     * @param tokenInfo user token info
-     * @return post object of class Post
-     */
     @Override
     @Transactional
     @NotNullArgs
-    public Post create(Post post, Map<String, Object> tokenInfo) {
-        String userId = (String) tokenInfo.get("userId");
-        post.setUserId(userId);
+    public Post create(Post post) {
+        post.setUserId(CurrentUser.getId());
 
         validateOnCreatePost(post);
         validateOnCreateStatus(post);
@@ -64,7 +58,7 @@ public class PostServiceImpl implements PostService {
             nodeList.forEach(node -> {
                 node.setParentId(postId);
                 node.setParentType(ParentType.POST);
-                nodeService.create(node, tokenInfo);
+                nodeService.create(node);
             });
         }
         storedPost.setNodes(nodeList);
@@ -102,30 +96,18 @@ public class PostServiceImpl implements PostService {
         }
     }
 
-    /**
-     * This method is used to update data in an object of class Post.
-     * Throws {@link PostNotFoundException} in case
-     * if such object isn't contained in database.
-     * Throws {@link ReckueIllegalArgumentException} in case
-     * if parameter equals null.
-     * Throws {@link ReckueAccessDeniedException} in case if the user isn't an post owner or
-     * hasn't admin authorities.
-     *
-     * @param post      object of class Post
-     * @param tokenInfo user token info
-     * @return post object of class Post
-     */
     @Override
     @Transactional
     @NotNullArgs
-    public Post update(Post post, Map<String, Object> tokenInfo) {
+    public Post update(Post post) {
         if (post.getId() == null) {
             throw new ReckueIllegalArgumentException("The parameter is null");
         }
+
         if (!post.getNodes().isEmpty()) {
             post.getNodes().forEach(node -> {
                 node.setParentId(post.getId());
-                nodeService.create(node, tokenInfo);
+                nodeService.create(node);
             });
         }
         validateOnUpdateStatus(post);
@@ -136,11 +118,6 @@ public class PostServiceImpl implements PostService {
         savedPost.setNodes(post.getNodes());
         savedPost.setSource(post.getSource());
         savedPost.setTags(post.getTags());
-
-        if (!tokenInfo.get("userId").equals(savedPost.getUserId())
-                && !tokenInfo.get("authorities").equals("ROLE_ADMIN")) {
-            throw new ReckueAccessDeniedException("The operation is forbidden");
-        }
 
         return postRepository.save(savedPost);
     }
@@ -181,12 +158,6 @@ public class PostServiceImpl implements PostService {
         }
     }
 
-
-    /**
-     * This method is used to get all objects of class Post.
-     *
-     * @return list of objects of class Post
-     */
     @Override
     public List<Post> findAll() {
         List<Post> posts = postRepository.findAll();
@@ -197,16 +168,6 @@ public class PostServiceImpl implements PostService {
         return posts;
     }
 
-    /**
-     * This method is used to get all objects of class Post by parameters.
-     *
-     * @param limit  quantity of objects
-     * @param offset quantity to skip
-     * @param sort   parameter for sorting
-     * @param desc   sorting descending
-     * @return list of given quantity of objects of class Post with a given offset
-     * sorted by the selected parameter for sorting in descending order
-     */
     @Override
     public List<Post> findAll(Integer limit, Integer offset, String sort, Boolean desc) {
         if (limit == null) limit = 10;
@@ -223,14 +184,6 @@ public class PostServiceImpl implements PostService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * This method is used to sort objects in descending order by type.
-     *
-     * @param sort parameter for sorting
-     * @param desc sorting descending
-     * @return list of objects of class Post sorted by the selected parameter for sorting
-     * in descending order
-     */
     public List<Post> findAllByTypeAndDesc(String sort, boolean desc) {
         if (desc) {
             List<Post> posts = findAllBySortType(sort);
@@ -240,12 +193,6 @@ public class PostServiceImpl implements PostService {
         return findAllBySortType(sort);
     }
 
-    /**
-     * This method is used to sort objects by type.
-     *
-     * @param sort type of sorting: title, source, createdDate, modificationDate, status, default - id
-     * @return list of objects of class Post sorted by the selected parameter for sorting
-     */
     public List<Post> findAllBySortType(String sort) {
         switch (sort) {
             case "title":
@@ -262,94 +209,53 @@ public class PostServiceImpl implements PostService {
                 return findAllAndSortById();
             case "userId":
                 return findAllAndSortByUserId();
+            default:
+                throw new ReckueIllegalArgumentException("Such field as " + sort + " doesn't exist");
         }
-        throw new ReckueIllegalArgumentException("Such field as " + sort + " doesn't exist");
     }
 
-    /**
-     * This method is used to sort objects by id.
-     *
-     * @return list of objects of class Post sorted by id
-     */
     public List<Post> findAllAndSortById() {
         return findAll().stream()
                 .sorted(Comparator.comparing(Post::getId))
                 .collect(Collectors.toList());
     }
 
-    /**
-     * This method is used to sort objects by type.
-     *
-     * @return list of objects of class Post sorted by type
-     */
     public List<Post> findAllAndSortByTitle() {
         return findAll().stream()
                 .sorted(Comparator.comparing(Post::getTitle))
                 .collect(Collectors.toList());
     }
 
-    /**
-     * This method is used to sort objects by userId.
-     *
-     * @return list of objects of class Post sorted by userId
-     */
     public List<Post> findAllAndSortByUserId() {
         return findAll().stream()
                 .sorted(Comparator.comparing(Post::getUserId))
                 .collect(Collectors.toList());
     }
 
-    /**
-     * This method is used to sort objects by source.
-     *
-     * @return list of objects of class Post sorted by source
-     */
     public List<Post> findAllAndSortBySource() {
         return findAll().stream()
                 .sorted(Comparator.comparing(Post::getSource))
                 .collect(Collectors.toList());
     }
 
-    /**
-     * This method is used to sort objects by createdDate.
-     *
-     * @return list of objects of class Post sorted by createdDate
-     */
     public List<Post> findAllAndSortByCreatedDate() {
         return findAll().stream()
                 .sorted(Comparator.comparing(Post::getCreatedDate))
                 .collect(Collectors.toList());
     }
 
-    /**
-     * This method is used to sort objects by modificationDate.
-     *
-     * @return list of objects of class Post sorted by modificationDate
-     */
     public List<Post> findAllAndSortByModificationDate() {
         return findAll().stream()
                 .sorted(Comparator.comparing(Post::getModificationDate))
                 .collect(Collectors.toList());
     }
 
-    /**
-     * This method is used to sort objects by status.
-     *
-     * @return list of objects of class Post sorted by status
-     */
     public List<Post> findAllAndSortByStatus() {
         return findAll().stream()
                 .sorted(Comparator.comparing(Post::getStatus))
                 .collect(Collectors.toList());
     }
 
-    /**
-     * This method is used to get an object by id.
-     * Throws {@link PostNotFoundException} in case if such object isn't contained in database.
-     *
-     * @param id object
-     * @return post object of class Post
-     */
     @Override
     @NotNullArgs
     public Post findById(String id) {
@@ -362,16 +268,6 @@ public class PostServiceImpl implements PostService {
         return post.get();
     }
 
-    /**
-     * This method is used to get a list of objects by user id.
-     * Throws {@link ReckueIllegalArgumentException} in case
-     * if limit or offset is incorrect.
-     *
-     * @param userId user identificator
-     * @param limit  quantity of objects
-     * @param offset quantity to skip
-     * @return list of objects of class Post
-     */
     @Override
     public List<Post> findAllByUserId(String userId, Integer limit, Integer offset) {
         if (limit == null) limit = 10;
@@ -386,25 +282,16 @@ public class PostServiceImpl implements PostService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * This method is used to delete an object by id.
-     * Throws {@link PostNotFoundException} in case if such object isn't contained in database.
-     * Throws {@link ReckueAccessDeniedException} in case if the user isn't an post owner or
-     * hasn't admin authorities.
-     *
-     * @param id        object
-     * @param tokenInfo user token info
-     */
     @Override
     @NotNullArgs
-    public void deleteById(String id, Map<String, Object> tokenInfo) {
+    public void deleteById(String id) {
         if (!postRepository.existsById(id)) {
             throw new PostNotFoundException(id);
         }
         Optional<Post> post = postRepository.findById(id);
         if (post.isPresent()) {
             String postUser = post.get().getUserId();
-            if (tokenInfo.get("userId").equals(postUser) || tokenInfo.get("authorities").equals("ROLE_ADMIN")) {
+            if (CurrentUser.getId().equals(postUser) || CurrentUser.getRoles().contains(Role.ADMIN)) {
                 postRepository.deleteById(id);
             } else {
                 throw new ReckueAccessDeniedException("The operation is forbidden");
@@ -412,24 +299,10 @@ public class PostServiceImpl implements PostService {
         }
     }
 
-    /**
-     * This method is used to get the objects by title.
-     *
-     * @param title object
-     * @return list of objects of class Post
-     */
     @Override
     @NotNullArgs
     public List<Post> findAllByTitle(String title) {
         return postRepository.findAllByTitle(title);
     }
 
-    /**
-     * This method is used to delete all posts.
-     */
-    @Deprecated
-    @Override
-    public void deleteAll() {
-        postRepository.deleteAll();
-    }
 }

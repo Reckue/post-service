@@ -26,28 +26,12 @@ public class PollNodeServiceImpl implements PollNodeService {
 
     private final PollNodeRepository pollNodeRepository;
 
-    /**
-     * This method is used to create an object of class PollNode.
-     *
-     * @param node object of class PollNode
-     * @return node object of class PollNode
-     */
     @Override
     @NotNullArgs
     public PollNode create(PollNode node) {
         return pollNodeRepository.save(node);
     }
 
-    /**
-     * This method is used to update data in an object of class PollNode.
-     * Throws {@link PollNodeNotFoundException} in case
-     * if such object isn't contained in database.
-     * Throws {@link ReckueIllegalArgumentException} in case
-     * if such parameter is null.
-     *
-     * @param node object of class PollNode
-     * @return node object of class PollNode
-     */
     @Override
     public PollNode update(PollNode node) {
         if (node.getId() == null) {
@@ -61,25 +45,11 @@ public class PollNodeServiceImpl implements PollNodeService {
         return pollNodeRepository.save(savedPollNode);
     }
 
-    /**
-     * This method is used to get all objects of class PollNode.
-     *
-     * @return list of objects of class PollNode
-     */
     @Override
     public List<PollNode> findAll() {
         return pollNodeRepository.findAll();
     }
 
-    /**
-     * This method is used to get all objects of class PollNode by parameters.
-     *
-     * @param limit  quantity of objects
-     * @param offset quantity to skip
-     * @param sort   parameter for sorting
-     * @param desc   sorting descending
-     * @return list of objects of class PollNode
-     */
     @Override
     public List<PollNode> findAll(Integer limit, Integer offset, String sort, Boolean desc) {
         if (limit == null) limit = 10;
@@ -96,14 +66,6 @@ public class PollNodeServiceImpl implements PollNodeService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * This method is used to sort objects in descending order by type.
-     *
-     * @param sort parameter for sorting
-     * @param desc sorting descending
-     * @return list of objects of class PollNode sorted by the selected parameter for sorting
-     * in descending order
-     */
     public List<PollNode> findAllByTypeAndDesc(String sort, boolean desc) {
         if (desc) {
             List<PollNode> node = findAllBySortType(sort);
@@ -113,12 +75,6 @@ public class PollNodeServiceImpl implements PollNodeService {
         return findAllBySortType(sort);
     }
 
-    /**
-     * This method is used to sort objects by type.
-     *
-     * @param sort type of sorting: title, default - id
-     * @return list of objects of class PollNode sorted by the selected parameter for sorting
-     */
     public List<PollNode> findAllBySortType(String sort) {
 
         switch (sort) {
@@ -130,48 +86,24 @@ public class PollNodeServiceImpl implements PollNodeService {
         throw new ReckueIllegalArgumentException("Such field as " + sort + " doesn't exist");
     }
 
-    /**
-     * This method is used to sort objects by id.
-     *
-     * @return list of objects of class PollNode sorted by id
-     */
     public List<PollNode> findAllAndSortById() {
         return findAll().stream()
                 .sorted(Comparator.comparing(PollNode::getId))
                 .collect(Collectors.toList());
     }
 
-    /**
-     * This method is used to sort objects by title.
-     *
-     * @return list of objects of class PollNode sorted by title
-     */
     public List<PollNode> findAllAndSortByTitle() {
         return findAll().stream()
                 .sorted(Comparator.comparing(PollNode::getTitle))
                 .collect(Collectors.toList());
     }
 
-    /**
-     * This method is used to get an object by id.
-     * Throws {@link PollNodeNotFoundException} in case if such object isn't contained in database.
-     *
-     * @param id object
-     * @return object of class PollNode
-     */
     @Override
     public PollNode findById(String id) {
         return pollNodeRepository.findById(id).orElseThrow(
                 () -> new PollNodeNotFoundException(id));
     }
 
-    /**
-     * This method is used to delete an object by id.
-     * Throws {@link PollNodeNotFoundException} in case
-     * if such object isn't contained in database.
-     *
-     * @param id object
-     */
     @Override
     public void deleteById(String id) {
         if (pollNodeRepository.existsById(id)) {

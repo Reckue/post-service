@@ -34,7 +34,7 @@ public class PostConverter {
         List<Node> nodes = new ArrayList<>();
         if (postRequest.getNodes() != null) {
             nodes = postRequest.getNodes().stream()
-                    .map(NodeConverter::convert)
+                    .map(NodeConverter::convertToModel)
                     .collect(Collectors.toList());
         }
 
@@ -62,7 +62,7 @@ public class PostConverter {
         List<NodeResponse> nodes = new ArrayList<>();
         if (post.getNodes() != null) {
             nodes = post.getNodes().stream()
-                    .map(NodeConverter::convert)
+                    .map(NodeConverter::convertToDto)
                     .collect(Collectors.toList());
         }
 

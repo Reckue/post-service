@@ -30,7 +30,6 @@ import static com.reckue.post.util.converter.PostConverter.convert;
 public class PostController implements PostApi {
 
     private final PostService postService;
-    private final SecurityService securityService;
 
     /**
      * This type of request allows to create, process it using the converter and save.
@@ -42,7 +41,7 @@ public class PostController implements PostApi {
      */
     @PostMapping
     public PostResponse create(@RequestBody @Valid PostRequest postRequest, HttpServletRequest request) {
-        return convert(postService.create(convert(postRequest), securityService.checkAndGetInfo(request)));
+        return convert(postService.create(convert(postRequest)));
     }
 
     /**
@@ -60,7 +59,7 @@ public class PostController implements PostApi {
                                HttpServletRequest request) {
         Post post = convert(postRequest);
         post.setId(id);
-        return convert(postService.update(post, securityService.checkAndGetInfo(request)));
+        return convert(postService.update(post));
     }
 
     /**
@@ -134,6 +133,6 @@ public class PostController implements PostApi {
      */
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable String id, HttpServletRequest request) {
-        postService.deleteById(id, securityService.checkAndGetInfo(request));
+        postService.deleteById(id);
     }
 }

@@ -38,14 +38,6 @@ public interface RatingApi {
             @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")})
     List<RatingResponse> findAll(Integer limit, Integer offset, String sort, Boolean desc);
 
-    @ApiOperation(value = "Get a list of ratings by user id", response = RatingResponse.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "List of ratings successfully retrieved"),
-            @ApiResponse(code = 400, message = "You need to change the parameters of your request"),
-            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found"),
-            @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")})
-    List<RatingResponse> findAllByUserId(String userId, Integer limit, Integer offset);
-
     @ApiOperation(value = "Delete a rating", authorizations = {@Authorization(value = "Bearer token")})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "The rating successfully deleted"),
