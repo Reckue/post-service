@@ -1,8 +1,7 @@
 package com.reckue.post.service.impl;
 
+import com.reckue.libs.exception.ReckueIllegalArgumentException;
 import com.reckue.post.PostServiceApplicationTests;
-import com.reckue.post.exception.ModelNotFoundException;
-import com.reckue.post.exception.ReckueIllegalArgumentException;
 import com.reckue.post.exception.model.tag.TagNotFoundException;
 import com.reckue.post.model.Tag;
 import com.reckue.post.repository.TagRepository;
@@ -74,7 +73,7 @@ public class TagServiceImplUnitTest extends PostServiceApplicationTests {
         Tag tag = Tag.builder().id("1").name("tag").build();
         when(tagRepository.existsById(tag.getId())).thenReturn(false);
 
-        Exception exception = assertThrows(ModelNotFoundException.class, () -> tagService.update(tag));
+        Exception exception = assertThrows(TagNotFoundException.class, () -> tagService.update(tag));
         assertEquals("Tag by id '" + tag.getId() + "' is not found", exception.getMessage());
     }
 

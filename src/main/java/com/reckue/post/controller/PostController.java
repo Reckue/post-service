@@ -1,7 +1,7 @@
 package com.reckue.post.controller;
 
+import com.reckue.libs.exception.ReckueUnauthorizedException;
 import com.reckue.post.controller.api.PostApi;
-import com.reckue.post.exception.ReckueUnauthorizedException;
 import com.reckue.post.model.Post;
 import com.reckue.post.service.PostService;
 import com.reckue.post.service.SecurityService;

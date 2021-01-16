@@ -1,6 +1,6 @@
 package com.reckue.post.exception.model.user;
 
-import com.reckue.post.exception.ModelAlreadyExistsException;
+import com.reckue.libs.exception.ReckueException;
 
 /**
  * Class UserAlreadyExistsException is responsible for throwing
@@ -9,7 +9,7 @@ import com.reckue.post.exception.ModelAlreadyExistsException;
  * @author Artur Magomedov
  */
 @SuppressWarnings("unused")
-public class UserAlreadyExistsException extends ModelAlreadyExistsException {
+public class UserAlreadyExistsException extends ReckueException {
 
     private final String message;
 

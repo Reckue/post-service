@@ -1,6 +1,6 @@
 package com.reckue.post.exception.model.tag;
 
-import com.reckue.post.exception.ModelNotFoundException;
+import com.reckue.libs.exception.ReckueException;
 import lombok.Getter;
 
 /**
@@ -11,7 +11,7 @@ import lombok.Getter;
  */
 @Getter
 @SuppressWarnings("unused")
-public class TagNotFoundException extends ModelNotFoundException {
+public class TagNotFoundException extends ReckueException {
 
     private final String message;
 

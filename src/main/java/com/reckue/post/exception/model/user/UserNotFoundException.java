@@ -1,6 +1,6 @@
 package com.reckue.post.exception.model.user;
 
-import com.reckue.post.exception.ModelNotFoundException;
+import com.reckue.libs.exception.ReckueException;
 
 /**
  * Class UserNotFoundException is responsible for throwing
@@ -9,7 +9,7 @@ import com.reckue.post.exception.ModelNotFoundException;
  * @author Artur Magomedov
  */
 @SuppressWarnings("unused")
-public class UserNotFoundException extends ModelNotFoundException {
+public class UserNotFoundException extends ReckueException {
 
     private final String message;
 

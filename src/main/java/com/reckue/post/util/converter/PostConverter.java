@@ -1,6 +1,6 @@
 package com.reckue.post.util.converter;
 
-import com.reckue.post.exception.ReckueIllegalArgumentException;
+import com.reckue.libs.exception.ReckueIllegalArgumentException;
 import com.reckue.post.model.Node;
 import com.reckue.post.model.Post;
 import com.reckue.post.transfer.NodeResponse;

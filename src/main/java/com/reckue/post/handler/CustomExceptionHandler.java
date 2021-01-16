@@ -1,6 +1,6 @@
 package com.reckue.post.handler;
 
-import com.reckue.post.exception.ReckueException;
+import com.reckue.libs.exception.ReckueException;
 import com.reckue.post.transfer.error.ErrorResponse;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.ResponseEntity;

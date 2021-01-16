@@ -1,6 +1,6 @@
 package com.reckue.post.exception.model.node;
 
-import com.reckue.post.exception.ModelNotFoundException;
+import com.reckue.libs.exception.ReckueException;
 import lombok.Getter;
 
 /**
@@ -11,7 +11,7 @@ import lombok.Getter;
  */
 @Getter
 @SuppressWarnings("unused")
-public class NodeNotFoundException extends ModelNotFoundException {
+public class NodeNotFoundException extends ReckueException {
 
     private final String message;
 
