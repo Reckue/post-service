@@ -3,8 +3,8 @@ package com.reckue.post.controller;
 import com.reckue.post.controller.api.RatingApi;
 import com.reckue.post.exception.ReckueUnauthorizedException;
 import com.reckue.post.model.Rating;
+import com.reckue.post.service.proxy.ProxyService;
 import com.reckue.post.service.RatingService;
-import com.reckue.post.service.SecurityService;
 import com.reckue.post.transfer.PostRatingResponse;
 import com.reckue.post.transfer.PostResponse;
 import com.reckue.post.transfer.RatingRequest;
@@ -33,7 +33,7 @@ import static com.reckue.post.util.converter.RatingConverter.convert;
 public class RatingController implements RatingApi {
 
     private final RatingService ratingService;
-    private final SecurityService securityService;
+    private final ProxyService<Rating> ratingProxyService;
 
     /**
      * This type of request allows to create and process it using the converter.
@@ -47,7 +47,7 @@ public class RatingController implements RatingApi {
     @PostMapping
     public RatingResponse create(@RequestBody @Valid RatingRequest ratingRequest,
                                  HttpServletRequest request) {
-        return convert(ratingService.create(convert(ratingRequest), securityService.checkAndGetInfo(request)));
+        return convert(ratingProxyService.create(convert(ratingRequest), request));
     }
 
     /**
@@ -65,7 +65,7 @@ public class RatingController implements RatingApi {
                                  HttpServletRequest request) {
         Rating rating = convert(ratingRequest);
         rating.setId(id);
-        return convert(ratingService.update(rating, securityService.checkAndGetInfo(request)));
+        return convert(ratingProxyService.update(rating, request));
     }
 
     /**
@@ -115,7 +115,7 @@ public class RatingController implements RatingApi {
      */
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable String id, HttpServletRequest request) {
-        ratingService.deleteById(id, securityService.checkAndGetInfo(request));
+        ratingProxyService.deleteById(id, request);
     }
 
     /**

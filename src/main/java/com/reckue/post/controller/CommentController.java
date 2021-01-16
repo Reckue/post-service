@@ -4,11 +4,12 @@ import com.reckue.post.controller.api.CommentApi;
 import com.reckue.post.exception.ReckueUnauthorizedException;
 import com.reckue.post.model.Comment;
 import com.reckue.post.service.CommentService;
-import com.reckue.post.service.SecurityService;
+import com.reckue.post.service.proxy.ProxyService;
 import com.reckue.post.transfer.CommentRequest;
 import com.reckue.post.transfer.CommentResponse;
 import com.reckue.post.util.converter.CommentConverter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +31,8 @@ import static com.reckue.post.util.converter.CommentConverter.convert;
 public class CommentController implements CommentApi {
 
     private final CommentService commentService;
-    private final SecurityService securityService;
+ //   @Qualifier("ProxyCommentService")
+    private final ProxyService<Comment> commentProxyService;
 
     /**
      * This type of request allows to create and process it using the converter.
@@ -44,7 +46,7 @@ public class CommentController implements CommentApi {
     // TODO: add postId as PathVariable and delete it from request (you don't need to enter a postId in update method)
     public CommentResponse create(@RequestBody @Valid CommentRequest commentRequest,
                                   HttpServletRequest request) {
-        return convert(commentService.create(convert(commentRequest), securityService.checkAndGetInfo(request)));
+        return convert(commentProxyService.create(convert(commentRequest), request));
     }
 
     /**
@@ -62,7 +64,7 @@ public class CommentController implements CommentApi {
                                   HttpServletRequest request) {
         Comment comment = convert(commentRequest);
         comment.setId(id);
-        return convert(commentService.update(comment, securityService.checkAndGetInfo(request)));
+        return convert(commentProxyService.update(comment, request));
     }
 
     /**
@@ -124,6 +126,6 @@ public class CommentController implements CommentApi {
      */
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable String id, HttpServletRequest request) {
-        commentService.deleteById(id, securityService.checkAndGetInfo(request));
+        commentProxyService.deleteById(id, request);
     }
 }

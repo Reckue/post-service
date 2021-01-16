@@ -10,18 +10,7 @@ import java.util.List;
  *
  * @author Kamila Meshcheryakova
  */
-public interface RatingService extends AuthService<Rating> {
-
-    /**
-     * {@inheritDoc}
-     *
-     * @throws UnsupportedOperationException {@inheritDoc}
-     * @implSpec This implementation always throws an
-     * {@code UnsupportedOperationException}.
-     */
-    default Rating findById(String id) {
-        throw new UnsupportedOperationException();
-    }
+public interface RatingService extends BaseService<Rating> {
 
     /**
      * This method is used to get the number of ratings to a single post.
@@ -40,4 +29,10 @@ public interface RatingService extends AuthService<Rating> {
      * @return list of objects of class Post
      */
     List<Post> findAllPostsWithRatingsByUserId(String userId, Integer limit, Integer offset);
+
+    /**
+     * This method is used to delete all objects.
+     */
+    @Deprecated
+    void deleteAll();
 }

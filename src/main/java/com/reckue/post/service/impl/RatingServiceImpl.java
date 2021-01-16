@@ -15,7 +15,10 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -33,15 +36,12 @@ public class RatingServiceImpl implements RatingService {
     /**
      * This method is used to create an object of class Rating using rating validation.
      *
-     * @param rating    object of class Rating
-     * @param tokenInfo user token info
+     * @param rating object of class Rating
      * @return rating object of class Rating
      */
     @Override
     @NotNullArgs
-    public Rating create(Rating rating, Map<String, Object> tokenInfo) {
-        String userId = (String) tokenInfo.get("userId");
-        rating.setUserId(userId);
+    public Rating create(Rating rating) {
         validateCreatingRating(rating);
 
         if (ratingRepository.existsByUserIdAndPostId(rating.getUserId(), rating.getPostId())) {
@@ -73,13 +73,13 @@ public class RatingServiceImpl implements RatingService {
      * if such object isn't contained in database.
      * Throws {@link ReckueIllegalArgumentException} in case
      * if parameter equals null.
+     * Throws {@link ReckueAccessDeniedException} in case if the user isn't a rating owner.
      *
-     * @param rating    object of class Rating
-     * @param tokenInfo user token info
+     * @param rating object of class Rating
      * @return rating object of class Rating
      */
     @Override
-    public Rating update(Rating rating, Map<String, Object> tokenInfo) {
+    public Rating update(Rating rating) {
         if (rating.getId() == null) {
             throw new ReckueIllegalArgumentException("The parameter is null");
         }
@@ -88,8 +88,7 @@ public class RatingServiceImpl implements RatingService {
                 .orElseThrow(() -> new RatingNotFoundException(rating.getId()));
         savedRating.setUserId(savedRating.getUserId());
         savedRating.setPostId(savedRating.getPostId());
-        if (!tokenInfo.get("userId").equals(savedRating.getUserId())
-                && !tokenInfo.get("authorities").equals("ROLE_ADMIN")) {
+        if (!rating.getUserId().equals(savedRating.getUserId())) {
             throw new ReckueAccessDeniedException("The operation is forbidden");
         }
         return ratingRepository.save(savedRating);
@@ -202,28 +201,26 @@ public class RatingServiceImpl implements RatingService {
     }
 
     /**
-     * This method is used to delete an object by id.
+     * This method is used to get an object by id.
      * Throws {@link RatingNotFoundException} in case if such object isn't contained in database.
-     * Throws {@link ReckueAccessDeniedException} in case if the user isn't a rating owner or
-     * hasn't admin authorities.
      *
-     * @param id        object
-     * @param tokenInfo user token info
+     * @param id object
+     * @return object of class Rating
      */
     @Override
-    public void deleteById(String id, Map<String, Object> tokenInfo) {
-        if (!ratingRepository.existsById(id)) {
-            throw new RatingNotFoundException(id);
-        }
-        Optional<Rating> rating = ratingRepository.findById(id);
-        if (rating.isPresent()) {
-            String ratingUser = rating.get().getUserId();
-            if (tokenInfo.get("userId").equals(ratingUser) || tokenInfo.get("authorities").equals("ROLE_ADMIN")) {
-                ratingRepository.deleteById(id);
-            } else {
-                throw new ReckueAccessDeniedException("The operation is forbidden");
-            }
-        }
+    public Rating findById(String id) {
+        return ratingRepository.findById(id).orElseThrow(
+                () -> new RatingNotFoundException(id));
+    }
+
+    /**
+     * This method is used to delete an object by id.
+     *
+     * @param id object
+     */
+    @Override
+    public void deleteById(String id) {
+        ratingRepository.deleteById(id);
     }
 
     /**

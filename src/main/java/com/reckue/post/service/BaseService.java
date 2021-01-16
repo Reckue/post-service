@@ -3,8 +3,7 @@ package com.reckue.post.service;
 import java.util.List;
 
 /**
- * Interface BaseService represents a common base service with CRUD operations for services
- * without authorization.
+ * Interface BaseService represents a common base service with CRUD operations.
  *
  * @author Kamila Meshcheryakova
  */
@@ -45,6 +44,18 @@ public interface BaseService<T> {
     List<T> findAll(Integer limit, Integer offset, String sort, Boolean desc);
 
     /**
+     * This method is used to get a list of objects by user id.
+     *
+     * @param userId user identificator
+     * @param limit  quantity of objects
+     * @param offset quantity to skip
+     * @return list of objects of desired class
+     */
+    default List<T> findAllByUserId(String userId, Integer limit, Integer offset) {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
      * This method is used to get an object by id.
      *
      * @param id of object
@@ -58,4 +69,5 @@ public interface BaseService<T> {
      * @param id object
      */
     void deleteById(String id);
+
 }

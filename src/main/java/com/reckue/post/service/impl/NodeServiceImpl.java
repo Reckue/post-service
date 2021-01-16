@@ -16,7 +16,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -35,16 +37,12 @@ public class NodeServiceImpl implements NodeService {
     /**
      * This method is used to create an object of class Node.
      *
-     * @param node      object of class Node
-     * @param tokenInfo user token info
+     * @param node object of class Node
      * @return node object of class Node
      */
     @Override
     @NotNullArgs
-    public Node create(Node node, Map<String, Object> tokenInfo) {
-        String userId = (String) tokenInfo.get("userId");
-        node.setUserId(userId);
-
+    public Node create(Node node) {
         validateCreatingNode(node);
         // todo: add status validation
         return nodeRepository.save(node);
@@ -79,15 +77,13 @@ public class NodeServiceImpl implements NodeService {
      * if such object isn't contained in database.
      * Throws {@link ReckueIllegalArgumentException} in case
      * if parameter equals null.
-     * Throws {@link ReckueAccessDeniedException} in case if the user isn't an node owner or
-     * hasn't admin authorities.
+     * Throws {@link ReckueAccessDeniedException} in case if the user isn't a node owner.
      *
-     * @param node      object of class Node
-     * @param tokenInfo user token info
+     * @param node object of class Node
      * @return node object of class Node
      */
     @Override
-    public Node update(Node node, Map<String, Object> tokenInfo) {
+    public Node update(Node node) {
         if (node.getId() == null) {
             throw new ReckueIllegalArgumentException("The parameter is null");
         }
@@ -102,8 +98,7 @@ public class NodeServiceImpl implements NodeService {
         savedNode.setSource(node.getSource());
         savedNode.setStatus(node.getStatus());
 
-        if (!tokenInfo.get("userId").equals(savedNode.getUserId())
-                && !tokenInfo.get("authorities").equals("ROLE_ADMIN")) {
+        if (!node.getUserId().equals(savedNode.getUserId())) {
             throw new ReckueAccessDeniedException("The operation is forbidden");
         }
 
@@ -307,28 +302,12 @@ public class NodeServiceImpl implements NodeService {
 
     /**
      * This method is used to delete an object by id.
-     * Throws {@link NodeNotFoundException} in case if such object isn't contained in database.
-     * Throws {@link ReckueAccessDeniedException} in case if the user isn't an node owner or
-     * hasn't admin authorities.
      *
-     * @param id        object
-     * @param tokenInfo user token info
+     * @param id object
      */
     @Override
-    public void deleteById(String id, Map<String, Object> tokenInfo) {
-        if (!nodeRepository.existsById(id)) {
-            throw new NodeNotFoundException(id);
-        }
-        Optional<Node> node = nodeRepository.findById(id);
-        if (node.isPresent()) {
-            String nodeUser = node.get().getUserId();
-            if (tokenInfo.get("userId").equals(nodeUser) || tokenInfo.get("authorities").equals("ROLE_ADMIN")) {
-                nodeRepository.deleteById(id);
-            } else {
-                throw new ReckueAccessDeniedException("The operation is forbidden");
-            }
-        }
-
+    public void deleteById(String id) {
+        nodeRepository.deleteById(id);
     }
 
     /**

@@ -18,7 +18,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -37,17 +40,14 @@ public class PostServiceImpl implements PostService {
     /**
      * This method is used to create an object of class Post.
      *
-     * @param post      object of class Post
-     * @param tokenInfo user token info
+     * @param post object of class Post
+     *             //  * @param tokenInfo user token info
      * @return post object of class Post
      */
     @Override
     @Transactional
     @NotNullArgs
-    public Post create(Post post, Map<String, Object> tokenInfo) {
-        String userId = (String) tokenInfo.get("userId");
-        post.setUserId(userId);
-
+    public Post create(Post post) {
         validateOnCreatePost(post);
         validateOnCreateStatus(post);
 
@@ -64,7 +64,8 @@ public class PostServiceImpl implements PostService {
             nodeList.forEach(node -> {
                 node.setParentId(postId);
                 node.setParentType(ParentType.POST);
-                nodeService.create(node, tokenInfo);
+                node.setUserId(post.getUserId());
+                nodeService.create(node);
             });
         }
         storedPost.setNodes(nodeList);
@@ -108,24 +109,25 @@ public class PostServiceImpl implements PostService {
      * if such object isn't contained in database.
      * Throws {@link ReckueIllegalArgumentException} in case
      * if parameter equals null.
-     * Throws {@link ReckueAccessDeniedException} in case if the user isn't an post owner or
-     * hasn't admin authorities.
+     * Throws {@link ReckueAccessDeniedException} in case if the user isn't a post owner.
      *
-     * @param post      object of class Post
-     * @param tokenInfo user token info
+     * @param post object of class Post
+     *             // * @param tokenInfo user token info
      * @return post object of class Post
      */
     @Override
     @Transactional
     @NotNullArgs
-    public Post update(Post post, Map<String, Object> tokenInfo) {
+    public Post update(Post post) {
+
         if (post.getId() == null) {
             throw new ReckueIllegalArgumentException("The parameter is null");
         }
         if (!post.getNodes().isEmpty()) {
             post.getNodes().forEach(node -> {
                 node.setParentId(post.getId());
-                nodeService.create(node, tokenInfo);
+                node.setUserId(post.getUserId());
+                nodeService.create(node);
             });
         }
         validateOnUpdateStatus(post);
@@ -137,8 +139,7 @@ public class PostServiceImpl implements PostService {
         savedPost.setSource(post.getSource());
         savedPost.setTags(post.getTags());
 
-        if (!tokenInfo.get("userId").equals(savedPost.getUserId())
-                && !tokenInfo.get("authorities").equals("ROLE_ADMIN")) {
+        if (!post.getUserId().equals(savedPost.getUserId())) {
             throw new ReckueAccessDeniedException("The operation is forbidden");
         }
 
@@ -388,28 +389,13 @@ public class PostServiceImpl implements PostService {
 
     /**
      * This method is used to delete an object by id.
-     * Throws {@link PostNotFoundException} in case if such object isn't contained in database.
-     * Throws {@link ReckueAccessDeniedException} in case if the user isn't an post owner or
-     * hasn't admin authorities.
      *
-     * @param id        object
-     * @param tokenInfo user token info
+     * @param id object
      */
     @Override
     @NotNullArgs
-    public void deleteById(String id, Map<String, Object> tokenInfo) {
-        if (!postRepository.existsById(id)) {
-            throw new PostNotFoundException(id);
-        }
-        Optional<Post> post = postRepository.findById(id);
-        if (post.isPresent()) {
-            String postUser = post.get().getUserId();
-            if (tokenInfo.get("userId").equals(postUser) || tokenInfo.get("authorities").equals("ROLE_ADMIN")) {
-                postRepository.deleteById(id);
-            } else {
-                throw new ReckueAccessDeniedException("The operation is forbidden");
-            }
-        }
+    public void deleteById(String id) {
+        postRepository.deleteById(id);
     }
 
     /**
