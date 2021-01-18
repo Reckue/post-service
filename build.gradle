@@ -69,7 +69,6 @@ dependencies {
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
-   // testImplementation 'junit:junit:4.13.1'
 
     /* lombok */
     compileOnly 'org.projectlombok:lombok:1.18.12'
@@ -99,10 +98,11 @@ openApiGenerate {
     typeMappings = [
             OffsetDateTime: "java.time.Instant",
     ]
+    modelNameSuffix = 'Dto'
     configOptions = [
             interfaceOnly : true,
-            apiPackage    : "com.reckue.post.generated.controllers",
-            modelPackage  : "com.reckue.post.generated.models",
+            apiPackage    : "com.reckue.post.generated.controller",
+            modelPackage  : "com.reckue.post.generated.controller.dto",
             useLombok: true
     ]
     enablePostProcessFile = false

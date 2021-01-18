@@ -8,7 +8,6 @@ import com.reckue.post.exception.model.post.PostNotFoundException;
 import com.reckue.post.model.Node;
 import com.reckue.post.model.Role;
 import com.reckue.post.model.type.ParentType;
-import com.reckue.post.processor.notnull.NotNullArgs;
 import com.reckue.post.repository.CommentRepository;
 import com.reckue.post.repository.NodeRepository;
 import com.reckue.post.repository.PostRepository;
@@ -18,7 +17,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -35,7 +37,7 @@ public class NodeServiceImpl implements NodeService {
     private final CommentRepository commentRepository;
 
     @Override
-    @NotNullArgs
+    //@NotNullArgs //??
     public Node create(Node node) {
         node.setUserId(CurrentUser.getId());
         validateCreatingNode(node);

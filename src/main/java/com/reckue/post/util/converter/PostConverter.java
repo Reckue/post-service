@@ -3,9 +3,9 @@ package com.reckue.post.util.converter;
 import com.reckue.post.exception.ReckueIllegalArgumentException;
 import com.reckue.post.model.Node;
 import com.reckue.post.model.Post;
-import com.reckue.post.transfer.NodeResponse;
-import com.reckue.post.transfer.PostRequest;
-import com.reckue.post.transfer.PostResponse;
+import com.reckue.post.generated.models.NodeResponse;
+import com.reckue.post.generated.models.PostRequest;
+import com.reckue.post.generated.models.PostResponse;
 
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class PostConverter {
      * @param postRequest the object of class PostRequest
      * @return the object of class Post
      */
-    public static Post convert(PostRequest postRequest) {
+    public static Post convertToModel(PostRequest postRequest) {
         if (postRequest == null) {
             throw new ReckueIllegalArgumentException("Null parameters are not allowed");
         }
@@ -54,7 +54,7 @@ public class PostConverter {
      * @param post the object of class Post
      * @return the object of class PostResponse
      */
-    public static PostResponse convert(Post post) {
+    public static PostResponse convertToDto(Post post) {
         if (post == null) {
             throw new ReckueIllegalArgumentException("Null parameters are not allowed");
         }

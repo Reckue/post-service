@@ -3,7 +3,6 @@ package com.reckue.post.controller;
 import com.reckue.post.controller.api.RatingApi;
 import com.reckue.post.model.Rating;
 import com.reckue.post.service.RatingService;
-import com.reckue.post.service.SecurityService;
 import com.reckue.post.transfer.PostRatingResponse;
 import com.reckue.post.transfer.PostResponse;
 import com.reckue.post.transfer.RatingRequest;
@@ -76,7 +75,7 @@ public class RatingController implements RatingApi {
                                                  @RequestParam(required = false) Integer limit,
                                                  @RequestParam(required = false) Integer offset) {
         return ratingService.findAllPostsWithRatingsByUserId(userId, limit, offset).stream()
-                .map(PostConverter::convert)
+                .map(PostConverter::convertToDto)
                 .collect(Collectors.toList());
     }
 }

@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,8 +29,7 @@ public class NodeController implements NodeApi {
     private final NodeService nodeService;
 
     @PostMapping
-    public NodeResponse create(@RequestBody @Valid NodeRequest nodeRequest,
-                               HttpServletRequest request) {
+    public NodeResponse create(@RequestBody @Valid NodeRequest nodeRequest) {
         Node node = NodeConverter.convertToModel(nodeRequest);
         Node storedNode = nodeService.create(node);
         return NodeConverter.convertToDto(storedNode);
@@ -39,8 +37,7 @@ public class NodeController implements NodeApi {
 
     @PutMapping("/{id}")
     public NodeResponse update(@PathVariable String id,
-                               @RequestBody @Valid NodeRequest nodeRequest,
-                               HttpServletRequest request) {
+                               @RequestBody @Valid NodeRequest nodeRequest) {
         Node model = NodeConverter.convertToModel(nodeRequest);
         model.setId(id);
         return NodeConverter.convertToDto(nodeService.update(model));
@@ -63,7 +60,7 @@ public class NodeController implements NodeApi {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable String id, HttpServletRequest request) {
+    public void deleteById(@PathVariable String id) {
         nodeService.deleteById(id);
     }
 }

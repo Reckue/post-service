@@ -19,7 +19,7 @@ public interface NodeApi {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "The node successfully added"),
             @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")})
-    NodeResponse create(NodeRequest nodeRequest, HttpServletRequest request);
+    NodeResponse create(NodeRequest nodeRequest);
 
     @ApiOperation(value = "Update a node", authorizations = {@Authorization(value = "Bearer token")})
     @ApiResponses(value = {
@@ -27,7 +27,7 @@ public interface NodeApi {
             @ApiResponse(code = 400, message = "You need to fill in the fields of your request"),
             @ApiResponse(code = 404, message = "The resource you were trying to change is not found"),
             @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")})
-    NodeResponse update(String id, NodeRequest nodeRequest, HttpServletRequest request);
+    NodeResponse update(String id, NodeRequest nodeRequest);
 
     @ApiOperation(value = "View a list of available nodes", response = NodeResponse.class)
     @ApiResponses(value = {
@@ -49,5 +49,5 @@ public interface NodeApi {
             @ApiResponse(code = 200, message = "The node successfully deleted"),
             @ApiResponse(code = 404, message = "The resource you were trying to delete is not found"),
             @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")})
-    void deleteById(String id, HttpServletRequest request);
+    void deleteById(String id);
 }

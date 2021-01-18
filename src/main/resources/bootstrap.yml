@@ -31,6 +31,7 @@ spring:
     loadbalancer:
       ribbon:
         enabled: true
+
 --- # develop
 server:
   port: ${PORT:8080}

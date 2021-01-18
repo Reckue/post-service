@@ -19,7 +19,7 @@ public interface PostApi {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "The post successfully added"),
             @ApiResponse(code = 500, message = "Access to the resource you tried to obtain is not possible")})
-    PostResponse create(PostRequest postRequest, HttpServletRequest request);
+    PostResponse create(PostRequest postRequest);
 
     @ApiOperation(value = "Update a post", authorizations = {@Authorization(value = "Bearer token")})
     @ApiResponses(value = {
