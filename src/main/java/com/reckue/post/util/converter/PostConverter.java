@@ -3,9 +3,9 @@ package com.reckue.post.util.converter;
 import com.reckue.post.exception.ReckueIllegalArgumentException;
 import com.reckue.post.model.Node;
 import com.reckue.post.model.Post;
-import com.reckue.post.generated.models.NodeResponse;
-import com.reckue.post.generated.models.PostRequest;
-import com.reckue.post.generated.models.PostResponse;
+import com.reckue.post.generated.controller.dto.NodeResponseDto;
+import com.reckue.post.generated.controller.dto.PostRequestDto;
+import com.reckue.post.generated.controller.dto.PostResponseDto;
 
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class PostConverter {
      * @param postRequest the object of class PostRequest
      * @return the object of class Post
      */
-    public static Post convertToModel(PostRequest postRequest) {
+    public static Post convertToModel(PostRequestDto postRequest) {
         if (postRequest == null) {
             throw new ReckueIllegalArgumentException("Null parameters are not allowed");
         }
@@ -54,19 +54,19 @@ public class PostConverter {
      * @param post the object of class Post
      * @return the object of class PostResponse
      */
-    public static PostResponse convertToDto(Post post) {
+    public static PostResponseDto convertToDto(Post post) {
         if (post == null) {
             throw new ReckueIllegalArgumentException("Null parameters are not allowed");
         }
 
-        List<NodeResponse> nodes = new ArrayList<>();
+        List<NodeResponseDto> nodes = new ArrayList<>();
         if (post.getNodes() != null) {
             nodes = post.getNodes().stream()
                     .map(NodeConverter::convertToDto)
                     .collect(Collectors.toList());
         }
 
-        return PostResponse.builder()
+        return PostResponseDto.builder()
                 .id(post.getId())
                 .userId(post.getUserId())
                 .title(post.getTitle())

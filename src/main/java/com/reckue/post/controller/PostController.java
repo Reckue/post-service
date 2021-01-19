@@ -1,8 +1,8 @@
 package com.reckue.post.controller;
 
-import com.reckue.post.generated.controllers.PostsApi;
-import com.reckue.post.generated.models.PostRequest;
-import com.reckue.post.generated.models.PostResponse;
+import com.reckue.post.generated.controller.PostsApi;
+import com.reckue.post.generated.controller.dto.PostRequestDto;
+import com.reckue.post.generated.controller.dto.PostResponseDto;
 import com.reckue.post.model.Post;
 import com.reckue.post.service.PostService;
 import com.reckue.post.util.converter.PostConverter;
@@ -29,29 +29,29 @@ public class PostController implements PostsApi {
 
     private final PostService postService;
 
-    public PostResponse create(@Valid PostRequest postRequest) {
+    public PostResponseDto create(@Valid PostRequestDto postRequest) {
         Post postModel = PostConverter.convertToModel(postRequest);
         return PostConverter.convertToDto(postService.create(postModel));
     }
 
     @Override
-    public ResponseEntity<PostResponse> updatePost(String id, PostRequest postRequest) {
+    public ResponseEntity<PostResponseDto> updatePost(String id, PostRequestDto postRequest) {
         Post post = PostConverter.convertToModel(postRequest);
         post.setId(id);
         return PostConverter.convertToDto(postService.update(post));
     }
 
-    public PostResponse findById(@PathVariable String id) {
+    public PostResponseDto findById(@PathVariable String id) {
         return PostConverter.convertToDto(postService.findById(id));
     }
 
-    public List<PostResponse> findByTitle(@PathVariable String title) {
+    public List<PostResponseDto> findByTitle(@PathVariable String title) {
         return postService.findAllByTitle(title).stream()
                 .map(PostConverter::convertToDto)
                 .collect(Collectors.toList());
     }
 
-    public List<PostResponse> findAllByUserId(@PathVariable String userId,
+    public List<PostResponseDto> findAllByUserId(@PathVariable String userId,
                                               @RequestParam(required = false) Integer limit,
                                               @RequestParam(required = false) Integer offset) {
         return postService.findAllByUserId(userId, limit, offset).stream()
@@ -59,7 +59,7 @@ public class PostController implements PostsApi {
                 .collect(Collectors.toList());
     }
 
-    public List<PostResponse> findAll(@RequestParam(required = false) Integer limit,
+    public List<PostResponseDto> findAll(@RequestParam(required = false) Integer limit,
                                       @RequestParam(required = false) Integer offset,
                                       @RequestParam(required = false) String sort,
                                       @RequestParam(required = false) Boolean desc) {

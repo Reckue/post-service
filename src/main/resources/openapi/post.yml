@@ -697,6 +697,12 @@ components:
         'application/json':
           schema:
             $ref: '#/components/schemas/NodeRequest'
+    NodeEntry:
+      description: Node entry.
+      content:
+        'application/json':
+          schema:
+            $ref: '#/components/schemas/NodeEntry'
 
   # Components -> Responses
   responses:
@@ -1080,11 +1086,11 @@ components:
           description: Current node status.
           example: ACTIVE
         createdDate:
-          type: integer
+          type: long
           description: Created date of the post.
           example: 1600541486196
         modificationDate:
-          type: integer
+          type: long
           description: Modification date of the post.
           example: 1600541486196
 
