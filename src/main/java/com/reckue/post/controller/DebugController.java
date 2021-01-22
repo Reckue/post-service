@@ -5,6 +5,7 @@ import com.reckue.post.service.CommentService;
 import com.reckue.post.service.NodeService;
 import com.reckue.post.service.PostService;
 import com.reckue.post.service.RatingService;
+import com.reckue.post.service.impl.PostServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class DebugController implements DebugApi {
 
     private final NodeService nodeService;
-    private final PostService postService;
+    private final PostServiceImpl postService;
     private final RatingService ratingService;
     private final CommentService commentService;
 

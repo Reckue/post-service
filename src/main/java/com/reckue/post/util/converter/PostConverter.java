@@ -3,9 +3,9 @@ package com.reckue.post.util.converter;
 import com.reckue.post.exception.ReckueIllegalArgumentException;
 import com.reckue.post.model.Node;
 import com.reckue.post.model.Post;
-import com.reckue.post.transfer.NodeResponse;
-import com.reckue.post.transfer.PostRequest;
-import com.reckue.post.transfer.PostResponse;
+import com.reckue.post.transfer.dto.NodeResponse;
+import com.reckue.post.transfer.dto.post.PostRequest;
+import com.reckue.post.transfer.dto.post.PostResponse;
 
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -19,33 +19,33 @@ import java.util.stream.Collectors;
  */
 public class PostConverter {
 
-    /**
-     * This method is used to convert from the object of class PostRequest
-     * to the object of class Post.
-     *
-     * @param postRequest the object of class PostRequest
-     * @return the object of class Post
-     */
-    public static Post convert(PostRequest postRequest) {
-        if (postRequest == null) {
-            throw new ReckueIllegalArgumentException("Null parameters are not allowed");
-        }
-
-        List<Node> nodes = new ArrayList<>();
-        if (postRequest.getNodes() != null) {
-            nodes = postRequest.getNodes().stream()
-                    .map(NodeConverter::convert)
-                    .collect(Collectors.toList());
-        }
-
-        return Post.builder()
-                .title(postRequest.getTitle())
-                .nodes(nodes)
-                .source(postRequest.getSource())
-                .tags(postRequest.getTags())
-                .status(postRequest.getStatus())
-                .build();
-    }
+//    /**
+//     * This method is used to convert from the object of class PostRequest
+//     * to the object of class Post.
+//     *
+//     * @param postRequest the object of class PostRequest
+//     * @return the object of class Post
+//     */
+//    public static Post convert(PostRequest postRequest) {
+//        if (postRequest == null) {
+//            throw new ReckueIllegalArgumentException("Null parameters are not allowed");
+//        }
+//
+//        List<Node> nodes = new ArrayList<>();
+//        if (postRequest.getNodes() != null) {
+//            nodes = postRequest.getNodes().stream()
+//                    .map(NodeConverter::convert)
+//                    .collect(Collectors.toList());
+//        }
+//
+//        return Post.builder()
+//                .title(postRequest.getTitle())
+//                .nodes(nodes)
+//                .source(postRequest.getSource())
+//                .tags(postRequest.getTags())
+//                .status(postRequest.getStatus())
+//                .build();
+//    }
 
     /**
      * This method is used to convert from the object of class Post

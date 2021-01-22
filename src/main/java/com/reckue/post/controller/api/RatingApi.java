@@ -1,9 +1,9 @@
 package com.reckue.post.controller.api;
 
-import com.reckue.post.transfer.PostRatingResponse;
-import com.reckue.post.transfer.PostResponse;
-import com.reckue.post.transfer.RatingRequest;
-import com.reckue.post.transfer.RatingResponse;
+import com.reckue.post.transfer.dto.post.PostRatingResponse;
+import com.reckue.post.transfer.dto.post.PostResponse;
+import com.reckue.post.transfer.dto.RatingRequest;
+import com.reckue.post.transfer.dto.RatingResponse;
 import io.swagger.annotations.*;
 
 import javax.servlet.http.HttpServletRequest;

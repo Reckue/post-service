@@ -1,4 +1,4 @@
-package com.reckue.post.transfer;
+package com.reckue.post.transfer.dto.post;
 
 import com.reckue.post.model.Tag;
 import com.reckue.post.model.type.PostStatusType;
@@ -20,13 +20,8 @@ import java.util.List;
 @Data
 public class PostRequest {
 
-    @NotNull
     @ApiModelProperty(notes = "Post title")
     private String title;
-
-    @ApiModelProperty(notes = "List of nodes the post consists of")
-    @Valid
-    private List<NodeRequest> nodes;
 
     @Size(max = 128)
     @ApiModelProperty(notes = "The source used to write the post")

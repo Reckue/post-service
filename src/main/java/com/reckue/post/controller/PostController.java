@@ -3,18 +3,20 @@ package com.reckue.post.controller;
 import com.reckue.post.controller.api.PostApi;
 import com.reckue.post.exception.ReckueUnauthorizedException;
 import com.reckue.post.model.Post;
-import com.reckue.post.service.PostService;
 import com.reckue.post.service.SecurityService;
-import com.reckue.post.transfer.PostRequest;
-import com.reckue.post.transfer.PostResponse;
-import com.reckue.post.util.converter.PostConverter;
+import com.reckue.post.service.impl.PostServiceImpl;
+import com.reckue.post.transfer.dto.post.PostFilterRequest;
+import com.reckue.post.transfer.dto.post.PostRequest;
+import com.reckue.post.transfer.dto.post.PostResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.reckue.post.util.converter.PostConverter.convert;
 
@@ -25,11 +27,13 @@ import static com.reckue.post.util.converter.PostConverter.convert;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/posts")
+@RequestMapping(value = "/post")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-public class PostController implements PostApi {
+public class PostController
+		implements PostApi
+{
 
-    private final PostService postService;
+    private final PostServiceImpl postService;
     private final SecurityService securityService;
 
     /**
@@ -42,8 +46,13 @@ public class PostController implements PostApi {
      */
     @PostMapping
     public PostResponse create(@RequestBody @Valid PostRequest postRequest, HttpServletRequest request) {
-        return convert(postService.create(convert(postRequest), securityService.checkAndGetInfo(request)));
+        return convert(postService.create(postRequest, securityService.checkAndGetInfo(request)));
     }
+
+    @PostMapping("/publish/{id}")
+    public void publishPost(@PathVariable String postId, HttpServletRequest request) {
+		postService.publish(postId, securityService.checkAndGetInfo(request));
+	}
 
     /**
      * This type of request allows to update by id the object, process it using the converter and save.
@@ -58,9 +67,7 @@ public class PostController implements PostApi {
     public PostResponse update(@PathVariable String id,
                                @RequestBody @Valid PostRequest postRequest,
                                HttpServletRequest request) {
-        Post post = convert(postRequest);
-        post.setId(id);
-        return convert(postService.update(post, securityService.checkAndGetInfo(request)));
+        return convert(postService.update(id, postRequest, securityService.checkAndGetInfo(request)));
     }
 
     /**
@@ -74,55 +81,30 @@ public class PostController implements PostApi {
         return convert(postService.findById(id));
     }
 
-    /**
-     * This type of request allows to get all the objects by title, process it using the converter.
-     *
-     * @param title the object identifier
-     * @return list of objects of class PostResponse
-     */
-    @GetMapping("/title/{title}")
-    public List<PostResponse> findByTitle(@PathVariable String title) {
-        return postService.findAllByTitle(title).stream()
-                .map(PostConverter::convert)
-                .collect(Collectors.toList());
-    }
+	@Override
+	public List<PostResponse> findByTitle(String title) {
+		return null;
+	}
 
-    /**
-     * This type of request allows to get all the objects by user id, process it using the converter.
-     *
-     * @param userId user identifier
-     * @param limit  quantity of objects
-     * @param offset quantity to skip
-     * @return list of objects of class PostResponse
-     */
-    @GetMapping("/user/{userId}")
-    public List<PostResponse> findAllByUserId(@PathVariable String userId,
-                                              @RequestParam(required = false) Integer limit,
-                                              @RequestParam(required = false) Integer offset) {
-        return postService.findAllByUserId(userId, limit, offset).stream()
-                .map(PostConverter::convert)
-                .collect(Collectors.toList());
-    }
+	@Override
+	public List<PostResponse> findAll(Integer limit, Integer offset, String sort, Boolean desc) {
+		return null;
+	}
 
-    /**
+	@Override
+	public List<PostResponse> findAllByUserId(String userId, Integer limit, Integer offset) {
+		return null;
+	}
+
+	/**
      * This type of request allows to get all the objects that meet the requirements, process it using the converter.
      *
-     * @param limit  quantity of objects
-     * @param offset quantity to skip
-     * @param sort   parameter for sorting
-     * @param desc   sorting descending
      * @return list of given quantity of objects of class PostResponse with a given offset
      * sorted by the selected parameter for sorting in descending order
      */
-    @GetMapping
-    public List<PostResponse> findAll(@RequestParam(required = false) Integer limit,
-                                      @RequestParam(required = false) Integer offset,
-                                      @RequestParam(required = false) String sort,
-                                      @RequestParam(required = false) Boolean desc) {
-
-        return postService.findAll(limit, offset, sort, desc).stream()
-                .map(PostConverter::convert)
-                .collect(Collectors.toList());
+    @PostMapping("/filter")
+    public Page<Post> findAllByFilter(@RequestBody PostFilterRequest filter, Pageable pageable) {
+        return postService.findAll(filter, pageable);
     }
 
     /**

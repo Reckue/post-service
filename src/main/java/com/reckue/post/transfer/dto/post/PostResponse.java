@@ -1,7 +1,8 @@
-package com.reckue.post.transfer;
+package com.reckue.post.transfer.dto.post;
 
 import com.reckue.post.model.Tag;
 import com.reckue.post.model.type.PostStatusType;
+import com.reckue.post.transfer.dto.NodeResponse;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;

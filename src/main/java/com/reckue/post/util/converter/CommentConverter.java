@@ -3,9 +3,9 @@ package com.reckue.post.util.converter;
 import com.reckue.post.exception.ReckueIllegalArgumentException;
 import com.reckue.post.model.Comment;
 import com.reckue.post.model.Node;
-import com.reckue.post.transfer.CommentRequest;
-import com.reckue.post.transfer.CommentResponse;
-import com.reckue.post.transfer.NodeResponse;
+import com.reckue.post.transfer.dto.CommentRequest;
+import com.reckue.post.transfer.dto.CommentResponse;
+import com.reckue.post.transfer.dto.NodeResponse;
 
 import java.time.ZoneId;
 import java.util.ArrayList;

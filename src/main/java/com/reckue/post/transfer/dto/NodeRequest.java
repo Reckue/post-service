@@ -1,4 +1,4 @@
-package com.reckue.post.transfer;
+package com.reckue.post.transfer.dto;
 
 import com.reckue.post.model.type.NodeType;
 import com.reckue.post.model.type.ParentType;

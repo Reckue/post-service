@@ -1,7 +1,7 @@
 package com.reckue.post.controller.api;
 
-import com.reckue.post.transfer.PostRequest;
-import com.reckue.post.transfer.PostResponse;
+import com.reckue.post.transfer.dto.post.PostRequest;
+import com.reckue.post.transfer.dto.post.PostResponse;
 import io.swagger.annotations.*;
 
 import javax.servlet.http.HttpServletRequest;

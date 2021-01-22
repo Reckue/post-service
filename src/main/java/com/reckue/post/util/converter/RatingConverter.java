@@ -2,8 +2,8 @@ package com.reckue.post.util.converter;
 
 import com.reckue.post.exception.ReckueIllegalArgumentException;
 import com.reckue.post.model.Rating;
-import com.reckue.post.transfer.RatingRequest;
-import com.reckue.post.transfer.RatingResponse;
+import com.reckue.post.transfer.dto.RatingRequest;
+import com.reckue.post.transfer.dto.RatingResponse;
 
 import java.time.ZoneId;
 

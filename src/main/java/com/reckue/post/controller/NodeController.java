@@ -5,8 +5,8 @@ import com.reckue.post.exception.ReckueUnauthorizedException;
 import com.reckue.post.model.Node;
 import com.reckue.post.service.NodeService;
 import com.reckue.post.service.SecurityService;
-import com.reckue.post.transfer.NodeRequest;
-import com.reckue.post.transfer.NodeResponse;
+import com.reckue.post.transfer.dto.NodeRequest;
+import com.reckue.post.transfer.dto.NodeResponse;
 import com.reckue.post.util.converter.NodeConverter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +24,6 @@ import static com.reckue.post.util.converter.NodeConverter.convert;
  *
  * @author Viktor Grigoriev
  */
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/nodes")
@@ -46,7 +45,6 @@ public class NodeController implements NodeApi {
     // TODO: add parentId as PathVariable and delete it from request
     //  (you don't need to enter a parentId in update method)
     public NodeResponse create(@RequestBody @Valid NodeRequest nodeRequest, HttpServletRequest request) {
-        log.info("{}", nodeRequest);
         return convert(nodeService.create(convert(nodeRequest), securityService.checkAndGetInfo(request)));
     }
 

@@ -1,4 +1,4 @@
-package com.reckue.post.transfer;
+package com.reckue.post.transfer.dto;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
