@@ -922,12 +922,12 @@ components:
         nodes:
           type: array
           items:
-            $ref: '#/components/schemas/NodeResponse'
+            $ref: '#/components/schemas/NodeRequest'
           description: Node list of the post.
         tags:
           type: array
           items:
-            $ref: '#/components/schemas/TagResponse'
+            $ref: '#/components/schemas/TagRequest'
           description: Tag list of the post.
 
     TagRequest:

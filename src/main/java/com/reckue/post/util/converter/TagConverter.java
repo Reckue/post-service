@@ -18,7 +18,7 @@ public class TagConverter {
      * @param tagRequest the object of class TagRequest
      * @return the object of class Tag
      */
-    public static Tag convert(TagRequestDto tagRequest) {
+    public static Tag convertToModel(TagRequestDto tagRequest) {
         if (tagRequest == null) {
             throw new ReckueIllegalArgumentException("Null parameters are not allowed");
         }
@@ -33,7 +33,7 @@ public class TagConverter {
      * @param tag the object of class Tag
      * @return the object of class TagResponse
      */
-    public static TagResponseDto convert(Tag tag) {
+    public static TagResponseDto convertToDto(Tag tag) {
         if (tag == null) {
             throw new ReckueIllegalArgumentException("Null parameters are not allowed");
         }
