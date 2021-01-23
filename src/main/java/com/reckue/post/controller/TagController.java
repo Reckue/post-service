@@ -1,8 +1,8 @@
 package com.reckue.post.controller;
 
-import com.reckue.post.controller.api.TagApi;
-import com.reckue.post.generated.models.TagRequest;
-import com.reckue.post.generated.models.TagResponse;
+import com.reckue.post.generated.controller.TagsApi;
+import com.reckue.post.generated.controller.dto.TagRequestDto;
+import com.reckue.post.generated.controller.dto.TagResponseDto;
 import com.reckue.post.model.Tag;
 import com.reckue.post.service.TagService;
 import com.reckue.post.util.converter.TagConverter;
@@ -24,7 +24,7 @@ import static com.reckue.post.util.converter.TagConverter.convert;
 @RequiredArgsConstructor
 @RequestMapping(value = "/tags")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-public class TagController implements TagApi {
+public class TagController implements TagsApi {
 
     private final TagService tagService;
 
@@ -35,7 +35,7 @@ public class TagController implements TagApi {
      * @return the object of class TagResponse
      */
     @PostMapping
-    public TagResponse create(@RequestBody @Valid TagRequest tagRequest) {
+    public TagResponseDto create(@RequestBody @Valid TagRequestDto tagRequest) {
         return convert(tagService.create(convert(tagRequest)));
     }
 
@@ -47,7 +47,7 @@ public class TagController implements TagApi {
      * @return the object of class TagResponse
      */
     @PutMapping("/{id}")
-    public TagResponse update(@PathVariable String id, @RequestBody @Valid TagRequest tagRequest) {
+    public TagResponseDto update(@PathVariable String id, @RequestBody @Valid TagRequestDto tagRequest) {
         Tag tag = convert(tagRequest);
         tag.setId(id);
         return convert(tagService.update(tag));
@@ -65,7 +65,7 @@ public class TagController implements TagApi {
      * sorted by the selected parameter for sorting in descending order
      */
     @GetMapping
-    public List<TagResponse> findAll(@RequestParam(required = false) Integer limit,
+    public List<TagResponseDto> findAll(@RequestParam(required = false) Integer limit,
                                      @RequestParam(required = false) Integer offset,
                                      @RequestParam(required = false) String sort,
                                      @RequestParam(required = false) Boolean desc) {
@@ -82,7 +82,7 @@ public class TagController implements TagApi {
      * @return the object of class TagResponse
      */
     @GetMapping("/{id}")
-    public TagResponse findById(@PathVariable String id) {
+    public TagResponseDto findById(@PathVariable String id) {
         return convert(tagService.findById(id));
     }
 

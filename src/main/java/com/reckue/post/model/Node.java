@@ -1,6 +1,5 @@
 package com.reckue.post.model;
 
-import com.reckue.post.model.node.Parent;
 import com.reckue.post.model.type.NodeType;
 import com.reckue.post.model.type.ParentType;
 import com.reckue.post.model.type.StatusType;
@@ -33,7 +32,7 @@ public class Node implements Serializable {
 
     // required fields
     private NodeType type;
-    private Parent node;
+    private Object entry;
     private String parentId;
     private ParentType parentType;
 

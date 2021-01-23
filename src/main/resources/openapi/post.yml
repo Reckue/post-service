@@ -52,7 +52,7 @@ paths:
             type: boolean
       responses:
         200:
-          $ref: '#/components/responses/PostsResponse'
+          $ref: '#/components/responses/PostListResponse'
         400:
           $ref: '#/components/responses/BadRequestError'
         401:
@@ -521,7 +521,7 @@ paths:
   /comments:
     get:
       summary: List all comments.
-      operationId: getComments
+      operationId: getAllComments
       tags:
         - Comments
       parameters:
@@ -557,7 +557,7 @@ paths:
             type: boolean
       responses:
         200:
-          $ref: '#/components/responses/TagResponse'
+          $ref: '#/components/responses/CommentListResponse'
         400:
           $ref: '#/components/responses/BadRequestError'
         401:
@@ -736,7 +736,7 @@ components:
         'application/json':
           schema:
             $ref: '#/components/schemas/PostResponse'
-    PostsResponse:
+    PostListResponse:
       description: List of posts.
       content:
         'application/json':
@@ -764,6 +764,14 @@ components:
         'application/json':
           schema:
             $ref: '#/components/schemas/TagResponse'
+    TagListResponse:
+      description: List of tags.
+      content:
+        'application/json':
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/TagResponse'
     TagNotFoundError:
       description: Tag not found error.
       content:
@@ -776,6 +784,14 @@ components:
         'application/json':
           schema:
             $ref: '#/components/schemas/CommentResponse'
+    CommentListResponse:
+      description: List of comments.
+      content:
+        'application/json':
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/CommentResponse'
     CommentNotFoundError:
       description: Comment not found error.
       content:
@@ -944,7 +960,7 @@ components:
         nodes:
           type: array
           items:
-            $ref: '#/components/schemas/NodeResponse'
+            $ref: '#/components/schemas/NodeRequest'
           description: Node list of the comment.
 
     NodeEntry:
@@ -1086,11 +1102,13 @@ components:
           description: Current node status.
           example: ACTIVE
         createdDate:
-          type: long
+          type: integer
+          format: int64
           description: Created date of the post.
           example: 1600541486196
         modificationDate:
-          type: long
+          type: integer
+          format: int64
           description: Modification date of the post.
           example: 1600541486196
 

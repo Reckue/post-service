@@ -5,14 +5,20 @@ import com.reckue.post.generated.controller.dto.*;
 import com.reckue.post.model.Node;
 import com.reckue.post.model.type.NodeType;
 import com.reckue.post.model.type.ParentType;
-import com.reckue.post.transfer.NodeRequest;
 import com.reckue.post.transfer.node.NodeParentResponse;
+import com.reckue.post.transfer.node.audio.AudioNodeRequest;
 import com.reckue.post.transfer.node.audio.AudioNodeResponse;
+import com.reckue.post.transfer.node.code.CodeNodeRequest;
 import com.reckue.post.transfer.node.code.CodeNodeResponse;
+import com.reckue.post.transfer.node.image.ImageNodeRequest;
 import com.reckue.post.transfer.node.image.ImageNodeResponse;
+import com.reckue.post.transfer.node.list.ListNodeRequest;
 import com.reckue.post.transfer.node.list.ListNodeResponse;
+import com.reckue.post.transfer.node.poll.PollNodeRequest;
 import com.reckue.post.transfer.node.poll.PollNodeResponse;
+import com.reckue.post.transfer.node.text.TextNodeRequest;
 import com.reckue.post.transfer.node.text.TextNodeResponse;
+import com.reckue.post.transfer.node.video.VideoNodeRequest;
 import com.reckue.post.transfer.node.video.VideoNodeResponse;
 import org.modelmapper.ModelMapper;
 
@@ -40,12 +46,25 @@ public class NodeConverter {
             throw new ReckueIllegalArgumentException("Null parameters are not allowed");
         }
 
+        Map<NodeTypeDto, Class<?>> nodeRequestTypes = Map.of(
+                NodeTypeDto.TEXT, TextNodeRequest.class,
+                NodeTypeDto.IMAGE, ImageNodeRequest.class,
+                NodeTypeDto.VIDEO, VideoNodeRequest.class,
+                NodeTypeDto.CODE, CodeNodeRequest.class,
+                NodeTypeDto.LIST, ListNodeRequest.class,
+                NodeTypeDto.AUDIO, AudioNodeRequest.class,
+                NodeTypeDto.POLL, PollNodeRequest.class
+        );
+
+        Class<?> nodeClass = nodeRequestTypes.get(nodeRequest.getType());
+
         return Node.builder()
+                .id(nodeRequest.getId())
                 .type(Converter.convert(nodeRequest.getType(), NodeType.class))
                 .parentId(nodeRequest.getParentId())
-                .source(nodeRequest.getSource())
                 .parentType(Converter.convert(nodeRequest.getParentType(), ParentType.class))
-                .node(Converter.convert(nodeRequest.getEntry(), nodeRequest.getType().nodeClass))
+                .source(nodeRequest.getSource())
+                .entry(mapper.map(nodeRequest.getEntry(), nodeClass))
                 .build();
     }
 
@@ -81,7 +100,7 @@ public class NodeConverter {
                 .parentType(mapper.map(node.getParentType(), ParentTypeDto.class))
                 .createdDate(node.getCreatedDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
                 .modificationDate(node.getModificationDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
-                .entry(Converter.convert(node.getNode(), nodeClass))
+                .entry(Converter.convert(node.getEntry(), nodeClass))
                 .status(Converter.convert(node.getStatus(), StatusTypeDto.class))
                 .build();
     }

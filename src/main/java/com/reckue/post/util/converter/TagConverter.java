@@ -1,8 +1,8 @@
 package com.reckue.post.util.converter;
 
 import com.reckue.post.exception.ReckueIllegalArgumentException;
-import com.reckue.post.generated.models.TagRequest;
-import com.reckue.post.generated.models.TagResponse;
+import com.reckue.post.generated.controller.dto.TagRequestDto;
+import com.reckue.post.generated.controller.dto.TagResponseDto;
 import com.reckue.post.model.Tag;
 
 /**
@@ -18,7 +18,7 @@ public class TagConverter {
      * @param tagRequest the object of class TagRequest
      * @return the object of class Tag
      */
-    public static Tag convert(TagRequest tagRequest) {
+    public static Tag convert(TagRequestDto tagRequest) {
         if (tagRequest == null) {
             throw new ReckueIllegalArgumentException("Null parameters are not allowed");
         }
@@ -33,11 +33,11 @@ public class TagConverter {
      * @param tag the object of class Tag
      * @return the object of class TagResponse
      */
-    public static TagResponse convert(Tag tag) {
+    public static TagResponseDto convert(Tag tag) {
         if (tag == null) {
             throw new ReckueIllegalArgumentException("Null parameters are not allowed");
         }
-        return TagResponse.builder()
+        return TagResponseDto.builder()
                 .id(tag.getId())
                 .name(tag.getName())
                 .build();
