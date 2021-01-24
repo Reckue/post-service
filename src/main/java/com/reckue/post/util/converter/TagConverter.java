@@ -5,6 +5,10 @@ import com.reckue.post.generated.controller.dto.TagRequestDto;
 import com.reckue.post.generated.controller.dto.TagResponseDto;
 import com.reckue.post.model.Tag;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 /**
  * Class for converting TagRequest object to Tag and Tag object to TagResponse.
  *
@@ -41,5 +45,12 @@ public class TagConverter {
                 .id(tag.getId())
                 .name(tag.getName())
                 .build();
+    }
+
+    public static List<TagResponseDto> convertToDtoList(List<Tag> tags) {
+        return Optional.ofNullable(tags)
+                .orElse(List.of()).stream()
+                .map(TagConverter::convertToDto)
+                .collect(Collectors.toList());
     }
 }

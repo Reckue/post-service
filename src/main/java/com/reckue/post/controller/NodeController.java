@@ -1,6 +1,9 @@
 //package com.reckue.post.controller;
 //
 //import com.reckue.post.controller.api.NodeApi;
+//import com.reckue.post.generated.controller.NodesApi;
+//import com.reckue.post.generated.controller.dto.NodeRequestDto;
+//import com.reckue.post.generated.controller.dto.PostResponseDto;
 //import com.reckue.post.model.Node;
 //import com.reckue.post.service.NodeService;
 //import com.reckue.post.transfer.NodeRequest;
@@ -8,6 +11,7 @@
 //import com.reckue.post.util.converter.NodeConverter;
 //import lombok.RequiredArgsConstructor;
 //import lombok.extern.slf4j.Slf4j;
+//import org.springframework.http.ResponseEntity;
 //import org.springframework.web.bind.annotation.*;
 //
 //import javax.validation.Valid;
@@ -24,9 +28,15 @@
 //@RequiredArgsConstructor
 //@RequestMapping(value = "/nodes")
 //@CrossOrigin(origins = "*", allowedHeaders = "*")
-//public class NodeController implements NodeApi {
+//public class NodeController implements NodesApi {
 //
 //    private final NodeService nodeService;
+//
+//    @Override
+//    public ResponseEntity<PostResponseDto> createNode(@Valid NodeRequestDto nodeRequestDto) {
+//        Node node = NodeConverter.convertToModel(nodeRequestDto);
+//        nodeService
+//    }
 //
 //    @PostMapping
 //    public NodeResponse create(@RequestBody @Valid NodeRequest nodeRequest) {

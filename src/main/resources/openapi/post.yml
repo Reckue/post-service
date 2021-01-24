@@ -358,7 +358,7 @@ paths:
   /tags:
     get:
       summary: List all tags.
-      operationId: getTags
+      operationId: getAllTags
       tags:
         - Tags
       parameters:
@@ -394,7 +394,7 @@ paths:
             type: boolean
       responses:
         200:
-          $ref: '#/components/responses/TagResponse'
+          $ref: '#/components/responses/TagListResponse'
         400:
           $ref: '#/components/responses/BadRequestError'
         401:
@@ -430,22 +430,13 @@ paths:
           $ref: '#/components/responses/TagNotFoundError'
         500:
           $ref: '#/components/responses/InternalServerError'
-  /tags/{id}:
     put:
       summary: Update the tag by id.
       operationId: updateTag
       tags:
         - Tags
       security:
-        - bearerAuth: []
-      parameters:
-        - name: id
-          in: path
-          description: Tag id.
-          required: true
-          example: 5f66a68227efbb73c2996c1a
-          schema:
-            type: string
+        - bearerAuth: [ ]
       requestBody:
         description: Body of tag request to update the tag by id.
         required: true
@@ -454,7 +445,7 @@ paths:
             schema:
               $ref: '#/components/schemas/TagRequest'
             example:
-              nmae: My tag
+              name: My tag
       responses:
         201:
           $ref: '#/components/responses/TagResponse'
@@ -466,6 +457,7 @@ paths:
           $ref: '#/components/responses/TagNotFoundError'
         500:
           $ref: '#/components/responses/InternalServerError'
+  /tags/{id}:
     get:
       summary: Get the tag by id.
       operationId: getTagById

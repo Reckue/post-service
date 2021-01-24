@@ -78,4 +78,11 @@ public class PostConverter {
                 .status(Converter.convert(post.getStatus(), PostStatusTypeDto.class))
                 .build();
     }
+
+    public static List<PostResponseDto> convertToDtoList(List<Post> posts) {
+        return Optional.ofNullable(posts)
+                .orElse(List.of()).stream()
+                .map(PostConverter::convertToDto)
+                .collect(Collectors.toList());
+    }
 }

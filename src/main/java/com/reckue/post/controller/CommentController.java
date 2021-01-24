@@ -62,16 +62,4 @@ public class CommentController implements CommentsApi {
         commentService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-    /*
-    TODO: add this endpoint to open api specification
-    @GetMapping("/user/{userId}")
-    public List<CommentResponse> findAllByUserId(@PathVariable String userId,
-                                                 @RequestParam(required = false) Integer limit,
-                                                 @RequestParam(required = false) Integer offset) {
-        return commentService.findAllByUserId(userId, limit, offset).stream()
-                .map(CommentConverter::convert)
-                .collect(Collectors.toList());
-    }
-    */
 }
