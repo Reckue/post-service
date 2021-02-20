@@ -27,7 +27,7 @@ public class CurrentUser {
     }
 
     public static String getId() {
-        return getUserInfo().map(IDToken::getId).orElse(null);
+        return getUserInfo().map(IDToken::getId).orElseThrow(() -> new RuntimeException("Unauthorized"));
     }
 
     public static String getNickName() {

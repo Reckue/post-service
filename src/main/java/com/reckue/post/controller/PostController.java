@@ -6,11 +6,12 @@ import com.reckue.post.generated.controller.dto.PostResponseDto;
 import com.reckue.post.model.Post;
 import com.reckue.post.service.PostService;
 import com.reckue.post.util.converter.PostConverter;
+import com.reckue.post.util.security.CurrentUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -27,9 +28,12 @@ public class PostController implements PostsApi {
 
     private final PostService postService;
 
+    @PreAuthorize("hasRole('USER')")
+    @PostMapping(value = "/posts")
     @Override
     public ResponseEntity<PostResponseDto> createPost(@Valid PostRequestDto postRequestDto) {
         Post post = PostConverter.convertToModel(postRequestDto);
+        post.setUserId(CurrentUser.getId());
         Post storedPost = postService.create(post);
         return new ResponseEntity<>(PostConverter.convertToDto(storedPost), HttpStatus.CREATED);
     }
@@ -47,6 +51,7 @@ public class PostController implements PostsApi {
         return ResponseEntity.ok(PostConverter.convertToDto(post));
     }
 
+    @GetMapping(value = "/posts")
     @Override
     public ResponseEntity<List<PostResponseDto>> getPosts(@Valid Integer limit, @Valid Integer offset,
                                                           @Valid String sort, @Valid Boolean desc) {

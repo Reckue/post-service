@@ -31,6 +31,15 @@ public class TagConverter {
                 .build();
     }
 
+    public static Tag convertToModel(String tag) {
+        if (tag == null) {
+            throw new ReckueIllegalArgumentException("Null parameters are not allowed");
+        }
+        return Tag.builder()
+                .name(tag)
+                .build();
+    }
+
     /**
      * Converts from Tag to TagResponse.
      *

@@ -36,12 +36,12 @@ class ConverterTest extends PostServiceApplicationTests {
         assertEquals(expected, actual);
     }
 
-    @Test
-    void checkCheckIsNull() {
-        Throwable exception = assertThrows(ReckueIllegalArgumentException.class,
-                () -> Converter.convert((Object) null, CheckResponse.class));
-        assertEquals("Null parameters are not allowed", exception.getMessage());
-    }
+//    @Test
+//    void checkCheckIsNull() {
+//        Throwable exception = assertThrows(ReckueIllegalArgumentException.class,
+//                () -> Converter.convert((Object) null, CheckResponse.class));
+//        assertEquals("Null parameters are not allowed", exception.getMessage());
+//    }
 
     @Test
     void convertListToAnotherList() {

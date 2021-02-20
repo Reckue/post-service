@@ -1,5 +1,6 @@
 package com.reckue.post.util.converter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reckue.post.exception.ReckueIllegalArgumentException;
 import com.reckue.post.generated.controller.dto.*;
 import com.reckue.post.model.Node;
@@ -34,6 +35,7 @@ import java.util.Map;
 public class NodeConverter {
 
     private static final ModelMapper mapper = new ModelMapper();
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     /**
      * Converts from NodeRequest to Node.
@@ -64,7 +66,7 @@ public class NodeConverter {
                 .parentId(nodeRequest.getParentId())
                 .parentType(Converter.convert(nodeRequest.getParentType(), ParentType.class))
                 .source(nodeRequest.getSource())
-                .entry(mapper.map(nodeRequest.getEntry(), nodeClass))
+                .content(nodeRequest.getContent())
                 .build();
     }
 
@@ -100,7 +102,7 @@ public class NodeConverter {
                 .parentType(mapper.map(node.getParentType(), ParentTypeDto.class))
                 .createdDate(node.getCreatedDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
                 .modificationDate(node.getModificationDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
-                .entry(Converter.convert(node.getEntry(), nodeClass))
+                .content(Converter.convert(node.getContent(), nodeClass))
                 .status(Converter.convert(node.getStatus(), StatusTypeDto.class))
                 .build();
     }

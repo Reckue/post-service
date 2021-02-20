@@ -83,8 +83,8 @@ paths:
               nodes:
                 - id: 3579626af2a44ee983a299fc65f7238f
                   type: TEXT
-                  entry:
-                    text: Hello World!
+                  content:
+                    value: Hello World!
               tags:
                 - name: Beginner
       responses:
@@ -129,8 +129,8 @@ paths:
               nodes:
                 - id: 3579626af2a44ee983a299fc65f7238f
                   type: TEXT
-                  entry:
-                    text: Hello, World!
+                  content:
+                    value: Hello, World!
               tags:
                 - name: Beginner
       responses:
@@ -919,7 +919,7 @@ components:
         tags:
           type: array
           items:
-            $ref: '#/components/schemas/TagRequest'
+            type: string
           description: Tag list of the post.
 
     TagRequest:
@@ -982,7 +982,7 @@ components:
             - $ref: '#/components/schemas/NodeType'
           description: Parent type.
           example: TEXT
-        entry:
+        content:
           $ref: '#/components/schemas/NodeEntry'
         parentId:
           type: string
@@ -1043,14 +1043,16 @@ components:
         tags:
           type: array
           items:
-            $ref: '#/components/schemas/TagResponse'
+            type: string
           description: Tag list of the post.
         createdDate:
           type: integer
+          format: int64
           description: Created date of the post.
           example: 1600541486196
         modificationDate:
           type: integer
+          format: int64
           description: Modification date of the post.
           example: 1600541486196
 
@@ -1067,7 +1069,7 @@ components:
             - $ref: '#/components/schemas/NodeType'
           description: Parent type.
           example: TEXT
-        entry:
+        content:
           $ref: '#/components/schemas/NodeEntry'
         parentId:
           type: string

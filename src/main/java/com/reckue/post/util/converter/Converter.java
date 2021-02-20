@@ -29,7 +29,7 @@ public class Converter {
      */
     public static <T> T convert(Object src, Class<T> dest) {
         if (src == null) {
-            throw new ReckueIllegalArgumentException("Null parameters are not allowed");
+            return null;
         }
         return mapper.map(src, dest);
     }

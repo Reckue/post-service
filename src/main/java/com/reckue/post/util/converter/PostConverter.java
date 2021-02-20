@@ -7,6 +7,7 @@ import com.reckue.post.generated.controller.dto.PostStatusTypeDto;
 import com.reckue.post.model.Post;
 import com.reckue.post.model.type.PostStatusType;
 
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -39,10 +40,7 @@ public class PostConverter {
                         .map(NodeConverter::convertToModel)
                         .collect(Collectors.toList()))
                 .source(postRequest.getSource())
-                .tags(Optional.ofNullable(postRequest.getTags())
-                        .orElse(List.of()).stream()
-                        .map(TagConverter::convertToModel)
-                        .collect(Collectors.toList()))
+                .tags(postRequest.getTags())
                 .status(Converter.convert(postRequest.getStatus(), PostStatusType.class))
                 .build();
     }
@@ -68,13 +66,9 @@ public class PostConverter {
                         .map(NodeConverter::convertToDto)
                         .collect(Collectors.toList()))
                 .source(post.getSource())
-                .tags(Optional.ofNullable(post.getTags())
-                        .orElse(List.of()).stream()
-                        .map(TagConverter::convertToDto)
-                        .collect(Collectors.toList()))
-//                .createdDate(post.getCreatedDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
-//                .modificationDate(post.getModificationDate().atZone(ZoneId.systemDefault())
-//                  .toInstant().toEpochMilli())
+                .tags(post.getTags())
+                .createdDate(post.getCreatedDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
+                .modificationDate(post.getModificationDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
                 .status(Converter.convert(post.getStatus(), PostStatusTypeDto.class))
                 .build();
     }

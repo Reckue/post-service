@@ -32,7 +32,7 @@ public class Node implements Serializable {
 
     // required fields
     private NodeType type;
-    private Object entry;
+    private Object content;
     private String parentId;
     private ParentType parentType;
 

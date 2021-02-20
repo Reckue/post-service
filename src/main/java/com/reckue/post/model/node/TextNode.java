@@ -18,5 +18,5 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 public class TextNode implements Parent {
 
-    private String content;
+    private String value;
 }

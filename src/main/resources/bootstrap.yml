@@ -1,20 +1,20 @@
 spring:
   application:
-    name: ${SERVICE_NAME:post-service}
+    name: post
 keycloak:
-  realm: ${KEYCLOAK_REALM:dev}
-  auth-server-url: ${URI_KEYCLOAK:http://keycloak-service:7070/auth}
+  realm: develop
+  auth-server-url: ${KEYCLOACK_URI:http://localhost:7070/auth}
   ssl-required: external
-  resource: ${KEYCLOAK_CLIENT_ID:post-service}
+  resource: post-service
   credentials:
-    secret: ${KEYCLOAK_CLIENT_SECRET:client-secret-code}
+    secret: ${KEYCLOAK_CLIENT_SECRET}
   use-resource-role-mappings: true
   bearer-only: true
   principal-attribute: preferred_username
 eureka:
   client:
     service-url:
-      defaultZone: ${EUREKA_URI:http://eureka-service:8761/eureka}
+      defaultZone: ${EUREKA_URI:http://eureka-servTextNodeRequestice:8761/eureka}
     enabled: ${EUREKA_ENABLED:true}
 
 --- # cloud
@@ -24,7 +24,7 @@ spring:
   profiles: cloud
   data:
     mongodb:
-      host: mongodb
+      host: mongo-service
       port: 27017
       database: post-cloud
   cloud:

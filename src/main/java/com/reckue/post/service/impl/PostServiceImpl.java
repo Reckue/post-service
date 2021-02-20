@@ -8,6 +8,7 @@ import com.reckue.post.model.Post;
 import com.reckue.post.model.Role;
 import com.reckue.post.model.type.ParentType;
 import com.reckue.post.model.type.PostStatusType;
+import com.reckue.post.model.type.StatusType;
 import com.reckue.post.processor.notnull.NotNullArgs;
 import com.reckue.post.repository.NodeRepository;
 import com.reckue.post.repository.PostRepository;
@@ -15,12 +16,15 @@ import com.reckue.post.service.NodeService;
 import com.reckue.post.service.PostService;
 import com.reckue.post.util.security.CurrentUser;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang.SerializationUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -40,59 +44,32 @@ public class PostServiceImpl implements PostService {
     @Transactional
     @NotNullArgs
     public Post create(Post post) {
+        validatePostOnCreate(post);
         post.setUserId(CurrentUser.getId());
+        post.setStatus(PostStatusType.DRAFT); // On create post, the post mist be draft status every time.
+        post.setCreatedDate(LocalDateTime.now());
+        post.setModificationDate(LocalDateTime.now());
 
-        validateOnCreatePost(post);
-        validateOnCreateStatus(post);
+        String postId = postRepository.save(post).getId();
 
-        Post storedPost = (Post) SerializationUtils.clone(post);
-
-        List<Node> nodeList = null;
-
-        if (post.getNodes() != null) {
-            nodeList = post.getNodes();
-            post.setNodes(null);
-            storedPost = postRepository.save(post);
-            final String postId = storedPost.getId();
-
-            nodeList.forEach(node -> {
-                node.setParentId(postId);
-                node.setParentType(ParentType.POST);
-                nodeService.create(node);
-            });
-        }
-        storedPost.setNodes(nodeList);
-        return storedPost;
+        Optional.ofNullable(post.getNodes()).orElse(List.of()).forEach(node -> {
+            node.setUserId(CurrentUser.getId());
+            node.setStatus(StatusType.ACTIVE);
+            node.setCreatedDate(LocalDateTime.now());
+            node.setModificationDate(LocalDateTime.now());
+            node.setParentId(postId);
+            node.setParentType(ParentType.POST);
+            nodeService.create(node);
+        });
+        return postRepository.save(post);
     }
 
-    private void validateOnCreatePost(Post post) {
+    private void validatePostOnCreate(Post post) {
         if (post.getTitle() == null || post.getTitle().isEmpty()) {
-            throw new RuntimeException("Title cannot be empty");
+            throw new RuntimeException("Title cannot be empty"); // TODO add exception code
         }
-    }
-
-    private void validateOnCreateStatus(Post post) {
-        if (post.getStatus() == null) {
-            post.setStatus(PostStatusType.DRAFT);
-            return;
-        }
-        if (post.getStatus() == PostStatusType.DRAFT) {
-            return;
-        }
-        if (post.getStatus() == PostStatusType.PUBLISHED && !post.getNodes().isEmpty()) {
-            return;
-        }
-        if (post.getStatus() == PostStatusType.BANNED) {
-            throw new RuntimeException("Post can't be banned");
-        }
-        if (post.getStatus() == PostStatusType.PENDING) {
-            throw new RuntimeException("Post can't be pending");
-        }
-        if (post.getStatus() == PostStatusType.DELETED) {
-            throw new RuntimeException("Post can't be deleted");
-        }
-        if (post.getStatus() == PostStatusType.PUBLISHED && post.getNodes().isEmpty()) {
-            throw new RuntimeException("Nodes are empty");
+        if (postRepository.countAllByTitle(post.getTitle()) > 0) {
+            throw new RuntimeException("Post with the same title already exists"); // TODO add exception code
         }
     }
 

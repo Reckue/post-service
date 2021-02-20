@@ -1,0 +1,54 @@
+version: '3'
+services:
+  # mongo-service
+  mongo:
+    container_name: mongo-service
+    image: mongo:latest
+    restart: always
+    networks:
+      - net
+    volumes:
+      - ./data:/data/db
+    ports:
+      - "27017:27017"
+  postgres-service:
+    image: postgres:11.1
+    container_name: postgres-service
+    networks:
+      - net
+    ports:
+      - 5433:5432
+    volumes:
+      - ./.postgres-data:/var/lib/postgresql/data:rw
+    environment:
+      LC_ALL: 'C.UTF-8'
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_HOST: postgres
+      POSTGRES_DB: keycloak
+      PGDATA: /var/lib/postgresql/data
+    restart: unless-stopped
+  # keycloak-service
+  keycloak-service:
+    image: jboss/keycloak:12.0.0
+    container_name: keycloak-service
+    networks:
+      - net
+    ports:
+      - 7070:8080
+    environment:
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres-service
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_DATABASE: keycloak
+      DB_SCHEMA: public
+    depends_on:
+      - postgres-service
+    restart: unless-stopped
+networks:
+  net:
+    driver: bridge
