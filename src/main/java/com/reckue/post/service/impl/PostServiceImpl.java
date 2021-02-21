@@ -16,15 +16,15 @@ import com.reckue.post.service.NodeService;
 import com.reckue.post.service.PostService;
 import com.reckue.post.util.security.CurrentUser;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -36,32 +36,34 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
 
+    private final MongoTemplate mongoTemplate;
     private final PostRepository postRepository;
     private final NodeRepository nodeRepository;
     private final NodeService nodeService;
 
     @Override
     @Transactional
-    @NotNullArgs
     public Post create(Post post) {
-        validatePostOnCreate(post);
-        post.setUserId(CurrentUser.getId());
-        post.setStatus(PostStatusType.DRAFT); // On create post, the post mist be draft status every time.
-        post.setCreatedDate(LocalDateTime.now());
-        post.setModificationDate(LocalDateTime.now());
+        return Optional.ofNullable(post).map(p -> {
+            validatePostOnCreate(p);
+            p.setUserId(CurrentUser.getId());
+            p.setStatus(PostStatusType.DRAFT);
+            p.setCreatedDate(LocalDateTime.now());
+            p.setModificationDate(LocalDateTime.now());
 
-        String postId = postRepository.save(post).getId();
+            Post storedPost = mongoTemplate.save(p);
 
-        Optional.ofNullable(post.getNodes()).orElse(List.of()).forEach(node -> {
-            node.setUserId(CurrentUser.getId());
-            node.setStatus(StatusType.ACTIVE);
-            node.setCreatedDate(LocalDateTime.now());
-            node.setModificationDate(LocalDateTime.now());
-            node.setParentId(postId);
-            node.setParentType(ParentType.POST);
-            nodeService.create(node);
-        });
-        return postRepository.save(post);
+            Optional.ofNullable(p.getNodes()).orElse(List.of()).forEach(node -> {
+                node.setUserId(CurrentUser.getId());
+                node.setStatus(StatusType.ACTIVE);
+                node.setCreatedDate(LocalDateTime.now());
+                node.setModificationDate(LocalDateTime.now());
+                node.setParentId(storedPost.getId());
+                node.setParentType(ParentType.POST);
+                nodeService.create(node);
+            });
+            return storedPost;
+        }).orElseThrow(NoSuchElementException::new);
     }
 
     private void validatePostOnCreate(Post post) {
