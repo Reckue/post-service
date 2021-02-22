@@ -1,44 +1,38 @@
-//package com.reckue.post.controller;
-//
-//import com.reckue.post.controller.api.NodeApi;
-//import com.reckue.post.generated.controller.NodesApi;
-//import com.reckue.post.generated.controller.dto.NodeRequestDto;
-//import com.reckue.post.generated.controller.dto.PostResponseDto;
-//import com.reckue.post.model.Node;
-//import com.reckue.post.service.NodeService;
-//import com.reckue.post.transfer.NodeRequest;
-//import com.reckue.post.transfer.NodeResponse;
-//import com.reckue.post.util.converter.NodeConverter;
-//import lombok.RequiredArgsConstructor;
-//import lombok.extern.slf4j.Slf4j;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.web.bind.annotation.*;
-//
-//import javax.validation.Valid;
-//import java.util.List;
-//import java.util.stream.Collectors;
-//
-///**
-// * Class NodeController is responsible for processing incoming requests.
-// *
-// * @author Viktor Grigoriev
-// */
-//@Slf4j
-//@RestController
-//@RequiredArgsConstructor
-//@RequestMapping(value = "/nodes")
-//@CrossOrigin(origins = "*", allowedHeaders = "*")
-//public class NodeController implements NodesApi {
-//
-//    private final NodeService nodeService;
-//
-//    @Override
-//    public ResponseEntity<PostResponseDto> createNode(@Valid NodeRequestDto nodeRequestDto) {
-//        Node node = NodeConverter.convertToModel(nodeRequestDto);
-//        nodeService
-//    }
-//
-//    @PostMapping
+package com.reckue.post.controller;
+
+import com.reckue.post.generated.controller.NodesApi;
+import com.reckue.post.generated.controller.dto.NodeRequestDto;
+import com.reckue.post.generated.controller.dto.NodeResponseDto;
+import com.reckue.post.model.Node;
+import com.reckue.post.service.NodeService;
+import com.reckue.post.util.converter.NodeConverter;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
+
+@Slf4j
+@RestController
+@RequiredArgsConstructor
+@CrossOrigin(origins = "*", allowedHeaders = "*")
+public class NodeController implements NodesApi {
+
+    private final NodeService nodeService;
+
+    @PreAuthorize("hasRole('USER')")
+    @PostMapping(value = "/nodes")
+    @Override
+    public ResponseEntity<NodeResponseDto> createNode(NodeRequestDto nodeRequestDto) {
+        Node node = NodeConverter.convertToModel(nodeRequestDto);
+        return ResponseEntity.ok(NodeConverter.convertToDto(nodeService.create(node)));
+    }
+
+    //    @PostMapping
 //    public NodeResponse create(@RequestBody @Valid NodeRequest nodeRequest) {
 //        Node node = NodeConverter.convertToModel(nodeRequest);
 //        Node storedNode = nodeService.create(node);
@@ -73,4 +67,4 @@
 //    public void deleteById(@PathVariable String id) {
 //        nodeService.deleteById(id);
 //    }
-//}
+}

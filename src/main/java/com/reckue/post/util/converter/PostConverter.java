@@ -39,7 +39,6 @@ public class PostConverter {
                         .orElse(new ArrayList<>()).stream()
                         .map(NodeConverter::convertToModel)
                         .collect(Collectors.toList()))
-                .source(postRequest.getSource())
                 .tags(postRequest.getTags())
                 .status(Converter.convert(postRequest.getStatus(), PostStatusType.class))
                 .build();
@@ -65,7 +64,6 @@ public class PostConverter {
                         .orElse(new ArrayList<>()).stream()
                         .map(NodeConverter::convertToDto)
                         .collect(Collectors.toList()))
-                .source(post.getSource())
                 .tags(post.getTags())
                 .createdDate(post.getCreatedDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
                 .modificationDate(post.getModificationDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())

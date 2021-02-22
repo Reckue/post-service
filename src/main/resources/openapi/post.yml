@@ -78,7 +78,6 @@ paths:
             example:
               title: My first post
               status: DRAFT
-              source: Wikipedia
               userId: 5f66514e27efbb73c2996c17
               nodes:
                 - id: 3579626af2a44ee983a299fc65f7238f
@@ -124,7 +123,6 @@ paths:
             example:
               title: My first post
               status: DRAFT
-              source: Wikipedia
               userId: 5f66514e27efbb73c2996c17
               nodes:
                 - id: 3579626af2a44ee983a299fc65f7238f
@@ -198,7 +196,7 @@ paths:
   # Paths :: Nodes
   /nodes:
     get:
-      summary: List all nodes.
+      summary: List of all nodes.
       operationId: getNodes
       tags:
         - Nodes
@@ -260,7 +258,7 @@ paths:
               $ref: '#/components/schemas/NodeRequest'
       responses:
         201:
-          $ref: '#/components/responses/PostResponse'
+          $ref: '#/components/responses/NodeResponse'
         400:
           $ref: '#/components/responses/BadRequestError'
         401:
@@ -900,13 +898,9 @@ components:
         status:
           type: string
           allOf:
-            - $ref: '#/components/schemas/StatusType'
+            - $ref: '#/components/schemas/PostStatusType'
           description: Current post status.
           example: DRAFT
-        source:
-          type: string
-          description: Post source.
-          example: Wikipedia
         userId:
           type: string
           description: User id of the post.
@@ -984,20 +978,6 @@ components:
           example: TEXT
         content:
           $ref: '#/components/schemas/NodeEntry'
-        parentId:
-          type: string
-          description: Parent id.
-          example: 3579626af2a44ee983a299fc65f7238f
-        parentType:
-          type: string
-          allOf:
-            - $ref: '#/components/schemas/ParentType'
-          description: Parent type.
-          example: POST
-        source:
-          type: string
-          description: Node source.
-          example: Wikipedia
         userId:
           type: string
           description: User id.
@@ -1027,10 +1007,6 @@ components:
             - $ref: '#/components/schemas/PostStatusType'
           description: Current post status.
           example: DRAFT
-        source:
-          type: string
-          description: Post source.
-          example: Wikipedia
         userId:
           type: string
           description: User id of the post.
@@ -1067,24 +1043,10 @@ components:
           type: string
           allOf:
             - $ref: '#/components/schemas/NodeType'
-          description: Parent type.
+          description: Type of node.
           example: TEXT
         content:
           $ref: '#/components/schemas/NodeEntry'
-        parentId:
-          type: string
-          description: Parent id.
-          example: 3579626af2a44ee983a299fc65f7238f
-        parentType:
-          type: string
-          allOf:
-            - $ref: '#/components/schemas/ParentType'
-          description: Parent type.
-          example: POST
-        source:
-          type: string
-          description: Node source.
-          example: Wikipedia
         userId:
           type: string
           description: User id.
@@ -1234,11 +1196,6 @@ components:
         - LIST
         - AUDIO
         - POLL
-    ParentType:
-      type: string
-      enum:
-        - POST
-        - COMMENT
     LanguageType:
       type: string
       enum:

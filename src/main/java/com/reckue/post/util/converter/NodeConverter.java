@@ -2,10 +2,12 @@ package com.reckue.post.util.converter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reckue.post.exception.ReckueIllegalArgumentException;
-import com.reckue.post.generated.controller.dto.*;
+import com.reckue.post.generated.controller.dto.NodeRequestDto;
+import com.reckue.post.generated.controller.dto.NodeResponseDto;
+import com.reckue.post.generated.controller.dto.NodeTypeDto;
+import com.reckue.post.generated.controller.dto.StatusTypeDto;
 import com.reckue.post.model.Node;
 import com.reckue.post.model.type.NodeType;
-import com.reckue.post.model.type.ParentType;
 import com.reckue.post.transfer.node.NodeParentResponse;
 import com.reckue.post.transfer.node.audio.AudioNodeRequest;
 import com.reckue.post.transfer.node.audio.AudioNodeResponse;
@@ -63,9 +65,6 @@ public class NodeConverter {
         return Node.builder()
                 .id(nodeRequest.getId())
                 .type(Converter.convert(nodeRequest.getType(), NodeType.class))
-                .parentId(nodeRequest.getParentId())
-                .parentType(Converter.convert(nodeRequest.getParentType(), ParentType.class))
-                .source(nodeRequest.getSource())
                 .content(nodeRequest.getContent())
                 .build();
     }
@@ -96,10 +95,7 @@ public class NodeConverter {
         return NodeResponseDto.builder()
                 .id(node.getId())
                 .type(mapper.map(node.getType(), NodeTypeDto.class))
-                .parentId(node.getParentId())
-                .source(node.getSource())
                 .userId(node.getUserId())
-                .parentType(mapper.map(node.getParentType(), ParentTypeDto.class))
                 .createdDate(node.getCreatedDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
                 .modificationDate(node.getModificationDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
                 .content(Converter.convert(node.getContent(), nodeClass))

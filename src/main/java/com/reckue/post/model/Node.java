@@ -1,7 +1,6 @@
 package com.reckue.post.model;
 
 import com.reckue.post.model.type.NodeType;
-import com.reckue.post.model.type.ParentType;
 import com.reckue.post.model.type.StatusType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,19 +29,19 @@ public class Node implements Serializable {
     @Id
     private String id;
 
-    // required fields
     private NodeType type;
-    private Object content;
-    private String parentId;
-    private ParentType parentType;
 
-    // standard types
+    private Object content;
+
     private String source;
+
     private String userId;
+
     private StatusType status;
 
     @LastModifiedDate
     private LocalDateTime modificationDate;
+
     @CreatedDate
     private LocalDateTime createdDate;
 }
