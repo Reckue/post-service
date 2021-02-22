@@ -10,11 +10,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import static com.reckue.post.exception.CodeErrorDistributor.codeErrors;
 import static com.reckue.post.exception.HttpStatusErrorDistributor.httpStatuses;
 
-/**
- * Class CustomExceptionHandler allows to handle all exceptions.
- *
- * @author Artur Magomedov
- */
 @RestControllerAdvice
 public class CustomExceptionHandler {
 
@@ -23,6 +18,7 @@ public class CustomExceptionHandler {
         new Thread(() -> {
             throw new RuntimeException(e);
         }).start();
+
         return new ResponseEntity<>(ErrorResponse.builder()
                 .title(e.getClass().getSimpleName())
                 .code(codeErrors.get(e.getClass()))
@@ -30,4 +26,10 @@ public class CustomExceptionHandler {
                 .trace(ExceptionUtils.getStackTrace(e))
                 .build(), httpStatuses.get(e.getClass()));
     }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<?> handleException(ReckueException e) {
+        throw new RuntimeException(e);
+    }
+
 }

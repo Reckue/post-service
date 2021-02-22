@@ -30,20 +30,21 @@ public class NodeServiceImpl implements NodeService {
     @Transactional
     @Override
     public Node create(Node node) {
-        return Optional.ofNullable(node).map(storedNode -> {
-            storedNode.setUserId(CurrentUser.getId());
-            storedNode.setStatus(StatusType.ACTIVE);
-            storedNode.setCreatedDate(LocalDateTime.now());
-            storedNode.setModificationDate(LocalDateTime.now());
-            return nodeRepository.save(storedNode);
+        nodeValidationService.validateNodeStatusOnCreate(node);
+        return Optional.ofNullable(node).map(nodeToStore -> {
+            nodeToStore.setUserId(CurrentUser.getId());
+            nodeToStore.setStatus(StatusType.ACTIVE);
+            nodeToStore.setCreatedDate(LocalDateTime.now());
+            nodeToStore.setModificationDate(LocalDateTime.now());
+            return nodeRepository.save(nodeToStore);
         }).orElseThrow(NoSuchElementException::new);
     }
 
     @Transactional
     @Override
     public Node update(Node node) {
+        nodeValidationService.validateNodeStatusOnUpdate(node, node.getStatus());
         return nodeRepository.findById(node.getId()).map(storedNode -> {
-            nodeValidationService.validateNodeStatusOnUpdate(storedNode, node.getStatus());
             storedNode.setStatus(node.getStatus());
             storedNode.setUserId(CurrentUser.getId());
             storedNode.setType(node.getType());
@@ -75,11 +76,11 @@ public class NodeServiceImpl implements NodeService {
         if (nodeRepository.existsById(nodeId)) {
             Optional<Node> node = nodeRepository.findById(nodeId);
 
-            node.ifPresent(storedNode -> {
-                if (CurrentUser.getId().equals(storedNode.getUserId())
+            node.ifPresent(nodeToUpdate -> {
+                if (CurrentUser.getId().equals(nodeToUpdate.getUserId())
                         || (CurrentUser.getRoles().contains(MODERATOR) || CurrentUser.getRoles().contains(ADMIN))) {
-                    storedNode.setStatus(StatusType.DELETED);
-                    nodeRepository.save(storedNode);
+                    nodeToUpdate.setStatus(StatusType.DELETED);
+                    nodeRepository.save(nodeToUpdate);
                 }
             });
         } else {

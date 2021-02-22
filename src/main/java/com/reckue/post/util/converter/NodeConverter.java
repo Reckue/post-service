@@ -1,5 +1,6 @@
 package com.reckue.post.util.converter;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reckue.post.exception.ReckueIllegalArgumentException;
 import com.reckue.post.generated.controller.dto.NodeRequestDto;
@@ -51,6 +52,8 @@ public class NodeConverter {
             throw new ReckueIllegalArgumentException("Null parameters are not allowed");
         }
 
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
         Map<NodeTypeDto, Class<?>> nodeRequestTypes = Map.of(
                 NodeTypeDto.TEXT, TextNodeRequest.class,
                 NodeTypeDto.IMAGE, ImageNodeRequest.class,
@@ -66,7 +69,7 @@ public class NodeConverter {
         return Node.builder()
                 .id(nodeRequest.getId())
                 .type(Converter.convert(nodeRequest.getType(), NodeType.class))
-                .content(nodeRequest.getContent())
+                .content(objectMapper.convertValue(nodeRequest.getContent(), nodeClass))
                 .status(Converter.convert(nodeRequest.getStatus(), StatusType.class))
                 .build();
     }
@@ -82,7 +85,9 @@ public class NodeConverter {
             throw new ReckueIllegalArgumentException("Null parameters are not allowed");
         }
 
-        Map<NodeType, Class<? extends NodeParentResponse>> nodeTypeClassMap = Map.of(
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        Map<NodeType, Class<?>> nodeTypeClassMap = Map.of(
                 NodeType.TEXT, TextNodeResponse.class,
                 NodeType.IMAGE, ImageNodeResponse.class,
                 NodeType.VIDEO, VideoNodeResponse.class,
@@ -100,7 +105,7 @@ public class NodeConverter {
                 .userId(node.getUserId())
                 .createdDate(node.getCreatedDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
                 .modificationDate(node.getModificationDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
-                .content(Converter.convert(node.getContent(), nodeClass))
+                .content(objectMapper.convertValue(node.getContent(), nodeClass))
                 .status(Converter.convert(node.getStatus(), StatusTypeDto.class))
                 .build();
     }

@@ -1,7 +1,11 @@
 package com.reckue.post.transfer.node.text;
 
-import com.reckue.post.transfer.node.NodeParentResponse;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 
 /**
  * Class TextNodeResponse represents an outgoing DTO for receiving type of node such as a text.
@@ -12,7 +16,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TextNodeResponse implements NodeParentResponse {
+public class TextNodeResponse implements Serializable {
 
     private String value;
+
 }

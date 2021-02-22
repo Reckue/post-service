@@ -1031,6 +1031,12 @@ components:
           type: string
           description: Node id.
           example: 3579626af2a44ee983a299fc65f7238f
+        status:
+          type: string
+          allOf:
+            - $ref: '#/components/schemas/StatusType'
+          description: Current node status.
+          example: ACTIVE
         type:
           type: string
           allOf:
@@ -1043,12 +1049,6 @@ components:
           type: string
           description: User id.
           example: 3579626af2a44ee983a299fc65f7238f
-        status:
-          type: string
-          allOf:
-            - $ref: '#/components/schemas/StatusType'
-          description: Current node status.
-          example: ACTIVE
         createdDate:
           type: integer
           format: int64
