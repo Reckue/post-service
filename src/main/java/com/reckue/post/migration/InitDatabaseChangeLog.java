@@ -7,7 +7,7 @@ import com.github.mongobee.changeset.ChangeSet;
 @SuppressWarnings("unused")
 public class InitDatabaseChangeLog {
 
-    @ChangeSet(id = "1", author = "egnaf", order = "1")
+    @ChangeSet(id = "1", author = "mamadaliev", order = "1")
     public void init() {
     }
 }

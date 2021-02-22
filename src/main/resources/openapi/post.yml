@@ -52,7 +52,7 @@ paths:
             type: boolean
       responses:
         200:
-          $ref: '#/components/responses/PostsResponse'
+          $ref: '#/components/responses/PostListResponse'
         400:
           $ref: '#/components/responses/BadRequestError'
         401:
@@ -78,13 +78,12 @@ paths:
             example:
               title: My first post
               status: DRAFT
-              source: Wikipedia
               userId: 5f66514e27efbb73c2996c17
               nodes:
                 - id: 3579626af2a44ee983a299fc65f7238f
                   type: TEXT
-                  entry:
-                    text: Hello World!
+                  content:
+                    value: Hello World!
               tags:
                 - name: Beginner
       responses:
@@ -124,13 +123,12 @@ paths:
             example:
               title: My first post
               status: DRAFT
-              source: Wikipedia
               userId: 5f66514e27efbb73c2996c17
               nodes:
                 - id: 3579626af2a44ee983a299fc65f7238f
                   type: TEXT
-                  entry:
-                    text: Hello, World!
+                  content:
+                    value: Hello, World!
               tags:
                 - name: Beginner
       responses:
@@ -198,7 +196,7 @@ paths:
   # Paths :: Nodes
   /nodes:
     get:
-      summary: List all nodes.
+      summary: List of all nodes.
       operationId: getNodes
       tags:
         - Nodes
@@ -260,7 +258,7 @@ paths:
               $ref: '#/components/schemas/NodeRequest'
       responses:
         201:
-          $ref: '#/components/responses/PostResponse'
+          $ref: '#/components/responses/NodeResponse'
         400:
           $ref: '#/components/responses/BadRequestError'
         401:
@@ -358,7 +356,7 @@ paths:
   /tags:
     get:
       summary: List all tags.
-      operationId: getTags
+      operationId: getAllTags
       tags:
         - Tags
       parameters:
@@ -394,7 +392,7 @@ paths:
             type: boolean
       responses:
         200:
-          $ref: '#/components/responses/TagResponse'
+          $ref: '#/components/responses/TagListResponse'
         400:
           $ref: '#/components/responses/BadRequestError'
         401:
@@ -430,22 +428,13 @@ paths:
           $ref: '#/components/responses/TagNotFoundError'
         500:
           $ref: '#/components/responses/InternalServerError'
-  /tags/{id}:
     put:
       summary: Update the tag by id.
       operationId: updateTag
       tags:
         - Tags
       security:
-        - bearerAuth: []
-      parameters:
-        - name: id
-          in: path
-          description: Tag id.
-          required: true
-          example: 5f66a68227efbb73c2996c1a
-          schema:
-            type: string
+        - bearerAuth: [ ]
       requestBody:
         description: Body of tag request to update the tag by id.
         required: true
@@ -454,7 +443,7 @@ paths:
             schema:
               $ref: '#/components/schemas/TagRequest'
             example:
-              nmae: My tag
+              name: My tag
       responses:
         201:
           $ref: '#/components/responses/TagResponse'
@@ -466,6 +455,7 @@ paths:
           $ref: '#/components/responses/TagNotFoundError'
         500:
           $ref: '#/components/responses/InternalServerError'
+  /tags/{id}:
     get:
       summary: Get the tag by id.
       operationId: getTagById
@@ -521,7 +511,7 @@ paths:
   /comments:
     get:
       summary: List all comments.
-      operationId: getComments
+      operationId: getAllComments
       tags:
         - Comments
       parameters:
@@ -557,7 +547,7 @@ paths:
             type: boolean
       responses:
         200:
-          $ref: '#/components/responses/TagResponse'
+          $ref: '#/components/responses/CommentListResponse'
         400:
           $ref: '#/components/responses/BadRequestError'
         401:
@@ -697,6 +687,12 @@ components:
         'application/json':
           schema:
             $ref: '#/components/schemas/NodeRequest'
+    NodeEntry:
+      description: Node entry.
+      content:
+        'application/json':
+          schema:
+            $ref: '#/components/schemas/NodeEntry'
 
   # Components -> Responses
   responses:
@@ -730,7 +726,7 @@ components:
         'application/json':
           schema:
             $ref: '#/components/schemas/PostResponse'
-    PostsResponse:
+    PostListResponse:
       description: List of posts.
       content:
         'application/json':
@@ -758,6 +754,14 @@ components:
         'application/json':
           schema:
             $ref: '#/components/schemas/TagResponse'
+    TagListResponse:
+      description: List of tags.
+      content:
+        'application/json':
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/TagResponse'
     TagNotFoundError:
       description: Tag not found error.
       content:
@@ -770,6 +774,14 @@ components:
         'application/json':
           schema:
             $ref: '#/components/schemas/CommentResponse'
+    CommentListResponse:
+      description: List of comments.
+      content:
+        'application/json':
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/CommentResponse'
     CommentNotFoundError:
       description: Comment not found error.
       content:
@@ -886,13 +898,9 @@ components:
         status:
           type: string
           allOf:
-            - $ref: '#/components/schemas/StatusType'
+            - $ref: '#/components/schemas/PostStatusType'
           description: Current post status.
           example: DRAFT
-        source:
-          type: string
-          description: Post source.
-          example: Wikipedia
         userId:
           type: string
           description: User id of the post.
@@ -900,12 +908,12 @@ components:
         nodes:
           type: array
           items:
-            $ref: '#/components/schemas/NodeResponse'
+            $ref: '#/components/schemas/NodeRequest'
           description: Node list of the post.
         tags:
           type: array
           items:
-            $ref: '#/components/schemas/TagResponse'
+            type: string
           description: Tag list of the post.
 
     TagRequest:
@@ -938,7 +946,7 @@ components:
         nodes:
           type: array
           items:
-            $ref: '#/components/schemas/NodeResponse'
+            $ref: '#/components/schemas/NodeRequest'
           description: Node list of the comment.
 
     NodeEntry:
@@ -968,22 +976,8 @@ components:
             - $ref: '#/components/schemas/NodeType'
           description: Parent type.
           example: TEXT
-        entry:
+        content:
           $ref: '#/components/schemas/NodeEntry'
-        parentId:
-          type: string
-          description: Parent id.
-          example: 3579626af2a44ee983a299fc65f7238f
-        parentType:
-          type: string
-          allOf:
-            - $ref: '#/components/schemas/ParentType'
-          description: Parent type.
-          example: POST
-        source:
-          type: string
-          description: Node source.
-          example: Wikipedia
         userId:
           type: string
           description: User id.
@@ -1013,10 +1007,6 @@ components:
             - $ref: '#/components/schemas/PostStatusType'
           description: Current post status.
           example: DRAFT
-        source:
-          type: string
-          description: Post source.
-          example: Wikipedia
         userId:
           type: string
           description: User id of the post.
@@ -1029,14 +1019,16 @@ components:
         tags:
           type: array
           items:
-            $ref: '#/components/schemas/TagResponse'
+            type: string
           description: Tag list of the post.
         createdDate:
           type: integer
+          format: int64
           description: Created date of the post.
           example: 1600541486196
         modificationDate:
           type: integer
+          format: int64
           description: Modification date of the post.
           example: 1600541486196
 
@@ -1051,24 +1043,10 @@ components:
           type: string
           allOf:
             - $ref: '#/components/schemas/NodeType'
-          description: Parent type.
+          description: Type of node.
           example: TEXT
-        entry:
+        content:
           $ref: '#/components/schemas/NodeEntry'
-        parentId:
-          type: string
-          description: Parent id.
-          example: 3579626af2a44ee983a299fc65f7238f
-        parentType:
-          type: string
-          allOf:
-            - $ref: '#/components/schemas/ParentType'
-          description: Parent type.
-          example: POST
-        source:
-          type: string
-          description: Node source.
-          example: Wikipedia
         userId:
           type: string
           description: User id.
@@ -1081,10 +1059,12 @@ components:
           example: ACTIVE
         createdDate:
           type: integer
+          format: int64
           description: Created date of the post.
           example: 1600541486196
         modificationDate:
           type: integer
+          format: int64
           description: Modification date of the post.
           example: 1600541486196
 
@@ -1216,11 +1196,6 @@ components:
         - LIST
         - AUDIO
         - POLL
-    ParentType:
-      type: string
-      enum:
-        - POST
-        - COMMENT
     LanguageType:
       type: string
       enum:

@@ -33,7 +33,7 @@ public class Post implements Serializable {
     private List<Node> nodes;
     private String source;
     private String userId;
-    private List<Tag> tags;
+    private List<String> tags;
     private PostStatusType status;
 
     @LastModifiedDate

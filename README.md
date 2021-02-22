@@ -1,4 +1,4 @@
-# post-api
+# post-service
 **v.1.0.4**
 
 Service for publications, tutorials and articles.

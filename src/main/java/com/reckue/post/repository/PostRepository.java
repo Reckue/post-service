@@ -29,4 +29,6 @@ public interface PostRepository extends MongoRepository<Post, String> {
      * @return list of objects of class Post
      */
     List<Post> findAllByUserId(String userId);
+
+    long countAllByTitle(String title);
 }

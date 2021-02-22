@@ -20,6 +20,9 @@ public class CustomExceptionHandler {
 
     @ExceptionHandler(ReckueException.class)
     public ResponseEntity<?> handleReckueException(ReckueException e) {
+        new Thread(() -> {
+            throw new RuntimeException(e);
+        }).start();
         return new ResponseEntity<>(ErrorResponse.builder()
                 .title(e.getClass().getSimpleName())
                 .code(codeErrors.get(e.getClass()))

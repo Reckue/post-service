@@ -14,5 +14,5 @@ import lombok.*;
 @Builder
 public class TextNodeResponse implements NodeParentResponse {
 
-    private String content;
+    private String value;
 }

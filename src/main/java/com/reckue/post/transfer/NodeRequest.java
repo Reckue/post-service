@@ -22,13 +22,17 @@ public class NodeRequest {
     @ApiModelProperty(notes = "Type of node content")
     private NodeType type;
 
-    @ApiModelProperty(notes = "Sub node")
+    @ApiModelProperty(notes = "Content of the node")
     private NodeParentRequest node;
 
     @ApiModelProperty(notes = "Type of parent entity")
     @NotNull
     private ParentType parentType;
 
+    /**
+     * Parent id is an identifier of the parent object such as a post, comment etc.
+     * @see com.reckue.post.model.type.ParentType
+     */
     @ApiModelProperty(notes = "Identifier of the parent")
     @NotNull
     private String parentId;

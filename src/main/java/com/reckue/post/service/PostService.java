@@ -9,13 +9,10 @@ import java.util.List;
  *
  * @author Kamila Meshcheryakova
  */
-public interface PostService extends AuthService<Post> {
+public interface PostService extends BaseService<Post> {
 
-    /**
-     * This method is used to get the objects by title.
-     *
-     * @param title object
-     * @return list of objects of class Post
-     */
     List<Post> findAllByTitle(String title);
+
+    List<Post> findAllByUserId(String userId, Integer limit, Integer offset);
+
 }

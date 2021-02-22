@@ -1,60 +1,49 @@
 spring:
   application:
-    name: post-api
+    name: post
+keycloak:
+  realm: develop
+  auth-server-url: ${KEYCLOACK_URI:http://localhost:7070/auth}
+  ssl-required: external
+  resource: post-service
+  credentials:
+    secret: ${KEYCLOAK_CLIENT_SECRET}
+  use-resource-role-mappings: true
+  bearer-only: true
+  principal-attribute: preferred_username
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URI:http://eureka-servTextNodeRequestice:8761/eureka}
+    enabled: ${EUREKA_ENABLED:true}
 
-security:
-  token:
-    secret-key: "KuHLb3w7YE2WF@o39ds3hDSdsdfdKhs5kdsdsKH@fD"
-
---- # cloud # ---
+--- # cloud
+server:
+  port: ${PORT:8080}
 spring:
   profiles: cloud
   data:
     mongodb:
-      host: mongodb
+      host: mongo-service
       port: 27017
       database: post-cloud
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: true
 
+--- # develop
 server:
-  port: 8080
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://registry-service:8761/eureka
-    enabled: true
-
---- # staging # ---
-spring:
-  profiles: staging
-  data:
-    mongodb:
-      host: localhost
-      port: 27017
-      database: post-staging
-
-server:
-  port: 9003
-
---- # develop # ---
+  port: ${PORT:8080}
 spring:
   profiles:
     active: develop
-  security:
-    user:
-      name: user
-      password: 123456
   data:
     mongodb:
       host: localhost
       port: 27017
       database: post-develop
-
-server:
-  port: 9002
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://127.0.0.1:8761/eureka
-    enabled: true
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false

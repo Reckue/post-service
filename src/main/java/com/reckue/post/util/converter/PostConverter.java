@@ -1,15 +1,17 @@
 package com.reckue.post.util.converter;
 
 import com.reckue.post.exception.ReckueIllegalArgumentException;
-import com.reckue.post.model.Node;
+import com.reckue.post.generated.controller.dto.PostRequestDto;
+import com.reckue.post.generated.controller.dto.PostResponseDto;
+import com.reckue.post.generated.controller.dto.PostStatusTypeDto;
 import com.reckue.post.model.Post;
-import com.reckue.post.transfer.NodeResponse;
-import com.reckue.post.transfer.PostRequest;
-import com.reckue.post.transfer.PostResponse;
+import com.reckue.post.model.type.PostStatusType;
 
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -26,24 +28,19 @@ public class PostConverter {
      * @param postRequest the object of class PostRequest
      * @return the object of class Post
      */
-    public static Post convert(PostRequest postRequest) {
-        if (postRequest == null) {
+    public static Post convertToModel(PostRequestDto postRequest) {
+        if (Objects.isNull(postRequest)) {
             throw new ReckueIllegalArgumentException("Null parameters are not allowed");
-        }
-
-        List<Node> nodes = new ArrayList<>();
-        if (postRequest.getNodes() != null) {
-            nodes = postRequest.getNodes().stream()
-                    .map(NodeConverter::convert)
-                    .collect(Collectors.toList());
         }
 
         return Post.builder()
                 .title(postRequest.getTitle())
-                .nodes(nodes)
-                .source(postRequest.getSource())
+                .nodes(Optional.ofNullable(postRequest.getNodes())
+                        .orElse(new ArrayList<>()).stream()
+                        .map(NodeConverter::convertToModel)
+                        .collect(Collectors.toList()))
                 .tags(postRequest.getTags())
-                .status(postRequest.getStatus())
+                .status(Converter.convert(postRequest.getStatus(), PostStatusType.class))
                 .build();
     }
 
@@ -54,28 +51,30 @@ public class PostConverter {
      * @param post the object of class Post
      * @return the object of class PostResponse
      */
-    public static PostResponse convert(Post post) {
-        if (post == null) {
+    public static PostResponseDto convertToDto(Post post) {
+        if (Objects.isNull(post)) {
             throw new ReckueIllegalArgumentException("Null parameters are not allowed");
         }
 
-        List<NodeResponse> nodes = new ArrayList<>();
-        if (post.getNodes() != null) {
-            nodes = post.getNodes().stream()
-                    .map(NodeConverter::convert)
-                    .collect(Collectors.toList());
-        }
-
-        return PostResponse.builder()
+        return PostResponseDto.builder()
                 .id(post.getId())
                 .userId(post.getUserId())
                 .title(post.getTitle())
-                .nodes(nodes)
-                .source(post.getSource())
+                .nodes(Optional.ofNullable(post.getNodes())
+                        .orElse(new ArrayList<>()).stream()
+                        .map(NodeConverter::convertToDto)
+                        .collect(Collectors.toList()))
                 .tags(post.getTags())
                 .createdDate(post.getCreatedDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
                 .modificationDate(post.getModificationDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
-                .status(post.getStatus())
+                .status(Converter.convert(post.getStatus(), PostStatusTypeDto.class))
                 .build();
+    }
+
+    public static List<PostResponseDto> convertToDtoList(List<Post> posts) {
+        return Optional.ofNullable(posts)
+                .orElse(List.of()).stream()
+                .map(PostConverter::convertToDto)
+                .collect(Collectors.toList());
     }
 }
