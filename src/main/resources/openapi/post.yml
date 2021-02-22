@@ -267,7 +267,6 @@ paths:
           $ref: '#/components/responses/PostNotFoundError'
         500:
           $ref: '#/components/responses/InternalServerError'
-  /nodes/{id}:
     put:
       summary: Update the node by id.
       operationId: updateNode
@@ -275,14 +274,6 @@ paths:
         - Nodes
       security:
         - bearerAuth: []
-      parameters:
-        - name: id
-          in: path
-          description: Node id.
-          required: true
-          example: 5f66a68227efbb73c2996c1a
-          schema:
-            type: string
       requestBody:
         description: Body of post request to update the node by id.
         required: true

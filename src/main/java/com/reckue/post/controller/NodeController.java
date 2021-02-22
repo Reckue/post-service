@@ -8,13 +8,10 @@ import com.reckue.post.service.NodeService;
 import com.reckue.post.util.converter.NodeConverter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.Valid;
 
 @Slf4j
 @RestController
@@ -24,47 +21,30 @@ public class NodeController implements NodesApi {
 
     private final NodeService nodeService;
 
-    @PreAuthorize("hasRole('USER')")
-    @PostMapping(value = "/nodes")
+    // @PreAuthorize("hasRole('USER')")
     @Override
     public ResponseEntity<NodeResponseDto> createNode(NodeRequestDto nodeRequestDto) {
         Node node = NodeConverter.convertToModel(nodeRequestDto);
-        return ResponseEntity.ok(NodeConverter.convertToDto(nodeService.create(node)));
+        NodeResponseDto storedNodeResponseDto = NodeConverter.convertToDto(nodeService.create(node));
+        return ResponseEntity.ok(storedNodeResponseDto);
     }
 
-    //    @PostMapping
-//    public NodeResponse create(@RequestBody @Valid NodeRequest nodeRequest) {
-//        Node node = NodeConverter.convertToModel(nodeRequest);
-//        Node storedNode = nodeService.create(node);
-//        return NodeConverter.convertToDto(storedNode);
-//    }
-//
-//    @PutMapping("/{id}")
-//    public NodeResponse update(@PathVariable String id,
-//                               @RequestBody @Valid NodeRequest nodeRequest) {
-//        Node model = NodeConverter.convertToModel(nodeRequest);
-//        model.setId(id);
-//        return NodeConverter.convertToDto(nodeService.update(model));
-//    }
-//
-//    @GetMapping
-//    public List<NodeResponse> findAll(@RequestParam(required = false) Integer limit,
-//                                      @RequestParam(required = false) Integer offset,
-//                                      @RequestParam(required = false) String sort,
-//                                      @RequestParam(required = false) Boolean desc) {
-//        return nodeService.findAll(limit, offset, sort, desc).stream()
-//                .map(NodeConverter::convertToDto)
-//                .collect(Collectors.toList());
-//    }
-//
-//    @GetMapping("/{id}")
-//    public NodeResponse findById(@PathVariable String id) {
-//        Node model = nodeService.findById(id);
-//        return NodeConverter.convertToDto(model);
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    public void deleteById(@PathVariable String id) {
-//        nodeService.deleteById(id);
-//    }
+    @Override
+    public ResponseEntity<NodeResponseDto> updateNode(NodeRequestDto nodeRequestDto) {
+        Node node = NodeConverter.convertToModel(nodeRequestDto);
+        NodeResponseDto updatedNodeResponseDto = NodeConverter.convertToDto(nodeService.update(node));
+        return ResponseEntity.ok(updatedNodeResponseDto);
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteNodeById(String nodeId) {
+        nodeService.deleteById(nodeId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @Override
+    public ResponseEntity<NodeResponseDto> getNodeById(String nodeId) {
+        return ResponseEntity.ok(NodeConverter.convertToDto(nodeService.findById(nodeId)));
+    }
+
 }
