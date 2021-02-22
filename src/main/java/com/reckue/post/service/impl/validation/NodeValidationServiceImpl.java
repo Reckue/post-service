@@ -18,26 +18,30 @@ public class NodeValidationServiceImpl implements NodeValidationService {
 
     @Override
     public void validateNodeStatusOnUpdate(Node node, StatusType nextNodeStatus) {
-        Optional.ofNullable(node).ifPresent(n -> {
+        if (node.getStatus() == null) {
+            throw new RuntimeException("Parameter node.status can't be null");
+        }
+
+        Optional.of(node).ifPresent(n -> {
             /*
              If current status is active and the next status is deleted,
              wherein the current user isn't author of this node
              then disable to delete (change status to deleted) this node.
             */
-            if (ACTIVE == node.getStatus() && nextNodeStatus == DELETED
-                    && !CurrentUser.getId().equals(node.getUserId())) {
-                throw new RuntimeException("Current user hasn't permission to delete this node");
+            if (ACTIVE == n.getStatus() && nextNodeStatus == DELETED
+                    && !CurrentUser.getId().equals(n.getUserId())) {
+                throw new RuntimeException("Current user hasn't permission to delete this n");
             }
 
             /*
              If current status of node is deleted or banned
              and current user is going to change the status to active,
              wherein current user hasn't administrator's or moderator's permissions (roles)
-             then disable to activate (change status to active) this node.
+             then disable to activate (change status to active) this n.
             */
-            if ((node.getStatus() == DELETED || node.getStatus() == BANNED || node.getStatus() == MODERATED)
+            if ((n.getStatus() == DELETED || n.getStatus() == BANNED || n.getStatus() == MODERATED)
                     && (nextNodeStatus == ACTIVE && !CurrentUser.getRoles().containsAll(List.of(ADMIN, MODERATOR)))) {
-                throw new RuntimeException("Current user hasn't permission to delete this node");
+                throw new RuntimeException("Current user hasn't permission to delete this n");
             }
 
             /*

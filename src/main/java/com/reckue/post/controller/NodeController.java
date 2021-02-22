@@ -13,9 +13,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Slf4j
-@RestController
 @RequiredArgsConstructor
+@RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class NodeController implements NodesApi {
 
@@ -45,6 +48,13 @@ public class NodeController implements NodesApi {
     @Override
     public ResponseEntity<NodeResponseDto> getNodeById(String nodeId) {
         return ResponseEntity.ok(NodeConverter.convertToDto(nodeService.findById(nodeId)));
+    }
+
+    @Override
+    public ResponseEntity<List<NodeResponseDto>> getNodes(Integer limit, Integer offset, String sort, Boolean desc) {
+        return ResponseEntity.ok(nodeService.findAll(limit, offset, sort, desc).getContent().stream()
+                .map(NodeConverter::convertToDto)
+                .collect(Collectors.toList()));
     }
 
 }

@@ -8,6 +8,7 @@ import com.reckue.post.generated.controller.dto.NodeTypeDto;
 import com.reckue.post.generated.controller.dto.StatusTypeDto;
 import com.reckue.post.model.Node;
 import com.reckue.post.model.type.NodeType;
+import com.reckue.post.model.type.StatusType;
 import com.reckue.post.transfer.node.NodeParentResponse;
 import com.reckue.post.transfer.node.audio.AudioNodeRequest;
 import com.reckue.post.transfer.node.audio.AudioNodeResponse;
@@ -66,6 +67,7 @@ public class NodeConverter {
                 .id(nodeRequest.getId())
                 .type(Converter.convert(nodeRequest.getType(), NodeType.class))
                 .content(nodeRequest.getContent())
+                .status(Converter.convert(nodeRequest.getStatus(), StatusType.class))
                 .build();
     }
 

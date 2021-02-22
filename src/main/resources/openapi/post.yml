@@ -292,6 +292,7 @@ paths:
           $ref: '#/components/responses/PostNotFoundError'
         500:
           $ref: '#/components/responses/InternalServerError'
+  /nodes/{id}:
     get:
       summary: Get the node by id.
       operationId: getNodeById

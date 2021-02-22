@@ -44,6 +44,7 @@ public class NodeServiceImpl implements NodeService {
     public Node update(Node node) {
         return nodeRepository.findById(node.getId()).map(storedNode -> {
             nodeValidationService.validateNodeStatusOnUpdate(storedNode, node.getStatus());
+            storedNode.setStatus(node.getStatus());
             storedNode.setUserId(CurrentUser.getId());
             storedNode.setType(node.getType());
             storedNode.setContent(node.getContent());
@@ -65,7 +66,7 @@ public class NodeServiceImpl implements NodeService {
 
     @Override
     public Node findById(String nodeId) {
-        return nodeRepository.findById(nodeId).orElseThrow(RuntimeException::new);
+        return nodeRepository.findById(nodeId).orElseThrow(NoSuchElementException::new);
     }
 
     @Transactional
