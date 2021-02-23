@@ -267,7 +267,6 @@ paths:
           $ref: '#/components/responses/PostNotFoundError'
         500:
           $ref: '#/components/responses/InternalServerError'
-  /nodes/{id}:
     put:
       summary: Update the node by id.
       operationId: updateNode
@@ -275,14 +274,6 @@ paths:
         - Nodes
       security:
         - bearerAuth: []
-      parameters:
-        - name: id
-          in: path
-          description: Node id.
-          required: true
-          example: 5f66a68227efbb73c2996c1a
-          schema:
-            type: string
       requestBody:
         description: Body of post request to update the node by id.
         required: true
@@ -301,6 +292,7 @@ paths:
           $ref: '#/components/responses/PostNotFoundError'
         500:
           $ref: '#/components/responses/InternalServerError'
+  /nodes/{id}:
     get:
       summary: Get the node by id.
       operationId: getNodeById
@@ -1039,6 +1031,12 @@ components:
           type: string
           description: Node id.
           example: 3579626af2a44ee983a299fc65f7238f
+        status:
+          type: string
+          allOf:
+            - $ref: '#/components/schemas/StatusType'
+          description: Current node status.
+          example: ACTIVE
         type:
           type: string
           allOf:
@@ -1051,12 +1049,6 @@ components:
           type: string
           description: User id.
           example: 3579626af2a44ee983a299fc65f7238f
-        status:
-          type: string
-          allOf:
-            - $ref: '#/components/schemas/StatusType'
-          description: Current node status.
-          example: ACTIVE
         createdDate:
           type: integer
           format: int64

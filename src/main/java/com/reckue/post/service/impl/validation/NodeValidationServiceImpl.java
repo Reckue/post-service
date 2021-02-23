@@ -4,51 +4,45 @@ import com.reckue.post.model.Node;
 import com.reckue.post.model.type.StatusType;
 import com.reckue.post.service.validation.NodeValidationService;
 import com.reckue.post.util.security.CurrentUser;
+import org.springframework.dao.PermissionDeniedDataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 
 import static com.reckue.post.model.Role.ADMIN;
 import static com.reckue.post.model.Role.MODERATOR;
-import static com.reckue.post.model.type.StatusType.*;
+import static com.reckue.post.model.type.StatusType.ACTIVE;
 
 @Service
 public class NodeValidationServiceImpl implements NodeValidationService {
 
     @Override
-    public void validateNodeStatusOnUpdate(Node node, StatusType nextNodeStatus) {
-        Optional.ofNullable(node).ifPresent(n -> {
-            /*
-             If current status is active and the next status is deleted,
-             wherein the current user isn't author of this node
-             then disable to delete (change status to deleted) this node.
-            */
-            if (ACTIVE == node.getStatus() && nextNodeStatus == DELETED
-                    && !CurrentUser.getId().equals(node.getUserId())) {
-                throw new RuntimeException("Current user hasn't permission to delete this node");
-            }
+    public void validateNodeStatusOnCreate(Node node) {
+        if (node == null) {
+            throw new NoSuchElementException();
+        }
+        StatusType currentStatus = node.getStatus();
 
-            /*
-             If current status of node is deleted or banned
-             and current user is going to change the status to active,
-             wherein current user hasn't administrator's or moderator's permissions (roles)
-             then disable to activate (change status to active) this node.
-            */
-            if ((node.getStatus() == DELETED || node.getStatus() == BANNED || node.getStatus() == MODERATED)
-                    && (nextNodeStatus == ACTIVE && !CurrentUser.getRoles().containsAll(List.of(ADMIN, MODERATOR)))) {
-                throw new RuntimeException("Current user hasn't permission to delete this node");
-            }
-
-            /*
-             If next status of node is banned or moderated,
-             wherein the current user hasn't administrator's or moderator's permissions (roles)
-             then disable to ban or moderate (change status to banned or moderated) this node.
-            */
-            if ((nextNodeStatus == BANNED || nextNodeStatus == MODERATED)
-                    && !CurrentUser.getRoles().containsAll(List.of(ADMIN, MODERATOR))) {
-                throw new RuntimeException("Current user hasn't permission to ban or moderate this node");
-            }
-        });
+        if (currentStatus != ACTIVE && currentStatus != null) {
+            throw new RuntimeException("Status of node must be 'ACTIVE' on create");
+        }
     }
+
+    @Override
+    public void validateNodeStatusOnUpdate(Node node, StatusType nextStatus) {
+        if (node == null) {
+            throw new NoSuchElementException();
+        }
+        if (node.getStatus() == null) {
+            throw new RuntimeException("The 'status' parameter can't be null");
+        }
+
+        if (node.getStatus() != ACTIVE) {
+            if (!CurrentUser.getRoles().contains(ADMIN) && !CurrentUser.getRoles().contains(MODERATOR)) {
+                throw new PermissionDeniedDataAccessException("Current user hasn't permission to change status",
+                        new RuntimeException());
+            }
+        }
+    }
+
 }

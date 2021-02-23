@@ -5,6 +5,8 @@ import com.reckue.post.model.type.StatusType;
 
 public interface NodeValidationService {
 
+    void validateNodeStatusOnCreate(Node node);
+
     void validateNodeStatusOnUpdate(Node node, StatusType nextNodeStatus);
 
 }
