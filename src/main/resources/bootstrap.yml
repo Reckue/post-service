@@ -3,7 +3,7 @@ spring:
     name: post
 keycloak:
   realm: develop
-  auth-server-url: ${KEYCLOAK_URI:http://keycloack-service:7070/auth}
+  auth-server-url: ${KEYCLOAK_URI:http://keycloak-service:8080/auth}
   ssl-required: external
   resource: post-service
   credentials:

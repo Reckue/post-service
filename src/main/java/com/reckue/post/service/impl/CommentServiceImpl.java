@@ -218,7 +218,7 @@
 //        }
 //        Optional<Comment> comment = commentRepository.findById(id);
 //        if (comment.isPresent()) {
-//            if (CurrentUser.getId().equals(comment.get().getUserId()) || CurrentUser.getRoles().contains(Role.ADMIN)) {
+//            if (CurrentUser.getId().equals(comment.get().getUserId()) || CurrentUser.getRoles().contains(Role.ADMIN)){
 //                commentRepository.deleteById(id);
 //            } else {
 //                throw new ReckueAccessDeniedException("The operation is forbidden");
