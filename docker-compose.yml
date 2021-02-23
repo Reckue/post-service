@@ -36,6 +36,8 @@ services:
       - net
     ports:
       - 7070:8080
+    expose:
+      - "7070"
     environment:
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: admin
@@ -51,17 +53,21 @@ services:
     restart: unless-stopped
   # post-service
   post-service:
-    build: .
+    build: ./
     container_name: post-service
     networks:
       - net
     ports:
       - 8000:8000
+    expose:
+      - "8000"
+    restart: unless-stopped
     environment:
-      SERVICE_NAME: post-service
-      PORT: 8000
-      KEYCLOAK_CLIENT_SECRET: f9e363b1-3599-4ca7-ba44-2b3d5d5c57dc
-      EUREKA_ENABLED: false
+      - "SERVICE_NAME=post-service"
+      - "PORT=8000"
+      - "KEYCLOAK_URI=http://keycloak-service:8080/auth"
+      - "KEYCLOAK_CLIENT_SECRET=f9e363b1-3599-4ca7-ba44-2b3d5d5c57dc"
+      - "EUREKA_ENABLED=false"
 networks:
   net:
-    driver: bridge
+    driver: "bridge"
